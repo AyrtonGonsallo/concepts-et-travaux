@@ -1,1 +1,21 @@
-<p>autorisations works!</p>
+<div>
+    <p>Toutes les autorisations</p>
+    <nz-table  [nzData]="autorisations" nzTableLayout="fixed">
+        <thead>
+        <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            {{ column.title }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of autorisations">
+            <td>{{ data.Id }}</td>
+            <td>{{ data.Explications }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.DateDeCreation | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+
+        </tr>
+        </tbody>
+    </nz-table>
+</div>

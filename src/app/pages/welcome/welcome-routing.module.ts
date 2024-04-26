@@ -11,6 +11,7 @@ const routes: Routes = [
     path: '', 
     component: WelcomeComponent, // Utilise le LayoutComponent comme parent
     children: [
+      { path: '', component: AutorisationsComponent },
       { path: 'autorisations', component: AutorisationsComponent },
       { path: 'comptes', component: ComptesComponent },
       { path: 'roles', component: RolesComponent },
