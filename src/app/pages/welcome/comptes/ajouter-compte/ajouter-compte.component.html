@@ -2,39 +2,33 @@
     <h2>Gestion des comptes</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
                 <span>Nom</span>
             </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre nom!">
-                <input nz-input id="nom" formControlName="nom" />
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Nom!">
+                <input nz-input id="Nom" formControlName="Nom" />
             </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="prenom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prenom"  nzRequired nzTooltipTitle="What do you want other to call you" >
                 <span>Prénom</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre prenom!">
-                <input nz-input id="prenom" formControlName="prenom" />
+                <input nz-input id="Prenom" formControlName="Prenom" />
             </nz-form-control>
         </nz-form-item>
         
         <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Email">E-mail</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
-            <input nz-input formControlName="email" id="email" />
+            <input nz-input formControlName="Email" id="Email" />
         </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
-            <input
-            nz-input
-            type="password"
-            id="password"
-            formControlName="password"
-            (ngModelChange)="updateConfirmValidator()"
-            />
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Password" nzRequired>Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your Password!">
+            <input nz-input type="Password" id="Password" formControlName="Password" (ngModelChange)="updateConfirmValidator()" />
         </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -53,20 +47,31 @@
         </nz-form-item>
        
         <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Téléphone</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Telephone" nzRequired>Téléphone</nz-form-label>
         <nz-form-control
             [nzSm]="14"
             [nzXs]="24"
-            [nzValidateStatus]="validateForm.controls['phoneNumber']"
+            [nzValidateStatus]="validateForm.controls['Telephone']"
             nzErrorTip="Please input your phone number!"
         >
             <nz-input-group>
             
-            <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+            <input formControlName="Telephone" id="'Telephone'" nz-input />
             </nz-input-group>
         </nz-form-control>
         </nz-form-item>
        
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  >
+                <span>Role</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Role" >
+                    <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
                 <span>RaisonSociale</span>
@@ -158,18 +163,13 @@
             </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  >
-                <span>RoleId</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input nz-input id="RoleId" formControlName="RoleId" />
-            </nz-form-control>
-        </nz-form-item>
         
+        
+       
+
         <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <label nz-checkbox formControlName="agree">
+            <label nz-checkbox formControlName="Agree">
             <span>
                 I have read the
                 <a>agreement</a>

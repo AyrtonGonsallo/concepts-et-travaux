@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { Role } from '../../../../Models/Roles';
+import { HttpClient } from '@angular/common/http';
+import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 
 @Component({
   selector: 'app-ajouter-compte',
@@ -10,30 +12,38 @@ import { Role } from '../../../../Models/Roles';
 export class AjouterCompteComponent {
 
   validateForm: FormGroup<{
-    email: FormControl<string>;
-    password: FormControl<string>;
-    checkPassword: FormControl<string>;
-    nom: FormControl<string>;
-    prenom: FormControl<string>;
-    phoneNumber: FormControl<string>;
-    agree: FormControl<boolean>;
     RaisonSociale: FormControl<string>;
     NumeroSIRET: FormControl<string>;
+    Nom: FormControl<string>;
+    Prenom: FormControl<string>;
+    Email: FormControl<string>;
+    Password: FormControl<string>;
+    Telephone: FormControl<string>;
     AdressePostale: FormControl<string>;
     Activite:  FormControl<string>;
     CA: FormControl<number>;
+    checkPassword: FormControl<string>;
     Effectif: FormControl<number>;
     References: FormControl<string>;
     QuestionnaireTarif: FormControl<string>;
     AssuranceRCDecennale: FormControl<string>;
     KBis: FormControl<string>;
     RoleId: FormControl<number>;
+    Agree: FormControl<boolean>;
   }>;
  
 
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
+      this.userService.addUserWithRole(this.validateForm.value).subscribe(
+        (response) => {
+          console.log('Utilisateur ajouté avec succès :', response);
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de l\'utilisateur :', error);
+        }
+      );
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -52,25 +62,23 @@ export class AjouterCompteComponent {
   confirmationValidator: ValidatorFn = (control: AbstractControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
+    } else if (control.value !== this.validateForm.controls.Password.value) {
       return { confirm: true, error: true };
     }
     return {};
   };
 
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
 
-  constructor(private fb: NonNullableFormBuilder) {
+
+  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
+      Email: ['', [Validators.email, Validators.required]],
+      Password: ['', [Validators.required]],
       checkPassword: ['', [Validators.required, this.confirmationValidator]],
-      nom: ['', [Validators.required]],
-      prenom: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      agree: [false],
+      Nom: ['', [Validators.required]],
+      Prenom: ['', [Validators.required]],
+      Telephone: ['', [Validators.required]],
+      Agree: [false],
       RaisonSociale: ['', []],
       NumeroSIRET: ['', []],
       AdressePostale: ['', []],
@@ -83,5 +91,20 @@ export class AjouterCompteComponent {
       KBis: ['', []],
       RoleId: [0, []],
     });
+  }
+
+  roles: Role[] = [];
+
+  ngOnInit(): void {
+    this.loadRoles();
+  }
+
+  loadRoles(): void {
+    this.http.get<Role[]>('http://localhost:3000/get_Roles')
+      .subscribe((data: Role[]) => {
+        this.roles = data;
+        console.log("réponse de la requette get_roles",this.roles);
+      });
+      console.log("envoi de la requette get_roles",this.roles);
   }
 }

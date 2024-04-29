@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Utilisateur } from '../../../Models/Utilisateurs';
 import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
+import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 
 @Component({
   selector: 'app-comptes',
@@ -55,7 +56,7 @@ export class ComptesComponent {
   ];
   utilisateurs:Utilisateur[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadUtilisateurs();
@@ -68,5 +69,19 @@ export class ComptesComponent {
         console.log("réponse de la requette get_utilisateurs",this.utilisateurs);
       });
       console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
+      
+  }
+
+  deleteUser(userId: number) {
+    this.userService.deleteUser(userId).subscribe(
+      () => {
+        console.log('Utilisateur supprimé avec succès');
+        // Mettez ici le code pour actualiser la liste des utilisateurs si nécessaire
+        this.loadUtilisateurs();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+      }
+    );
   }
 }
