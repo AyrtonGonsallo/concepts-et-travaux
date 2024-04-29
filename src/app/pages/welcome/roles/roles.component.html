@@ -1,5 +1,7 @@
 <div>
-    <p>Toutes les roles</p>
+  <h2>Tous les roles</h2>
+  <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'roles', 'ajouter-role']">Ajouter un role</button>
+
     <nz-table  #sortTable  [nzData]="roles" nzTableLayout="fixed">
         <thead>
         <tr>
@@ -8,6 +10,9 @@
             </th>
             <th >
               Autorisations
+                </th>
+                <th>
+                  Actions
                 </th>
         </tr>
         </thead>
@@ -25,7 +30,10 @@
                     }
                 </nz-list>
             </td>
-
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'roles', 'modifier-role',data.Id]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteRole(data.Id)"><span nz-icon nzType="delete"></span></button>
+            </td>
         </tr>
         </tbody>
     </nz-table>

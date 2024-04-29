@@ -100,11 +100,14 @@ export class AjouterCompteComponent {
   }
 
   loadRoles(): void {
-    this.http.get<Role[]>('http://localhost:3000/get_Roles')
-      .subscribe((data: Role[]) => {
-        this.roles = data;
+    this.userService.getRoles().subscribe(
+      (response) => {
+        this.roles = response;
         console.log("réponse de la requette get_roles",this.roles);
-      });
-      console.log("envoi de la requette get_roles",this.roles);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des roles :', error);
+      }
+    );
   }
 }

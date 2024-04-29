@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Role } from '../../../Models/Roles';
 import { HttpClient } from '@angular/common/http';
+import { NzButtonSize } from 'ng-zorro-antd/button';
+import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 
 @Component({
   selector: 'app-roles',
@@ -8,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './roles.component.css'
 })
 export class RolesComponent {
+  size: NzButtonSize = 'large';
   listOfColumn = [
     {
       title: 'Id',
@@ -28,18 +31,33 @@ export class RolesComponent {
   ];
   roles: Role[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadRoles();
   }
 
   loadRoles(): void {
-    this.http.get<Role[]>('http://localhost:3000/get_Roles')
-      .subscribe((data: Role[]) => {
-        this.roles = data;
+    this.userService.getRoles().subscribe(
+      (response) => {
+        this.roles = response;
         console.log("réponse de la requette get_roles",this.roles);
-      });
-      console.log("envoi de la requette get_roles",this.roles);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des roles :', error);
+      }
+    );
+  }
+  deleteRole(roleId: number) {
+    this.userService.deleteRole(roleId).subscribe(
+      () => {
+        console.log('role supprimé avec succès');
+        // Mettez ici le code pour actualiser la liste des Autorisations si nécessaire
+        this.loadRoles();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'role :', error);
+      }
+    );
   }
 }

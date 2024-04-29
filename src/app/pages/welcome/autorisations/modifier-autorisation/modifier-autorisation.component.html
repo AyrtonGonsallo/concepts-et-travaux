@@ -1,0 +1,33 @@
+<div>
+    <h2>Gestion des Autorisations</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Titre"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Titre</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Titre!">
+                <input nz-input id="Titre" formControlName="Titre" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Explications"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Explications</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Explications!">
+                <textarea rows="4" nz-input id="Explications" formControlName="Explications"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+   
+        
+       
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Autorisation } from '../../../Models/Autorisations';
 import { HttpClient } from '@angular/common/http';
+import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
+import { NzButtonSize } from 'ng-zorro-antd/button';
 interface DataItem {
   name: string;
   chinese: number;
@@ -14,6 +16,7 @@ interface DataItem {
 })
 export class AutorisationsComponent {
   autorisations: Autorisation[] = [];
+  size: NzButtonSize = 'large';
   listOfColumn = [
     {
       title: 'Id',
@@ -40,18 +43,35 @@ export class AutorisationsComponent {
     }
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadAutorisations();
   }
 
   loadAutorisations(): void {
-    this.http.get<Autorisation[]>('http://localhost:3000/get_autorisations')
-      .subscribe((data: Autorisation[]) => {
-        this.autorisations = data;
-        console.log("réponse de la requette get_autorisations",this.autorisations);
-      });
+    this.userService.getAutorisations().subscribe(
+      (response) => {
+        this.autorisations = response;
+        console.log("réponse de la requette get_roles",this.autorisations);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des roles :', error);
+      }
+    );
       console.log("envoi de la requette get_autorisations",this.autorisations);
+  }
+
+  deleteAutorisation(autoId: number) {
+    this.userService.deleteAutorisation(autoId).subscribe(
+      () => {
+        console.log('Utilisateur supprimé avec succès');
+        // Mettez ici le code pour actualiser la liste des Autorisations si nécessaire
+        this.loadAutorisations();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+      }
+    );
   }
 }

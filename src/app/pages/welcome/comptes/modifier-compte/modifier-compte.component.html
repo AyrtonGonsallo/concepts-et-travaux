@@ -1,1 +1,177 @@
-<p>modifier-compte works!</p>
+<div>
+    <h2>Gestion des comptes</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Nom</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Nom!">
+                <input nz-input id="Nom" formControlName="Nom" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prenom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Prénom</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre prenom!">
+                <input nz-input id="Prenom" formControlName="Prenom" />
+            </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Email">E-mail</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
+            <input nz-input formControlName="Email" id="Email" />
+        </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Password">Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your Password!">
+            <input nz-input type="Password" id="Password" formControlName="Password" (ngModelChange)="updateConfirmValidator()" />
+        </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword">Confirm Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+            <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+            <ng-template #errorTpl let-control>
+            @if (control.errors?.['required']) {
+                Please confirm your password!
+            }
+            @if (control.errors?.['confirm']) {
+                Two passwords that you enter is inconsistent!
+            }
+            </ng-template>
+        </nz-form-control>
+        </nz-form-item>
+       
+        <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Telephone" nzRequired>Téléphone</nz-form-label>
+        <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            [nzValidateStatus]="validateForm.controls['Telephone']"
+            nzErrorTip="Please input your phone number!"
+        >
+            <nz-input-group>
+            
+            <input formControlName="Telephone" id="'Telephone'" nz-input />
+            </nz-input-group>
+        </nz-form-control>
+        </nz-form-item>
+       
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  >
+                <span>Role</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Role" >
+                    <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
+                <span>RaisonSociale</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="RaisonSociale" formControlName="RaisonSociale" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NumeroSIRET"  >
+                <span>NumeroSIRET</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="NumeroSIRET" formControlName="NumeroSIRET" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  >
+                <span>AdressePostale</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="AdressePostale" formControlName="AdressePostale" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Activite"  >
+                <span>Activite</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="Activite" formControlName="Activite" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CA"  >
+                <span>CA</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="CA" formControlName="CA"  [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Effectif"  >
+                <span>Effectif</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="Effectif" formControlName="Effectif" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number> 
+
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="References"  >
+                <span>References</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="References" formControlName="References" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="QuestionnaireTarif"  >
+                <span>QuestionnaireTarif</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="QuestionnaireTarif" formControlName="QuestionnaireTarif" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AssuranceRCDecennale"  >
+                <span>AssuranceRCDecennale</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="KBis"  >
+                <span>KBis</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="KBis" formControlName="KBis" />
+            </nz-form-control>
+        </nz-form-item>
+
+        
+        
+       
+
+        
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
