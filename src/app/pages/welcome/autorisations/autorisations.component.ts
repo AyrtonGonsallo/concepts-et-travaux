@@ -50,8 +50,8 @@ export class AutorisationsComponent {
     this.http.get<Autorisation[]>('http://localhost:3000/get_autorisations')
       .subscribe((data: Autorisation[]) => {
         this.autorisations = data;
-        console.log("autorisations ",this.autorisations);
+        console.log("réponse de la requette get_autorisations",this.autorisations);
       });
-      console.log("autorisations ",this.autorisations);
+      console.log("envoi de la requette get_autorisations",this.autorisations);
   }
 }

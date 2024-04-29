@@ -1,6 +1,6 @@
 <div>
     <p>Toutes les autorisations</p>
-    <nz-table  [nzData]="autorisations" nzTableLayout="fixed">
+    <nz-table  #sortTable  [nzData]="autorisations" nzTableLayout="fixed">
         <thead>
         <tr>
             <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let data of autorisations">
+        <tr *ngFor="let data of sortTable.data">
             <td>{{ data.Id }}</td>
             <td>{{ data.Explications }}</td>
             <td>{{ data.Titre }}</td>

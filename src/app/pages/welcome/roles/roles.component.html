@@ -1,1 +1,32 @@
-<p>roles works!</p>
+<div>
+    <p>Toutes les roles</p>
+    <nz-table  #sortTable  [nzData]="roles" nzTableLayout="fixed">
+        <thead>
+        <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            {{ column.title }}
+            </th>
+            <th >
+              Autorisations
+                </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+            <td>{{ data.Id }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.Commentaire }}</td>
+            <td>
+                <nz-list >
+                    @for (item of data.Autorisations; track item) {
+                      <nz-list-item>
+                        {{ item.Titre }}
+                      </nz-list-item>
+                    }
+                </nz-list>
+            </td>
+
+        </tr>
+        </tbody>
+    </nz-table>
+</div>

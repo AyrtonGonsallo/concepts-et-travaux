@@ -1,19 +1,32 @@
 <div>
-    <p>Liste des comptes</p>
-    <nz-table #sortTable [nzData]="listOfData"  nzTableLayout="fixed">
+    <h2>Gestion des comptes</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'comptes', 'ajouter-compte']">Ajouter un compte</button>
+
+    <nz-table #sortTable [nzData]="utilisateurs"  nzTableLayout="fixed">
         <thead>
           <tr>
             <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
             </th>
+            <th>
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of sortTable.data">
-            <td>{{ data.name }}</td>
-            <td>{{ data.chinese }}</td>
-            <td>{{ data.math }}</td>
-            <td>{{ data.english }}</td>
+            <td>{{ data.Id }}</td>
+            <td>{{ data.RaisonSociale }}</td>
+            <td>{{ data.Nom }}</td>
+            <td>{{ data.Prenom }}</td>
+            <td>{{ data.Email }}</td>
+            <td>{{ data.Telephone }}</td>
+            <td>{{ data.AdressePostale }}</td>
+            <td>{{ data.Role?.Titre }}</td>
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"><span nz-icon nzType="delete"></span></button>
+            </td>
           </tr>
         </tbody>
     </nz-table>

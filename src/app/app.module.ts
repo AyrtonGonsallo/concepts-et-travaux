@@ -29,7 +29,7 @@ registerLocaleData(fr);
     FormsModule
   ],
   providers: [
-    provideClientHydration(),
+    //provideClientHydration(),
     { provide: NZ_I18N, useValue: fr_FR },
     provideAnimationsAsync(),
     provideHttpClient()

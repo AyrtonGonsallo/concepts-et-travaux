@@ -1,63 +1,72 @@
 import { Component } from '@angular/core';
-interface DataItem {
-  name: string;
-  chinese: number;
-  math: number;
-  english: number;
-}
+import { Utilisateur } from '../../../Models/Utilisateurs';
+import { HttpClient } from '@angular/common/http';
+import { NzButtonSize } from 'ng-zorro-antd/button';
+
 @Component({
   selector: 'app-comptes',
   templateUrl: './comptes.component.html',
   styleUrl: './comptes.component.css'
 })
 export class ComptesComponent {
-
+  size: NzButtonSize = 'large';
   listOfColumn = [
     {
-      title: 'Name',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
-      priority: false
-    },
-    {
-      title: 'Chinese Score',
-      compare: (a: DataItem, b: DataItem) => a.chinese - b.chinese,
+      title: 'Id',
+      compare: (a: Utilisateur, b: Utilisateur) => a.Id - b.Id,
       priority: 3
     },
     {
-      title: 'Math Score',
-      compare: (a: DataItem, b: DataItem) => a.math - b.math,
+      title: 'RaisonSociale',
+      compare: (a: Utilisateur, b: Utilisateur) => (a.RaisonSociale  ?? '').localeCompare(b.RaisonSociale ?? ''),
+      priority: false
+    },
+    
+    {
+      title: 'Nom',
+      compare: (a: Utilisateur, b: Utilisateur) => a.Nom.localeCompare(b.Nom),
       priority: 2
     },
     {
-      title: 'English Score',
-      compare: (a: DataItem, b: DataItem) => a.english - b.english,
+      title: 'Prénom',
+      compare: (a: Utilisateur, b: Utilisateur) => a.Prenom.localeCompare(b.Prenom),
+      priority: 1
+    },
+    {
+      title: 'Email',
+      compare: (a: Utilisateur, b: Utilisateur) => a.Email.localeCompare(b.Email),
+      priority: 1
+    },
+    {
+      title: 'Telephone',
+      compare: (a: Utilisateur, b: Utilisateur) => a.Telephone.localeCompare(b.Telephone),
+      priority: 1
+    },
+    {
+      title: 'AdressePostale',
+      compare: (a: Utilisateur, b: Utilisateur) => a.AdressePostale.localeCompare(b.AdressePostale),
+      priority: 1
+    },
+    {
+      title: 'Role',
+      compare: (a: Utilisateur, b: Utilisateur) => (a.Role?.Titre  ?? '' ).localeCompare(b.Role?.Titre  ?? '' ),
       priority: 1
     }
   ];
-  listOfData: DataItem[] = [
-    {
-      name: 'John Brown',
-      chinese: 98,
-      math: 60,
-      english: 70
-    },
-    {
-      name: 'Jim Green',
-      chinese: 98,
-      math: 66,
-      english: 89
-    },
-    {
-      name: 'Joe Black',
-      chinese: 98,
-      math: 90,
-      english: 70
-    },
-    {
-      name: 'Jim Red',
-      chinese: 88,
-      math: 99,
-      english: 89
-    }
-  ];
+  utilisateurs:Utilisateur[] = [];
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.loadUtilisateurs();
+  }
+
+  loadUtilisateurs(): void {
+    this.http.get<Utilisateur[]>('http://localhost:3000/get_utilisateurs')
+      .subscribe((data: Utilisateur[]) => {
+        this.utilisateurs = data;
+        console.log("réponse de la requette get_utilisateurs",this.utilisateurs);
+      });
+      console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
+  }
 }
