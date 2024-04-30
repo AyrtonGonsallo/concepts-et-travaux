@@ -1,1 +1,41 @@
-<p>modifier-role works!</p>
+<div>
+    <h2>Gestion des roles</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Titre"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Titre</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Titre!">
+                <input nz-input id="Titre" formControlName="Titre" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Commentaire"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Commentaire</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Commentaire!">
+                <textarea rows="4" nz-input id="Commentaire" formControlName="Commentaire"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="autorisations"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Autorisations</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Autorisations!">
+                <nz-select id="autorisations" [(ngModel)]="multipleValue" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of autorisations" [nzLabel]="option.Titre" [nzValue]="option.Id"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        
+        </nz-form-item>
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

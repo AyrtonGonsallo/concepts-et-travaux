@@ -3,12 +3,7 @@ import { Autorisation } from '../../../Models/Autorisations';
 import { HttpClient } from '@angular/common/http';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzButtonSize } from 'ng-zorro-antd/button';
-interface DataItem {
-  name: string;
-  chinese: number;
-  math: number;
-  english: number;
-}
+
 @Component({
   selector: 'app-autorisations',
   templateUrl: './autorisations.component.html',

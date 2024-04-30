@@ -3,6 +3,7 @@ import { Utilisateur } from '../../../Models/Utilisateurs';
 import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-comptes',
@@ -63,7 +64,7 @@ export class ComptesComponent {
   }
 
   loadUtilisateurs(): void {
-    this.http.get<Utilisateur[]>('http://localhost:3000/get_utilisateurs')
+    this.http.get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs`)
       .subscribe((data: Utilisateur[]) => {
         this.utilisateurs = data;
         console.log("réponse de la requette get_utilisateurs",this.utilisateurs);

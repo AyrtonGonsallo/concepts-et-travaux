@@ -3,6 +3,12 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Autorisation } from '../../../../Models/Autorisations';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
+// Définir le type des valeurs du formulaire avec la propriété Autorisations
+interface FormValues {
+  Titre?: string;
+  Commentaire?: string;
+  Autorisations?: any[]; // Type de la liste des autorisations, ajustez selon le besoin
+}
 
 @Component({
   selector: 'app-ajouter-role',
@@ -24,17 +30,23 @@ export class AjouterRoleComponent {
     if (this.validateForm.valid) {
       this.userService.getAutorisationsByIds(this.multipleValue).subscribe(
         (response) => {
-          this.autorisations = response;
-          console.log("réponse de la requette get_autorisations",this.autorisations);
-          /*
-          this.userService.addUserWithRole(this.validateForm.value).subscribe(
+          // Copie de validateForm.value
+          const formValues: FormValues = { ...this.validateForm.value };
+
+          // Ajout du champ 'Autorisations' avec la liste des autorisations
+          formValues.Autorisations = response;
+
+          // Affichage du formulaire modifié
+          console.log('valeur soumises :', formValues);
+          
+          this.userService.add_role(formValues).subscribe(
             (response) => {
-              console.log('Utilisateur ajouté avec succès :', response);
+              console.log('role ajouté avec succès :', response);
             },
             (error) => {
-              console.error('Erreur lors de l\'ajout de l\'utilisateur :', error);
+              console.error('Erreur lors de l\'ajout du role :', error);
             }
-          ); */
+          ); 
         },
         (error) => {
           console.error('Erreur lors de la recuperation des autorisations :', error);

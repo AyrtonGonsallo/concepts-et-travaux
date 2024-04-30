@@ -9,7 +9,11 @@
 .trigger:hover {
   color: #1890ff;
 }
-
+.logout-zone{
+  right: 16px;
+  position: absolute;
+  display: inline;
+}
 .logo {
   height: 64px;
   margin: 16px;

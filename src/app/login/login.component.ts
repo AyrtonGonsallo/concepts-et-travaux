@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,18 +10,19 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 })
 export class LoginComponent {
   validateForm: FormGroup<{
-    userName: FormControl<string>;
+    email: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    userName: ['', [Validators.required]],
+    email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]],
     remember: [true]
   });
-
+  passwordVisible = false;
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
+      this.auth.login(this.validateForm.value)
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -31,5 +33,5 @@ export class LoginComponent {
     }
   }
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder,private auth:AuthService) {}
 }
