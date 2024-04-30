@@ -3,7 +3,8 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Autorisation } from '../../../../Models/Autorisations';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
 interface FormValues {
   Titre?: string;
@@ -42,7 +43,9 @@ export class ModifierRoleComponent {
           
           this.userService.updateRole(parseInt(this.roleId??'0'),formValues).subscribe(
             (response) => {
-              console.log('role ajouté avec succès :', response);
+              console.log('role modifié avec succès :', response);
+              this.message.create('success', `role modifié avec succès`);
+              this.router.navigate(['/administration/roles']);
             },
             (error) => {
               console.error('Erreur lors de l\'ajout du role :', error);
@@ -71,7 +74,7 @@ export class ModifierRoleComponent {
 
 
 
-  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute) {
+  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Titre: ['', [Validators.required]],
       Commentaire: ['', [Validators.required]],

@@ -3,6 +3,8 @@ import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Valida
 import { Role } from '../../../../Models/Roles';
 import { HttpClient } from '@angular/common/http';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ajouter-compte',
@@ -39,6 +41,8 @@ export class AjouterCompteComponent {
       this.userService.addUserWithRole(this.validateForm.value).subscribe(
         (response) => {
           console.log('Utilisateur ajouté avec succès :', response);
+          this.message.create('success', `Utilisateur ajouté avec succès`);
+              this.router.navigate(['/administration/comptes']);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de l\'utilisateur :', error);
@@ -70,7 +74,7 @@ export class AjouterCompteComponent {
 
 
 
-  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService) {
+  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Email: ['', [Validators.email, Validators.required]],
       Password: ['', [Validators.required]],

@@ -3,6 +3,8 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Autorisation } from '../../../../Models/Autorisations';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
 interface FormValues {
   Titre?: string;
@@ -42,6 +44,8 @@ export class AjouterRoleComponent {
           this.userService.add_role(formValues).subscribe(
             (response) => {
               console.log('role ajouté avec succès :', response);
+              this.message.create('success', `role ajouté avec succès`);
+              this.router.navigate(['/administration/roles']);
             },
             (error) => {
               console.error('Erreur lors de l\'ajout du role :', error);
@@ -70,7 +74,7 @@ export class AjouterRoleComponent {
 
 
 
-  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService) {
+  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Titre: ['', [Validators.required]],
       Commentaire: ['', [Validators.required]],

@@ -15,7 +15,7 @@
 /node_modules
 npm-debug.log
 yarn-error.log
-
+*concepts-et-travaux-prod/
 # IDEs and editors
 .idea/
 .project

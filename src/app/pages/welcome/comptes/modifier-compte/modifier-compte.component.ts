@@ -3,7 +3,8 @@ import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Valida
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { HttpClient } from '@angular/common/http';
 import { Role } from '../../../../Models/Roles';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-modifier-compte',
@@ -39,6 +40,8 @@ export class ModifierCompteComponent {
       this.userService.updateUser(this.userId,this.validateForm.value).subscribe(
         (response) => {
           console.log('Utilisateur modifié avec succès :', response);
+          this.message.create('success', `Utilisateur modifié avec succès`);
+          this.router.navigate(['/administration/comptes']);
         },
         (error) => {
           console.error('Erreur lors de la modification de l\'utilisateur :', error);
@@ -70,7 +73,7 @@ export class ModifierCompteComponent {
 
 
 
-  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute) {
+  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Email: ['', [Validators.email, Validators.required]],
       Password: ['000', []],

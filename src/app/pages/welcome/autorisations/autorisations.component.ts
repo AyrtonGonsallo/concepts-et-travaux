@@ -32,7 +32,7 @@ export class AutorisationsComponent {
       title: 'DateDeCreation',
       compare: (a: Autorisation, b: Autorisation) => {
         if (!a.DateDeCreation || !b.DateDeCreation) return 0;
-        return a.DateDeCreation.getTime() - b.DateDeCreation.getTime();
+        return new Date(a.DateDeCreation).getTime() - new Date(b.DateDeCreation).getTime();
       },
       priority: 2
     }
