@@ -132,7 +132,7 @@
                 <span>References</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input nz-input id="References" formControlName="References" />
+                <textarea rows="4" nz-input id="References" formControlName="References"></textarea> 
             </nz-form-control>
         </nz-form-item>
 
@@ -141,7 +141,7 @@
                 <span>QuestionnaireTarif</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input nz-input id="QuestionnaireTarif" formControlName="QuestionnaireTarif" />
+                <input type="file" nz-upload id="QuestionnaireTarif" formControlName="QuestionnaireTarif" (change)="handleFileInput($event)" />                
             </nz-form-control>
         </nz-form-item>
 
@@ -150,7 +150,7 @@
                 <span>AssuranceRCDecennale</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input nz-input id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" />
+                <input type="file" nz-upload id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" (change)="handleFileInput2($event)" />                
             </nz-form-control>
         </nz-form-item>
 
@@ -159,7 +159,7 @@
                 <span>KBis</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input nz-input id="KBis" formControlName="KBis" />
+                <input type="file" nz-upload id="KBis" formControlName="KBis" (change)="handleFileInput3($event)" />                
             </nz-form-control>
         </nz-form-item>
 

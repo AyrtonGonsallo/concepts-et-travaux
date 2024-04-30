@@ -50,6 +50,10 @@ get_role(userId: number): Observable<any> {
   add_role(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_role`, userData);
   }
+
+  upload_file(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/upload`, userData);
+  }
   deleteUser(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_utilisateur/${userId}`;
     return this.http.delete<any>(url);

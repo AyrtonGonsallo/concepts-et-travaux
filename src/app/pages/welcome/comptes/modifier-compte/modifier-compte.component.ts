@@ -94,7 +94,62 @@ export class ModifierCompteComponent {
       RoleId: [0, []],
     });
   }
-
+  file_QuestionnaireTarif: string="";
+  file_AssuranceRCDecennale: string="";
+  file_KBis: string="";
+  handleFileInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    this.file_QuestionnaireTarif = file.name;
+  
+    // Mettre à jour la valeur de l'input
+    const inputElementQuestionnaireTarif = document.getElementById('QuestionnaireTarif') as HTMLInputElement;
+    inputElementQuestionnaireTarif.setAttribute('value', this.file_QuestionnaireTarif);
+    const formData = new FormData();
+    formData.append('file', file);
+  // Envoyer le fichier au serveur
+  this.userService.upload_file(formData).subscribe(response => {
+    console.log('Fichier téléchargé avec succès:', response);
+    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+  });
+    console.log(file);
+  }
+  
+  handleFileInput2(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    this.file_AssuranceRCDecennale =  file.name;
+  
+    // Mettre à jour la valeur de l'input
+    const inputElementAssuranceRCDecennale = document.getElementById('AssuranceRCDecennale') as HTMLInputElement;
+    inputElementAssuranceRCDecennale.setAttribute('value', this.file_AssuranceRCDecennale);
+    const formData = new FormData();
+    formData.append('file', file);
+  // Envoyer le fichier au serveur
+  this.userService.upload_file(formData).subscribe(response => {
+    console.log('Fichier téléchargé avec succès:', response);
+    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+  });
+    console.log(file);
+  }
+  
+  handleFileInput3(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    this.file_KBis =  file.name;
+  
+    // Mettre à jour la valeur de l'input
+    const inputElementKBis = document.getElementById('KBis') as HTMLInputElement;
+    inputElementKBis.setAttribute('value',  file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+  // Envoyer le fichier au serveur
+  this.userService.upload_file(formData).subscribe(response => {
+    console.log('Fichier téléchargé avec succès:', response);
+    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+  });
+    console.log(file);
+  }
   roles: Role[] = [];
   userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
   ngOnInit(): void {
@@ -113,6 +168,9 @@ export class ModifierCompteComponent {
       (response) => {
         response.checkPassword="000"
         response.Password="000"
+        response.AssuranceRCDecennale=""
+        response.QuestionnaireTarif=""
+        response.KBis=""
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_user",response);
       },

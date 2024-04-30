@@ -2,7 +2,7 @@
     <h2>Gestion des comptes</h2>    
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'comptes', 'ajouter-compte']">Ajouter un compte</button>
 
-    <nz-table #sortTable [nzData]="utilisateurs"  nzTableLayout="fixed">
+    <nz-table #sortTable [nzData]="utilisateurs"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
             <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
