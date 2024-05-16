@@ -10,6 +10,8 @@ import { ModifierAutorisationComponent } from './autorisations/modifier-autorisa
 import { AjouterAutorisationComponent } from './autorisations/ajouter-autorisation/ajouter-autorisation.component';
 import { ModifierRoleComponent } from './roles/modifier-role/modifier-role.component';
 import { AjouterRoleComponent } from './roles/ajouter-role/ajouter-role.component';
+import { IsAdminGuard } from '../../Guards/IsAdminGuard';
+import { IsHimGuard } from '../../Guards/IsHimGuard';
 
 const routes: Routes = [
  
@@ -21,12 +23,12 @@ const routes: Routes = [
       { path: 'autorisations', component: AutorisationsComponent },
       { path: 'comptes', component: ComptesComponent },
       { path: 'roles', component: RolesComponent },
-      { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'comptes/ajouter-compte', component: AjouterCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'autorisations/ajouter-autorisation', component: AjouterAutorisationComponent}, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'roles/modifier-role/:id', component: ModifierRoleComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'roles/ajouter-role', component: AjouterRoleComponent } // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent ,canActivate: [IsHimGuard]}, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'autorisations/ajouter-autorisation', component: AjouterAutorisationComponent,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'roles/modifier-role/:id', component: ModifierRoleComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'roles/ajouter-role', component: AjouterRoleComponent ,canActivate: [IsAdminGuard]} // Nouvelle route pour ajouter un compte avec un ID
 
       // Autres routes de la page d'accueil
     ]

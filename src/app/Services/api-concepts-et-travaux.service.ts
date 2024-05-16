@@ -11,7 +11,10 @@ import { environment } from '../environments/environment';
 export class ApiConceptsEtTravauxService {
 
   constructor(private http: HttpClient) { }
-  
+  get_all_user_data_by_id(userId: number): Observable<any> {
+    const url = `${environment.apiUrl}/get_all_user_data_by_id/${userId}`;
+    return this.http.get<any>(url);
+  }
 
   login_user(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/login_user`, userData);

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../../Services/auth.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-comptes',
@@ -57,7 +59,7 @@ export class ComptesComponent {
   ];
   utilisateurs:Utilisateur[] = [];
 
-  constructor(private http: HttpClient,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadUtilisateurs();
@@ -72,17 +74,28 @@ export class ComptesComponent {
       console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
       
   }
-
+  cancel(): void {
+    this.message.info('suppression annulée');
+  }
   deleteUser(userId: number) {
-    this.userService.deleteUser(userId).subscribe(
-      () => {
-        console.log('Utilisateur supprimé avec succès');
-        // Mettez ici le code pour actualiser la liste des utilisateurs si nécessaire
-        this.loadUtilisateurs();
-      },
-      (error) => {
-        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-      }
-    );
+    if (this.authService.isHim( userId)) {
+      this.userService.deleteUser(userId).subscribe(
+        () => {
+          //console.log('Utilisateur supprimé avec succès');
+          this.message.success( 'Utilisateur supprimé avec succès');
+          // Mettez ici le code pour actualiser la liste des utilisateurs si nécessaire
+          this.loadUtilisateurs();
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+        }
+      );
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      return false;
+    }
+    
   }
 }

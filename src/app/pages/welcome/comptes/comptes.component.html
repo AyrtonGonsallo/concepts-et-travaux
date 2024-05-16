@@ -25,7 +25,11 @@
             <td>{{ data.Role?.Titre }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'comptes', 'modifier-compte',data.Id]"><span nz-icon nzType="edit"></span></button>
-              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteUser(data.Id)"><span nz-icon nzType="delete"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+              nzPopconfirmTitle="Are you sure delete this account?"
+              nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="deleteUser(data.Id)"
+              (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
             </td>
           </tr>
         </tbody>
