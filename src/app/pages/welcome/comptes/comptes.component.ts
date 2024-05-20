@@ -74,11 +74,15 @@ export class ComptesComponent {
       console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
       
   }
+  isAdminOrHim(id:number){
+
+    return this.authService.isAdminOrHim(id)
+  }
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number) {
-    if (this.authService.isHim( userId)) {
+  deleteUser(userId: number,roleId: number | undefined) {
+    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
       this.userService.deleteUser(userId).subscribe(
         () => {
           //console.log('Utilisateur supprimé avec succès');

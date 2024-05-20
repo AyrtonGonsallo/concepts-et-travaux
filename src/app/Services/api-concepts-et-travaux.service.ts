@@ -15,7 +15,9 @@ export class ApiConceptsEtTravauxService {
     const url = `${environment.apiUrl}/get_all_user_data_by_id/${userId}`;
     return this.http.get<any>(url);
   }
-
+  send_mail(mailData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/send-email`, mailData);
+  }
   login_user(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/login_user`, userData);
   }

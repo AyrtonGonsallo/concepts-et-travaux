@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Role } from '../../../../Models/Roles';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-modifier-compte',
@@ -33,7 +34,9 @@ export class ModifierCompteComponent {
     RoleId: FormControl<number>;
   }>;
  
-
+  isArtisan(){
+    return this.validateForm.value.RoleId==2
+  }
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
@@ -160,14 +163,19 @@ export class ModifierCompteComponent {
     // Chargez les rôles
     this.loadRoles();
   }
-
-
+  apiBaseUrl: string = `${environment.apiUrl}/api-concepts-et-travaux/open-file/`;
+ assuranceRCDecennale=this.apiBaseUrl
+ kbis= this.apiBaseUrl
+ questionnaireTarif=this.apiBaseUrl
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getUserDetails(userId: string): void {
     this.userService.getUserById( parseInt(userId, 10)).subscribe(
       (response) => {
         response.checkPassword="000"
         response.Password="000"
+        this.assuranceRCDecennale+=response.AssuranceRCDecennale
+        this.kbis+= response.KBis
+        this.questionnaireTarif+= response.QuestionnaireTarif
         response.AssuranceRCDecennale=""
         response.QuestionnaireTarif=""
         response.KBis=""

@@ -14,21 +14,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of sortTable.data">
-            <td>{{ data.Id }}</td>
-            <td>{{ data.RaisonSociale }}</td>
-            <td>{{ data.Nom }}</td>
-            <td>{{ data.Prenom }}</td>
-            <td>{{ data.Email }}</td>
-            <td>{{ data.Telephone }}</td>
-            <td>{{ data.AdressePostale }}</td>
-            <td>{{ data.Role?.Titre }}</td>
-            <td> 
+          <tr *ngFor="let data of sortTable.data" >
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Id }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.RaisonSociale }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Nom }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Prenom }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Email }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Telephone }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.AdressePostale }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)">{{ data.Role?.Titre }}</td>
+            <td *ngIf="isAdminOrHim(data.Id)"> 
               <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'comptes', 'modifier-compte',data.Id]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
               nzPopconfirmTitle="Are you sure delete this account?"
               nzPopconfirmPlacement="bottom"
-              (nzOnConfirm)="deleteUser(data.Id)"
+              (nzOnConfirm)="deleteUser(data.Id,data?.Role?.Id)"
               (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
             </td>
           </tr>

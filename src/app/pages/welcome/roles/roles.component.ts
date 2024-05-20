@@ -3,6 +3,8 @@ import { Role } from '../../../Models/Roles';
 import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
+import { AuthService } from '../../../Services/auth.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-roles',
@@ -31,7 +33,7 @@ export class RolesComponent {
   ];
   roles: Role[] = [];
 
-  constructor(private http: HttpClient,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadRoles();
@@ -49,15 +51,22 @@ export class RolesComponent {
     );
   }
   deleteRole(roleId: number) {
-    this.userService.deleteRole(roleId).subscribe(
-      () => {
-        console.log('role supprimé avec succès');
-        // Mettez ici le code pour actualiser la liste des Autorisations si nécessaire
-        this.loadRoles();
-      },
-      (error) => {
-        console.error('Erreur lors de la suppression de l\'role :', error);
-      }
-    );
+    if (this.authService.isAdmin()) {
+      this.userService.deleteRole(roleId).subscribe(
+        () => {
+          console.log('role supprimé avec succès');
+          // Mettez ici le code pour actualiser la liste des Autorisations si nécessaire
+          this.loadRoles();
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de l\'role :', error);
+        }
+      );
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      return false;
+    }
+    
   }
 }

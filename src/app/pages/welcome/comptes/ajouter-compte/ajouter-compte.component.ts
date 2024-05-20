@@ -130,7 +130,9 @@ export class AjouterCompteComponent {
     return {};
   };
 
-
+  isArtisan(){
+    return this.validateForm.value.RoleId==2
+  }
 
   constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({

@@ -35,12 +35,16 @@
             </label>
         </div>
         <div nz-col [nzSpan]="12">
-            <a class="login-form-forgot">Forgot password</a>
+            <a class="login-form-forgot" (click)="showModal()">Forgot password</a>
         </div>
         </div>
         <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
         Or
         <a>register now!</a>
     </form>
-
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+        <input type="text" nz-input placeholder="Enter your email" [(ngModel)]="email"/>
+      </ng-container>
+    </nz-modal>
 </div>

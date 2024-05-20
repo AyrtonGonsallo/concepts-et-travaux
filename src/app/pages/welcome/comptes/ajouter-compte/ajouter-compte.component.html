@@ -62,7 +62,7 @@
             </nz-form-item>
            
             <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  >
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  nzRequired >
                     <span>Role</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -72,7 +72,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
                     <span>RaisonSociale</span>
                 </nz-form-label>
@@ -81,7 +81,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()"> 
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NumeroSIRET"  >
                     <span>NumeroSIRET</span>
                 </nz-form-label>
@@ -90,7 +90,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  >
                     <span>AdressePostale</span>
                 </nz-form-label>
@@ -99,7 +99,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Activite"  >
                     <span>Activite</span>
                 </nz-form-label>
@@ -108,7 +108,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CA"  >
                     <span>CA</span>
                 </nz-form-label>
@@ -117,7 +117,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Effectif"  >
                     <span>Effectif</span>
                 </nz-form-label>
@@ -127,7 +127,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="References"  >
                     <span>References</span>
                 </nz-form-label>
@@ -136,7 +136,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="QuestionnaireTarif"  >
                     <span>QuestionnaireTarif</span>
                 </nz-form-label>
@@ -145,7 +145,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AssuranceRCDecennale"  >
                     <span>AssuranceRCDecennale</span>
                 </nz-form-label>
@@ -154,7 +154,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item>
+            <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="KBis"  >
                     <span>KBis</span>
                 </nz-form-label>

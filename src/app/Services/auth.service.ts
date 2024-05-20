@@ -89,4 +89,24 @@ clearDataFromLocal(nom:string): void {
     
    
   }
+  isAdminOrHim(id:number){
+    //return this.loggedIn;
+    var iduser=this.getDataFromLocal("utilisateur").Id
+    //console.log("comparaison "+iduser+" et "+id)
+    if(this.getDataFromLocal("utilisateur").Role.Id == 1){
+      return true
+    }else{
+      return iduser == id;
+    }
+  }
+  isHimOrAdminAndOtherNotAdmin(id:number,other_user_roleId:number){
+    //return this.loggedIn;
+    var iduser=this.getDataFromLocal("utilisateur").Id
+    //console.log("comparaison "+iduser+" et "+id)
+    if((this.getDataFromLocal("utilisateur").Role.Id) == 1 && other_user_roleId!=1){
+      return true
+    }else{
+      return iduser == id;
+    }
+  }
 }

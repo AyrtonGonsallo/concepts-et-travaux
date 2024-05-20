@@ -10,13 +10,13 @@
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
         <li nz-submenu nzOpen nzTitle="Administration" nzIcon="dashboard">
           <ul>
-            <li nz-menu-item nzMatchRouter>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/autorisations">Autorisations</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/comptes">Comptes</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/roles">Roles</a>
             </li>
           </ul>

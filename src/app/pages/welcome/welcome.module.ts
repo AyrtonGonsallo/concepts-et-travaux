@@ -18,4 +18,6 @@ import { ModifierAutorisationComponent } from './autorisations/modifier-autorisa
   declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent],
   exports: [WelcomeComponent]
 })
-export class WelcomeModule { }
+export class WelcomeModule {
+ 
+ }

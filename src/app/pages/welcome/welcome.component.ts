@@ -15,4 +15,8 @@ export class WelcomeComponent implements OnInit {
   logout(){
     this.auth.logout()
   }
+
+  isAdmin(){
+    return this.auth.isAdmin()
+  }
 }
