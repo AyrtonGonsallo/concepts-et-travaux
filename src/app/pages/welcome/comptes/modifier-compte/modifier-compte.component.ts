@@ -163,7 +163,7 @@ export class ModifierCompteComponent {
     // Chargez les rôles
     this.loadRoles();
   }
-  apiBaseUrl: string = `${environment.apiUrl}/api-concepts-et-travaux/open-file/`;
+  apiBaseUrl: string = `${environment.apiUrl}/open-file/`;
  assuranceRCDecennale=this.apiBaseUrl
  kbis= this.apiBaseUrl
  questionnaireTarif=this.apiBaseUrl
