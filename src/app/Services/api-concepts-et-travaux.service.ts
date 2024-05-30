@@ -29,11 +29,22 @@ getAutorisations(): Observable<Autorisation[]> {
   return this.http.get<Autorisation[]>(`${environment.apiUrl}/get_autorisations`);
 }
 // Méthode pour récupérer les détails d'un utilisateur par son ID depuis l'API
+clear_assurance_rc_decennale(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/clear_assurance_rc_decennale/${userId}`;
+  return this.http.get<any>(url);
+}
+clear_questionnaire_tarif(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/clear_questionnaire_tarif/${userId}`;
+  return this.http.get<any>(url);
+}
+clear_kbis(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/clear_kbis/${userId}`;
+  return this.http.get<any>(url);
+}
 getUserById(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_utilisateur_by_id/${userId}`;
   return this.http.get<any>(url);
 }
-
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;
   return this.http.get<any>(url);
@@ -48,6 +59,9 @@ get_role(userId: number): Observable<any> {
 }
   addUserWithRole(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_utilisateur_with_role`, userData);
+  }
+  addParticulier(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_particulier`, userData);
   }
   add_autorisation(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_autorisation`, userData);
@@ -76,6 +90,11 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/update_utilisateur/${userId}`;
     return this.http.post<any>(url, userData);
   }
+  updateParticulier(userId: number, userData: any): Observable<any> {
+    const url = `${environment.apiUrl}/update_particulier/${userId}`;
+    return this.http.post<any>(url, userData);
+  }
+  
   updateAutorisation(userId: number, userData: any): Observable<any> {
     const url = `${environment.apiUrl}/update_autorisation/${userId}`;
     return this.http.put<any>(url, userData);

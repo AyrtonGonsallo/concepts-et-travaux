@@ -19,6 +19,9 @@ export class AjouterCompteComponent {
     Nom: FormControl<string>;
     Prenom: FormControl<string>;
     Email: FormControl<string>;
+    CodePostal: FormControl<string>;
+    CommunePostale: FormControl<string>;
+
     Password: FormControl<string>;
     Telephone: FormControl<string>;
     AdressePostale: FormControl<string>;
@@ -96,7 +99,7 @@ export class AjouterCompteComponent {
        // Écrasez les valeurs des champs spécifiés avant la soumission
        
       console.log('submit', this.validateForm.value);
-      this.userService.addUserWithRole(this.validateForm.value).subscribe(
+      this.userService.addParticulier(this.validateForm.value).subscribe(
         (response) => {
           console.log('Utilisateur ajouté avec succès :', response);
           this.message.create('success', `Utilisateur ajouté avec succès`);
@@ -133,6 +136,12 @@ export class AjouterCompteComponent {
   isArtisan(){
     return this.validateForm.value.RoleId==2
   }
+  isParticulier(){
+    return this.validateForm.value.RoleId==3
+  }
+  isArtisanorParticulier(){
+    return ((this.validateForm.value.RoleId==2) || (this.validateForm.value.RoleId==3))
+  }
 
   constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
@@ -145,6 +154,8 @@ export class AjouterCompteComponent {
       Agree: [false],
       RaisonSociale: ['', []],
       NumeroSIRET: ['', []],
+      CodePostal:  ['', []],
+      CommunePostale:  ['', []],
       AdressePostale: ['', []],
       Activite:  ['', []],
       CA: [0, []],
@@ -155,8 +166,30 @@ export class AjouterCompteComponent {
       KBis: ['', []],
       RoleId: [0, []],
     });
+
+    // Watch for changes to RoleId and update validators accordingly
+    this.validateForm.get('RoleId')!.valueChanges.subscribe(roleId => {
+      this.updateValidators(roleId);
+    });
   }
 
+   // Function to update validators based on RoleId value
+   updateValidators(roleId: number): void {
+    if (roleId === 3) {
+      this.validateForm.get('CodePostal')!.setValidators([Validators.required]);
+      this.validateForm.get('CommunePostale')!.setValidators([Validators.required]);
+      this.validateForm.get('AdressePostale')!.setValidators([Validators.required]);
+    } else {
+      this.validateForm.get('CodePostal')!.clearValidators();
+      this.validateForm.get('CommunePostale')!.clearValidators();
+      this.validateForm.get('AdressePostale')!.clearValidators();
+    }
+
+    // Update the validity of the form controls
+    this.validateForm.get('CodePostal')!.updateValueAndValidity();
+    this.validateForm.get('CommunePostale')!.updateValueAndValidity();
+    this.validateForm.get('AdressePostale')!.updateValueAndValidity();
+  }
   roles: Role[] = [];
 
   ngOnInit(): void {

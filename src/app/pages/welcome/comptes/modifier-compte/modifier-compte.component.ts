@@ -6,6 +6,7 @@ import { Role } from '../../../../Models/Roles';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../../Services/auth.service';
 
 @Component({
   selector: 'app-modifier-compte',
@@ -23,6 +24,8 @@ export class ModifierCompteComponent {
     Password: FormControl<string>;
     Telephone: FormControl<string>;
     AdressePostale: FormControl<string>;
+    CodePostal: FormControl<string>;
+    CommunePostale: FormControl<string>;
     Activite:  FormControl<string>;
     CA: FormControl<number>;
     checkPassword: FormControl<string>;
@@ -37,10 +40,18 @@ export class ModifierCompteComponent {
   isArtisan(){
     return this.validateForm.value.RoleId==2
   }
+  isParticulier(){
+    return this.validateForm.value.RoleId==3
+  }
+  isArtisanorParticulier(){
+    return ((this.validateForm.value.RoleId==2) || (this.validateForm.value.RoleId==3))
+  }
   submitForm(): void {
+    
     if (this.validateForm.valid) {
+
       console.log('submit', this.validateForm.value);
-      this.userService.updateUser(this.userId,this.validateForm.value).subscribe(
+      this.userService.updateParticulier(this.userId,this.validateForm.value).subscribe(
         (response) => {
           console.log('Utilisateur modifié avec succès :', response);
           this.message.create('success', `Utilisateur modifié avec succès`);
@@ -76,7 +87,7 @@ export class ModifierCompteComponent {
 
 
 
-  constructor(private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
+  constructor(private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Email: ['', [Validators.email, Validators.required]],
       Password: ['000', []],
@@ -86,6 +97,8 @@ export class ModifierCompteComponent {
       Telephone: ['', [Validators.required]],
       RaisonSociale: ['', []],
       NumeroSIRET: ['', []],
+      CodePostal:  ['', []],
+      CommunePostale:  ['', []],
       AdressePostale: ['', []],
       Activite:  ['', []],
       CA: [0, []],
@@ -96,6 +109,30 @@ export class ModifierCompteComponent {
       KBis: ['', []],
       RoleId: [0, []],
     });
+
+    // Watch for changes to RoleId and update validators accordingly
+    this.validateForm.get('RoleId')!.valueChanges.subscribe(roleId => {
+      this.updateValidators(roleId);
+    });
+  }
+
+  
+   // Function to update validators based on RoleId value
+   updateValidators(roleId: number): void {
+    if (roleId === 3) {
+      this.validateForm.get('CodePostal')!.setValidators([Validators.required]);
+      this.validateForm.get('CommunePostale')!.setValidators([Validators.required]);
+      this.validateForm.get('AdressePostale')!.setValidators([Validators.required]);
+    } else {
+      this.validateForm.get('CodePostal')!.clearValidators();
+      this.validateForm.get('CommunePostale')!.clearValidators();
+      this.validateForm.get('AdressePostale')!.clearValidators();
+    }
+
+    // Update the validity of the form controls
+    this.validateForm.get('CodePostal')!.updateValueAndValidity();
+    this.validateForm.get('CommunePostale')!.updateValueAndValidity();
+    this.validateForm.get('AdressePostale')!.updateValueAndValidity();
   }
   file_QuestionnaireTarif: string="";
   file_AssuranceRCDecennale: string="";
@@ -153,6 +190,13 @@ export class ModifierCompteComponent {
   });
     console.log(file);
   }
+  slugify(text: string): string {
+    return text
+    .toLowerCase() // Convertir le texte en minuscules
+    .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+    .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+    .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+  }
   roles: Role[] = [];
   userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
   ngOnInit(): void {
@@ -167,15 +211,26 @@ export class ModifierCompteComponent {
  assuranceRCDecennale=this.apiBaseUrl
  kbis= this.apiBaseUrl
  questionnaireTarif=this.apiBaseUrl
+ nom_assuranceRCDecennale=""
+ nom_kbis= ""
+ nom_questionnaireTarif=""
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getUserDetails(userId: string): void {
     this.userService.getUserById( parseInt(userId, 10)).subscribe(
       (response) => {
         response.checkPassword="000"
         response.Password="000"
-        this.assuranceRCDecennale+=response.AssuranceRCDecennale
-        this.kbis+= response.KBis
-        this.questionnaireTarif+= response.QuestionnaireTarif
+
+        // recuperer les liens
+        this.assuranceRCDecennale+=this.slugify(response.AssuranceRCDecennale)
+        this.kbis+= this.slugify(response.KBis)
+        this.questionnaireTarif+= this.slugify(response.QuestionnaireTarif)
+        
+        //recuperer les noms
+        this.nom_assuranceRCDecennale=response.AssuranceRCDecennale
+        this.nom_kbis= response.KBis
+        this.nom_questionnaireTarif= response.QuestionnaireTarif
+
         response.AssuranceRCDecennale=""
         response.QuestionnaireTarif=""
         response.KBis=""
@@ -188,7 +243,44 @@ export class ModifierCompteComponent {
     );
     
   }
+  clear_kbis(){
+    this.userService.clear_kbis(this.userId).subscribe(
+      (response) => {
+        console.log("réponse de la requette clear_kbis",response);
+        this.nom_kbis=""
+      },
+      (error) => {
+        console.error('Erreur lors de clear_kbis :', error);
+      }
+    );
+  }
+  
+  clear_assurance_rc_decennale(){
+    this.userService.clear_assurance_rc_decennale(this.userId).subscribe(
+      (response) => {
+        console.log("réponse de la requette clear_assurance_rc_decennale",response);
+        this.nom_assuranceRCDecennale=""
+      },
+      (error) => {
+        console.error('Erreur lors de clear_assurance_rc_decennale :', error);
+      }
+    );
+  }
 
+  clear_questionnaire_tarif(){
+    this.userService.clear_questionnaire_tarif(this.userId).subscribe(
+      (response) => {
+        console.log("réponse de la requette clear_questionnaire_tarif",response);
+        this.nom_questionnaireTarif=""
+      },
+      (error) => {
+        console.error('Erreur lors de clear_questionnaire_tarif :', error);
+      }
+    );
+  }
+  isnotAdmin(){
+    return !this.authService.isAdmin()
+  }
   loadRoles(): void {
     this.userService.getRoles().subscribe(
       (response) => {

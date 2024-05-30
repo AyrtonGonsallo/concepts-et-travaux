@@ -44,6 +44,8 @@
               "src/styles.css"
             ],
             "scripts": [],
+            "baseHref": "/",
+            "deployUrl": "/",
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {

@@ -2,6 +2,16 @@
     <h2>Gestion des comptes</h2>  
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
             <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  nzRequired >
+                    <span>Role</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Role" >
+                        <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
                     <span>Nom</span>
                 </nz-form-label>
@@ -61,20 +71,11 @@
             </nz-form-control>
             </nz-form-item>
            
-            <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  nzRequired >
-                    <span>Role</span>
-                </nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                    <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Role" >
-                        <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
+           
     
             <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
-                    <span>RaisonSociale</span>
+                    <span>Raison sociale</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                     <input nz-input id="RaisonSociale" formControlName="RaisonSociale" />
@@ -83,19 +84,37 @@
     
             <nz-form-item *ngIf="isArtisan()"> 
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NumeroSIRET"  >
-                    <span>NumeroSIRET</span>
+                    <span>Numero SIRET</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                     <input nz-input id="NumeroSIRET" formControlName="NumeroSIRET" />
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
-                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  >
-                    <span>AdressePostale</span>
+            <nz-form-item *ngIf="isArtisanorParticulier()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  nzRequired>
+                    <span>Adresse postale</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                     <input nz-input id="AdressePostale" formControlName="AdressePostale" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="isParticulier()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CodePostal"  nzRequired>
+                    <span>Code postale</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <input nz-input id="CodePostal" formControlName="CodePostal" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="isParticulier()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CommunePostale"  nzRequired>
+                    <span>Commune postale</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <input nz-input id="CommunePostale" formControlName="CommunePostale" />
                 </nz-form-control>
             </nz-form-item>
     
@@ -138,19 +157,19 @@
     
             <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="QuestionnaireTarif"  >
-                    <span>QuestionnaireTarif</span>
+                    <span>Questionnaire tarif</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                    <input type="file" nz-upload id="QuestionnaireTarif" formControlName="QuestionnaireTarif" (change)="handleFileInput($event)" />                
+                    <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload id="QuestionnaireTarif" formControlName="QuestionnaireTarif" (change)="handleFileInput($event)" />                
                 </nz-form-control>
             </nz-form-item>
     
             <nz-form-item *ngIf="isArtisan()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AssuranceRCDecennale"  >
-                    <span>AssuranceRCDecennale</span>
+                    <span>Assurance RCDecennale</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                    <input type="file" nz-upload id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" (change)="handleFileInput2($event)" />                
+                    <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" (change)="handleFileInput2($event)" />                
                 </nz-form-control>
             </nz-form-item>
     
@@ -159,7 +178,7 @@
                     <span>KBis</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                    <input type="file" nz-upload id="KBis" formControlName="KBis" (change)="handleFileInput3($event)" />                
+                    <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload id="KBis" formControlName="KBis" (change)="handleFileInput3($event)" />                
                 </nz-form-control>
             </nz-form-item>
     
