@@ -13,9 +13,12 @@ import { AjouterAutorisationComponent } from './autorisations/ajouter-autorisati
 import { AjouterRoleComponent } from './roles/ajouter-role/ajouter-role.component';
 import { ModifierRoleComponent } from './roles/modifier-role/modifier-role.component';
 import { ModifierAutorisationComponent } from './autorisations/modifier-autorisation/modifier-autorisation.component';
+import { ProjetComponent } from './projet/projet.component';
+import { AjouterProjetComponent } from './projet/ajouter-projet/ajouter-projet.component';
+import { ModifierProjetComponent } from './projet/modifier-projet/modifier-projet.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule ],
-  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {

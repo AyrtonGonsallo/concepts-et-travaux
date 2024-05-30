@@ -1,0 +1,42 @@
+<div>
+    <h2>Gestion des Projets</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Nom</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Nom!">
+                <input nz-input id="Nom" formControlName="Nom" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Status"  nzRequired >
+                <span>Status</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="StatusId" formControlName="Status"  nzPlaceHolder="Status" >
+                    <nz-option *ngFor="let option of liste_des_status" [nzValue]="option" [nzLabel]="option"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Description</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description!">
+                <textarea rows="4" nz-input id="Description" formControlName="Description"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+   
+        
+       
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

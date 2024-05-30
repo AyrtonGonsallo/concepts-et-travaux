@@ -80,12 +80,10 @@ clearDataFromLocal(nom:string): void {
   isHim(id:number): boolean {
     //return this.loggedIn;
     var iduser=this.getDataFromLocal("utilisateur").Id
-    //console.log("comparaison "+iduser+" et "+id)
-    if(this.getDataFromLocal("utilisateur").Role.Id == 1){
-      return true
-    }else{
+    console.log("comparaison "+iduser+" et "+id)
+   
       return iduser == id;
-    }
+    
     
    
   }

@@ -1,0 +1,31 @@
+<div>
+    <h2>Toutes les projets</h2>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'projets', 'ajouter-projet']">Ajouter un projet</button>
+
+    <nz-table  #sortTable  [nzData]="projets" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+        <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            {{ column.title }}
+            </th>
+            <th>
+                Actions
+              </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+            <td>{{ data.Id }}</td>
+            <td>{{ data.Nom }}</td>
+            <td>{{ data.Description }}</td>
+            <td>{{ data.Status }}</td>
+            <td>{{ data.Utilisateur?.Prenom }} {{ data.Utilisateur?.Nom }}</td>
+            <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
+            <td> 
+                <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
+                <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteProjet(data.Id)"><span nz-icon nzType="delete"></span></button>
+              </td>
+        </tr>
+        </tbody>
+    </nz-table>
+</div>

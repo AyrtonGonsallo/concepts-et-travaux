@@ -45,6 +45,19 @@ getUserById(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_utilisateur_by_id/${userId}`;
   return this.http.get<any>(url);
 }
+getProjetsByUserId(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_user_projects/${userId}`;
+  return this.http.get<any>(url);
+}
+get_projet(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_project/${userId}`;
+  return this.http.get<any>(url);
+}
+
+getProjets(): Observable<any> {
+  const url = `${environment.apiUrl}/get_all_projects`;
+  return this.http.get<any>(url);
+}
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;
   return this.http.get<any>(url);
@@ -66,6 +79,9 @@ get_role(userId: number): Observable<any> {
   add_autorisation(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_autorisation`, userData);
   }
+  add_projet(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_project`, userData);
+  }
   add_role(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_role`, userData);
   }
@@ -82,6 +98,10 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_autorisation/${autorisationId}`;
     return this.http.delete<any>(url);
   }
+  deleteProjet(autorisationId: number): Observable<any> {
+    const url = `${environment.apiUrl}/delete_project/${autorisationId}`;
+    return this.http.delete<any>(url);
+  }
   deleteRole(roleId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_role/${roleId}`;
     return this.http.delete<any>(url);
@@ -94,7 +114,10 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/update_particulier/${userId}`;
     return this.http.post<any>(url, userData);
   }
-  
+  updateProjet(userId: number, userData: any): Observable<any> {
+    const url = `${environment.apiUrl}/update_project/${userId}`;
+    return this.http.put<any>(url, userData);
+  }
   updateAutorisation(userId: number, userData: any): Observable<any> {
     const url = `${environment.apiUrl}/update_autorisation/${userId}`;
     return this.http.put<any>(url, userData);
