@@ -140,13 +140,19 @@ export class ModifierCompteComponent {
   handleFileInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_QuestionnaireTarif = file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_QuestionnaireTarif = uniqueFileName;
   
     // Mettre à jour la valeur de l'input
-    const inputElementQuestionnaireTarif = document.getElementById('QuestionnaireTarif') as HTMLInputElement;
-    inputElementQuestionnaireTarif.setAttribute('value', this.file_QuestionnaireTarif);
+     // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
+  this.validateForm.patchValue({
+    QuestionnaireTarif: uniqueFileName
+  });
+    
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);
@@ -158,13 +164,17 @@ export class ModifierCompteComponent {
   handleFileInput2(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_AssuranceRCDecennale =  file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_AssuranceRCDecennale =  uniqueFileName;
   
     // Mettre à jour la valeur de l'input
-    const inputElementAssuranceRCDecennale = document.getElementById('AssuranceRCDecennale') as HTMLInputElement;
-    inputElementAssuranceRCDecennale.setAttribute('value', this.file_AssuranceRCDecennale);
+    this.validateForm.patchValue({
+      AssuranceRCDecennale: uniqueFileName
+    });
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);
@@ -176,13 +186,19 @@ export class ModifierCompteComponent {
   handleFileInput3(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_KBis =  file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_KBis =  uniqueFileName ;
   
     // Mettre à jour la valeur de l'input
-    const inputElementKBis = document.getElementById('KBis') as HTMLInputElement;
-    inputElementKBis.setAttribute('value',  file.name);
+    this.validateForm.patchValue({
+      KBis: uniqueFileName
+    });
+   
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Role } from '../../../../Models/Roles';
 import { HttpClient } from '@angular/common/http';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
@@ -42,13 +42,19 @@ export class AjouterCompteComponent {
   handleFileInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_QuestionnaireTarif =  file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_QuestionnaireTarif = uniqueFileName;
   
-    // Mettre à jour la valeur de l'input
-    const inputElementQuestionnaireTarif = document.getElementById('QuestionnaireTarif') as HTMLInputElement;
-    inputElementQuestionnaireTarif.setAttribute('value', this.file_QuestionnaireTarif);
+     // Mettre à jour la valeur de l'input
+     // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
+  this.validateForm.patchValue({
+    QuestionnaireTarif: uniqueFileName
+  });
+    
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);
@@ -60,13 +66,17 @@ export class AjouterCompteComponent {
   handleFileInput2(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_AssuranceRCDecennale =  file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_AssuranceRCDecennale =  uniqueFileName;
   
     // Mettre à jour la valeur de l'input
-    const inputElementAssuranceRCDecennale = document.getElementById('AssuranceRCDecennale') as HTMLInputElement;
-    inputElementAssuranceRCDecennale.setAttribute('value', this.file_AssuranceRCDecennale);
+    this.validateForm.patchValue({
+      AssuranceRCDecennale: uniqueFileName
+    });
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);
@@ -78,13 +88,18 @@ export class AjouterCompteComponent {
   handleFileInput3(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    this.file_KBis =  file.name;
+    const timestamp = Date.now();
+    const uniqueFileName = `${timestamp}_${file.name}`;
+    this.file_KBis =  uniqueFileName ;
   
     // Mettre à jour la valeur de l'input
-    const inputElementKBis = document.getElementById('KBis') as HTMLInputElement;
-    inputElementKBis.setAttribute('value',  file.name);
+    this.validateForm.patchValue({
+      KBis: uniqueFileName
+    });
     const formData = new FormData();
-    formData.append('file', file);
+    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+
+    formData.append('file', renamedFile);
   // Envoyer le fichier au serveur
   this.userService.upload_file(formData).subscribe(response => {
     console.log('Fichier téléchargé avec succès:', response);
@@ -151,7 +166,7 @@ export class AjouterCompteComponent {
       Nom: ['', [Validators.required]],
       Prenom: ['', [Validators.required]],
       Telephone: ['', [Validators.required]],
-      Agree: [false],
+      Agree: [false, [this.requiredTrueValidator()]], // Utilisation du validateur personnalisé
       RaisonSociale: ['', []],
       NumeroSIRET: ['', []],
       CodePostal:  ['', []],
@@ -172,7 +187,11 @@ export class AjouterCompteComponent {
       this.updateValidators(roleId);
     });
   }
-
+  requiredTrueValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return control.value === true ? null : { requiredTrue: { value: control.value } };
+    };
+  }
    // Function to update validators based on RoleId value
    updateValidators(roleId: number): void {
     if (roleId === 3) {

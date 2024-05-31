@@ -27,7 +27,7 @@ const routes: Routes = [
       { path: 'comptes', component: ComptesComponent },
       { path: 'roles', component: RolesComponent },
       { path: 'projets', component: ProjetComponent },
-      { path: 'projets/modifier-projet/:id', component: ModifierProjetComponent ,}, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'projets/modifier-projet/:id', component: ModifierProjetComponent ,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'projets/ajouter-projet', component: AjouterProjetComponent, }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent ,canActivate: [IsHimGuard]}, // Nouvelle route pour ajouter un compte avec un ID

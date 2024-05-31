@@ -3,10 +3,10 @@
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RoleId"  nzRequired >
-                <span>Role</span>
+                <span>Rôle</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Role" [nzDisabled]="isnotAdmin()">
+                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Rôle" [nzDisabled]="isnotAdmin()">
                     <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
             </nz-form-control>
@@ -93,7 +93,7 @@
 
         <nz-form-item *ngIf="isArtisanorParticulier()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  nzRequired>
-                <span>Adresse postale</span>
+                <span>Adresse</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <input nz-input id="AdressePostale" formControlName="AdressePostale" />
@@ -111,7 +111,7 @@
 
         <nz-form-item *ngIf="isParticulier()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CommunePostale"  nzRequired>
-                <span>Commune postale</span>
+                <span>Commune</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <input nz-input id="CommunePostale" formControlName="CommunePostale" />
@@ -159,8 +159,11 @@
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="QuestionnaireTarif"  >
                 <span>Questionnaire tarif</span>
             </nz-form-label>
+            
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input type="file" nz-upload id="QuestionnaireTarif" formControlName="QuestionnaireTarif" (change)="handleFileInput($event)" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024"/>                
+                <input type="text" id="QuestionnaireTarif"  formControlName="QuestionnaireTarif" hidden />
+                <input type="file" nz-upload  (change)="handleFileInput($event)" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024"/>                
+                Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB     
             </nz-form-control>
             <div nz-row>
                 <div nz-col nzSpan="24">
@@ -177,7 +180,9 @@
                 <span>Assurance RCDecennale</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" (change)="handleFileInput2($event)" />                
+                <input type="text" id="AssuranceRCDecennale" formControlName="AssuranceRCDecennale" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB     
             </nz-form-control>
             <div nz-row>
                 <div nz-col nzSpan="24">
@@ -194,7 +199,9 @@
                 <span>KBis</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload id="KBis" formControlName="KBis" (change)="handleFileInput3($event)" />                
+                <input type="text" id="KBis" formControlName="KBis" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput3($event)" /> 
+                Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB          
             </nz-form-control>
             <div nz-row>
                 <div nz-col nzSpan="24">
