@@ -4,7 +4,18 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../Services/auth.service';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
+
+// Définir le type des valeurs du formulaire avec la propriété Autorisations
+interface FormValues {
+  Nom?: string;
+  Status?: string;
+  Description?: string;
+  User_id?: number;
+  Client_id?: number;
+  Artisans?: any[]; // Type de la liste des autorisations, ajustez selon le besoin
+}
 @Component({
   selector: 'app-ajouter-projet',
   templateUrl: './ajouter-projet.component.html',
@@ -16,13 +27,57 @@ export class AjouterProjetComponent {
     Nom: FormControl<string>;
     Description: FormControl<string>;
     User_id: FormControl<number>;
+    Client_id: FormControl<number>;
   }>;
- 
-
+  particuliers: any;
+  particulier:any
+  artisans: any;
+  size: NzSelectSizeType = 'default';
+  multipleValue : number[] = [];
   submitForm(): void {
-    if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
-      this.userService.add_projet(this.validateForm.value).subscribe(
+    this.userService.getUserById(this.validateForm.controls["Client_id"].value).subscribe(
+      (response: any) => {
+        console.log('particulier récupéré :', response);
+        this.particulier=response
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}-${this.padZero(currentDate.getMonth() + 1)}-${this.padZero(currentDate.getDate())}`;
+        const formattedTime = `${this.padZero(currentDate.getHours())}:${this.padZero(currentDate.getMinutes())}:${this.padZero(currentDate.getSeconds())}`;
+        const horodatage = `${formattedDate} ${formattedTime}`;
+        this.validateForm.patchValue({
+          Nom: horodatage+" "+this.particulier.Nom+" "+this.particulier.Prenom
+        });
+        if (this.validateForm.valid) {
+          const formValues: FormValues = { ...this.validateForm.value };
+          // Ajout du champ 'Autorisations' avec la liste des autorisations
+          formValues.Artisans = this.multipleValue;
+          // Affichage du formulaire modifié
+          console.log('valeur soumises :', formValues)
+          this.userService.add_projet(formValues).subscribe(
+            (response: any) => {
+              console.log('projet ajoutée avec succès :', response);
+              this.message.create('success', `projet ajoutée avec succès`);
+              this.router.navigate(['/administration/projets']);
+            },
+            (error: any) => {
+              console.error('Erreur lors de l\'ajout de l\'projet :', error);
+            }
+          );
+        } else {
+          Object.values(this.validateForm.controls).forEach(control => {
+            if (control.invalid) {
+              control.markAsDirty();
+              control.updateValueAndValidity({ onlySelf: true });
+            }
+          });
+        }
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation du particulier :', error);
+      }
+    );
+
+    ;
+      /*this.userService.add_projet(this.validateForm.value).subscribe(
         (response: any) => {
           console.log('projet ajoutée avec succès :', response);
           this.message.create('success', `projet ajoutée avec succès`);
@@ -38,8 +93,8 @@ export class AjouterProjetComponent {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }
-      });
-    }
+      });*/
+    
   }
 
 
@@ -49,22 +104,40 @@ private padZero(num: number): string {
 
 
   constructor(private fb: NonNullableFormBuilder,private auth:AuthService,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getFullYear()}-${this.padZero(currentDate.getMonth() + 1)}-${this.padZero(currentDate.getDate())}`;
-    const formattedTime = `${this.padZero(currentDate.getHours())}:${this.padZero(currentDate.getMinutes())}:${this.padZero(currentDate.getSeconds())}`;
-    const defaultNom = `${formattedDate} ${formattedTime}`;
+   
     
     
     this.validateForm = this.fb.group({
-      Nom: [defaultNom, [Validators.required]],
+      Nom: ["", [Validators.required]],
       Description: ['', [Validators.required]],
       User_id: [this.auth.getDataFromLocal("utilisateur").Id , []],
+      Client_id: [0, []],
     });
   }
 
  
   ngOnInit(): void {
-    
+    this.userService.getUsersByRole(3).subscribe(
+      (response: any) => {
+        console.log('liste des particuliers récupérée :', response);
+        this.particuliers=response
+        //this.message.create('success', `liste des particuliers récupérée`);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des particuliers :', error);
+      }
+    );
+
+    this.userService.getUsersByRole(2).subscribe(
+      (response: any) => {
+        console.log('liste des artisans récupérée :', response);
+        this.artisans=response
+        //this.message.create('success', `liste des artisans récupérée`);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans :', error);
+      }
+    );
   }
 
   

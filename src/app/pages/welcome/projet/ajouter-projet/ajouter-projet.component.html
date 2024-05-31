@@ -1,14 +1,7 @@
 <div>
     <h2>Gestion des Projets</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
-                <span>Nom</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Nom!">
-                <input nz-input id="Nom" formControlName="Nom" />
-            </nz-form-control>
-        </nz-form-item>
+    
 
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description"  nzRequired nzTooltipTitle="What do you want other to call you" >
@@ -19,7 +12,29 @@
 
             </nz-form-control>
         </nz-form-item>
-   
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="clientId"  nzRequired >
+                <span>Client</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="client_Id" formControlName="Client_id"  nzPlaceHolder="Rôle" >
+                    <nz-option *ngFor="let option of particuliers" [nzValue]="option.Id" [nzLabel]="option.Nom + ' ' +option.Prenom"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="artisans"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Artisans</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre artisans!">
+                <nz-select id="artisans" [(ngModel)]="multipleValue" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of artisans" [nzLabel]="option.Nom + ' ' +option.Prenom" [nzValue]="option.Id"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        
+        </nz-form-item>
         
        
 

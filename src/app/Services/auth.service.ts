@@ -97,6 +97,10 @@ clearDataFromLocal(nom:string): void {
       return iduser == id;
     }
   }
+  IsNotArtisan(): boolean {
+    //return this.loggedIn;
+    return this.getDataFromLocal("utilisateur").Role.Id != 2;
+  }
   isHimOrAdminAndOtherNotAdmin(id:number,other_user_roleId:number){
     //return this.loggedIn;
     var iduser=this.getDataFromLocal("utilisateur").Id

@@ -1,0 +1,38 @@
+<div>
+    <h2>Gestion des Projets</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Nom"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Nom</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Nom!">
+                <input nz-input id="Nom" formControlName="Nom" readonly/>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Status"  nzRequired >
+                <span>Status</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="StatusId" formControlName="Status" readonly/>
+
+                
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Description</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description!">
+                <textarea rows="4" nz-input readonly id="Description" formControlName="Description"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+   
+        
+       
+
+      
+        
+    </form>
+</div>

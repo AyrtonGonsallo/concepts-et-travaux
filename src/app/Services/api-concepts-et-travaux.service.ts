@@ -41,6 +41,10 @@ clear_kbis(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/clear_kbis/${userId}`;
   return this.http.get<any>(url);
 }
+getUsersByRole(userId: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_utilisateurs_by_role/${userId}`;
+  return this.http.get<any>(url);
+}
 getUserById(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_utilisateur_by_id/${userId}`;
   return this.http.get<any>(url);
@@ -64,6 +68,10 @@ get_autorisation(userId: number): Observable<any> {
 }
 getAutorisationsByIds(ids: number[]): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisations/${ids.join(',')}`;
+  return this.http.get<any>(url);
+}
+getUtilisateursByIds(ids: number[]): Observable<any> {
+  const url = `${environment.apiUrl}/get_utilisateurs/${ids.join(',')}`;
   return this.http.get<any>(url);
 }
 get_role(userId: number): Observable<any> {

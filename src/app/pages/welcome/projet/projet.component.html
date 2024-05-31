@@ -22,6 +22,7 @@
             <td>{{ data.Utilisateur?.Prenom }} {{ data.Utilisateur?.Nom }}</td>
             <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
             <td> 
+                <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="voir" [routerLink]="['/administration', 'projets', 'voir-projet',data.Id]"><span nz-icon nzType="eye"></span></button>
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
                 <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteProjet(data.Id)"><span nz-icon nzType="delete"></span></button>
               </td>

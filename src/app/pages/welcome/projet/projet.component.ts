@@ -84,7 +84,7 @@ export class ProjetComponent {
   deleteProjet(autoId: number) {
     this.userService.get_projet(autoId).subscribe((succ) => {
       let projet_a_sup=succ
-      if (this.authService.isHimOrAdminAndOtherNotAdmin(projet_a_sup.Utilisateur.Id,projet_a_sup.Utilisateur.RoleId)) {
+      if (this.authService.isAdmin()) {
         this.userService.deleteProjet(autoId).subscribe(
           () => {
             console.log('Utilisateur supprimé avec succès');
@@ -97,7 +97,7 @@ export class ProjetComponent {
         );
         return true
       } else {
-        this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre projet`);
+        this.message.info( `Vous n'avez pas assez de privilèges pour faire cette action`);
         return false;
       }
     },
