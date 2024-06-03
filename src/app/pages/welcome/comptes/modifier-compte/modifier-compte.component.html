@@ -35,26 +35,7 @@
             <input nz-input formControlName="Email" id="Email" />
         </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24"  nzRequired nzFor="Password">Password</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your Password!">
-            <input nz-input type="Password" id="Password" formControlName="Password" (ngModelChange)="updateConfirmValidator()" />
-        </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24"  nzRequired nzFor="checkPassword">Confirm Password</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-            <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
-            <ng-template #errorTpl let-control>
-            @if (control.errors?.['required']) {
-                Please confirm your password!
-            }
-            @if (control.errors?.['confirm']) {
-                Two passwords that you enter is inconsistent!
-            }
-            </ng-template>
-        </nz-form-control>
-        </nz-form-item>
+       
        
         <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Telephone" nzRequired>Téléphone</nz-form-label>

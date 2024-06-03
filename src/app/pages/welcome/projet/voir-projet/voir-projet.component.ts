@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'app-voir-projet',
@@ -16,6 +17,7 @@ export class VoirProjetComponent {
     Description: FormControl<string>;
     Status: FormControl<string>;
   }>;
+  size: NzSelectSizeType = 'default';
 
    liste_des_status = [
     'devis en cours',
@@ -26,7 +28,9 @@ export class VoirProjetComponent {
     'travaux achevés',
     'chantier réceptionné'
   ] as const;
-  
+  multipleValue : number[] = [];
+  artisans: any;
+
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
@@ -68,6 +72,16 @@ export class VoirProjetComponent {
 
   ngOnInit(): void {
     this.getProjetDetails(this.projetId);
+    this.userService.getUsersByRole(2).subscribe(
+      (response: any) => {
+        console.log('liste des artisans récupérée :', response);
+        this.artisans=response
+        //this.message.create('success', `liste des artisans récupérée`);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans :', error);
+      }
+    );
   }
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getProjetDetails(userId: string): void {
@@ -75,6 +89,10 @@ export class VoirProjetComponent {
       (response) => {
         
         this.validateForm.patchValue(response);
+        response.Artisans.forEach((artisan: any) => {
+          // Ajouter l'ID de l'artisan à multipleValue
+          this.multipleValue.push(artisan.Id);
+        });
         console.log("réponse de la requette get_projet",response);
       },
       (error) => {

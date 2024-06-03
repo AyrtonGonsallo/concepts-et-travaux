@@ -78,6 +78,9 @@ export class ComptesComponent {
 
     return this.authService.isAdminOrHim(id)
   }
+  isHimOrAdminAndOtherNotAdmin(id:number,rid:number| undefined){
+    return this.authService.isHimOrAdminAndOtherNotAdmin(id,rid?rid:0)
+  }
   cancel(): void {
     this.message.info('suppression annulée');
   }

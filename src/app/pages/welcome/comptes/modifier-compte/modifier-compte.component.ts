@@ -137,74 +137,101 @@ export class ModifierCompteComponent {
   file_QuestionnaireTarif: string="";
   file_AssuranceRCDecennale: string="";
   file_KBis: string="";
+  maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
+  fileSizeError1 = false;
+  fileSizeError2 = false;
+  fileSizeError3 = false;
   handleFileInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    const timestamp = Date.now();
-    const uniqueFileName = `${timestamp}_${file.name}`;
-    this.file_QuestionnaireTarif = uniqueFileName;
-  
-    // Mettre à jour la valeur de l'input
-     // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
-  this.validateForm.patchValue({
-    QuestionnaireTarif: uniqueFileName
-  });
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError1 = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+      
+    }else{
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_${file.name}`;
+        this.file_QuestionnaireTarif = uniqueFileName;
+      
+        // Mettre à jour la valeur de l'input
+        // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
+      this.validateForm.patchValue({
+        QuestionnaireTarif: uniqueFileName
+      });
+        
+        const formData = new FormData();
+        const renamedFile = new File([file], uniqueFileName, { type: file.type });
+        formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
     
-    const formData = new FormData();
-    const renamedFile = new File([file], uniqueFileName, { type: file.type });
-    formData.append('file', renamedFile);
-  // Envoyer le fichier au serveur
-  this.userService.upload_file(formData).subscribe(response => {
-    console.log('Fichier téléchargé avec succès:', response);
-    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
-  });
-    console.log(file);
   }
   
   handleFileInput2(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    const timestamp = Date.now();
-    const uniqueFileName = `${timestamp}_${file.name}`;
-    this.file_AssuranceRCDecennale =  uniqueFileName;
-  
-    // Mettre à jour la valeur de l'input
-    this.validateForm.patchValue({
-      AssuranceRCDecennale: uniqueFileName
-    });
-    const formData = new FormData();
-    const renamedFile = new File([file], uniqueFileName, { type: file.type });
-    formData.append('file', renamedFile);
-  // Envoyer le fichier au serveur
-  this.userService.upload_file(formData).subscribe(response => {
-    console.log('Fichier téléchargé avec succès:', response);
-    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
-  });
-    console.log(file);
+    
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError2 = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+    } else {
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_${file.name}`;
+        this.file_AssuranceRCDecennale =  uniqueFileName;
+      
+        // Mettre à jour la valeur de l'input
+        this.validateForm.patchValue({
+          AssuranceRCDecennale: uniqueFileName
+        });
+        const formData = new FormData();
+        const renamedFile = new File([file], uniqueFileName, { type: file.type });
+        formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
   }
   
   handleFileInput3(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const file: File = (inputElement.files as FileList)[0];
-    const timestamp = Date.now();
-    const uniqueFileName = `${timestamp}_${file.name}`;
-    this.file_KBis =  uniqueFileName ;
-  
-    // Mettre à jour la valeur de l'input
-    this.validateForm.patchValue({
-      KBis: uniqueFileName
-    });
-   
-    const formData = new FormData();
-    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+    
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError3 = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+    } else {
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_${file.name}`;
+        this.file_KBis =  uniqueFileName ;
+      
+        // Mettre à jour la valeur de l'input
+        this.validateForm.patchValue({
+          KBis: uniqueFileName
+        });
+      
+        const formData = new FormData();
+        const renamedFile = new File([file], uniqueFileName, { type: file.type });
 
-    formData.append('file', renamedFile);
-  // Envoyer le fichier au serveur
-  this.userService.upload_file(formData).subscribe(response => {
-    console.log('Fichier téléchargé avec succès:', response);
-    // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
-  });
-    console.log(file);
+        formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+  
+      });
+      console.log(file);
+    }
   }
   slugify(text: string): string {
     return text
