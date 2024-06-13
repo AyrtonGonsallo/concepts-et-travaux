@@ -36,6 +36,34 @@ export class AjouterCompteComponent {
     RoleId: FormControl<number>;
     Agree: FormControl<boolean>;
   }>;
+
+  slugify(text: string) {
+    const lastDotIndex = text.lastIndexOf('.'); // Trouver l'index du dernier point
+  
+    if (lastDotIndex === -1) {
+      // S'il n'y a pas de point, appliquer les transformations sur tout le texte
+      return text
+        .toLowerCase()
+        .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+        .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+        .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+    }
+  
+    // Séparer le nom de fichier et l'extension
+    const name = text.substring(0, lastDotIndex);
+    const extension = text.substring(lastDotIndex);
+  
+    // Appliquer les transformations sur le nom de fichier uniquement
+    const slugifiedName = name
+      .toLowerCase()
+      .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+      .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+      .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+  
+    // Combiner le nom de fichier transformé avec l'extension
+    return slugifiedName + extension;
+  }
+
   file_QuestionnaireTarif: string="";
   file_AssuranceRCDecennale: string="";
   file_KBis: string="";
@@ -53,7 +81,7 @@ export class AjouterCompteComponent {
       
     }else{
       const timestamp = Date.now();
-      const uniqueFileName = `${timestamp}_${file.name}`;
+      const uniqueFileName = this.slugify( `${timestamp}_${file.name}`);
       this.file_QuestionnaireTarif = uniqueFileName;
     
       // Mettre à jour la valeur de l'input
@@ -84,7 +112,7 @@ export class AjouterCompteComponent {
       
     }else{
       const timestamp = Date.now();
-      const uniqueFileName = `${timestamp}_${file.name}`;
+      const uniqueFileName = this.slugify( `${timestamp}_${file.name}`);
       this.file_AssuranceRCDecennale =  uniqueFileName;
     
       // Mettre à jour la valeur de l'input
@@ -113,7 +141,7 @@ export class AjouterCompteComponent {
       
     }else{
       const timestamp = Date.now();
-      const uniqueFileName = `${timestamp}_${file.name}`;
+      const uniqueFileName = this.slugify( `${timestamp}_${file.name}`);
       this.file_KBis =  uniqueFileName ;
     
       // Mettre à jour la valeur de l'input
@@ -133,6 +161,7 @@ export class AjouterCompteComponent {
   }
   }
   
+
 
   submitForm(): void {
     if (this.validateForm.valid) {

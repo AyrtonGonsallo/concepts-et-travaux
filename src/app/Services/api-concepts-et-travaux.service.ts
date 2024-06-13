@@ -74,6 +74,19 @@ getProjets(): Observable<any> {
   const url = `${environment.apiUrl}/get_all_projects`;
   return this.http.get<any>(url);
 }
+getPieces(): Observable<any> {
+  const url = `${environment.apiUrl}/get_pieces`;
+  return this.http.get<any>(url);
+}
+getRealisations(): Observable<any> {
+  const url = `${environment.apiUrl}/get_realisations`;
+  return this.http.get<any>(url);
+}
+get_galeries(): Observable<any> {
+  const url = `${environment.apiUrl}/get_galeries`;
+  return this.http.get<any>(url);
+}
+
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;
   return this.http.get<any>(url);
@@ -102,6 +115,12 @@ get_role(userId: number): Observable<any> {
   }
   add_projet(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_project`, userData);
+  }
+  add_realisation(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/ajouter_realisation`, userData);
+  }
+  ajouter_piece(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/ajouter_piece`, userData);
   }
   add_role(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_role`, userData);

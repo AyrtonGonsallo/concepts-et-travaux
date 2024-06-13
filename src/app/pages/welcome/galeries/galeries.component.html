@@ -2,5 +2,33 @@
     <h2>Liste des galeries d'images</h2>    
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'galeries', 'ajouter-galerie']">Ajouter une galerie</button>
 
+    <nz-table #sortTable [nzData]="galeries"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td>{{ data.ID }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.images?.length }}</td>
+            
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" ><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+              nzPopconfirmTitle="Are you sure delete this account?"
+              nzPopconfirmPlacement="bottom"
+              
+              (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+            </td>
+          </tr>
+        </tbody>
+    </nz-table>
     
 </div>

@@ -1,1 +1,109 @@
-<p>ajouter-realisation works!</p>
+<div>
+    <h2>Ajouter une réalisation</h2>   
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Titre!">
+            <input nz-input formControlName="Titre" id="Titre" />
+          </nz-form-control>
+        </nz-form-item>
+       
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Description</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
+              <textarea rows="6" nz-input formControlName="Description"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image_principale"  >
+                <span>Image principale</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input type="text" id="Image_principale" formControlName="Image_principale" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
+            </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="GalerieID"  nzRequired >
+                <span>Galerie</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="RoleId" formControlName="GalerieID"  nzPlaceHolder="Galerie d'images" >
+                    <nz-option *ngFor="let option of galeries" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+       
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID"  nzRequired >
+                <span>Pièce</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="PieceID" formControlName="PieceID"  nzPlaceHolder="Pièce" >
+                    <nz-option *ngFor="let option of pieces" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Duree"  nzRequired >
+                <span>Durée</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number formControlName="Duree"  [nzStep]="1"></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  nzRequired >
+                <span>Prix</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number formControlName="Prix"  [nzStep]="1"></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Superficie"  nzRequired >
+                <span>Superficie</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number formControlName="Superficie"  [nzStep]="1"></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categories"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Besoins</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
+                <nz-select id="categories" [(ngModel)]="multipleValue1" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of besoins" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categories"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Étapes du projet</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
+                <nz-select id="categories" [(ngModel)]="multipleValue2" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of etapes" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        
+        </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+            <nz-form-control [nzSpan]="14" [nzOffset]="6">
+              <label nz-checkbox formControlName="Top">
+               Top
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Ajouter</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+</div>

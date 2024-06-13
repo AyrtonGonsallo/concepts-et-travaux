@@ -14,7 +14,7 @@
             <nz-form-control [nzSm]="14" [nzXs]="24">
                 <nz-upload
                     nzType="drag"
-                    [nzMultiple]="true"
+                    [nzMultiple]="true" nzAccept=".jpg,.jpeg,.png,.gif" [nzBeforeUpload]="beforeUpload"
                     (nzChange)="handleChange($event)"
                     >
                     <p class="ant-upload-drag-icon">

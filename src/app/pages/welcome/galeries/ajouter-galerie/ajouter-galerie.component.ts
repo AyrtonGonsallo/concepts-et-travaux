@@ -21,6 +21,34 @@ export class AjouterGalerieComponent {
     });
   }
 
+  slugify(text: string) {
+    const lastDotIndex = text.lastIndexOf('.'); // Trouver l'index du dernier point
+  
+    if (lastDotIndex === -1) {
+      // S'il n'y a pas de point, appliquer les transformations sur tout le texte
+      return text
+        .toLowerCase()
+        .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+        .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+        .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+    }
+  
+    // Séparer le nom de fichier et l'extension
+    const name = text.substring(0, lastDotIndex);
+    const extension = text.substring(lastDotIndex);
+  
+    // Appliquer les transformations sur le nom de fichier uniquement
+    const slugifiedName = name
+      .toLowerCase()
+      .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+      .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+      .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+  
+    // Combiner le nom de fichier transformé avec l'extension
+    return slugifiedName + extension;
+  }
+
+
   submitForm(): void {
     console.log(this.file_list)
 
@@ -28,7 +56,7 @@ export class AjouterGalerieComponent {
 
     const images = this.file_list.map(file => {
         const timestamp = Date.now();
-        const uniqueFileName = `${timestamp}_${file.name}`;
+        const uniqueFileName = this.slugify(`${timestamp}_${file.name}`) ;
         // Vérifier si originFileObj est défini
       if (file.originFileObj) {
         // Convertir NzUploadFile en Blob
@@ -72,6 +100,14 @@ export class AjouterGalerieComponent {
     );
   }
     
+  beforeUpload = (file: NzUploadFile): boolean => {
+    let size =file.size?file.size:0
+    const isLt2M = size / 1024 / 1024 < 10;
+    if (!isLt2M) {
+      this.msg.error('File must be smaller than 2MB!');
+    }
+    return isLt2M;
+  }
   
   handleChange({ file, fileList }: NzUploadChangeParam): void {
     const status = file.status;
