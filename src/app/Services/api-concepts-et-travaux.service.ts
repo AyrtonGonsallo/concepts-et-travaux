@@ -57,6 +57,18 @@ get_projet(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_project/${userId}`;
   return this.http.get<any>(url);
 }
+getEtapesProjet(): Observable<any> {
+  const url = `${environment.apiUrl}/get_etapes_projet`;
+  return this.http.get<any>(url);
+}
+getBesoinsProjet(): Observable<any> {
+  const url = `${environment.apiUrl}/get_besoins_projet`;
+  return this.http.get<any>(url);
+}
+getCategoriesPiece(): Observable<any> {
+  const url = `${environment.apiUrl}/get_categories_piece`;
+  return this.http.get<any>(url);
+}
 
 getProjets(): Observable<any> {
   const url = `${environment.apiUrl}/get_all_projects`;
@@ -74,6 +86,7 @@ getUtilisateursByIds(ids: number[]): Observable<any> {
   const url = `${environment.apiUrl}/get_utilisateurs/${ids.join(',')}`;
   return this.http.get<any>(url);
 }
+
 get_role(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_role/${userId}`;
   return this.http.get<any>(url);
@@ -92,6 +105,9 @@ get_role(userId: number): Observable<any> {
   }
   add_role(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_role`, userData);
+  }
+  add_galerie_with_images(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_galerie_with_images`, userData);
   }
 
   upload_file(userData: any): Observable<any> {

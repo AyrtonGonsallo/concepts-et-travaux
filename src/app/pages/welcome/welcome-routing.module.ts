@@ -17,6 +17,15 @@ import { ModifierProjetComponent } from './projet/modifier-projet/modifier-proje
 import { AjouterProjetComponent } from './projet/ajouter-projet/ajouter-projet.component';
 import { VoirProjetComponent } from './projet/voir-projet/voir-projet.component';
 import { IsNotArtisanGuard } from '../../Guards/IsNotArtisanGuard';
+import { EtapesProjetComponent } from './etapes-projet/etapes-projet.component';
+import { BesoinProjetComponent } from './besoin-projet/besoin-projet.component';
+import { CategoriePieceComponent } from './categorie-piece/categorie-piece.component';
+import { PieceComponent } from './piece/piece.component';
+import { AjouterPieceComponent } from './piece/ajouter-piece/ajouter-piece.component';
+import { RealisationComponent } from './realisation/realisation.component';
+import { AjouterRealisationComponent } from './realisation/ajouter-realisation/ajouter-realisation.component';
+import { GaleriesComponent } from './galeries/galeries.component';
+import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-galerie.component';
 
 const routes: Routes = [
  
@@ -32,7 +41,15 @@ const routes: Routes = [
       { path: 'projets/voir-projet/:id', component: VoirProjetComponent ,}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'projets/modifier-projet/:id', component: ModifierProjetComponent ,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'projets/ajouter-projet', component: AjouterProjetComponent,canActivate: [IsNotArtisanGuard] }, // Nouvelle route pour ajouter un compte avec un ID
-      
+      { path: 'etapes-projet', component: EtapesProjetComponent },
+      { path: 'besoins-projet', component: BesoinProjetComponent },
+      { path: 'categories-piece', component: CategoriePieceComponent },
+      { path: 'galeries', component: GaleriesComponent },
+      { path: 'galeries/ajouter-galerie', component: AjouterGalerieComponent },
+      { path: 'pieces', component: PieceComponent },
+      { path: 'pieces/ajouter-piece', component: AjouterPieceComponent },
+      { path: 'realisations', component: RealisationComponent },
+      { path: 'realisations/ajouter-realisation', component: AjouterRealisationComponent },
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID

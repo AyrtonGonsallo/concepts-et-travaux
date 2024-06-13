@@ -21,11 +21,39 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Projets" nzIcon="form">
+        <li nz-submenu nzOpen nzTitle="Projets" nzIcon="schedule">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/projets">Liste des projets</a>
             </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/realisations">Liste des realisations</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/etapes-projet">Étapes du projet</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/besoins-projet">Besoins du projet</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzOpen nzTitle="Pieces" nzIcon="home">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/pieces">Liste des pieces</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/categories-piece">Categories de pieces</a>
+            </li>
+          
+          </ul>
+        </li>
+        <li nz-submenu nzOpen nzTitle="Galeries" nzIcon="picture">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/galeries">Liste des galeries</a>
+            </li>
+            
           </ul>
         </li>
        

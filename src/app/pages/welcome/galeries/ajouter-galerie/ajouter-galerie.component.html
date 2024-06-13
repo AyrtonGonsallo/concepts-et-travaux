@@ -1,0 +1,37 @@
+<div>
+    <h2>Ajouter une galerie</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
+            <input nz-input formControlName="titre" id="titre" />
+        </nz-form-control>
+        </nz-form-item>
+        
+     
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Images de la galerie</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-upload
+                    nzType="drag"
+                    [nzMultiple]="true"
+                    (nzChange)="handleChange($event)"
+                    >
+                    <p class="ant-upload-drag-icon">
+                        <span nz-icon nzType="inbox"></span>
+                    </p>
+                    <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p class="ant-upload-hint">
+                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
+                    </p>
+                    </nz-upload>
+            </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Ajouter</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

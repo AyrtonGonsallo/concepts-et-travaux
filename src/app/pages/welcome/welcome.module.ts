@@ -17,9 +17,18 @@ import { ProjetComponent } from './projet/projet.component';
 import { AjouterProjetComponent } from './projet/ajouter-projet/ajouter-projet.component';
 import { ModifierProjetComponent } from './projet/modifier-projet/modifier-projet.component';
 import { VoirProjetComponent } from './projet/voir-projet/voir-projet.component';
+import { BesoinProjetComponent } from './besoin-projet/besoin-projet.component';
+import { EtapesProjetComponent } from './etapes-projet/etapes-projet.component';
+import { CategoriePieceComponent } from './categorie-piece/categorie-piece.component';
+import { PieceComponent } from './piece/piece.component';
+import { AjouterPieceComponent } from './piece/ajouter-piece/ajouter-piece.component';
+import { RealisationComponent } from './realisation/realisation.component';
+import { AjouterRealisationComponent } from './realisation/ajouter-realisation/ajouter-realisation.component';
+import { GaleriesComponent } from './galeries/galeries.component';
+import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-galerie.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule ],
-  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {
