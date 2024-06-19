@@ -14,7 +14,12 @@
     
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
        
-        
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre de la galerie</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
+                <input nz-input formControlName="Titre" id="Titre" />
+            </nz-form-control>
+            </nz-form-item>
      
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Ajouter des images</nz-form-label>

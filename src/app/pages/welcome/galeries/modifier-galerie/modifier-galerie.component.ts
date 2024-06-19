@@ -20,7 +20,7 @@ export class ModifierGalerieComponent {
   size: NzButtonSize = 'large';
   constructor(private fb: FormBuilder,private route: ActivatedRoute,private msg:NzMessageService, private router: Router,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
-      titre: ['', [Validators.required]],
+      Titre: ['', [Validators.required]],
       images: [null, Validators.required] // Contrôle pour les fichiers, requis
     });
   }
@@ -56,7 +56,7 @@ export class ModifierGalerieComponent {
   submitForm(): void {
     console.log(this.file_list)
 
-
+    const titre = this.validateForm.controls['Titre'].value;
     const images = this.file_list.map(file => {
         const timestamp = Date.now();
         const uniqueFileName = this.slugify(`${timestamp}_${file.name}`) ;
@@ -86,6 +86,7 @@ export class ModifierGalerieComponent {
 
     // Construction de l'objet JSON final
     const galerieJson = {
+      Titre: titre,
       Images: images
     };
 
