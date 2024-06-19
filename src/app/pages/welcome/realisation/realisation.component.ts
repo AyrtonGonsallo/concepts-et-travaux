@@ -63,7 +63,7 @@ export class RealisationComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(id: number) {
+  deleteRealisation(id: number) {
     if (this.authService.isAdmin( )) {
       this.userService.deleteRealisation(id).subscribe(
         () => {

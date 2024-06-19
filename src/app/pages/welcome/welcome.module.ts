@@ -28,9 +28,10 @@ import { GaleriesComponent } from './galeries/galeries.component';
 import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-galerie.component';
 import { ModifierGalerieComponent } from './galeries/modifier-galerie/modifier-galerie.component';
 import { ModifierRealisationComponent } from './realisation/modifier-realisation/modifier-realisation.component';
+import { ModifierPieceComponent } from './piece/modifier-piece/modifier-piece.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule ],
-  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {

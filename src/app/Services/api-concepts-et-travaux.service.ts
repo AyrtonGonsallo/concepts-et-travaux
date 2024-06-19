@@ -78,6 +78,10 @@ getPieces(): Observable<any> {
   const url = `${environment.apiUrl}/get_pieces`;
   return this.http.get<any>(url);
 }
+getPiece(id:number): Observable<any> {
+  const url = `${environment.apiUrl}/get_piece/${id}`;
+  return this.http.get<any>(url);
+}
 getRealisations(): Observable<any> {
   const url = `${environment.apiUrl}/get_realisations`;
   return this.http.get<any>(url);
@@ -131,7 +135,9 @@ get_role(userId: number): Observable<any> {
   update_realisation(id:number,userData: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_realisation/${id}`, userData);
   }
-  
+  update_piece(id:number,userData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_piece/${id}`, userData);
+  }
   ajouter_piece(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/ajouter_piece`, userData);
   }
@@ -157,7 +163,10 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_realisation/${id}`;
     return this.http.delete<any>(url);
   }
-  
+  deletePiece(id: number): Observable<any> {
+    const url = `${environment.apiUrl}/delete_piece/${id}`;
+    return this.http.delete<any>(url);
+  }
   deleteGalerie(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_galerie/${userId}`;
     return this.http.delete<any>(url);

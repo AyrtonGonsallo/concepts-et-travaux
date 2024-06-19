@@ -28,6 +28,7 @@ import { GaleriesComponent } from './galeries/galeries.component';
 import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-galerie.component';
 import { ModifierGalerieComponent } from './galeries/modifier-galerie/modifier-galerie.component';
 import { ModifierRealisationComponent } from './realisation/modifier-realisation/modifier-realisation.component';
+import { ModifierPieceComponent } from './piece/modifier-piece/modifier-piece.component';
 
 const routes: Routes = [
  
@@ -54,6 +55,8 @@ const routes: Routes = [
       { path: 'realisations', component: RealisationComponent },
       { path: 'realisations/ajouter-realisation', component: AjouterRealisationComponent },
       { path: 'realisations/modifier-realisation/:id', component: ModifierRealisationComponent },
+      { path: 'pieces/modifier-piece/:id', component: ModifierPieceComponent },
+
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID

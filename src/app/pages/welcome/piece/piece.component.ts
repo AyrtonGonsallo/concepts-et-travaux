@@ -58,12 +58,12 @@ export class PieceComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
-      this.userService.deleteUser(userId).subscribe(
+  deletePiece(id: number) {
+    if (this.authService.isAdmin()) {
+      this.userService.deletePiece(id).subscribe(
         () => {
           //console.log('Piece supprimé avec succès');
-          this.message.success( 'Piece supprimé avec succès');
+          this.message.success( 'Piece supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des besoins si nécessaire
           this.loadPieces();
         },
