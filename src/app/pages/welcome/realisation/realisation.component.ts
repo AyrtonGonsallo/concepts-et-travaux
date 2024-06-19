@@ -63,12 +63,12 @@ export class RealisationComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
-      this.userService.deleteUser(userId).subscribe(
+  deleteUser(id: number) {
+    if (this.authService.isAdmin( )) {
+      this.userService.deleteRealisation(id).subscribe(
         () => {
           //console.log('Realisation supprimé avec succès');
-          this.message.success( 'Realisation supprimé avec succès');
+          this.message.success( 'Realisation supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des besoins si nécessaire
           this.loadRealisations();
         },
@@ -79,7 +79,7 @@ export class RealisationComponent {
       );
       return true
     } else {
-      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page`);
       return false;
     }
     

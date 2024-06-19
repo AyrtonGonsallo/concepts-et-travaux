@@ -82,8 +82,17 @@ getRealisations(): Observable<any> {
   const url = `${environment.apiUrl}/get_realisations`;
   return this.http.get<any>(url);
 }
+getRealisation(id:number): Observable<any> {
+  const url = `${environment.apiUrl}/get_realisation/${id}`;
+  return this.http.get<any>(url);
+}
+
 get_galeries(): Observable<any> {
   const url = `${environment.apiUrl}/get_galeries`;
+  return this.http.get<any>(url);
+}
+get_galerie(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_galerie/${id}`;
   return this.http.get<any>(url);
 }
 
@@ -119,6 +128,10 @@ get_role(userId: number): Observable<any> {
   add_realisation(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/ajouter_realisation`, userData);
   }
+  update_realisation(id:number,userData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_realisation/${id}`, userData);
+  }
+  
   ajouter_piece(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/ajouter_piece`, userData);
   }
@@ -129,6 +142,10 @@ get_role(userId: number): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_galerie_with_images`, userData);
   }
 
+  add_images_to_galerie(id:number,userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_images_to_galerie/${id}`, userData);
+  }
+
   upload_file(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/upload`, userData);
   }
@@ -136,7 +153,19 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_utilisateur/${userId}`;
     return this.http.delete<any>(url);
   }
-
+  deleteRealisation(id: number): Observable<any> {
+    const url = `${environment.apiUrl}/delete_realisation/${id}`;
+    return this.http.delete<any>(url);
+  }
+  
+  deleteGalerie(userId: number): Observable<any> {
+    const url = `${environment.apiUrl}/delete_galerie/${userId}`;
+    return this.http.delete<any>(url);
+  }
+  deleteImageFromGallery(id: number): Observable<any> {
+    const url = `${environment.apiUrl}/delete_image_from_gallery/${id}`;
+    return this.http.delete<any>(url);
+  }
   deleteAutorisation(autorisationId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_autorisation/${autorisationId}`;
     return this.http.delete<any>(url);

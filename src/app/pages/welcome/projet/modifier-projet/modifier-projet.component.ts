@@ -44,17 +44,17 @@ export class ModifierProjetComponent {
       const formValues: FormValues = { ...this.validateForm.value };
           // Ajout du champ 'Autorisations' avec la liste des autorisations
           formValues.Artisans = this.multipleValue;
-      console.log('submit', formValues);
-      this.userService.updateProjet(parseInt(this.projetId??'0'),formValues).subscribe(
-        (response: any) => {
-          console.log('projet modifiée avec succès :', response);
-          this.message.create('success', `projet modifiée avec succès`);
-          this.router.navigate(['/administration/projets']);
-        },
-        (error: any) => {
-          console.error('Erreur lors de la modification de l\'projet :', error);
-        }
-      );
+          console.log('submit', formValues);
+          this.userService.updateProjet(parseInt(this.projetId??'0'),formValues).subscribe(
+            (response: any) => {
+              console.log('projet modifiée avec succès :', response);
+              this.message.create('success', `projet modifiée avec succès`);
+              this.router.navigate(['/administration/projets']);
+            },
+            (error: any) => {
+              console.error('Erreur lors de la modification de l\'projet :', error);
+            }
+          );
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

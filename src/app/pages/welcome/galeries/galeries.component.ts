@@ -58,12 +58,12 @@ export class GaleriesComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
-      this.userService.deleteUser(userId).subscribe(
+  deleteGalerie(galerieId: number) {
+    if (this.authService.isAdmin( )) {
+      this.userService.deleteGalerie(galerieId).subscribe(
         () => {
           //console.log('Galerie supprimé avec succès');
-          this.message.success( 'Galerie supprimé avec succès');
+          this.message.success( 'Galerie supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des besoins si nécessaire
           this.loadGaleries();
         },

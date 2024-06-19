@@ -1,0 +1,44 @@
+<div>
+    <h2>{{galerie?.Titre}}</h2>
+    <span>{{ galerie?.images?.length }} Images</span>
+    <div class="galerie-images-grid">
+        <div  class="galerie-image-link"*ngFor="let image of galerie?.images" >
+        <div  class="galerie-image" [style.backgroundImage]="'url(https://dev.homeren.fr/api-concepts-et-travaux/files/' + image.Url + ')'">
+            <button nz-button nzType="primary" [nzSize]="size" (click)="delete_image_from_gallery(image.ID)" nzShape="circle"><span nz-icon nzType="close"></span></button>
+            <a target="_blank" [href]="'https://dev.homeren.fr/api-concepts-et-travaux/files/' + image.Url" nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="fullscreen"></span></a>
+
+        </div>
+    </div>
+    </div>
+
+    
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+       
+        
+     
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Ajouter des images</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-upload
+                    nzType="drag"
+                    [nzMultiple]="true" nzAccept=".jpg,.jpeg,.png,.gif,.svg,.webp" [nzBeforeUpload]="beforeUpload"
+                    (nzChange)="handleChange($event)"
+                    >
+                    <p class="ant-upload-drag-icon">
+                        <span nz-icon nzType="inbox"></span>
+                    </p>
+                    <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p class="ant-upload-hint">
+                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
+                    </p>
+                    </nz-upload>
+            </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Ajouter</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

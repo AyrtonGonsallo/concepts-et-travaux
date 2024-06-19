@@ -1,0 +1,12 @@
+.galerie-images-grid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.galerie-image{
+    background-size: cover;
+    background-position: center center;
+    height: 200px;
+}
+.galerie-image-link{
+    margin: 10px;
+}
