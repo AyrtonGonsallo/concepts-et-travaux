@@ -26,11 +26,13 @@ export class AjouterPieceComponent {
     Presentation: FormControl<string>;
     Description: FormControl<string>;
     Image_principale: FormControl<string>;
+    Image_presentation: FormControl<string>;
     GalerieID: FormControl<number>;
   }>;
   fileSizeError = false;
   maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
   file_Image_principale: string="";
+  file_Image_presentation: string="";
   size: NzSelectSizeType = 'default';
   multipleValue : number[] = [];
   categories: CategoriePiece[] = [];
@@ -114,6 +116,35 @@ export class AjouterPieceComponent {
       console.log(file);
   }
   }
+
+  handleFileInput2(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+      
+    }else{
+      const timestamp = Date.now();
+      const uniqueFileName = this.slugify(`${timestamp}_${file.name}`);
+      this.file_Image_presentation =  uniqueFileName;
+    
+      // Mettre à jour la valeur de l'input
+      this.validateForm.patchValue({
+        Image_presentation: uniqueFileName
+      });
+      const formData = new FormData();
+      const renamedFile = new File([file], uniqueFileName, { type: file.type });
+      formData.append('file', renamedFile);
+    // Envoyer le fichier au serveur
+    this.userService.upload_file(formData).subscribe(response => {
+      console.log('Fichier téléchargé avec succès:', response);
+      // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+    });
+      console.log(file);
+  }
+  }
   ngOnInit(): void {
     this.loadGaleries();
     this.loadCategories();
@@ -148,6 +179,7 @@ export class AjouterPieceComponent {
       Presentation: ['', [ Validators.required]],
     Description: ['', [ Validators.required]],
     Image_principale: ['', [ Validators.required]],
+    Image_presentation: ['', [ Validators.required]],
     GalerieID:  [0, [ Validators.required]],
     });
   }
