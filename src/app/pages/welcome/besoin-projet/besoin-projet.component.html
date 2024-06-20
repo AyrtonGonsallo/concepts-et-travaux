@@ -1,5 +1,6 @@
 <div>
-    <h2>Besoins du projet</h2>    
+    <h2>Type de service du projet</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'besoins-projet', 'ajouter-besoin']">Ajouter un besoin</button>
 
     <nz-table #sortTable [nzData]="besoins"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
@@ -19,12 +20,12 @@
             <td>{{ data.Description }}</td>
             
             <td> 
-              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" ><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'besoins-projet', 'modifier-besoin',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
               nzPopconfirmTitle="Are you sure delete this account?"
               nzPopconfirmPlacement="bottom"
-              
-              (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+              (nzOnConfirm)="deleteBesoin(data.ID)"
+               ><span nz-icon nzType="delete"></span></button>
             </td>
           </tr>
         </tbody>

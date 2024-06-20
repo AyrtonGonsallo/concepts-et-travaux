@@ -29,9 +29,21 @@ import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-gale
 import { ModifierGalerieComponent } from './galeries/modifier-galerie/modifier-galerie.component';
 import { ModifierRealisationComponent } from './realisation/modifier-realisation/modifier-realisation.component';
 import { ModifierPieceComponent } from './piece/modifier-piece/modifier-piece.component';
+import { CategorieQuestionComponent } from './categorie-question/categorie-question.component';
+import { AjouterCategorieQComponent } from './categorie-question/ajouter-categorie/ajouter-categorie.component';
+import { ModifierCategorieQComponent } from './categorie-question/modifier-categorie/modifier-categorie.component';
+import { AjouterCategorieComponent } from './categorie-piece/ajouter-categorie/ajouter-categorie.component';
+import { ModifierCategorieComponent } from './categorie-piece/modifier-categorie/modifier-categorie.component';
+import { QuestionComponent } from './question/question.component';
+import { AjouterQuestionComponent } from './question/ajouter-question/ajouter-question.component';
+import { ModifierQuestionComponent } from './question/modifier-question/modifier-question.component';
+import { AjouterBesoinComponent } from './besoin-projet/ajouter-besoin/ajouter-besoin.component';
+import { ModifierBesoinComponent } from './besoin-projet/modifier-besoin/modifier-besoin.component';
+import { AjouterEtapeComponent } from './etapes-projet/ajouter-etape/ajouter-etape.component';
+import { ModifierEtapeComponent } from './etapes-projet/modifier-etape/modifier-etape.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule ],
-  declarations: [WelcomeComponent, AutorisationsComponent, ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {

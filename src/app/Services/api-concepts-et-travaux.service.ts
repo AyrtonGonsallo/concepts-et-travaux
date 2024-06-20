@@ -57,6 +57,15 @@ get_projet(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_project/${userId}`;
   return this.http.get<any>(url);
 }
+add_etape_projet(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_etape_projet`, userData);
+}
+add_besoin_projet(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_besoin_projet`, userData);
+}
+add_categorie_piece(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_categorie_piece`, userData);
+}
 getEtapesProjet(): Observable<any> {
   const url = `${environment.apiUrl}/get_etapes_projet`;
   return this.http.get<any>(url);

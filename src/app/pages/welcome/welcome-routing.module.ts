@@ -29,6 +29,18 @@ import { AjouterGalerieComponent } from './galeries/ajouter-galerie/ajouter-gale
 import { ModifierGalerieComponent } from './galeries/modifier-galerie/modifier-galerie.component';
 import { ModifierRealisationComponent } from './realisation/modifier-realisation/modifier-realisation.component';
 import { ModifierPieceComponent } from './piece/modifier-piece/modifier-piece.component';
+import { ModifierBesoinComponent } from './besoin-projet/modifier-besoin/modifier-besoin.component';
+import { AjouterBesoinComponent } from './besoin-projet/ajouter-besoin/ajouter-besoin.component';
+import { AjouterEtapeComponent } from './etapes-projet/ajouter-etape/ajouter-etape.component';
+import { ModifierEtapeComponent } from './etapes-projet/modifier-etape/modifier-etape.component';
+import { AjouterCategorieComponent } from './categorie-piece/ajouter-categorie/ajouter-categorie.component';
+import { ModifierCategorieComponent } from './categorie-piece/modifier-categorie/modifier-categorie.component';
+import { QuestionComponent } from './question/question.component';
+import { AjouterQuestionComponent } from './question/ajouter-question/ajouter-question.component';
+import { ModifierQuestionComponent } from './question/modifier-question/modifier-question.component';
+import { CategorieQuestionComponent } from './categorie-question/categorie-question.component';
+import { ModifierCategorieQComponent } from './categorie-question/modifier-categorie/modifier-categorie.component';
+import { AjouterCategorieQComponent } from './categorie-question/ajouter-categorie/ajouter-categorie.component';
 
 const routes: Routes = [
  
@@ -47,6 +59,18 @@ const routes: Routes = [
       { path: 'etapes-projet', component: EtapesProjetComponent },
       { path: 'besoins-projet', component: BesoinProjetComponent },
       { path: 'categories-piece', component: CategoriePieceComponent },
+      { path: 'besoins-projet/modifier-besoin/:id', component: ModifierBesoinComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'besoins-projet/ajouter-besoin', component: AjouterBesoinComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-piece/modifier-besoin/:id', component: ModifierCategorieComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-piece/ajouter-besoin', component: AjouterCategorieComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'etapes-projet/modifier-etape/:id', component: ModifierEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'etapes-projet/ajouter-etape', component: AjouterEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'question', component: QuestionComponent },
+      { path: 'question/modifier-question/:id', component: ModifierQuestionComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'question/ajouter-question', component: AjouterQuestionComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-question', component: CategorieQuestionComponent },
+      { path: 'categories-question/modifier-categorie/:id', component: ModifierCategorieQComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-question/ajouter-categorie', component: AjouterCategorieQComponent },
       { path: 'galeries', component: GaleriesComponent },
       { path: 'galeries/ajouter-galerie', component: AjouterGalerieComponent },
       { path: 'galeries/modifier-galerie/:id', component: ModifierGalerieComponent },

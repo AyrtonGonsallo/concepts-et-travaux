@@ -58,9 +58,9 @@ export class BesoinProjetComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
-      this.userService.deleteUser(userId).subscribe(
+  deleteBesoin(id: number) {
+    if (this.authService.isAdmin()) {
+      this.userService.deleteBesoinProjet(id).subscribe(
         () => {
           //console.log('BesoinProjet supprimé avec succès');
           this.message.success( 'BesoinProjet supprimé avec succès');

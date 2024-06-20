@@ -1,51 +1,51 @@
 import { Component } from '@angular/core';
+import { CategorieQuestion } from '../../../Models/Categorie-Question';
 import { NzButtonSize } from 'ng-zorro-antd/button';
-import { CategoriePiece } from '../../../Models/Categorie-Piece';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  selector: 'app-categorie-piece',
-  templateUrl: './categorie-piece.component.html',
-  styleUrl: './categorie-piece.component.css'
+  selector: 'app-categorie-question',
+  templateUrl: './categorie-question.component.html',
+  styleUrl: './categorie-question.component.css'
 })
-export class CategoriePieceComponent {
+export class CategorieQuestionComponent {
   size: NzButtonSize = 'large';
   listOfColumn = [
     {
       title: 'Id',
-      compare: (a: CategoriePiece, b: CategoriePiece) => a.ID - b.ID,
+      compare: (a: CategorieQuestion, b: CategorieQuestion) => a.ID - b.ID,
       priority: 3
     },
    
     {
       title: 'Titre',
-      compare: (a: CategoriePiece, b: CategoriePiece) => a.Titre.localeCompare(b.Titre),
+      compare: (a: CategorieQuestion, b: CategorieQuestion) => a.Titre.localeCompare(b.Titre),
       priority: 2
     },
     {
       title: 'Description',
-      compare: (a: CategoriePiece, b: CategoriePiece) => a.Description.localeCompare(b.Description),
+      compare: (a: CategorieQuestion, b: CategorieQuestion) => a.Description.localeCompare(b.Description),
       priority: 1
     }
   ];
-  categories_de_pieces:CategoriePiece[] = [];
+  categories_de_questions:CategorieQuestion[] = [];
 
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.loadCategoriePieces();
+    this.loadCategorieQuestions();
   }
 
-  loadCategoriePieces(): void {
-    this.userService.getCategoriesPiece()
-      .subscribe((data: CategoriePiece[]) => {
-        this.categories_de_pieces = data;
-        console.log("réponse de la requette get_categories_piece",this.categories_de_pieces);
+  loadCategorieQuestions(): void {
+    this.userService.get_categories_question()
+      .subscribe((data: CategorieQuestion[]) => {
+        this.categories_de_questions = data;
+        console.log("réponse de la requette get_categories_question",this.categories_de_questions);
       });
-      console.log("envoi de la requette get_categories_piece",this.categories_de_pieces);
+      console.log("envoi de la requette get_categories_question",this.categories_de_questions);
       
   }
   isAdminOrHim(id:number){
@@ -60,12 +60,12 @@ export class CategoriePieceComponent {
   }
   deleteCategorie(id: number) {
     if (this.authService.isAdmin()) {
-      this.userService.deleteCategoriePiece(id).subscribe(
+      this.userService.delete_categorie_question(id).subscribe(
         () => {
-          //console.log('CategoriePiece supprimé avec succès');
-          this.message.success( 'CategoriePiece supprimée avec succès');
+          //console.log('CategorieQuestion supprimé avec succès');
+          this.message.success( 'CategorieQuestion supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des besoins si nécessaire
-          this.loadCategoriePieces();
+          this.loadCategorieQuestions();
         },
         (error) => {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);

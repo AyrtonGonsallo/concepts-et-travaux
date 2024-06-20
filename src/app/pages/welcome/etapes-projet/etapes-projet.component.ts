@@ -59,9 +59,9 @@ export class EtapesProjetComponent {
   cancel(): void {
     this.message.info('suppression annulée');
   }
-  deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
-      this.userService.deleteUser(userId).subscribe(
+  deleteEtape(id: number) {
+    if (this.authService.isAdmin()) {
+      this.userService.deleteEtapeProjet(id).subscribe(
         () => {
           //console.log('EtapeProjet supprimé avec succès');
           this.message.success( 'EtapeProjet supprimé avec succès');
