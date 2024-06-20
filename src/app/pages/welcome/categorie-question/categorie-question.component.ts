@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { presetColors } from 'ng-zorro-antd/core/color';
 
 @Component({
   selector: 'app-categorie-question',
@@ -48,6 +49,7 @@ export class CategorieQuestionComponent {
       console.log("envoi de la requette get_categories_question",this.categories_de_questions);
       
   }
+  public tagColors = presetColors;
   isAdminOrHim(id:number){
 
     return this.authService.isAdminOrHim(id)

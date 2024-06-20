@@ -182,12 +182,15 @@ get_role(userId: number): Observable<any> {
   add_projet(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_project`, userData);
   }
+  add_question(userData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_question`, userData);
+  }
   get_categories_question(): Observable<any> {
     const url = `${environment.apiUrl}/get_categories_question/`;
     return this.http.get<any>(url);
   }
   get_categorie_question(id: number): Observable<any> {
-    const url = `${environment.apiUrl}/get_galerie/`;
+    const url = `${environment.apiUrl}/get_categorie_question/${id}`;
     return this.http.get<any>(url);
   }
   get_questions(): Observable<any> {
@@ -195,7 +198,7 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(url);
   }
   get_question(id: number): Observable<any> {
-    const url = `${environment.apiUrl}/get_question/`;
+    const url = `${environment.apiUrl}/get_question/${id}`;
     return this.http.get<any>(url);
   }
     

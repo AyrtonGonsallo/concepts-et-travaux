@@ -1,6 +1,6 @@
 <div>
     <h2>Catégories de question</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'categories-question', 'ajouter-categorie']">Ajouter une catégorie de pièce</button>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'categories-question', 'ajouter-categorie']">Ajouter une catégorie de question</button>
 
     <nz-table #sortTable [nzData]="categories_de_questions"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
@@ -16,7 +16,7 @@
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
             <td>{{ data.ID }}</td>
-            <td>{{ data.Titre }}</td>
+            <td><nz-tag [nzColor]="tagColors[data.ID]" >{{ data.Titre }}</nz-tag></td>
             <td>{{ data.Description }}</td>
             
             <td> 
