@@ -8,6 +8,7 @@ import { Piece } from '../../../../Models/Piece';
 import { Galerie } from '../../../../Models/Galerie';
 import { EtapeProjet } from '../../../../Models/Etape-Projet';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { Pointcle } from '../../../../Models/PointCle';
 interface FormValues {
   Titre?: string;
   Superficie?: number;
@@ -20,6 +21,7 @@ interface FormValues {
   PieceID?: number;
   Besoins?: any [];
    Etapes?: any [];
+   Pointcles?: any [];
 }
 
 @Component({
@@ -30,6 +32,7 @@ interface FormValues {
 export class ModifierRealisationComponent {
   validateForm: FormGroup<{
     Titre: FormControl<string>;
+    SousTitre: FormControl<string>;
     Description: FormControl<string>;
     Image_principale: FormControl<string>;
     GalerieID: FormControl<number>;
@@ -49,11 +52,13 @@ export class ModifierRealisationComponent {
   size: NzSelectSizeType = 'default';
   multipleValue1 : number[] = [];
   multipleValue2 : number[] = [];
+  multipleValue3 : number[] = [];
   submitForm(): void {
     if (this.validateForm.valid) {
       const formValues: FormValues = { ...this.validateForm.value };
       formValues.Besoins = this.multipleValue1;
       formValues.Etapes = this.multipleValue2;
+      formValues.Pointcles = this.multipleValue3;
       console.log('submit', formValues);
 
       this.userService.update_realisation( parseInt(this.realisationId),formValues).subscribe(
@@ -137,6 +142,7 @@ export class ModifierRealisationComponent {
     this.loadPieces()
     this.loadBesoin()
     this.loadEtapes()
+    this.loadPointscles()
     this.getRealisationDetails(this.realisationId)
   }
   galeries: Galerie[] = [];
@@ -188,11 +194,23 @@ export class ModifierRealisationComponent {
       }
     );
   }
-
+  pointscles: Pointcle[] = [];
+  loadPointscles(): void {
+    this.userService.getPointscles().subscribe(
+      (response) => {
+        this.pointscles= response;
+        console.log("réponse de la requette get pointscles",this.pointscles);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des pointscles :', error);
+      }
+    );
+  }
 
   constructor(private fb: NonNullableFormBuilder,private route: ActivatedRoute,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
       Titre: ['', [ Validators.required]],
+      SousTitre: ['', [ ]],
       Description: ['', [ Validators.required]],
       Image_principale: ['', [ Validators.required]],
       GalerieID:  [0, [ Validators.required]],
@@ -218,6 +236,10 @@ export class ModifierRealisationComponent {
         response.EtapeProjets.forEach((etape: any) => {
           // Ajouter l'ID de l'etape à multipleValue
           this.multipleValue2.push(etape.ID);
+        });
+        response.Pointcles.forEach((etape: any) => {
+          // Ajouter l'ID de l'etape à multipleValue
+          this.multipleValue3.push(etape.ID);
         });
         
       },

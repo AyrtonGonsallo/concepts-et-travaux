@@ -7,7 +7,12 @@
             <input nz-input formControlName="Titre" id="Titre" />
           </nz-form-control>
         </nz-form-item>
-       
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="SousTitre">Sous titre</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid SousTitre!">
+              <input nz-input formControlName="SousTitre" id="SousTitre" />
+            </nz-form-control>
+          </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Description</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
@@ -78,6 +83,16 @@
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
                 <nz-select id="categories" [(ngModel)]="multipleValue1" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
                     <nz-option *ngFor="let option of besoins" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pointcles"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Points clés du projet</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
+                <nz-select id="pointcles" [(ngModel)]="multipleValue3" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of pointscles" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
                   </nz-select>
             </nz-form-control>
         

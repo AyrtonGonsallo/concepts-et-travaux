@@ -1,0 +1,33 @@
+<div>
+    <h2>Point clé du projet</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'points-cles', 'ajouter-point-cle']">Ajouter un point clé</button>
+
+    <nz-table #sortTable [nzData]="categories_de_pieces"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td>{{ data.ID }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.Description }}</td>
+            
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'points-cles', 'modifier-point-cle',data.ID]" ><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+              nzPopconfirmTitle="Are you sure delete this account?"
+              nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="deletePoint(data.ID)"
+              (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+            </td>
+          </tr>
+        </tbody>
+    </nz-table>
+</div>

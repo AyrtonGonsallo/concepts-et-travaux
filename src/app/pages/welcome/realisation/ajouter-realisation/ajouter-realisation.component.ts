@@ -8,8 +8,10 @@ import { Galerie } from '../../../../Models/Galerie';
 import { Piece } from '../../../../Models/Piece';
 import { BesoinProjet } from '../../../../Models/Besoin-Projet';
 import { EtapeProjet } from '../../../../Models/Etape-Projet';
+import { Pointcle } from '../../../../Models/PointCle';
 interface FormValues {
   Titre?: string;
+  SousTitre?: string;
   Superficie?: number;
   Prix?: number;
   Image_principale?: string;
@@ -19,6 +21,7 @@ interface FormValues {
   GalerieID?: number; // Le point d'interrogation indique que la propriété est facultative
   PieceID?: number;
   Besoins?: any [];
+  Pointcles?: any [];
    Etapes?: any [];
 }
 
@@ -30,6 +33,7 @@ interface FormValues {
 export class AjouterRealisationComponent {
   validateForm: FormGroup<{
     Titre: FormControl<string>;
+    SousTitre: FormControl<string>;
     Description: FormControl<string>;
     Image_principale: FormControl<string>;
     GalerieID: FormControl<number>;
@@ -49,11 +53,13 @@ export class AjouterRealisationComponent {
   size: NzSelectSizeType = 'default';
   multipleValue1 : number[] = [];
   multipleValue2 : number[] = [];
+  multipleValue3 : number[] = [];
   submitForm(): void {
     if (this.validateForm.valid) {
       const formValues: FormValues = { ...this.validateForm.value };
       formValues.Besoins = this.multipleValue1;
       formValues.Etapes = this.multipleValue2;
+      formValues.Pointcles = this.multipleValue3;
       console.log('submit', formValues);
 
       this.userService.add_realisation(formValues).subscribe(
@@ -136,11 +142,13 @@ export class AjouterRealisationComponent {
     this.loadPieces()
     this.loadBesoin()
     this.loadEtapes()
+    this.loadPointscles()
   }
   galeries: Galerie[] = [];
   pieces: Piece[] = [];
   besoins: BesoinProjet[] = [];
   etapes: EtapeProjet[] = [];
+  pointscles: Pointcle[] = [];
   loadGaleries(): void {
     this.userService.get_galeries().subscribe(
       (response) => {
@@ -187,13 +195,26 @@ export class AjouterRealisationComponent {
     );
   }
 
+  loadPointscles(): void {
+    this.userService.getPointscles().subscribe(
+      (response) => {
+        this.pointscles= response;
+        console.log("réponse de la requette get pointscles",this.pointscles);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des pointscles :', error);
+      }
+    );
+  }
+
 
   constructor(private fb: NonNullableFormBuilder,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
       Titre: ['', [ Validators.required]],
+      SousTitre: ['', [ ]],
       Description: ['', [ Validators.required]],
       Image_principale: ['', [ Validators.required]],
-      GalerieID:  [0, [ Validators.required]],
+      GalerieID:  [0, [ ]],
       PieceID:  [0, [ Validators.required]],
       Duree:  [0, [ Validators.required]],
       Top:  [false, [ Validators.required]],

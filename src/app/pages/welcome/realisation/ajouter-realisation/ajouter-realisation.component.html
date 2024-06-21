@@ -7,7 +7,12 @@
             <input nz-input formControlName="Titre" id="Titre" />
           </nz-form-control>
         </nz-form-item>
-       
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="SousTitre">Sous Titre</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid SousTitre!">
+              <input nz-input formControlName="SousTitre" id="SousTitre" />
+            </nz-form-control>
+          </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Description</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
@@ -16,7 +21,7 @@
           </nz-form-item>
 
           <nz-form-item >
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image_principale"  >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzRequired nzFor="Image_principale"  >
                 <span>Image principale</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -27,7 +32,7 @@
         </nz-form-item>
         
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="GalerieID"  nzRequired >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="GalerieID"   >
                 <span>Galerie</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -72,22 +77,33 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categories"  nzRequired nzTooltipTitle="What do you want other to call you" >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="besoins"  nzRequired nzTooltipTitle="What do you want other to call you" >
                 <span>Besoins</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
-                <nz-select id="categories" [(ngModel)]="multipleValue1" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                <nz-select id="besoins" [(ngModel)]="multipleValue1" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
                     <nz-option *ngFor="let option of besoins" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
                   </nz-select>
             </nz-form-control>
         
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categories"  nzRequired nzTooltipTitle="What do you want other to call you" >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pointcles"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Points clés du projet</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
+                <nz-select id="pointcles" [(ngModel)]="multipleValue3" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                    <nz-option *ngFor="let option of pointscles" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="etapes"  nzRequired nzTooltipTitle="What do you want other to call you" >
                 <span>Étapes du projet</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="vos Categories!">
-                <nz-select id="categories" [(ngModel)]="multipleValue2" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+                <nz-select id="etapes" [(ngModel)]="multipleValue2" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
                     <nz-option *ngFor="let option of etapes" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
                   </nz-select>
             </nz-form-control>

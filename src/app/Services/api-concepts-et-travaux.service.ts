@@ -298,6 +298,30 @@ get_role(userId: number): Observable<any> {
     return this.http.put<any>(url, userData);
   }
   
+   // Ajouter un nouveau Pointcle
+   addPointcle(pointcleData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_pointcle`, pointcleData);
+  }
+
+  // Obtenir tous les Pointcles
+  getPointscles(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_pointscle`);
+  }
+
+  // Obtenir un Pointcle par ID
+  getPointcleById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_pointcle/${id}`);
+  }
+
+  // Mettre à jour un Pointcle par ID
+  updatePointcle(id: number, pointcleData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_pointcle/${id}`, pointcleData);
+  }
+
+  // Supprimer un Pointcle par ID
+  deletePointcle(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_pointcle/${id}`);
+  }
 
   
 }

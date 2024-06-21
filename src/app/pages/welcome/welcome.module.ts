@@ -41,9 +41,12 @@ import { AjouterBesoinComponent } from './besoin-projet/ajouter-besoin/ajouter-b
 import { ModifierBesoinComponent } from './besoin-projet/modifier-besoin/modifier-besoin.component';
 import { AjouterEtapeComponent } from './etapes-projet/ajouter-etape/ajouter-etape.component';
 import { ModifierEtapeComponent } from './etapes-projet/modifier-etape/modifier-etape.component';
+import { PointsClesComponent } from './points-cles/points-cles.component';
+import { AjouterPointCleComponent } from './points-cles/ajouter-point-cle/ajouter-point-cle.component';
+import { ModifierPointCleComponent } from './points-cles/modifier-point-cle/modifier-point-cle.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule ],
-  declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent, PointsClesComponent, AjouterPointCleComponent, ModifierPointCleComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {
