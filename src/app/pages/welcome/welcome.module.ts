@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { WelcomeRoutingModule } from './welcome-routing.module';
-
+import { EditorModule } from '@tinymce/tinymce-angular';
 import { WelcomeComponent } from './welcome.component';
 import { SharedModule } from '../../shared/shared.module';
 import { AutorisationsComponent } from './autorisations/autorisations.component';
@@ -45,7 +45,7 @@ import { PointsClesComponent } from './points-cles/points-cles.component';
 import { AjouterPointCleComponent } from './points-cles/ajouter-point-cle/ajouter-point-cle.component';
 import { ModifierPointCleComponent } from './points-cles/modifier-point-cle/modifier-point-cle.component';
 @NgModule({
-  imports: [WelcomeRoutingModule,SharedModule ],
+  imports: [WelcomeRoutingModule,SharedModule,  EditorModule,  ],
   declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent, PointsClesComponent, AjouterPointCleComponent, ModifierPointCleComponent],
   exports: [WelcomeComponent]
 })

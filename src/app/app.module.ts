@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 
+
 registerLocaleData(fr);
 
 @NgModule({
@@ -26,7 +27,7 @@ registerLocaleData(fr);
     IconsProviderModule,
     NzLayoutModule,
     NzMenuModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     //provideClientHydration(),

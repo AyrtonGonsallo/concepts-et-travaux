@@ -25,9 +25,15 @@
                 <span>Reponse</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Reponse!">
-                <textarea rows="4" nz-input id="Reponse" formControlName="Reponse"></textarea>
-
-            </nz-form-control>
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor"
+                  formControlName="Reponse"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categories"  nzRequired nzTooltipTitle="What do you want other to call you" >
