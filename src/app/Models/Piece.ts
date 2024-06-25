@@ -1,5 +1,6 @@
 // piece.model.ts
 
+import { CategoriePiece } from "./Categorie-Piece";
 import { Galerie } from "./Galerie";
 
 export interface Piece {
@@ -9,7 +10,7 @@ export interface Piece {
     Titre: string;
     Présentation: string;
     Description: string;
-    Categories: [];
+    CategoriePieces: CategoriePiece[];
     GalerieID?: number; // Le point d'interrogation indique que la propriété est facultative
     Galerie?: Galerie; // Propriété pour stocker l'objet Galerie lié
   }
