@@ -323,5 +323,28 @@ get_role(userId: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_pointcle/${id}`);
   }
 
-  
+  // Create
+  addAvis(avisData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_avis`, avisData);
+  }
+
+  // Read all
+  getAvis(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_all_avis`);
+  }
+
+  // Read one
+  getAvisById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_avis/${id}`);
+  }
+
+  // Update
+  updateAvis(id: number, avisData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_avis/${id}`, avisData);
+  }
+
+  // Delete
+  deleteAvis(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_avis/${id}`);
+  }
 }

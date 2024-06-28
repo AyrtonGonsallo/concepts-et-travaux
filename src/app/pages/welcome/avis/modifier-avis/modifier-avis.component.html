@@ -1,0 +1,40 @@
+<div>
+    <h2>Avis</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Utilisateur"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Utilisateur</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Utilisateur!">
+                <input nz-input id="Utilisateur" formControlName="Utilisateur" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Message"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Message</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Message!">
+                
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                id="tiny-editor"
+                formControlName="Message"
+                [init]="{
+                  plugins: 'link image code',
+                  toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                }"
+              ></editor>
+            </nz-form-control>
+        </nz-form-item>
+   
+        
+       
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

@@ -44,6 +44,9 @@ import { AjouterCategorieQComponent } from './categorie-question/ajouter-categor
 import { PointsClesComponent } from './points-cles/points-cles.component';
 import { AjouterPointCleComponent } from './points-cles/ajouter-point-cle/ajouter-point-cle.component';
 import { ModifierPointCleComponent } from './points-cles/modifier-point-cle/modifier-point-cle.component';
+import { AvisComponent } from './avis/avis.component';
+import { AjouterAvisComponent } from './avis/ajouter-avis/ajouter-avis.component';
+import { ModifierAvisComponent } from './avis/modifier-avis/modifier-avis.component';
 
 const routes: Routes = [
  
@@ -81,6 +84,9 @@ const routes: Routes = [
       { path: 'points-cles', component: PointsClesComponent },
       { path: 'points-cles/ajouter-point-cle', component: AjouterPointCleComponent },
       { path: 'points-cles/modifier-point-cle/:id', component: ModifierPointCleComponent },
+      { path: 'avis', component: AvisComponent },
+      { path: 'avis/ajouter-avis', component: AjouterAvisComponent },
+      { path: 'avis/modifier-avis/:id', component: ModifierAvisComponent },
       { path: 'pieces/ajouter-piece', component: AjouterPieceComponent },
       { path: 'realisations', component: RealisationComponent },
       { path: 'realisations/ajouter-realisation', component: AjouterRealisationComponent },
