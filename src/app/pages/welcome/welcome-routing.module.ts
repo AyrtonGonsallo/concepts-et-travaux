@@ -47,6 +47,9 @@ import { ModifierPointCleComponent } from './points-cles/modifier-point-cle/modi
 import { AvisComponent } from './avis/avis.component';
 import { AjouterAvisComponent } from './avis/ajouter-avis/ajouter-avis.component';
 import { ModifierAvisComponent } from './avis/modifier-avis/modifier-avis.component';
+import { ModifierFrontPageComponent } from './front-page/modifier-front-page/modifier-front-page.component';
+import { AjouterFrontPageComponent } from './front-page/ajouter-front-page/ajouter-front-page.component';
+import { FrontPageComponent } from './front-page/front-page.component';
 
 const routes: Routes = [
  
@@ -87,6 +90,9 @@ const routes: Routes = [
       { path: 'avis', component: AvisComponent },
       { path: 'avis/ajouter-avis', component: AjouterAvisComponent },
       { path: 'avis/modifier-avis/:id', component: ModifierAvisComponent },
+      { path: 'front-pages', component: FrontPageComponent },
+      { path: 'front-pages/ajouter-front-page', component: AjouterFrontPageComponent },
+      { path: 'front-pages/modifier-front-page/:id', component: ModifierFrontPageComponent },
       { path: 'pieces/ajouter-piece', component: AjouterPieceComponent },
       { path: 'realisations', component: RealisationComponent },
       { path: 'realisations/ajouter-realisation', component: AjouterRealisationComponent },

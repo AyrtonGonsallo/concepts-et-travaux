@@ -1,0 +1,33 @@
+<div>
+    <h2>Liste des pages</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'front-pages', 'ajouter-front-page']">Ajouter une page</button>
+
+    <nz-table #sortTable [nzData]="front_pages"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td>{{ data.ID }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.Url }}</td>
+            <td>{{ data.Content_balise_description }}</td>
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'front-pages', 'modifier-front-page',data.ID]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+              nzPopconfirmTitle="Are you sure delete this account?"
+              nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="deletePage(data.ID)"
+               ><span nz-icon nzType="delete"></span></button>
+            </td>
+          </tr>
+        </tbody>
+    </nz-table>
+</div>

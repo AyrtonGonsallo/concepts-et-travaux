@@ -1,0 +1,11 @@
+.editable-tag {
+    background: rgb(255, 255, 255);
+    border-style: dashed;
+  }
+  .text-end{
+    text-align: end;
+  }
+  .mbt-8{
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }

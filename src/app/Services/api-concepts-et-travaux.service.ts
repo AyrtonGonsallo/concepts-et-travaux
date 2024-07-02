@@ -347,4 +347,29 @@ get_role(userId: number): Observable<any> {
   deleteAvis(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_avis/${id}`);
   }
+
+  // Create
+  addFrontPage(avisData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_page`, avisData);
+  }
+
+  // Read all
+  getFrontPages(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_pages`);
+  }
+
+  // Read one
+  getFrontPageById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_page/${id}`);
+  }
+
+  // Update
+  updateFrontPage(id: number, avisData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_page/${id}`, avisData);
+  }
+
+  // Delete
+  deleteFrontPage(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_page/${id}`);
+  }
 }

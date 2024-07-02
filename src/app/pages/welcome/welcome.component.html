@@ -19,6 +19,9 @@
             <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/roles">Roles</a>
             </li>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/front-pages">Pages du site</a>
+            </li>
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="Projets" nzIcon="schedule">

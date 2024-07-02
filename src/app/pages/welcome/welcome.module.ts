@@ -9,6 +9,7 @@ import { ComptesComponent } from './comptes/comptes.component';
 import { RolesComponent } from './roles/roles.component';
 import { AjouterCompteComponent } from './comptes/ajouter-compte/ajouter-compte.component';
 import { ModifierCompteComponent } from './comptes/modifier-compte/modifier-compte.component';
+
 import { AjouterAutorisationComponent } from './autorisations/ajouter-autorisation/ajouter-autorisation.component';
 import { AjouterRoleComponent } from './roles/ajouter-role/ajouter-role.component';
 import { ModifierRoleComponent } from './roles/modifier-role/modifier-role.component';
@@ -47,9 +48,12 @@ import { ModifierPointCleComponent } from './points-cles/modifier-point-cle/modi
 import { AvisComponent } from './avis/avis.component';
 import { AjouterAvisComponent } from './avis/ajouter-avis/ajouter-avis.component';
 import { ModifierAvisComponent } from './avis/modifier-avis/modifier-avis.component';
+import { FrontPageComponent } from './front-page/front-page.component';
+import { AjouterFrontPageComponent } from './front-page/ajouter-front-page/ajouter-front-page.component';
+import { ModifierFrontPageComponent } from './front-page/modifier-front-page/modifier-front-page.component';
 @NgModule({
   imports: [WelcomeRoutingModule,SharedModule,  EditorModule,  ],
-  declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent, PointsClesComponent, AjouterPointCleComponent, ModifierPointCleComponent, AvisComponent, AjouterAvisComponent, ModifierAvisComponent],
+  declarations: [WelcomeComponent, AutorisationsComponent,AjouterCategorieComponent ,ModifierCategorieComponent , ComptesComponent, RolesComponent, AjouterCompteComponent, ModifierCompteComponent, AjouterAutorisationComponent, AjouterRoleComponent, ModifierRoleComponent, ModifierAutorisationComponent, ProjetComponent, AjouterProjetComponent, ModifierProjetComponent, VoirProjetComponent, BesoinProjetComponent, EtapesProjetComponent, CategoriePieceComponent, PieceComponent, AjouterPieceComponent, RealisationComponent, AjouterRealisationComponent, GaleriesComponent, AjouterGalerieComponent, ModifierGalerieComponent, ModifierRealisationComponent, ModifierPieceComponent, CategorieQuestionComponent, AjouterCategorieQComponent, ModifierCategorieQComponent, QuestionComponent, AjouterQuestionComponent, ModifierQuestionComponent, AjouterBesoinComponent, ModifierBesoinComponent, AjouterEtapeComponent, ModifierEtapeComponent, PointsClesComponent, AjouterPointCleComponent, ModifierPointCleComponent, AvisComponent, AjouterAvisComponent, ModifierAvisComponent, FrontPageComponent, AjouterFrontPageComponent , ModifierFrontPageComponent],
   exports: [WelcomeComponent]
 })
 export class WelcomeModule {

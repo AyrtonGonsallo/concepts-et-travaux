@@ -1,0 +1,148 @@
+<div>
+    <h2>Page du site</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Titre"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Titre</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Titre!">
+                <input nz-input id="Titre" formControlName="Titre" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Url</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Url!">
+                <input nz-input id="Url" formControlName="Url" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_title</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_title!">
+                <input nz-input id="Content_balise_title" formControlName="Content_balise_title" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Content_balise_description"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_description</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_description!">
+                <textarea rows="4" nz-input id="Content_balise_description" formControlName="Content_balise_description"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+        <div nz-row>
+            <div nz-col class="text-end mbt-8" [nzSm]="6" [nzXs]="24"  nzFor="Content_balise_keywords"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_keywords</span>
+            </div>
+            <div nz-col class="mbt-8" [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_keywords!">
+                <!-- mettre  l'element d'id keywords-select ici  -->
+                <ng-container *ngTemplateOutlet="keywordsTemplate"></ng-container>
+            </div>
+        </div>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_robots</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_robots!">
+                <nz-select formControlName="Content_balise_robots" >
+                    <nz-option *ngFor="let type of  listOfRobotsvalues" [nzLabel]="type" [nzValue]="type"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Href_balise_canonical</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Href_balise_canonical!">
+                <input nz-input id="Href_balise_canonical" formControlName="Href_balise_canonical" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_og_title</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_og_title!">
+                <input nz-input id="Content_balise_og_title" formControlName="Content_balise_og_title" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Content_balise_og_description"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_og_description</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_og_description!">
+                <textarea rows="4" nz-input id="Content_balise_og_description" formControlName="Content_balise_og_description"></textarea>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_og_url</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_og_url!">
+                <input nz-input id="Content_balise_og_url" formControlName="Content_balise_og_url" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_og_type</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_og_type!">
+                <nz-select formControlName="Content_balise_og_type" >
+                    <nz-option *ngFor="let type of listOfTypes" [nzLabel]="type" [nzValue]="type"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Url"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Content_balise_og_site_name</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Content_balise_og_site_name!">
+                <input nz-input id="Content_balise_og_site_name" formControlName="Content_balise_og_site_name" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Content_balise_og_image"  >
+                <span>Content_balise_og_image</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input type="text" id="Content_balise_og_image" formControlName="Content_balise_og_image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
+            </nz-form-control>
+        </nz-form-item>
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
+<ng-template #keywordsTemplate>
+    <nz-tag
+        *ngFor="let tag of tags; let i = index"
+        [nzMode]="i === 0 ? 'default' : 'closeable'"
+        (nzOnClose)="handleClose(tag)"
+    >
+        {{ sliceTagName(tag) }}
+    </nz-tag>
+    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+        <span nz-icon nzType="plus"></span>
+        New Tag
+    </nz-tag>
+    <input
+        #inputElement
+        nz-input
+        nzSize="small"
+        *ngIf="inputVisible"
+        type="text"
+        [(ngModel)]="inputValue"
+        style="width: 78px;"
+        (blur)="handleInputConfirm()"
+        (keydown.enter)="handleInputConfirm()"
+    />
+</ng-template>
