@@ -3,9 +3,9 @@
     <span>{{ galerie?.images?.length }} Images</span>
     <div class="galerie-images-grid">
         <div  class="galerie-image-link"*ngFor="let image of galerie?.images" >
-        <div  class="galerie-image" [style.backgroundImage]="'url(https://dev.homeren.fr/api-concepts-et-travaux/files/' + image.Url + ')'">
+        <div  class="galerie-image" [style.backgroundImage]="'url('+url_images + image.Url + ')'">
             <button nz-button nzType="primary" [nzSize]="size" (click)="delete_image_from_gallery(image.ID)" nzShape="circle"><span nz-icon nzType="close"></span></button>
-            <a target="_blank" [href]="'https://dev.homeren.fr/api-concepts-et-travaux/files/' + image.Url" nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="fullscreen"></span></a>
+            <a target="_blank" [href]="url_images + image.Url" nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="fullscreen"></span></a>
 
         </div>
     </div>

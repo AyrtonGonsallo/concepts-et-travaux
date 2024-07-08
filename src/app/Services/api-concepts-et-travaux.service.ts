@@ -372,4 +372,64 @@ get_role(userId: number): Observable<any> {
   deleteFrontPage(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_page/${id}`);
   }
+ 
+   // Create
+   addEquipement(equipement: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_equipement/`, equipement);
+  }
+
+  // Read all
+  getEquipements(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements/`);
+  }
+
+  // Read one
+  getEquipement(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipement/${id}`);
+  }
+
+  // Read by PieceID
+  getEquipementsByPiece(pieceID: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements_by_piece/${pieceID}`);
+  }
+
+  // Update
+  updateEquipement(id: number, equipement: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_equipement/${id}`, equipement);
+  }
+
+  // Delete
+  deleteEquipement(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_equipement/${id}`);
+  }
+
+  // Méthode pour ajouter un travail
+  addTravail(travailData: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_travail`, travailData);
+  }
+
+  // Méthode pour récupérer tous les travaux avec les détails de la pièce associée
+  getTravaux(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_travaux`);
+  }
+
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getTravailById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_travail/${id}`);
+  }
+
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getTravauxByPieceId(pid: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_travaux_by_piece/${pid}`);
+  }
+
+  // Méthode pour mettre à jour un travail par son ID
+  updateTravail(id: number, travailData: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_travail/${id}`, travailData);
+  }
+
+  // Méthode pour supprimer un travail par son ID
+  deleteTravail(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_travail/${id}`);
+  }
 }

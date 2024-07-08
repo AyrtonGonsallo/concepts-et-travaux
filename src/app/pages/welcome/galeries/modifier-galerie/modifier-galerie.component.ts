@@ -15,7 +15,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class ModifierGalerieComponent {
   validateForm: FormGroup;
-  url_images=environment.apiUrl
+  url_images=environment.imagesUrl
   file_list: NzUploadFile[] = []; // Tableau pour stocker les fichiers sélectionnés
   size: NzButtonSize = 'large';
   constructor(private fb: FormBuilder,private route: ActivatedRoute,private msg:NzMessageService, private router: Router,private userService: ApiConceptsEtTravauxService) {

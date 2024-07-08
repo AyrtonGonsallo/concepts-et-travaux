@@ -50,6 +50,12 @@ import { ModifierAvisComponent } from './avis/modifier-avis/modifier-avis.compon
 import { ModifierFrontPageComponent } from './front-page/modifier-front-page/modifier-front-page.component';
 import { AjouterFrontPageComponent } from './front-page/ajouter-front-page/ajouter-front-page.component';
 import { FrontPageComponent } from './front-page/front-page.component';
+import { EquipementsComponent } from './equipements/equipements.component';
+import { AjouterEquipementComponent } from './equipements/ajouter-equipement/ajouter-equipement.component';
+import { ModifierEquipementComponent } from './equipements/modifier-equipement/modifier-equipement.component';
+import { AjouterTravailComponent } from './travaux/ajouter-travail/ajouter-travail.component';
+import { ModifierTravailComponent } from './travaux/modifier-travail/modifier-travail.component';
+import { TravauxComponent } from './travaux/travaux.component';
 
 const routes: Routes = [
  
@@ -90,6 +96,12 @@ const routes: Routes = [
       { path: 'avis', component: AvisComponent },
       { path: 'avis/ajouter-avis', component: AjouterAvisComponent },
       { path: 'avis/modifier-avis/:id', component: ModifierAvisComponent },
+      { path: 'equipements', component: EquipementsComponent },
+      { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
+      { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },
+      { path: 'travaux', component: TravauxComponent },
+      { path: 'travaux/ajouter-travail', component: AjouterTravailComponent },
+      { path: 'travaux/modifier-travail/:id', component: ModifierTravailComponent },
       { path: 'front-pages', component: FrontPageComponent },
       { path: 'front-pages/ajouter-front-page', component: AjouterFrontPageComponent },
       { path: 'front-pages/modifier-front-page/:id', component: ModifierFrontPageComponent },

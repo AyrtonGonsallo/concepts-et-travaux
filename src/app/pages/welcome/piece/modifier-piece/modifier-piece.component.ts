@@ -183,7 +183,7 @@ export class ModifierPieceComponent {
     Description: ['', [ Validators.required]],
     Image_principale: ['', [ ]],
     Image_presentation: ['', [ ]],
-    GalerieID:  [0, [ Validators.required]],
+    GalerieID:  [0, [ ]],
     });
   }
 

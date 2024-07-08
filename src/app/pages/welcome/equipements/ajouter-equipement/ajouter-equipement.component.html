@@ -1,0 +1,54 @@
+<div>
+    <h2>Ajouter un équipement</h2>   
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Titre!">
+            <input nz-input formControlName="Titre" id="Titre" />
+          </nz-form-control>
+        </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Description</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
+              
+              <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor"
+                  formControlName="Description"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image"  >
+                <span>Image</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input type="text" id="Image" formControlName="Image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID"  >
+                <span>Pièce</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="RoleId" formControlName="PieceID"  nzPlaceHolder="Pièce" >
+                    <nz-option *ngFor="let option of pieces" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+       
+
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Ajouter</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+</div>
