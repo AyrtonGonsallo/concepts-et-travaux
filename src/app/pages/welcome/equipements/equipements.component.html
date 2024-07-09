@@ -21,6 +21,7 @@
             <td>{{ data.ID }}</td>
             <td>{{ data.Titre }}</td>
             <td>{{ data.Description }}</td>
+            <td>{{ data.Type }}</td>
             <td>{{ data.Piece?.Titre }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'equipements', 'modifier-equipement',data.ID]"><span nz-icon nzType="edit"></span></button>

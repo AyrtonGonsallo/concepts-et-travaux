@@ -20,6 +20,7 @@ interface FormValues {
 export class ModifierEquipementComponent {
   validateForm: FormGroup<{
     Titre: FormControl<string>;
+    Type: FormControl<string>;
     Description: FormControl<string>;
     Image: FormControl<string>;
     PieceID: FormControl<number>;
@@ -149,6 +150,7 @@ getDetails(id: string): void {
       Titre: ['', [ Validators.required]],
     Description: ['', [ Validators.required]],
     Image: ['', [ ]],
+    Type: ['', [ ]],
     PieceID:  [0, [ ]],
     });
   }

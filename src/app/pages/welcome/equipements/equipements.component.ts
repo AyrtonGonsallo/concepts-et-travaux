@@ -30,6 +30,11 @@ export class EquipementsComponent {
       compare: (a: Equipement, b: Equipement) => a.Description.localeCompare(b.Description),
       priority: 1
     },
+    {
+      title: 'Type',
+      compare: (a: Equipement, b: Equipement) => a.Type.localeCompare(b.Type),
+      priority: 1
+    },
   ];
   equipements:Equipement[] = [];
 

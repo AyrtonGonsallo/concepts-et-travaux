@@ -22,6 +22,7 @@ export class AjouterEquipementComponent {
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     Description: FormControl<string>;
+    Type: FormControl<string>;
     Image: FormControl<string>;
     PieceID: FormControl<number>;
   }>;
@@ -132,6 +133,7 @@ export class AjouterEquipementComponent {
     this.validateForm = this.fb.group({
       Titre: ['', [ Validators.required]],
     Description: ['', [ Validators.required]],
+    Type: ['', [ ]],
     Image: ['', [ ]],
     PieceID:  [0, [ ]],
     });
