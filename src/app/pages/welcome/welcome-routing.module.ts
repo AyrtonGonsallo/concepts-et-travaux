@@ -56,6 +56,9 @@ import { ModifierEquipementComponent } from './equipements/modifier-equipement/m
 import { AjouterTravailComponent } from './travaux/ajouter-travail/ajouter-travail.component';
 import { ModifierTravailComponent } from './travaux/modifier-travail/modifier-travail.component';
 import { TravauxComponent } from './travaux/travaux.component';
+import { AjouterModeleComponent } from './modeles-equipements/ajouter-modele/ajouter-modele.component';
+import { ModifierModeleComponent } from './modeles-equipements/modifier-modele/modifier-modele.component';
+import { ModelesEquipementsComponent } from './modeles-equipements/modeles-equipements.component';
 
 const routes: Routes = [
  
@@ -102,6 +105,9 @@ const routes: Routes = [
       { path: 'travaux', component: TravauxComponent },
       { path: 'travaux/ajouter-travail', component: AjouterTravailComponent },
       { path: 'travaux/modifier-travail/:id', component: ModifierTravailComponent },
+      { path: 'modeles-equipements', component: ModelesEquipementsComponent },
+      { path: 'modeles-equipements/ajouter-modele', component: AjouterModeleComponent },
+      { path: 'modeles-equipements/modifier-modele/:id', component: ModifierModeleComponent },
       { path: 'front-pages', component: FrontPageComponent },
       { path: 'front-pages/ajouter-front-page', component: AjouterFrontPageComponent },
       { path: 'front-pages/modifier-front-page/:id', component: ModifierFrontPageComponent },

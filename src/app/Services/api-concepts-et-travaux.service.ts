@@ -432,4 +432,29 @@ get_role(userId: number): Observable<any> {
   deleteTravail(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_travail/${id}`);
   }
+
+  // Ajouter un nouveau modèle d'équipement
+  addModeleEquipement(modeleEquipement: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_modele_equipement`, modeleEquipement);
+  }
+
+  // Récupérer un modèle d'équipement par son ID
+  getModeleEquipementById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_modele_equipement/${id}`);
+  }
+
+  // Mettre à jour un modèle d'équipement par son ID
+  updateModeleEquipement(id: number, modeleEquipement: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_modele_equipement/${id}`, modeleEquipement);
+  }
+
+  // Supprimer un modèle d'équipement par son ID
+  deleteModeleEquipement(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_modele_equipement/${id}`);
+  }
+
+  // Récupérer tous les modèles d'équipement
+  getModelesEquipement(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement`);
+  }
 }

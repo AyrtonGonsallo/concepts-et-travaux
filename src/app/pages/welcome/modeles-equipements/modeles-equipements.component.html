@@ -1,0 +1,37 @@
+<div>
+    <h2>Liste des pièces</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'modeles-equipements', 'ajouter-modele']">Ajouter un modèle</button>
+
+    <nz-table #sortTable [nzData]="modeles"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th >
+              Equipement
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td>{{ data.ID }}</td>
+            <td>{{ data.Titre }}</td>
+            <td>{{ data.Description }}</td>
+            <td>{{  data.EquipementID }}</td>
+            <td> 
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'modeles-equipements', 'modifier-modele',data.ID]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+              nzPopconfirmTitle=" Voulez-vous supprimer ce modèle ?"
+              nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="deleteModeleEquipement(data.ID)"
+              (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+            </td>
+          </tr>
+        </tbody>
+    </nz-table>
+    
+</div>
