@@ -59,6 +59,9 @@ import { TravauxComponent } from './travaux/travaux.component';
 import { AjouterModeleComponent } from './modeles-equipements/ajouter-modele/ajouter-modele.component';
 import { ModifierModeleComponent } from './modeles-equipements/modifier-modele/modifier-modele.component';
 import { ModelesEquipementsComponent } from './modeles-equipements/modeles-equipements.component';
+import { DevisPiecesComponent } from './devis-pieces/devis-pieces.component';
+import { ModifierDevisPieceComponent } from './devis-pieces/modifier-devis-piece/modifier-devis-piece.component';
+import { AjouterDevisPieceComponent } from './devis-pieces/ajouter-devis-piece/ajouter-devis-piece.component';
 
 const routes: Routes = [
  
@@ -116,7 +119,10 @@ const routes: Routes = [
       { path: 'realisations/ajouter-realisation', component: AjouterRealisationComponent },
       { path: 'realisations/modifier-realisation/:id', component: ModifierRealisationComponent },
       { path: 'pieces/modifier-piece/:id', component: ModifierPieceComponent },
-
+      { path: 'devis-pieces', component: DevisPiecesComponent },
+      { path: 'devis-pieces/modifier-devis-piece/:id', component: ModifierDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'devis-pieces/ajouter-devis-piece', component: AjouterDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID

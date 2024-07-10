@@ -457,4 +457,22 @@ get_role(userId: number): Observable<any> {
   getModelesEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement`);
   }
+
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getDevisPieceById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_devis_piece/${id}`);
+  }
+
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getAllDevisPieces(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_all_devis_piece`);
+  }
+   // Méthode pour supprimer un devis pièce par ID
+   deleteDevisPiece(devisPieceId: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/devis_piece/${devisPieceId}`);
+  }
+   // Update
+   updateDevisPiece(id: number, devis: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_devis_piece/${id}`, devis);
+  }
 }

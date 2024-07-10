@@ -1,0 +1,123 @@
+<div>
+    <h2>Gestion des devis</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID" >
+                <span>Pièce</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="PieceID" formControlName="PieceID"  nzPlaceHolder="Pièce" [nzDisabled]="true">
+                    <nz-option *ngFor="let option of pieces" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="UtilisateurID"  >
+                <span>UtilisateurID</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="UtilisateurID" formControlName="UtilisateurID" [nzDisabled]="true" ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Username"   nzTooltipTitle="What do you want other to call you" >
+                <span>Username</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Username!" >
+                <textarea rows="2" nz-input id="Username" formControlName="Username" readonly></textarea> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdresseIP"   nzTooltipTitle="What do you want other to call you" >
+                <span>AdresseIP</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre AdresseIP!">
+                <input nz-input id="AdresseIP" formControlName="AdresseIP" readonly/>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Date"   nzTooltipTitle="What do you want other to call you" >
+                <span>Date</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Date!">
+                <nz-date-picker nzShowTime formControlName="Date" [nzDisabled]="true"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >
+                <span>Prix</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="Prix" formControlName="Prix" [nzDisabled]="true" ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="What do you want other to call you" >
+                <span>Commentaire</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Commentaire!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor"
+                  formControlName="Commentaire"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+        
+        
+       
+
+        
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+
+
+    <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed">
+        <thead>
+          <tr>
+            <th nzWidth="60px"></th>
+            <th>ID</th>
+            <th>Type de tache</th>
+            <th>Tache</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of nzTable.data;let i=index">
+            <tr>
+              <td [nzExpand]="expandSet.has(data.ID)" [nzExpandIcon]="expandIcon"></td>
+              <td>{{ data.ID }}</td>
+              <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
+              <td>{{ data.TravailSlug }}</td>
+              <td>{{ data.Prix }} <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Calculer le prix</button></td>
+            </tr>
+            <tr [nzExpand]="expandSet.has(data.ID)">
+              <span>{{data.Donnees}}</span>
+            </tr>
+            <ng-template #expandIcon>
+              <span
+                nz-icon
+                *ngIf="!expandSet.has(data.ID)"
+                nzType="plus-circle"
+                nzTheme="outline"
+                (click)="onExpandChange(data.ID, true)"
+              ></span>
+              <span
+                nz-icon
+                *ngIf="expandSet.has(data.ID)"
+                nzType="minus-circle"
+                nzTheme="outline"
+                (click)="onExpandChange(data.ID, false)"
+              ></span>
+            </ng-template>
+          </ng-container>
+        </tbody>
+      </nz-table>
+</div>
