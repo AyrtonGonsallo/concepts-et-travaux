@@ -99,7 +99,8 @@
               <td>{{ data.Prix }} <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Calculer le prix</button></td>
             </tr>
             <tr [nzExpand]="expandSet.has(data.ID)">
-              <span>{{data.Donnees}}</span>
+              <span>{{data.Donnees }}</span>
+              
             </tr>
             <ng-template #expandIcon>
               <span
