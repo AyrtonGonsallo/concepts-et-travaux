@@ -62,6 +62,12 @@ import { ModelesEquipementsComponent } from './modeles-equipements/modeles-equip
 import { DevisPiecesComponent } from './devis-pieces/devis-pieces.component';
 import { ModifierDevisPieceComponent } from './devis-pieces/modifier-devis-piece/modifier-devis-piece.component';
 import { AjouterDevisPieceComponent } from './devis-pieces/ajouter-devis-piece/ajouter-devis-piece.component';
+import { ModifierGammeComponent } from './gamme/modifier-gamme/modifier-gamme.component';
+import { AjouterGammeComponent } from './gamme/ajouter-gamme/ajouter-gamme.component';
+import { GammeComponent } from './gamme/gamme.component';
+import { TachesGeneralesComponent } from './taches-generales/taches-generales.component';
+import { ModifierTacheGeneraleComponent } from './taches-generales/modifier-tache-generale/modifier-tache-generale.component';
+import { AjouterTacheGeneraleComponent } from './taches-generales/ajouter-tache-generale/ajouter-tache-generale.component';
 
 const routes: Routes = [
  
@@ -122,6 +128,12 @@ const routes: Routes = [
       { path: 'devis-pieces', component: DevisPiecesComponent },
       { path: 'devis-pieces/modifier-devis-piece/:id', component: ModifierDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'devis-pieces/ajouter-devis-piece', component: AjouterDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'gammes', component: GammeComponent },
+      { path: 'gammes/modifier-gamme/:id', component: ModifierGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'gammes/ajouter-gamme', component: AjouterGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'taches-generales', component: TachesGeneralesComponent },
+      { path: 'taches-generales/modifier-tache-generale/:id', component: ModifierTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'taches-generales/ajouter-tache-generale', component: AjouterTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID

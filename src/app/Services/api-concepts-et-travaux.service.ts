@@ -469,10 +469,61 @@ get_role(userId: number): Observable<any> {
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteDevisPiece(devisPieceId: number): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/devis_piece/${devisPieceId}`);
+    return this.http.delete<any>(`${environment.apiUrl}/delete_devis_piece/${devisPieceId}`);
   }
    // Update
    updateDevisPiece(id: number, devis: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_devis_piece/${id}`, devis);
   }
+
+  
+
+  // Ajouter un nouveau modèle d'équipement
+  addGamme(gamme: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_gamme`, gamme);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getGammeById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_gamme/${id}`);
+  }
+  getGammesByTravailAndType(travailID:number,type: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_gammes_by_type_and_travailID/${travailID}/${type}`);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getGammes(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_gammes`);
+  }
+   // Méthode pour supprimer un devis pièce par ID
+   deleteGamme(gammeId: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_gamme/${gammeId}`);
+  }
+   // Update
+   updateGamme(id: number, gamme: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_gamme/${id}`, gamme);
+  }
+
+  // Ajouter un nouveau modèle d'équipement
+  addTacheGenerale(tache_generale: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_tache_generale`, tache_generale);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getTacheGeneraleById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_tache_generale/${id}`);
+  }
+  getTacheGeneralesByTravailAndType(travailID:number,type: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_tache_generales_by_type_and_travailID/${travailID}/${type}`);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getTacheGenerales(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_tache_generales`);
+  }
+  // Méthode pour supprimer un devis pièce par ID
+  deleteTacheGenerale(tache_generaleId: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_tache_generale/${tache_generaleId}`);
+  }
+  // Update
+  updateTacheGenerale(id: number, tache_generale: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_tache_generale/${id}`, tache_generale);
+  }
+
 }

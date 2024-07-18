@@ -31,6 +31,12 @@ export class CalculDevisService {
     else if(tacheid==12){
       prix=this.get_prix_tache_12(donnees_json)
     }
+    else if(tacheid==9){
+      prix=this.get_prix_tache_9(donnees_json)
+    }
+    else if(tacheid==8){
+      prix=this.get_prix_tache_8(donnees_json)
+    }
     tache.Prix=prix
     return prix
   }
@@ -38,33 +44,16 @@ export class CalculDevisService {
 
 get_prix_tache_5(donnees_json:any){
   let prix=0
-  const murs: {
-    hauteur: number;
-    surface: number;
-    longueur: number;
-    etat: string;
-    carrelage: string;
-    papier: string;
-    enduit: string;
-    peinture: string;
-    image: any; // Vous pouvez spécifier le type de 'image' selon vos besoins
-  }[] = donnees_json.murs;
-
-  // Parcourir chaque mur
-  murs.forEach(mur => {
-    if(mur.papier){
-      prix+=mur.surface*this.getTarif(mur.papier.length)
-    }
-    if(mur.peinture){
-      prix+=mur.surface*this.getTarif(mur.peinture.length)
-    }
-    if(mur.enduit){
-      prix+=mur.surface*this.getTarif(mur.enduit.length)
-    }
-    if(mur.carrelage){
-      prix+=mur.surface*this.getTarif(mur.carrelage.length)
-    }
-  });
+  let dimensions = donnees_json["dimensions-pose-murs"].murs;
+  let gammes = donnees_json["gammes-produits-pose-murs"].murs;
+  let etat_surfaces = donnees_json["etat-surfaces-pose-murs"].murs;
+  let total=dimensions.length
+  for(let i=0;i<total;i++){
+    prix+=dimensions[i].surface*gammes[i].peinture
+    prix+=dimensions[i].surface*gammes[i].carrelage
+    prix+=dimensions[i].surface*gammes[i].papier
+    prix+=dimensions[i].surface*gammes[i].enduit
+  }
   return prix
 }
   getTarif(id:number){
@@ -102,6 +91,42 @@ get_prix_tache_5(donnees_json:any){
     prix+=donnees_json.creation_de_canalisations*this.getTarif("creation_de_canalisations".length)
     prix+=donnees_json.pose_de_radiateur_existant*this.getTarif("pose_de_radiateur_existant".length)
     
+    return prix
+  }
+  get_prix_tache_8(donnees_json:any){
+    let prix=0
+    let surface=donnees_json["dimensions-pose-plafond"].surface
+    let prix_carrelage=donnees_json["gammes-produits-pose-plafond"].carrelage;
+    let prix_papier=donnees_json["gammes-produits-pose-plafond"].papier;
+    let prix_enduit=donnees_json["gammes-produits-pose-plafond"].enduit;
+    let prix_peinture=donnees_json["gammes-produits-pose-plafond"].peinture;
+    prix+=prix_carrelage*surface
+    prix+=prix_papier*surface
+    prix+=prix_enduit*surface
+    prix+=prix_peinture*surface
+      
+    return prix
+  }
+  get_prix_tache_9(donnees_json:any){
+    let prix=0
+    let surface=donnees_json["dimensions-pose-sol"].surface
+    let prix_plinthes=donnees_json["gammes-produits-pose-sol"].plinthes;
+    let has_pvc=(donnees_json["gammes-produits-pose-sol"].sol_pvc)?1:0;
+    let has_moquette=(donnees_json["gammes-produits-pose-sol"].moquette)?1:0;
+    let prix_pvc=donnees_json["gammes-produits-pose-sol"].sol_pvc_prix;
+    let prix_moquette=donnees_json["gammes-produits-pose-sol"].moquette_prix;
+    let prix_carrelage=donnees_json["gammes-produits-pose-sol"].carrelage;
+    let prix_parquet_massif=donnees_json["gammes-produits-pose-sol"].parquet_massif;
+    let prix_paquet_flottant_finition_bois=donnees_json["gammes-produits-pose-sol"].paquet_flottant_finition_bois;
+    let prix_parquet_flottant_finition_stratifiee=donnees_json["gammes-produits-pose-sol"].parquet_flottant_finition_stratifiee;
+    prix+=prix_plinthes*surface
+    prix+=prix_carrelage*surface
+    prix+=prix_parquet_massif*surface
+    prix+=has_moquette*prix_moquette
+    prix+=has_pvc*prix_pvc
+    prix+=prix_paquet_flottant_finition_bois*surface
+    prix+=prix_parquet_flottant_finition_stratifiee*surface
+      
     return prix
   }
 }

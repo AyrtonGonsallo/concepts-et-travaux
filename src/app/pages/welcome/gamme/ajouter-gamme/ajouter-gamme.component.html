@@ -1,0 +1,61 @@
+<div>
+    <h2>Gamme</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Label"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Désignation</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Label!">
+                <input nz-input id="Label" formControlName="Label" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Type de gamme</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
+                    <nz-option *ngFor="let option of types" [nzValue]="option.slug" [nzLabel]="option.label"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix" nzRequired >
+                <span>Prix</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="Prix" formControlName="Prix"  ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image"  >
+                <span>Image</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input type="text" id="Image" formControlName="Image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" /> 
+                Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB          
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >
+                <span>Travail associé</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
+                    <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+       
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Créer</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
