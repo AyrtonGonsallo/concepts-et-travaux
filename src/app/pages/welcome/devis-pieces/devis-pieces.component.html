@@ -26,7 +26,7 @@
             <td>{{ data.AdresseIP }}</td>
             <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
             
-            <td>{{ data.Prix }}</td>
+            <td>{{ data.Prix?data.Prix:0 }} €</td>
             <td>{{ data.UtilisateurID }}</td>
             <td>{{ data.DevisTaches.length }}</td>
             <td> 
