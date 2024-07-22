@@ -12,7 +12,10 @@
                 Utilisateur
               </th>
               <th>
-                Nombre de taches
+                Devis payé ?
+              </th>
+              <th>
+                Nombre de tâches
               </th>
             <th>
               Actions
@@ -25,9 +28,13 @@
             <td>{{ data.Username }}</td>
             <td>{{ data.AdresseIP }}</td>
             <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-            
-            <td>{{ data.Prix?data.Prix:0 }} €</td>
+            <td>{{ data.Prix?data.Prix:0 }} €</td> 
             <td>{{ data.UtilisateurID }}</td>
+            <td>
+              <span *ngIf="data.Payed" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
+               <span *ngIf="!data.Payed" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
+              </td>
+           
             <td>{{ data.DevisTaches.length }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isAdmin()" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'devis-pieces', 'modifier-devis-piece',data.ID]"><span nz-icon nzType="edit"></span></button>

@@ -25,6 +25,7 @@ export class ModifierDevisPieceComponent {
     Commentaire: FormControl<string>;
     PieceID: FormControl<number>;
     Prix: FormControl<number>;
+    Payed: FormControl<boolean>;
     DevisID: FormControl<number>;
     
   }>;
@@ -61,10 +62,11 @@ export class ModifierDevisPieceComponent {
       Username: ['', [Validators.required]],
       AdresseIP: ['', [Validators.required]],
       Date: ['', [Validators.required]],
-      Commentaire: ['', [Validators.required]],
+      Commentaire: ['', []],
       PieceID: [0, []],
       UtilisateurID: [0, []],
       Prix: [0, []],
+      Payed: [false, []],
       DevisID: [0, []],
       
     });

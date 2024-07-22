@@ -52,6 +52,14 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >
+              <span>Devis payé ?</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+            <nz-switch id="Payed" formControlName="Payed"></nz-switch>
+          </nz-form-control>
+      </nz-form-item>
+        <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="What do you want other to call you" >
                 <span>Commentaire</span>
             </nz-form-label>

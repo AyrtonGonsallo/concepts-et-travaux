@@ -6,7 +6,7 @@ export const environment = {
     //apiUrl: 'https://mala3315.odns.fr/api-concepts-et-travaux', 
     //apiUrl: 'https://dev.homeren.fr/api-concepts-et-travaux', // URL de l'API sur le dev
     //apiUrl: 'https://homeren.fr/api-concepts-et-travaux', // URL de l'API en prod
-    imagesUrl: 'https://homeren.fr/api-concepts-et-travaux/files/', 
+    imagesUrl: 'https://homeren.fr/api-concepts-et-travaux/files/',
     //imagesUrl: 'https://dev.homeren.fr/api-concepts-et-travaux/files/', // URL de l'API sur le dev
    
   };

@@ -8,6 +8,7 @@ export interface DevisPiece {
     Commentaire?: string;
     PieceID: number;
     Prix?: number ;
+    Payed: boolean ;
     UtilisateurID?: number;
     DevisTaches:DevisTache[];
   }
