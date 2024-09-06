@@ -35,8 +35,18 @@
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <input type="text" id="Image" formControlName="Image" hidden />
-                <input type="file" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" /> 
-                Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB          
+                <input type="file" accept=".png,.jpeg,.jpg"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" /> 
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB          
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Pdf"  >
+                <span>Pdf</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input type="text" id="Pdf" formControlName="Pdf" hidden />
+                <input type="file" accept=".pdf"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" /> 
+                Formats autorisés: .pdf et taille < 10 MB          
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>

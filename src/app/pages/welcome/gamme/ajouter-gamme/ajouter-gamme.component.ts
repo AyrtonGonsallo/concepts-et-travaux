@@ -19,6 +19,7 @@ export class AjouterGammeComponent {
     Type: FormControl<string>;
     Label: FormControl<string>;
     Image: FormControl<string>;
+    Pdf: FormControl<string>;
     Prix: FormControl<number>;
     TravailID: FormControl<number>;
   }>;
@@ -103,20 +104,51 @@ export class AjouterGammeComponent {
     
       // Mettre à jour la valeur de l'input
       // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
-    this.validateForm.patchValue({
-      Image: uniqueFileName
-    });
-      
+      this.validateForm.patchValue({
+        Image: uniqueFileName
+      });
+        
       const formData = new FormData();
       const renamedFile = new File([file], uniqueFileName, { type: file.type });
       formData.append('file', renamedFile);
-    // Envoyer le fichier au serveur
-    this.userService.upload_file(formData).subscribe(response => {
-      console.log('Fichier téléchargé avec succès:', response);
-      // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
-    });
-      console.log(file);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
   }
+
+  handleFileInput2(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+      
+    }else{
+      const timestamp = Date.now();
+      const uniqueFileName = this.slugify( `${timestamp}_${file.name}`);
+      this.file_Image = uniqueFileName;
+    
+      // Mettre à jour la valeur de l'input
+      // Mettre à jour la valeur du champ 'QuestionnaireTarif' dans le formulaire
+      this.validateForm.patchValue({
+        Pdf: uniqueFileName
+      });
+        
+      const formData = new FormData();
+      const renamedFile = new File([file], uniqueFileName, { type: file.type });
+      formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
   }
 
 
@@ -125,6 +157,7 @@ export class AjouterGammeComponent {
       Type: ['', [Validators.required]],
       Label: ['', [Validators.required]],
       Image: ['', []],
+      Pdf: ['', []],
       Prix: [0, [Validators.required]],
       TravailID: [0, [Validators.required]],
       

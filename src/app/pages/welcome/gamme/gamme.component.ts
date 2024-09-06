@@ -36,6 +36,11 @@ export class GammeComponent {
       priority: 1
     },
     {
+      title: 'Pdf',
+      compare: (a: Gamme, b: Gamme) => (a.Pdf??"").localeCompare(b.Pdf??""),
+      priority: 1
+    },
+    {
       title: 'Prix',
       compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
       priority: 1

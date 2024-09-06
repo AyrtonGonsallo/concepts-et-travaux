@@ -4,6 +4,7 @@ export interface Travail {
     ID: number;
     Titre: string;
     Description: string;
+    Valide:boolean;
     Pieces: Piece[]
   }
   

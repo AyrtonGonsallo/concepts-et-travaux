@@ -23,7 +23,7 @@ export class ModifierTravailComponent {
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     Description: FormControl<string>;
-    
+    Valide:FormControl<boolean>;
   }>;
   pieces: Piece[] = []; 
   size: NzSelectSizeType = 'default';
@@ -39,8 +39,8 @@ export class ModifierTravailComponent {
           
           this.userService.updateTravail(parseFloat(this.travailId),formValues).subscribe(
             (response) => {
-              console.log('travail ajouté avec succès :', response);
-              this.message.create('success', `travail ajouté avec succès`);
+              console.log('travail modifié avec succès :', response);
+              this.message.create('success', `travail modifié avec succès`);
               this.router.navigate(['/administration/travaux']);
             },
             (error) => {
@@ -89,6 +89,7 @@ getDetails(id: string): void {
     this.validateForm = this.fb.group({
       Titre: ['', [Validators.required]],
       Description: ['', [Validators.required]],
+      Valide: [false, [Validators.required]],
     });
   }
 
