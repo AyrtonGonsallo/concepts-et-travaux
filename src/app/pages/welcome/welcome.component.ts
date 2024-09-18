@@ -7,7 +7,7 @@ import { AuthService } from '../../Services/auth.service';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  isCollapsed = false;
+  isCollapsed = true;
   constructor(private auth:AuthService) { }
 
   ngOnInit() { }

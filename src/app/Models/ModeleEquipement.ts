@@ -3,6 +3,7 @@ export interface ModeleEquipement {
     Titre: string;
     Description: string;
     Image?: string ;
+    Prix?: number ;
     Longeur?: number ;
     Largeur?: number ;
     Hauteur?: number ;

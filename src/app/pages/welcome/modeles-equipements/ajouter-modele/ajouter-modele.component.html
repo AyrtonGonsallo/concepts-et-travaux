@@ -1,5 +1,5 @@
 <div>
-    <h2>Ajouter un équipement</h2>   
+    <h2>Ajouter un modèle d'équipement</h2>   
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre</nz-form-label>
@@ -50,6 +50,16 @@
                 <nz-select id="RoleId" formControlName="EquipementID"  nzPlaceHolder="Galerie d'images" >
                     <nz-option *ngFor="let option of equipements" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >
+                <span>Prix</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="Prix" formControlName="Prix" [nzMin]="1"  [nzStep]="1"></nz-input-number> 
+
             </nz-form-control>
         </nz-form-item>
         <nz-form-item >

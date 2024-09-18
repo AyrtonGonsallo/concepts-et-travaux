@@ -29,6 +29,7 @@ export class AjouterModeleComponent {
     Description: FormControl<string>;
     Longeur: FormControl<number>;
     Largeur: FormControl<number>;
+    Prix: FormControl<number>;
     Hauteur: FormControl<number>;
     Epaisseur: FormControl<number>;
     Matiere: FormControl<string>;
@@ -144,6 +145,7 @@ export class AjouterModeleComponent {
     Description: ['', [ Validators.required]],
     Longeur: [0, [ ]],
     Largeur: [0, [ ]],
+    Prix: [0, [ ]],
     Hauteur: [0, [ ]],
     Epaisseur: [0, [ ]],
     Matiere: ['', [ ]],
