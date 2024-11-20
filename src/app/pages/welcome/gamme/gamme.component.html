@@ -19,7 +19,10 @@
             <td>{{ data.Label }}</td>
             <td>{{ data.Type }}</td>
             <td>{{ data.Image }}</td>
-            <td>{{ data.Pdf }}</td>
+            <td>
+              <a [href]="baseurl + data.Pdf" target="_blank" class="link-tooltip">{{data.Pdf}}</a>
+
+            </td>
             <td>{{ data.Prix }} €</td>
             <td>{{ data.TravailID }}</td>
             <td> 

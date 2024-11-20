@@ -34,6 +34,18 @@ export class AjouterGammeComponent {
     { slug: 'sol-pvc', label: 'Sol PVC' },
     { slug: 'moquette', label: 'Moquette' },
     { slug: 'plinthes', label: 'Plinthes' },
+    { slug: 'depose', label: 'Dépose' },
+    { slug: 'cloison', label: 'Cloison' },
+    { slug: 'materiaux', label: 'Materiaux' },
+    { slug: 'type-de-porte', label: 'Type de porte' },
+    { slug: 'type-de-materiau-porte', label: 'Type de materiau' },
+    { slug: 'type-de-porte-finition', label: 'Type de porte (finition)' },
+    { slug: 'finition-de-porte', label: 'Finition' },
+    { slug: 'renovation-electrique-complete', label: 'Rénovation électrique complete' },
+    { slug: 'radiateur', label: 'Radiateur' },
+    { slug: 'type-de-porte-creation-murs-non-porteurs', label: 'Type de porte (cmnp)' },
+    { slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
+    { slug: 'depose-murs', label: 'Dépose de murs' },
   ];
   travaux:Travail[]=[]
   submitForm(): void {

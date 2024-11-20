@@ -21,7 +21,7 @@
             <td>{{ data.ID }}</td>
             <td>{{ data.Titre }}</td>
             <td>{{ data.Description }}</td>
-            <td>{{ data.Prix }}</td>
+            <td>{{ data.Prix }} €</td>
             <td>{{  data.EquipementID }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'modeles-equipements', 'modifier-modele',data.ID]"><span nz-icon nzType="edit"></span></button>

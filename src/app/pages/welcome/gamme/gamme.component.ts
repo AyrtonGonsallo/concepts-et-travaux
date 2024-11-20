@@ -5,6 +5,7 @@ import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonSize } from 'ng-zorro-antd/button';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-gamme',
@@ -12,6 +13,7 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
   styleUrl: './gamme.component.css'
 })
 export class GammeComponent {
+  baseurl=environment.imagesUrl
   size: NzButtonSize = 'large';
   listOfColumn = [
     {
