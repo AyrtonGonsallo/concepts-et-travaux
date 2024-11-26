@@ -84,7 +84,27 @@ deleteEtapeProjet(id: number): Observable<any> {
   const url = `${environment.apiUrl}/delete_etape_projet/${id}`;
   return this.http.delete<any>(url);
 }
+add_etape_devis(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_etape_devis`, userData);
+}
+getEtapesDevis(): Observable<any> {
+  const url = `${environment.apiUrl}/get_etapes_devis`;
+  return this.http.get<any>(url);
+}
+getEtapeDevisById(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_etape_devis/${id}`;
+  return this.http.get<any>(url);
+}
 
+updateEtapeDevis(id: number, etape: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_etape_devis/${id}`;
+  return this.http.put<any>(url, etape);
+}
+
+deleteEtapeDevis(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_etape_devis/${id}`;
+  return this.http.delete<any>(url);
+}
 getBesoinsProjet(): Observable<any> {
   const url = `${environment.apiUrl}/get_besoins_projet`;
   return this.http.get<any>(url);
