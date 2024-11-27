@@ -14,7 +14,8 @@ interface FormValues {
   Description?: string;
   User_id?: number;
   Client_id?: number;
-  Artisans?: any[]; // Type de la liste des autorisations, ajustez selon le besoin
+  Artisans?: any[]; // Type de la liste des arttisans, ajustez selon le besoin
+  Devis?: any[]; // Type de la liste des devis, ajustez selon le besoin
 }
 @Component({
   selector: 'app-ajouter-projet',
@@ -32,8 +33,10 @@ export class AjouterProjetComponent {
   particuliers: any;
   particulier:any
   artisans: any;
+  devis:any
   size: NzSelectSizeType = 'default';
   multipleValue : number[] = [];
+  multipleValue2 : number[] = [];
   submitForm(): void {
     this.userService.getUserById(this.validateForm.controls["Client_id"].value).subscribe(
       (response: any) => {
@@ -50,6 +53,7 @@ export class AjouterProjetComponent {
           const formValues: FormValues = { ...this.validateForm.value };
           // Ajout du champ 'Autorisations' avec la liste des autorisations
           formValues.Artisans = this.multipleValue;
+          formValues.Devis = this.multipleValue2;
           // Affichage du formulaire modifié
           console.log('valeur soumises :', formValues)
           this.userService.add_projet(formValues).subscribe(
@@ -127,7 +131,15 @@ private padZero(num: number): string {
         console.error('Erreur lors de la recuperation des particuliers :', error);
       }
     );
-
+    this.userService.getAllDevisPieces().subscribe(
+      (response: any) => {
+        console.log('liste des devis récupérée :', response);
+        this.devis=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des devus :', error);
+      }
+    );
     this.userService.getUsersByRole(2).subscribe(
       (response: any) => {
         console.log('liste des artisans récupérée :', response);

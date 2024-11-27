@@ -8,42 +8,25 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzOpen nzTitle="Administration" nzIcon="dashboard">
-          <ul>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/autorisations">Autorisations</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/comptes">Comptes</a>
-            </li>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/roles">Roles</a>
-            </li>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/front-pages">Pages du site</a>
-            </li>
-          </ul>
-        </li>
-        <li nz-submenu nzOpen nzTitle="Projets" nzIcon="schedule">
+        <li nz-submenu nzOpen nzTitle="Projets & Devis" nzIcon="schedule">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/projets">Liste des projets</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/realisations">Liste des realisations</a>
+              <a routerLink="/administration/devis-pieces">Listes des devis</a>
             </li>
+            <!--
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/etapes-projet">Étapes du projet</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/etapes-devis">Étapes du devis</a>
-            </li>
+           
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/besoins-projet">Services du projet</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/points-cles">Points clés du projet</a>
-            </li>
+            </li>-->
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="Pieces et travaux" nzIcon="home">
@@ -52,34 +35,37 @@
               <a routerLink="/administration/pieces">Liste des pieces</a>
             </li>
             <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/travaux">Liste des travaux</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/etapes-devis">Étapes du devis</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/categories-piece">Categories de pieces</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/modeles-equipements">Modèles d'équipement</a>
+              <a routerLink="/administration/modeles-equipements">équipements</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/equipements">Équipements</a>
+              <a routerLink="/administration/equipements">Catégories d'équipements</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/gammes">Gammes</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/taches-generales">Tâches générales</a>
+              <a routerLink="/administration/taches-generales">Tâches au forfait</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/travaux">Liste des travaux</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/devis-pieces">Devis pièces</a>
-            </li>
+            
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Galeries" nzIcon="picture">
+        <li nz-submenu nzOpen nzTitle="Réalisations" nzIcon="picture">
           <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/realisations">Liste des realisations</a>
+            </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/galeries">Liste des galeries</a>
             </li>
-            
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="FAQ" nzIcon="question-circle">
@@ -99,6 +85,29 @@
             </li>
           </ul>
         </li>
+
+
+
+        <li nz-submenu nzOpen nzTitle="Administration" nzIcon="dashboard">
+          <ul>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/autorisations">Autorisations</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/comptes">Comptes</a>
+            </li>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/roles">Roles</a>
+            </li>
+            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/front-pages">Pages du site</a>
+            </li>
+          </ul>
+        </li>
+        
+        
+        
+        
 
        
       </ul>

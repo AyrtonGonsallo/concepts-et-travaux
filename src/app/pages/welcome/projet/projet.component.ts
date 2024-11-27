@@ -18,27 +18,32 @@ export class ProjetComponent {
     {
       title: 'Id',
       compare: (a: Projet, b: Projet) => a.Id - b.Id,
-      priority: 3
+      priority: 3,
+      order: null
     },
     {
      title: 'Nom',
       compare: (a: Projet, b: Projet) => a.Nom.localeCompare(b.Nom),
-      priority: 1
+      priority: 2,
+      order: null
     },
     {
       title: 'Description',
       compare: (a: Projet, b: Projet) => a.Description.localeCompare(b.Description),
-      priority: false
+      priority: false,
+      order: null
     },
     {
       title: 'Status',
       compare: (a: Projet, b: Projet) => a.Status.localeCompare(b.Status),
-      priority: false
+      priority: false,
+      order: null
     },
     {
       title: 'Créé par',
       compare: (a: Projet, b: Projet) => (a.Utilisateur?.Prenom?? '').localeCompare(b.Utilisateur?.Prenom ?? ''),
-      priority: false
+      priority: false,
+      order: null
     },
     {
       title: 'DateDeCreation',
@@ -46,7 +51,8 @@ export class ProjetComponent {
         if (!a.Date_de_creation || !b.Date_de_creation) return 0;
         return new Date(a.Date_de_creation).getTime() - new Date(b.Date_de_creation).getTime();
       },
-      priority: 2
+      priority: 1,
+      order:'descend', 
     }
   ];
 

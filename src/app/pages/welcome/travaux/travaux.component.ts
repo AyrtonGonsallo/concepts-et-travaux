@@ -25,11 +25,7 @@ export class TravauxComponent {
       compare: (a: Travail, b: Travail) => a.Titre.localeCompare(b.Titre),
       priority: 1
     },
-    {
-      title: 'Description',
-      compare: (a: Travail, b: Travail) => a.Description.localeCompare(b.Description),
-      priority: 2
-    },
+    
   ];
   travaux:Travail[] = [];
 
@@ -80,5 +76,12 @@ export class TravauxComponent {
       return false;
     }
     
+  }
+
+  get_label(slug: any): string {
+    // Convert the value to a boolean if it is a string
+    const booleanSlug = (slug === 'true' || slug === true) ? true : false;
+  
+    return booleanSlug ? 'oui' : 'non';
   }
 }

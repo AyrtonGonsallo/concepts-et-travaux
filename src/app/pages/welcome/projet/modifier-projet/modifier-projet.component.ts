@@ -11,7 +11,8 @@ interface FormValues {
   Description?: string;
   User_id?: number;
   Client_id?: number;
-  Artisans?: any[]; // Type de la liste des autorisations, ajustez selon le besoin
+  Artisans?: any[]; // Type de la liste des artisans, ajustez selon le besoin
+  Devis?: any[]; // Type de la liste des devis, ajustez selon le besoin
 }
 
 @Component({
@@ -37,6 +38,7 @@ export class ModifierProjetComponent {
     'chantier réceptionné'
   ] as const;
   multipleValue : number[] = [];
+  multipleValue2 : number[] = [];
   artisans: any;
   
   submitForm(): void {
@@ -44,6 +46,7 @@ export class ModifierProjetComponent {
       const formValues: FormValues = { ...this.validateForm.value };
           // Ajout du champ 'Autorisations' avec la liste des autorisations
           formValues.Artisans = this.multipleValue;
+          formValues.Devis = this.multipleValue2;
           console.log('submit', formValues);
           this.userService.updateProjet(parseInt(this.projetId??'0'),formValues).subscribe(
             (response: any) => {
@@ -67,7 +70,7 @@ export class ModifierProjetComponent {
 
 
 
-
+  devis:any
 
   constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
@@ -92,6 +95,16 @@ export class ModifierProjetComponent {
         console.error('Erreur lors de la recuperation des artisans :', error);
       }
     );
+
+    this.userService.getAllDevisPieces().subscribe(
+      (response: any) => {
+        console.log('liste des devis récupérée :', response);
+        this.devis=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des devus :', error);
+      }
+    );
   }
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getProjetDetails(userId: string): void {
@@ -103,6 +116,10 @@ export class ModifierProjetComponent {
         response.Artisans.forEach((artisan: any) => {
           // Ajouter l'ID de l'artisan à multipleValue
           this.multipleValue.push(artisan.Id);
+        });
+        response.Devis.forEach((d: any) => {
+          // Ajouter l'ID de l'artisan à multipleValue
+          this.multipleValue2.push(d.ID);
         });
         console.log("réponse de la requette get_projet",response);
       },

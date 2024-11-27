@@ -29,6 +29,7 @@ export class VoirProjetComponent {
     'chantier réceptionné'
   ] as const;
   multipleValue : number[] = [];
+  multipleValue2 : number[] = [];
   artisans: any;
 
   submitForm(): void {
@@ -69,6 +70,7 @@ export class VoirProjetComponent {
   }
 
   projetId:string =  this.route.snapshot.paramMap.get('id')??'0';
+  devis:any
 
   ngOnInit(): void {
     this.getProjetDetails(this.projetId);
@@ -82,6 +84,15 @@ export class VoirProjetComponent {
         console.error('Erreur lors de la recuperation des artisans :', error);
       }
     );
+    this.userService.getAllDevisPieces().subscribe(
+      (response: any) => {
+        console.log('liste des devis récupérée :', response);
+        this.devis=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des devus :', error);
+      }
+    );
   }
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getProjetDetails(userId: string): void {
@@ -92,6 +103,11 @@ export class VoirProjetComponent {
         response.Artisans.forEach((artisan: any) => {
           // Ajouter l'ID de l'artisan à multipleValue
           this.multipleValue.push(artisan.Id);
+        });
+
+        response.Devis.forEach((d: any) => {
+          // Ajouter l'ID de l'artisan à multipleValue
+          this.multipleValue2.push(d.ID);
         });
         console.log("réponse de la requette get_projet",response);
       },

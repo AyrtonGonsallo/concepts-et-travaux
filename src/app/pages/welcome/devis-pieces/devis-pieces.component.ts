@@ -17,19 +17,10 @@ export class DevisPiecesComponent {
     {
       title: 'ID',
       compare: (a: DevisPiece, b: DevisPiece) => a.ID - b.ID,
-      priority: 3
-    },
-    {
-      title: 'Username',
-      compare: (a: DevisPiece, b: DevisPiece) => (a.Username  ?? '').localeCompare(b.Username ?? ''),
-      priority: false
+      priority: 3,
+      order:null, 
     },
     
-    {
-      title: 'AdresseIP',
-      compare: (a: DevisPiece, b: DevisPiece) => a.AdresseIP.localeCompare(b.AdresseIP),
-      priority: 2
-    },
     {
       title: 'Date',
       compare: (a: DevisPiece, b: DevisPiece) => {
@@ -37,13 +28,20 @@ export class DevisPiecesComponent {
         const dateB = new Date(b.Date).getTime();
         return dateA - dateB;
       },
-      priority: 1
+      priority: 1,
+      order:'descend', 
     },
-
+    {
+      title: 'Utilisateur',
+      compare: (a: DevisPiece, b: DevisPiece) => (a.UtilisateurID  ?? 0)-(b.UtilisateurID ?? 0),
+      priority: 1,
+      order:null, 
+    },
     {
       title: 'Prix',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
-      priority: 1
+      priority: 1,
+      order:null, 
     }
   ];
   devis_pieces:DevisPiece[] = [];

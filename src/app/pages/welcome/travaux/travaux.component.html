@@ -9,10 +9,10 @@
               {{ column.title }}
             </th>
             <th>
-              Validé ?
+              Masqué
             </th>
             <th>
-                Catégories
+                Pièces
               </th>
             <th>
               Actions
@@ -23,8 +23,7 @@
           <tr *ngFor="let data of sortTable.data" >
             <td>{{ data.ID }}</td>
             <td>{{ data.Titre }}</td>
-            <td>{{ data.Description | slice:0:100 }}...</td>
-            <td>{{ data.Valide }}</td>
+            <td>{{ get_label(data.Valide) }}</td>
             <td ><nz-tag [nzColor]="tagColors[piece.ID]" *ngFor="let piece of data.Pieces"> {{ piece.Titre }}</nz-tag></td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'travaux', 'modifier-travail',data.ID]" ><span nz-icon nzType="edit"></span></button>
