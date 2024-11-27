@@ -172,6 +172,10 @@ get_galerie(id: number): Observable<any> {
   const url = `${environment.apiUrl}/get_galerie/${id}`;
   return this.http.get<any>(url);
 }
+get_prix_devis_piece(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_prix_devis_piece/${id}`;
+  return this.http.get<any>(url);
+}
 
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;

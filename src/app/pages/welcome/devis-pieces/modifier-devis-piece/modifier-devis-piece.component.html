@@ -107,8 +107,21 @@
               <td>{{ data.Prix }} <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Calculer le prix</button></td>
             </tr>
             <tr [nzExpand]="expandSet.has(data.ID)">
-              <span>{{data.Donnees }}</span>
+              <div>
+                <input #textToCopy type="text" [value]="data.Donnees" readonly aria-hidden="true" style="display:none;" />
+                
+                <button nz-button nzType="primary" (click)="copyToClipboard(textToCopy.value)"><span nz-icon nzType="copy" nzTheme="outline"></span> Copier les détails du json</button>
+              </div>
               
+              <p *ngIf="copied">Json copié avec succès !</p>
+              
+             <br>
+              <ng-container *ngIf="detailsCalcul && detailsCalcul.resultats[data.TravailSlug]">
+                <div>
+                  <span>Prix: {{ detailsCalcul.resultats[data.TravailSlug]?.prix }}</span><br>
+                  <span>Formule: {{ detailsCalcul.resultats[data.TravailSlug]?.formule }}</span>
+                </div>
+              </ng-container>
             </tr>
             <ng-template #expandIcon>
               <span

@@ -126,12 +126,31 @@ export class ModifierDevisPieceComponent {
       this.expandSet.delete(id);
     }
   }
+  detailsCalcul:any
   calculer_prix(tid:number,index:number){
-    let tache=this.listOfTaches[index]
-    let prix=this.calculDevisService.calculer_prix(this.devispiece,index)
-    tache.Prix=prix
-    this.devispiece.Prix+=prix
-    this.validateForm.get('Prix')!.setValue(this.devispiece.Prix);
+    this.calculDevisService.calculer_prix(this.devispiece, index).then((result) => {
+      this.detailsCalcul = result
+      console.log("Prix reçu :", this.detailsCalcul);
+    }).catch((error) => {
+      console.error("Erreur lors du calcul :", error);
+    });
+  }
+
+
+  copied: boolean = false;
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        this.copied = true;
+        setTimeout(() => {
+          this.copied = false;
+        }, 2000); // Cache le message après 2 secondes
+      },
+      (err) => {
+        console.error('Erreur lors de la copie :', err);
+      }
+    );
   }
   
 }
