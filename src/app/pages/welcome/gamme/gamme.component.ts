@@ -81,7 +81,7 @@ export class GammeComponent {
     this.message.info('suppression annulée');
   }
   deleteGamme(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteGamme(id).subscribe(
         () => {
           //console.log('Gamme supprimé avec succès');

@@ -1,5 +1,5 @@
 <div>
-    <h2>Gestion des étapes du devis</h2>  
+    <h2>Gestion des N.B.</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Titre"  nzRequired nzTooltipTitle="What do you want other to call you" >
@@ -9,6 +9,28 @@
                 <input nz-input id="Titre" formControlName="Titre" />
             </nz-form-control>
         </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID" nzRequired>
+              <span>Travail</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+              <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
+                  <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+              </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+        
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape"  nzRequired >
+            <span>Etape</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+            <nz-select id="Etape" formControlName="Etape"  nzPlaceHolder="Etape" >
+                <nz-option *ngFor="let option of liste_des_etapes" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
 
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description"  nzRequired nzTooltipTitle="What do you want other to call you" >
@@ -25,6 +47,108 @@
                 ></editor>
               </nz-form-control>
         </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_chambre"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description chambre</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_chambre!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-chambre"
+                  formControlName="Description_chambre"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_sdb"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description salle de bain</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_sdb!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-sdb"
+                  formControlName="Description_sdb"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_salle_manger"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description salle à manger</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_salle_manger!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-salle-manger"
+                  formControlName="Description_salle_manger"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_wc"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description wc</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_wc!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-wc"
+                  formControlName="Description_wc"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_cuisine"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description cuisine</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_cuisine!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-cuisine"
+                  formControlName="Description_cuisine"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_salon"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description salon</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_salon!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-salon"
+                  formControlName="Description_salon"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
+
+
    
         
        

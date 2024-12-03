@@ -59,7 +59,7 @@ export class PointsClesComponent {
     this.message.info('suppression annulée');
   }
   deletePoint(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deletePointcle(id).subscribe(
         () => {
           //console.log('Pointcle supprimé avec succès');

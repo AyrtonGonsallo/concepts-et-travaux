@@ -1,7 +1,7 @@
 
   
   <nz-layout>
-    <nz-sider nzCollapsible nzBreakpoint="md"  [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <nz-sider nzCollapsible nzBreakpoint="md" [nzWidth]="300" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
       <div class="logo">
         <a href="/" target="_blank">
           <img src="https://dev.homeren.fr/admin/assets/img/C&TLOGO.jpg" alt="logo">
@@ -29,33 +29,34 @@
             </li>-->
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Pieces et travaux" nzIcon="home">
+        <li nz-submenu nzOpen nzTitle="Pièces et travaux" nzIcon="home">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/pieces">Liste des pieces</a>
+              <a routerLink="/administration/pieces">Liste des pièces</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/travaux">Liste des travaux</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/etapes-devis">Étapes du devis</a>
+              <a routerLink="/administration/modeles-equipements">Liste des équipements</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/categories-piece">Categories de pieces</a>
+              <a routerLink="/administration/gammes">Liste des gammes</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/modeles-equipements">équipements</a>
+              <a routerLink="/administration/taches-generales">Liste des tâches au forfait</a>
             </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/categories-piece">Catégories de pièces</a>
+            </li>
+           
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/equipements">Catégories d'équipements</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/gammes">Gammes</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/taches-generales">Tâches au forfait</a>
-            </li>
             
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/etapes-devis">Nota Bene</a>
+            </li>
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="Réalisations" nzIcon="picture">
@@ -71,11 +72,12 @@
         <li nz-submenu nzOpen nzTitle="FAQ" nzIcon="question-circle">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/categories-question">Liste des catégories de questions</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/questions">Liste des questions</a>
             </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/categories-question">Catégories de questions</a>
+            </li>
+            
           </ul>
         </li>
         <li nz-submenu nzOpen nzTitle="Avis" nzIcon="star">
@@ -90,17 +92,17 @@
 
         <li nz-submenu nzOpen nzTitle="Administration" nzIcon="dashboard">
           <ul>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/autorisations">Autorisations</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/comptes">Comptes</a>
             </li>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/roles">Roles</a>
             </li>
-            <li *ngIf="isAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/front-pages">Pages du site</a>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/front-pages">Pages du site (seo)</a>
             </li>
           </ul>
         </li>

@@ -2,7 +2,7 @@
     <h2>Travaux</h2>    
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'travaux', 'ajouter-travail']">Ajouter un travail</button>
 
-    <nz-table #sortTable [nzData]="travaux"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+    <nz-table #sortTable [nzData]="travaux" [nzPageSize]="25" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
             <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">

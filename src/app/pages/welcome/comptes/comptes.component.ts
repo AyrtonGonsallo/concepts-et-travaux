@@ -78,14 +78,14 @@ export class ComptesComponent {
 
     return this.authService.isAdminOrHim(id)
   }
-  isHimOrAdminAndOtherNotAdmin(id:number,rid:number| undefined){
-    return this.authService.isHimOrAdminAndOtherNotAdmin(id,rid?rid:0)
+  isHimOrSuperAdmin(id:number){
+    return this.authService.isHimOrSuperAdmin(id)
   }
   cancel(): void {
     this.message.info('suppression annulée');
   }
   deleteUser(userId: number,roleId: number | undefined) {
-    if (this.authService.isHimOrAdminAndOtherNotAdmin( userId,roleId?roleId:0)) {
+    if (this.authService.isHimOrSuperAdmin( userId)) {
       this.userService.deleteUser(userId).subscribe(
         () => {
           //console.log('Utilisateur supprimé avec succès');

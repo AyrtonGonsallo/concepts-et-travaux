@@ -59,7 +59,7 @@ export class AvisComponent {
     this.message.info('suppression annulée');
   }
   deleteAvis(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteAvis(id).subscribe(
         () => {
           //console.log('Avis supprimé avec succès');

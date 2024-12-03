@@ -60,7 +60,7 @@ export class AutorisationsComponent {
   }
 
   deleteAutorisation(autoId: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteAutorisation(autoId).subscribe(
         () => {
           console.log('Utilisateur supprimé avec succès');

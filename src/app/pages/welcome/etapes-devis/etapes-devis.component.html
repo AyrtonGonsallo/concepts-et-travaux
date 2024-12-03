@@ -1,6 +1,6 @@
 <div>
-    <h2>Étapes du devis</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'etapes-devis', 'ajouter-etape']">Ajouter une étape</button>
+    <h2>Liste des N.B.</h2>    
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'etapes-devis', 'ajouter-etape']">Ajouter un nota bene</button>
 
     <nz-table #sortTable [nzData]="etapes"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
@@ -17,8 +17,12 @@
           <tr *ngFor="let data of sortTable.data" >
             <td>{{ data.ID }}</td>
             <td>{{ data.Titre }}</td>
-            <td>{{ data.Description }}</td>
+            <td>{{ data.Travail?.Titre }}</td>
+            <td>{{ data.Etape }}</td>
             
+            <td [innerHTML]="data.Description_wc"></td>
+            <td [innerHTML]="data.Description_cuisine"></td>
+            <td [innerHTML]="data.Description_salon"></td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'etapes-devis', 'modifier-etape',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm

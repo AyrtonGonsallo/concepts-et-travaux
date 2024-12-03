@@ -12,7 +12,7 @@ export class IsAdminGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router,private message: NzMessageService) {}
 
   canActivate(): boolean {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       return true;
     } else {
       this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page`);

@@ -57,7 +57,7 @@ export class TravauxComponent {
     this.message.info('suppression annulée');
   }
   deletetravail(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteTravail(id).subscribe(
         () => {
           //console.log('Travail supprimé avec succès');

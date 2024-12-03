@@ -64,7 +64,7 @@ export class EquipementsComponent {
     this.message.info('suppression annulée');
   }
   deleteEquipement(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteEquipement(id).subscribe(
         () => {
           //console.log('Equipement supprimé avec succès');

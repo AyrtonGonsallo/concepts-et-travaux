@@ -65,6 +65,9 @@ export class DevisPiecesComponent {
 
     return this.authService.isAdmin()
   }
+  isAdminorSuperAdmin(){
+    return this.authService.isAdminorSuperAdmin()
+  }
   isHimOrAdminAndOtherNotAdmin(id:number,rid:number| undefined){
     return this.authService.isHimOrAdminAndOtherNotAdmin(id,rid?rid:0)
   }
@@ -72,7 +75,7 @@ export class DevisPiecesComponent {
     this.message.info('suppression annulée');
   }
   deleteDevis(devis_pieceId: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.devis_pieceService.deleteDevisPiece(devis_pieceId).subscribe(
         () => {
           //console.log('DevisPiece supprimé avec succès');
@@ -87,7 +90,7 @@ export class DevisPiecesComponent {
       );
       return true
     } else {
-      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      this.message.info( `Vous n'avez pas assez de privilèges pour faire cette opération`);
       return false;
     }
     

@@ -64,7 +64,7 @@ export class TachesGeneralesComponent {
     this.message.info('suppression annulée');
   }
   deleteTacheGenerale(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteTacheGenerale(id).subscribe(
         () => {
           //console.log('TacheGenerale supprimé avec succès');

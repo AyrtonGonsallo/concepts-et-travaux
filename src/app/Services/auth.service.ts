@@ -77,6 +77,10 @@ clearDataFromLocal(nom:string): void {
     //return this.loggedIn;
     return this.getDataFromLocal("utilisateur").Role.Id == 1;
   }
+  isAdminorSuperAdmin(): boolean {
+    //return this.loggedIn;
+    return this.getDataFromLocal("utilisateur").Role.Id == 1||this.getDataFromLocal("utilisateur").Role.Id == 12;
+  }
   isHim(id:number): boolean {
     //return this.loggedIn;
     var iduser=this.getDataFromLocal("utilisateur").Id
@@ -106,6 +110,17 @@ clearDataFromLocal(nom:string): void {
     var iduser=this.getDataFromLocal("utilisateur").Id
     //console.log("comparaison "+iduser+" et "+id)
     if((this.getDataFromLocal("utilisateur").Role.Id) == 1 && other_user_roleId!=1){
+      return true
+    }else{
+      return iduser == id;
+    }
+  }
+
+  isHimOrSuperAdmin(id:number){
+    //return this.loggedIn;
+    var iduser=this.getDataFromLocal("utilisateur").Id
+    //console.log("comparaison "+iduser+" et "+id)
+    if((this.getDataFromLocal("utilisateur").Role.Id) == 12 ){
       return true
     }else{
       return iduser == id;

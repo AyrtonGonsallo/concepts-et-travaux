@@ -135,10 +135,40 @@ export class ModifierDevisPieceComponent {
       console.error("Erreur lors du calcul :", error);
     });
   }
-
+  new_json:any
+  editjson(id:number,json:any){
+    
+    this.want_to_edit=true
+    setTimeout(() => {
+      this.is_editing=!this.is_editing
+    }, 2000);
+    if(this.is_editing){
+      this.new_json=json
+    }
+    else{
+      this.devisService.edit_devis_tache(id,JSON.parse(this.new_json) ).subscribe(
+        (response) => {
+          console.log('Tâche modifiée avec succès :', response);
+          this.edited = true;
+          setTimeout(() => {
+            this.edited = false;
+            this.want_to_edit=false
+          }, 2000); // Cache le message après 2 secondes
+          //this.message.create('success', `Devis modifié avec succès`);
+          //this.router.navigate(['/administration/devis-pieces']);
+        },
+        (error) => {
+          console.error('Erreur lors de la modification de la tâche :', error);
+        }
+      );
+      
+    }
+  }
 
   copied: boolean = false;
-
+  want_to_edit: boolean = false;
+  is_editing: boolean = true;
+  edited: boolean = false;
   copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(
       () => {

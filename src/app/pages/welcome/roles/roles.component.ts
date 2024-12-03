@@ -51,7 +51,7 @@ export class RolesComponent {
     );
   }
   deleteRole(roleId: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteRole(roleId).subscribe(
         () => {
           console.log('role supprimé avec succès');

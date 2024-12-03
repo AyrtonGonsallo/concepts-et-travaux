@@ -64,7 +64,7 @@ export class FrontPageComponent {
     this.message.info('suppression annulée');
   }
   deletePage(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteFrontPage(id).subscribe(
         () => {
           //console.log('Page supprimé avec succès');

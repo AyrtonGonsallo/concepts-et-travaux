@@ -26,10 +26,31 @@ export class EtapesDevisComponent {
       priority: 2
     },
     {
-      title: 'Description',
-      compare: (a: EtapeDevis, b: EtapeDevis) => a.Description.localeCompare(b.Description),
+      title: 'Travail',
+      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Travail?.Titre).localeCompare(b.Travail?.Titre),
+      priority: 2
+    },
+    {
+      title: 'Etape',
+      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Etape).localeCompare(b.Etape),
+      priority: 2
+    },
+    {
+      title: 'Wc',
+      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_wc??'').localeCompare(b.Description_wc??''),
       priority: 1
-    }
+    },
+    {
+      title: 'Cuisine',
+      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_cuisine??'').localeCompare(b.Description_cuisine??''),
+      priority: 1
+    },
+    {
+      title: 'Salon',
+      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_salon??'').localeCompare(b.Description_salon??''),
+      priority: 1
+    },
+    
   ];
   etapes:EtapeDevis[] = [];
 
@@ -59,7 +80,7 @@ export class EtapesDevisComponent {
     this.message.info('suppression annulée');
   }
   deleteEtape(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteEtapeDevis(id).subscribe(
         () => {
           //console.log('EtapeDevis supprimé avec succès');

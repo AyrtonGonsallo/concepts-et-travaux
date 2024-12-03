@@ -549,5 +549,7 @@ get_role(userId: number): Observable<any> {
   updateTacheGenerale(id: number, tache_generale: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_tache_generale/${id}`, tache_generale);
   }
-
+  edit_devis_tache(id:number,json: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/edit_devis_tache/${id}`, json);
+  }
 }

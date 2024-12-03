@@ -61,7 +61,7 @@ export class CategorieQuestionComponent {
     this.message.info('suppression annulée');
   }
   deleteCategorie(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.delete_categorie_question(id).subscribe(
         () => {
           //console.log('CategorieQuestion supprimé avec succès');

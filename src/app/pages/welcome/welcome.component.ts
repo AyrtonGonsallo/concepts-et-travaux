@@ -19,4 +19,7 @@ export class WelcomeComponent implements OnInit {
   isAdmin(){
     return this.auth.isAdmin()
   }
+  isAdminorSuperAdmin(){
+    return this.auth.isAdminorSuperAdmin()
+  }
 }

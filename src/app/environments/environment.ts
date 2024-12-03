@@ -10,4 +10,3 @@ export const environment = {
     //imagesUrl: 'https://dev.homeren.fr/api-concepts-et-travaux/files/', // URL de l'API sur le dev
    
   };
-  

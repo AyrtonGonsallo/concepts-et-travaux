@@ -59,7 +59,7 @@ export class BesoinProjetComponent {
     this.message.info('suppression annulée');
   }
   deleteBesoin(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteBesoinProjet(id).subscribe(
         () => {
           //console.log('BesoinProjet supprimé avec succès');

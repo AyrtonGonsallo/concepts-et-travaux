@@ -61,7 +61,7 @@ export class QuestionComponent {
     this.message.info('suppression annulée');
   }
   deletequestion(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.delete_question(id).subscribe(
         () => {
           //console.log('Question supprimé avec succès');

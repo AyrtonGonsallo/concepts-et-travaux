@@ -33,7 +33,8 @@ export class AjouterGammeComponent {
     { slug: 'parquet-flottant-finition-stratifiee', label: 'Parquet Flottant Finition Stratifiée' },
     { slug: 'sol-pvc', label: 'Sol PVC' },
     { slug: 'moquette', label: 'Moquette' },
-    { slug: 'plinthes', label: 'Plinthes' },
+    { slug: 'plinthes-carrelage', label: 'Plinthes carrelage' },
+    { slug: 'plinthes-bois', label: 'Plinthes bois' },
     { slug: 'depose', label: 'Dépose' },
     { slug: 'cloison', label: 'Cloison' },
     { slug: 'materiaux', label: 'Materiaux' },
@@ -45,6 +46,8 @@ export class AjouterGammeComponent {
     { slug: 'radiateur', label: 'Radiateur' },
     { slug: 'type-de-porte-creation-murs-non-porteurs', label: 'Type de porte (cmnp)' },
     { slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
+    { slug: 'depose-revetement-plafond', label: 'Dépose de revetements pour plafond' },
+    { slug: 'depose-revetement-sol', label: 'Dépose de revetements pour sol' },
     { slug: 'depose-murs', label: 'Dépose de murs' },
   ];
   travaux:Travail[]=[]

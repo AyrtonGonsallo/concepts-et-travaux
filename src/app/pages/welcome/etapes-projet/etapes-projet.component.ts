@@ -60,7 +60,7 @@ export class EtapesProjetComponent {
     this.message.info('suppression annulée');
   }
   deleteEtape(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteEtapeProjet(id).subscribe(
         () => {
           //console.log('EtapeProjet supprimé avec succès');

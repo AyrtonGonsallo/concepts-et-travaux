@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AjouterEtapeComponent } from './ajouter-etape.component';
+import { AjouterEtapeDevisComponent } from './ajouter-etape.component';
 
-describe('AjouterEtapeComponent', () => {
-  let component: AjouterEtapeComponent;
-  let fixture: ComponentFixture<AjouterEtapeComponent>;
+describe('AjouterEtapeDevisComponent', () => {
+  let component: AjouterEtapeDevisComponent;
+  let fixture: ComponentFixture<AjouterEtapeDevisComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AjouterEtapeComponent]
+      declarations: [AjouterEtapeDevisComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AjouterEtapeComponent);
+    fixture = TestBed.createComponent(AjouterEtapeDevisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

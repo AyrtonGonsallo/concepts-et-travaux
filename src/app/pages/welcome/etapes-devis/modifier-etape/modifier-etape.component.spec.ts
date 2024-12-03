@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModifierEtapeComponent } from './modifier-etape.component';
+import { ModifierEtapeDevisComponent } from './modifier-etape.component';
 
-describe('ModifierEtapeComponent', () => {
-  let component: ModifierEtapeComponent;
-  let fixture: ComponentFixture<ModifierEtapeComponent>;
+describe('ModifierEtapeDevisComponent', () => {
+  let component: ModifierEtapeDevisComponent;
+  let fixture: ComponentFixture<ModifierEtapeDevisComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModifierEtapeComponent]
+      declarations: [ModifierEtapeDevisComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ModifierEtapeComponent);
+    fixture = TestBed.createComponent(ModifierEtapeDevisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

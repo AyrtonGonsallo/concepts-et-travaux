@@ -109,11 +109,17 @@
             <tr [nzExpand]="expandSet.has(data.ID)">
               <div>
                 <input #textToCopy type="text" [value]="data.Donnees" readonly aria-hidden="true" style="display:none;" />
+                <textarea #textToedit rows="4"  [(ngModel)]="new_json" nz-input *ngIf="want_to_edit"></textarea>
+                <br><br>
+                <button nz-button nzType="primary" class="mr-10" (click)="editjson(data.ID,data.Donnees)"><span nz-icon nzType="edit" nzTheme="outline"></span> Modifier le json</button>
+                <button nz-button nzType="primary" class="mr-10" (click)="copyToClipboard(textToCopy.value)" *ngIf="want_to_edit"><span nz-icon nzType="copy" nzTheme="outline"></span> Copier les détails du json</button>
+
+               
                 
-                <button nz-button nzType="primary" (click)="copyToClipboard(textToCopy.value)"><span nz-icon nzType="copy" nzTheme="outline"></span> Copier les détails du json</button>
               </div>
               
               <p *ngIf="copied">Json copié avec succès !</p>
+              <p *ngIf="edited">Json edité avec succès !</p>
               
              <br>
               <ng-container *ngIf="detailsCalcul && detailsCalcul.resultats[data.TravailSlug]">

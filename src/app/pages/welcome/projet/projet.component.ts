@@ -90,7 +90,7 @@ export class ProjetComponent {
   deleteProjet(autoId: number) {
     this.userService.get_projet(autoId).subscribe((succ) => {
       let projet_a_sup=succ
-      if (this.authService.isAdmin()) {
+      if (this.authService.isAdminorSuperAdmin()) {
         this.userService.deleteProjet(autoId).subscribe(
           () => {
             console.log('Utilisateur supprimé avec succès');

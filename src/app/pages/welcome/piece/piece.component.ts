@@ -59,7 +59,7 @@ export class PieceComponent {
     this.message.info('suppression annulée');
   }
   deletePiece(id: number) {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deletePiece(id).subscribe(
         () => {
           //console.log('Piece supprimé avec succès');
