@@ -95,9 +95,9 @@ const routes: Routes = [
       { path: 'categories-piece/ajouter-besoin', component: AjouterCategorieComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'etapes-projet/modifier-etape/:id', component: ModifierEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'etapes-projet/ajouter-etape', component: AjouterEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'etapes-devis', component: EtapesDevisComponent },
-      { path: 'etapes-devis/modifier-etape/:id', component: ModifierEtapeDevisComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'etapes-devis/ajouter-etape', component: AjouterEtapeDevisComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'nota-bene', component: EtapesDevisComponent },
+      { path: 'nota-bene/modifier-nota-bene/:id', component: ModifierEtapeDevisComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'nota-bene/ajouter-nota-bene', component: AjouterEtapeDevisComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'questions', component: QuestionComponent },
       { path: 'questions/modifier-question/:id', component: ModifierQuestionComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'questions/ajouter-question', component: AjouterQuestionComponent }, // Nouvelle route pour ajouter un compte avec un ID

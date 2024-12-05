@@ -40,7 +40,7 @@ export class AjouterEtapeDevisComponent {
         (response: any) => {
           console.log('etapes-devis ajoutée avec succès :', response);
           this.message.create('success', `etapes-devis ajoutée avec succès`);
-          this.router.navigate(['/administration/etapes-devis']);
+          this.router.navigate(['/administration/nota-bene']);
         },
         (error: any) => {
           console.error('Erreur lors de l\'ajout de l\'etapes-devis :', error);

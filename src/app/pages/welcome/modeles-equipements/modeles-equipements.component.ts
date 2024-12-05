@@ -17,23 +17,27 @@ export class ModelesEquipementsComponent {
     {
       title: 'Id',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => a.ID - b.ID,
-      priority: 3
+      priority: 3,
+      order:'descend'
     },
    
     {
       title: 'Titre',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => a.Titre.localeCompare(b.Titre),
-      priority: 2
+      priority: 2,
+      order:null
     },
     {
       title: 'Description',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => a.Description.localeCompare(b.Description),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Prix',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.Prix?? 0)-(b.Prix??0),
-      priority: 1
+      priority: 1,
+      order:null
     }
   ];
   modeles:ModeleEquipement[] = [];

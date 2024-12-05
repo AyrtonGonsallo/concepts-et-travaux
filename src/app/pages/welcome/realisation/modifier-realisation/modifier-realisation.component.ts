@@ -9,6 +9,7 @@ import { Galerie } from '../../../../Models/Galerie';
 import { EtapeProjet } from '../../../../Models/Etape-Projet';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 import { Pointcle } from '../../../../Models/PointCle';
+import { environment } from '../../../../environments/environment';
 interface FormValues {
   Titre?: string;
   Superficie?: number;
@@ -30,6 +31,7 @@ interface FormValues {
   styleUrl: './modifier-realisation.component.css'
 })
 export class ModifierRealisationComponent {
+  url_images=environment.imagesUrl
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     SousTitre: FormControl<string>;

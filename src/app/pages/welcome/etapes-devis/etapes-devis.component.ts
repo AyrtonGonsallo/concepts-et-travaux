@@ -17,38 +17,45 @@ export class EtapesDevisComponent {
     {
       title: 'Id',
       compare: (a: EtapeDevis, b: EtapeDevis) => a.ID - b.ID,
-      priority: 3
+      priority: 3,
+      order:'descend'
     },
    
     {
       title: 'Titre',
       compare: (a: EtapeDevis, b: EtapeDevis) => a.Titre.localeCompare(b.Titre),
-      priority: 2
+      priority: 2,
+      order:null
     },
     {
       title: 'Travail',
       compare: (a: EtapeDevis, b: EtapeDevis) => (a.Travail?.Titre).localeCompare(b.Travail?.Titre),
-      priority: 2
+      priority: 2,
+      order:null
     },
     {
       title: 'Etape',
       compare: (a: EtapeDevis, b: EtapeDevis) => (a.Etape).localeCompare(b.Etape),
-      priority: 2
+      priority: 2,
+      order:null
     },
     {
       title: 'Wc',
       compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_wc??'').localeCompare(b.Description_wc??''),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Cuisine',
       compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_cuisine??'').localeCompare(b.Description_cuisine??''),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Salon',
       compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_salon??'').localeCompare(b.Description_salon??''),
-      priority: 1
+      priority: 1,
+      order:null
     },
     
   ];

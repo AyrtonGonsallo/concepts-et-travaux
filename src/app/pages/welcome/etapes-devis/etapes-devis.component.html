@@ -1,11 +1,11 @@
 <div>
     <h2>Liste des N.B.</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'etapes-devis', 'ajouter-etape']">Ajouter un nota bene</button>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'nota-bene', 'ajouter-nota-bene']">Ajouter un nota bene</button>
 
     <nz-table #sortTable [nzData]="etapes"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
-            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            <th *ngFor="let column of listOfColumn" [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
             </th>
             <th>
@@ -24,7 +24,7 @@
             <td [innerHTML]="data.Description_cuisine"></td>
             <td [innerHTML]="data.Description_salon"></td>
             <td> 
-              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'etapes-devis', 'modifier-etape',data.ID]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'nota-bene', 'modifier-nota-bene',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
               nzPopconfirmTitle="Are you sure delete this account?"
               nzPopconfirmPlacement="bottom"

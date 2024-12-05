@@ -19,42 +19,49 @@ export class GammeComponent {
     {
       title: 'Id',
       compare: (a: Gamme, b: Gamme) => a.ID - b.ID,
-      priority: 3
+      priority: 3,
+      order:'descend'
     },
    
     {
       title: 'Label',
       compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
-      priority: 2
+      priority: 2,
+      order:null
     },
     {
       title: 'Type',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Image',
       compare: (a: Gamme, b: Gamme) => (a.Image??"").localeCompare(b.Image??""),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Pdf',
       compare: (a: Gamme, b: Gamme) => (a.Pdf??"").localeCompare(b.Pdf??""),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'Prix',
       compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
-      priority: 1
+      priority: 1,
+      order:null
     },
     {
       title: 'TravailID',
       compare: (a: Gamme, b: Gamme) => a.TravailID-(b.TravailID),
-      priority: 1
+      priority: 1,
+      order:null
     }
   ];
   gamme:Gamme[] = [];
-
+  
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {

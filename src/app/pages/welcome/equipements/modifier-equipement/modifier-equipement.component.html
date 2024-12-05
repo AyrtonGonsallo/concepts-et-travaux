@@ -49,10 +49,11 @@
           </nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
               <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
-                  <nz-option nzValue="electrique" nzLabel="électrique"></nz-option>
-                  <nz-option nzValue="sanitaire" nzLabel="sanitaire"></nz-option>
-                  <nz-option nzValue="cuisine" nzLabel="cuisine"></nz-option>
-                  <nz-option nzValue="autre" nzLabel="autre"></nz-option>
+                <nz-option nzValue="electrique" nzLabel="électrique (à ajouter)"></nz-option>
+                <nz-option nzValue="sanitaire" nzLabel="sanitaire"></nz-option>
+                <nz-option nzValue="cuisine" nzLabel="cuisine"></nz-option>
+                <nz-option nzValue="electrique-a-remplacer" nzLabel="électrique (à remplacer)"></nz-option>
+                <nz-option nzValue="autre" nzLabel="autre"></nz-option>
               </nz-select>
           </nz-form-control>
       </nz-form-item>

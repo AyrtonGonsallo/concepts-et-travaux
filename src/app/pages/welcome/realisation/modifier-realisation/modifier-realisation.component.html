@@ -29,6 +29,10 @@
                 <input type="file" accept=".png,.jpeg,.jpg"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" />                
                 Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
             </nz-form-control>
+            <div nz-col nzSpan="12" *ngIf="validateForm.get('Image_principale')?.value">
+              <img width="100px"  [src]="url_images + validateForm.get('Image_principale')?.value ">  
+            </div>
+            
         </nz-form-item>
         
         <nz-form-item>

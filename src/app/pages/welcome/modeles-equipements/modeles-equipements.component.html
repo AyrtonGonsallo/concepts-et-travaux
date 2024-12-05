@@ -5,7 +5,7 @@
     <nz-table #sortTable [nzData]="modeles"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
-            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            <th *ngFor="let column of listOfColumn" [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
             </th>
             <th >
