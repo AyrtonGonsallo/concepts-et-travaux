@@ -49,6 +49,8 @@ export class ModifierGammeComponent {
     { slug: 'type-de-porte-creation-murs-non-porteurs', label: 'Type de porte (cmnp)' },
     { slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
     { slug: 'depose-murs', label: 'Dépose de murs' },
+    { slug: 'depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'élements de salle de bain/salle d\'eau' },
+    { slug: 'depose-cuisine', label: 'Dépose d\'élements de cuisine' },
     { slug: 'depose-revetement-plafond', label: 'Dépose de revetements pour plafond' },
     { slug: 'depose-revetement-sol', label: 'Dépose de revetements pour sol' },
     { slug: 'type-de-radiateur', label: 'Type de radiateur' },

@@ -38,12 +38,12 @@ export class AjouterEtapeDevisComponent {
       console.log('submit', this.validateForm.value);
       this.userService.add_etape_devis(this.validateForm.value).subscribe(
         (response: any) => {
-          console.log('etapes-devis ajoutée avec succès :', response);
-          this.message.create('success', `etapes-devis ajoutée avec succès`);
+          console.log('Nota Bene ajouté avec succès :', response);
+          this.message.create('success', `Nota Bene ajouté avec succès`);
           this.router.navigate(['/administration/nota-bene']);
         },
         (error: any) => {
-          console.error('Erreur lors de l\'ajout de l\'etapes-devis :', error);
+          console.error('Erreur lors de l\'ajout du Nota Bene :', error);
         }
       );
     } else {

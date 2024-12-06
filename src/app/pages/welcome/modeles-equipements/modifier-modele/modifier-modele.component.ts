@@ -32,6 +32,7 @@ export class ModifierModeleComponent {
     Hauteur: FormControl<number>;
     Prix: FormControl<number>;
     Epaisseur: FormControl<number>;
+    NombreDeVasques: FormControl<number>;
     Matiere: FormControl<string>;
     EquipementID: FormControl<number>;
   }>;
@@ -151,6 +152,7 @@ export class ModifierModeleComponent {
     Hauteur: [0, [ ]],
     Prix: [0, [ ]],
     Epaisseur: [0, [ ]],
+    NombreDeVasques: [0, [ ]],
     Matiere: ['', [ ]],
     EquipementID: [0, [Validators.required ]],
     });

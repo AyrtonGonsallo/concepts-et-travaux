@@ -41,12 +41,12 @@ export class ModifierEtapeDevisComponent {
       console.log('submit', this.validateForm.value);
       this.userService.updateEtapeDevis (parseInt(this.etapeId) ,this.validateForm.value).subscribe(
         (response: any) => {
-          console.log('etapes-devis modifiée avec succès :', response);
-          this.message.create('success', `etapes-devis modifiée avec succès`);
+          console.log('Nota Bene modifié avec succès :', response);
+          this.message.create('success', `Nota Bene modifié avec succès`);
           this.router.navigate(['/administration/nota-bene']);
         },
         (error: any) => {
-          console.error('Erreur lors de l\'ajout de l\'etapes-devis :', error);
+          console.error('Erreur lors de la modification du Nota Bene :', error);
         }
       );
     } else {
