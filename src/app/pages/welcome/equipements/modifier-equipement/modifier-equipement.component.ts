@@ -24,6 +24,11 @@ export class ModifierEquipementComponent {
     Description: FormControl<string>;
     Image: FormControl<string>;
     PieceID: FormControl<number>;
+    AfficherLongueur:FormControl<boolean>;
+    AfficherLargeur:FormControl<boolean>;
+    AfficherVasque:FormControl<boolean>;
+    AfficherEncastreeApparente:FormControl<boolean>;
+    
   }>;
   fileSizeError = false;
   maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
@@ -152,6 +157,10 @@ getDetails(id: string): void {
     Image: ['', [ ]],
     Type: ['', [ ]],
     PieceID:  [0, [ ]],
+    AfficherLongueur: [false, [Validators.required]],
+    AfficherLargeur: [false, [Validators.required]],
+    AfficherVasque: [false, [Validators.required]],
+    AfficherEncastreeApparente: [false, [Validators.required]],
     });
   }
 }

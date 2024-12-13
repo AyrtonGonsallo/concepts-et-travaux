@@ -25,6 +25,10 @@ export class AjouterEquipementComponent {
     Type: FormControl<string>;
     Image: FormControl<string>;
     PieceID: FormControl<number>;
+    AfficherLongueur:FormControl<boolean>;
+    AfficherLargeur:FormControl<boolean>;
+    AfficherVasque:FormControl<boolean>;
+    AfficherEncastreeApparente:FormControl<boolean>;
   }>;
   fileSizeError = false;
   maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
@@ -136,6 +140,10 @@ export class AjouterEquipementComponent {
     Type: ['', [ ]],
     Image: ['', [ ]],
     PieceID:  [0, [ ]],
+    AfficherLongueur: [false, [Validators.required]],
+    AfficherLargeur: [false, [Validators.required]],
+    AfficherVasque: [false, [Validators.required]],
+    AfficherEncastreeApparente: [false, [Validators.required]],
     });
   }
 }

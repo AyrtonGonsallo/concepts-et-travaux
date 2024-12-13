@@ -58,6 +58,43 @@
           </nz-form-control>
       </nz-form-item>
 
+      <nz-form-item nz-row class="register-area">
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AfficherLongueur"  nzRequired nzTooltipTitle="cocher cette case si vous voulez que le champ apparaisse dans le formulaire de demande de devis pour cet appareil" >
+            <span>Afficher le champ Longueur</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox  formControlName="AfficherLongueur"></label>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item nz-row class="register-area">
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AfficherLargeur"  nzRequired nzTooltipTitle="cocher cette case si vous voulez que le champ apparaisse dans le formulaire de demande de devis pour cet appareil" >
+            <span>Afficher le champ Largeur</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox  formControlName="AfficherLargeur"></label>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row class="register-area">
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AfficherVasque"  nzRequired nzTooltipTitle="cocher cette case si vous voulez que le champ apparaisse dans le formulaire de demande de devis pour cet appareil" >
+            <span>Afficher le champ Vasque</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox  formControlName="AfficherVasque"></label>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row class="register-area">
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AfficherEncastreeApparente"  nzRequired nzTooltipTitle="cocher cette case si vous voulez que le champ apparaisse dans le formulaire de demande de devis pour cet appareil" >
+            <span>Afficher le champ EncastreeApparente</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox  formControlName="AfficherEncastreeApparente"></label>
+        </nz-form-control>
+      </nz-form-item>
+
         <nz-form-item nz-row class="register-area">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button nz-button nzType="primary">Modifier</button>
