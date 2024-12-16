@@ -48,6 +48,7 @@ export class ModifierGammeComponent {
     { slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
     { slug: 'gamme-de-porte', label: 'Gamme de porte' },
     { slug: 'nature-porte', label: 'Nature de la porte' },
+    { slug: 'renovation-electrique-partielle', label: 'Rénovation électrique partielle (Appareillage)' },
     { slug: 'renovation-electrique-complete', label: 'Rénovation électrique complete' },
     { slug: 'radiateur', label: 'Radiateur' },
     { slug: 'type-de-porte-creation-murs-non-porteurs', label: 'Type de porte (cmnp)' },
