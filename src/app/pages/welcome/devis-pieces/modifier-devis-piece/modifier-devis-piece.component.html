@@ -126,6 +126,7 @@
                 <div>
                   <span>Prix: {{ detailsCalcul.resultats[data.TravailSlug]?.prix }}</span><br>
                   <span>Formule: {{ detailsCalcul.resultats[data.TravailSlug]?.formule }}</span>
+                  <span [innerHTML]="detailsCalcul.resultats[data.TravailSlug]?.formule"></span>
                 </div>
               </ng-container>
             </tr>

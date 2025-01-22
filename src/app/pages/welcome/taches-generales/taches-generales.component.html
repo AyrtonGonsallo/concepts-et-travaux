@@ -2,11 +2,25 @@
     <h2>Liste des tâche générales</h2>    
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches-generales', 'ajouter-tache-generale']">Ajouter une tâche générale</button>
 
-    <nz-table #sortTable [nzData]="tache_generale"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+
+    <nz-table #sortTable [nzData]="listOfDisplayData" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
-            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            <th *ngFor="let column of listOfColumn" nzCustomFilter [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
+              <nz-filter-trigger *ngIf="column.title=='Label'" [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                <span nz-icon nzType="search"></span>
+              </nz-filter-trigger>
             </th>
             <th>
               Actions

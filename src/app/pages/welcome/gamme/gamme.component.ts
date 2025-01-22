@@ -61,17 +61,19 @@ export class GammeComponent {
     }
   ];
   gamme:Gamme[] = [];
-  
+  listOfDisplayData :any;
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.loadGamme();
+    
   }
 
   loadGamme(): void {
     this.userService.getGammes()
       .subscribe((data: Gamme[]) => {
         this.gamme = data;
+        this.listOfDisplayData = [...this.gamme];
         console.log("réponse de la requette get_gamme",this.gamme);
       });
       console.log("envoi de la requette get_gamme",this.gamme);
@@ -107,5 +109,18 @@ export class GammeComponent {
       return false;
     }
     
+  }
+
+
+  searchValue = '';
+  visible = false;
+  reset(): void {
+    this.searchValue = '';
+    this.search();
+  }
+
+  search(): void {
+    this.visible = false;
+    this.listOfDisplayData = this.gamme.filter((item: Gamme) => item.Label.indexOf(this.searchValue) !== -1);
   }
 }

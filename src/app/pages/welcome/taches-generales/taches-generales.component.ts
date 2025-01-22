@@ -37,7 +37,7 @@ export class TachesGeneralesComponent {
     }
   ];
   tache_generale:TacheGenerale[] = [];
-
+  listOfDisplayData:any
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
@@ -48,6 +48,7 @@ export class TachesGeneralesComponent {
     this.userService.getTacheGenerales()
       .subscribe((data: TacheGenerale[]) => {
         this.tache_generale = data;
+        this.listOfDisplayData=data
         console.log("réponse de la requette get_tache_generale",this.tache_generale);
       });
       console.log("envoi de la requette get_tache_generale",this.tache_generale);
@@ -84,4 +85,18 @@ export class TachesGeneralesComponent {
     }
     
   }
+
+
+  
+    searchValue = '';
+    visible = false;
+    reset(): void {
+      this.searchValue = '';
+      this.search();
+    }
+  
+    search(): void {
+      this.visible = false;
+      this.listOfDisplayData = this.tache_generale.filter((item: TacheGenerale) => item.Label.indexOf(this.searchValue) !== -1);
+    }
 }
