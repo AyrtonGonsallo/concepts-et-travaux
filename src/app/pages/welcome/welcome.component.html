@@ -1,10 +1,10 @@
 
   
   <nz-layout>
-    <nz-sider nzCollapsible nzBreakpoint="md" [nzWidth]="300" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <nz-sider nzCollapsible nzBreakpoint="md" [nzWidth]="250" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
       <div class="logo">
         <a href="/" target="_blank">
-          <img src="https://dev.homeren.fr/admin/assets/img/favicon-homeren-bo.svg" alt="logo">
+          <img src="https://dev.homeren.fr/admin/assets/img/logo-homeren-jb.webp" alt="logo">
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
@@ -29,7 +29,7 @@
             </li>-->
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Pièces et travaux" nzIcon="home">
+        <li nz-submenu nzOpen nzTitle="Pièces et travaux" nzIcon="home" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/pieces">Liste des pièces</a>
@@ -47,6 +47,9 @@
               <a routerLink="/administration/taches-generales">Liste des tâches au forfait</a>
             </li>
             <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/formules-et-tests">Formules et tests</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/categories-piece">Catégories de pièces</a>
             </li>
            
@@ -59,7 +62,7 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Réalisations" nzIcon="picture">
+        <li nz-submenu nzOpen nzTitle="Réalisations" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/realisations">Liste des realisations</a>
@@ -69,7 +72,7 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="FAQ" nzIcon="question-circle">
+        <li nz-submenu nzOpen nzTitle="FAQ" nzIcon="question-circle" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/questions">Liste des questions</a>
@@ -80,7 +83,7 @@
             
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Avis" nzIcon="star">
+        <li nz-submenu nzOpen nzTitle="Avis" nzIcon="star" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/avis">Liste des avis</a>
@@ -123,10 +126,19 @@
           (click)="isCollapsed = !isCollapsed"
         ></span>
         <div class="logout-zone">
-          <button nz-button nzType="default" (click)="logout()">
+          <button nz-button nzType="default" (click)="logout()" nz-popover
+          nzPopoverTitle="Détails du compte"
+          [(nzPopoverVisible)]="conn_visible"
+          (nzPopoverVisibleChange)="conn_change($event)"
+          [nzPopoverContent]="contentTemplate">
             <span nz-icon nzType="logout"></span>
             Se déconnecter
           </button>
+          
+          <ng-template #contentTemplate>
+            Utilisateur : {{user?.Nom}} {{user?.Prenom}} <br>
+            Rôle : {{user?.Role?.Titre}}
+          </ng-template>
         </div>
       </nz-header>
       <nz-content>

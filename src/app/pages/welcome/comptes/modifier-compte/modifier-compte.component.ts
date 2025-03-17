@@ -265,9 +265,9 @@ export class ModifierCompteComponent {
         response.Password="000"
 
         // recuperer les liens
-        this.assuranceRCDecennale+=this.slugify(response.AssuranceRCDecennale)
-        this.kbis+= this.slugify(response.KBis)
-        this.questionnaireTarif+= this.slugify(response.QuestionnaireTarif)
+        this.assuranceRCDecennale+=this.slugify(response?.AssuranceRCDecennale || '')
+        this.kbis+= this.slugify(response?.KBis || '')
+        this.questionnaireTarif+= this.slugify(response?.QuestionnaireTarif || '')
         
         //recuperer les noms
         this.nom_assuranceRCDecennale=response.AssuranceRCDecennale

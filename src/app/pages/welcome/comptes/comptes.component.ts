@@ -63,13 +63,30 @@ export class ComptesComponent {
 
   ngOnInit(): void {
     this.loadUtilisateurs();
+    this.authService.getUser().subscribe(
+      (user) => {
+        console.log('Utilisateur récupéré:', user);
+        this.uid=user.Id
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+      }
+    );
+    
   }
-
+uid=0
   loadUtilisateurs(): void {
     this.http.get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs`)
       .subscribe((data: Utilisateur[]) => {
-        this.utilisateurs = data;
-        console.log("réponse de la requette get_utilisateurs",this.utilisateurs);
+        if(this.isHimOrSuperAdmin(this.uid)){
+          this.utilisateurs = data.filter(user => user.Id === this.uid);
+
+          console.log("réponse de la requette get_utilisateur",this.uid,this.utilisateurs)
+        }else{
+          this.utilisateurs = data;
+        console.log("réponse de la requette get_utilisateurs",this.utilisateurs)
+        }
+        ;
       });
       console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
       

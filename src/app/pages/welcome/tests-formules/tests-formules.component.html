@@ -1,0 +1,9 @@
+<h2>Formules et tests</h2>
+<nz-collapse nzAccordion>
+    @for (panel of panels; track panel) {
+      <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active" class="formule-accordeon">
+        
+        <div [innerHTML]="panel.content"></div>
+      </nz-collapse-panel>
+    }
+</nz-collapse>

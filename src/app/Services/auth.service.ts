@@ -3,127 +3,137 @@ import { ApiConceptsEtTravauxService } from './api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private loggedIn = false;
+  private userSubject = new BehaviorSubject<any>(this.getDataFromLocal("utilisateur") || null);
+  public user$ = this.userSubject.asObservable();
 
-  constructor(private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router,private cookieService: CookieService) {}
+  constructor(
+    private userService: ApiConceptsEtTravauxService,
+    private message: NzMessageService,
+    private router: Router,
+    private cookieService: CookieService
+  ) {}
 
+  // Login avec gestion des erreurs et de l'état
   login(userData: any): void {
-    // Logique de connexion ici (par exemple, appel à une API, gestion de jetons, etc.)
     this.userService.login_user(userData).subscribe(
       (response) => {
         console.log('Utilisateur identifié avec succès :', response);
         this.userService.get_all_user_data_by_id(response.Id).subscribe(
           (response2) => {
-            this.saveDataToLocal("utilisateur",response2)
+            // Sauvegarder les données et émettre via BehaviorSubject
+            this.saveDataToLocal("utilisateur", response2);
+            this.userSubject.next(response2);  // Mise à jour du BehaviorSubject avec les nouvelles données
+            this.message.create('success', `Utilisateur identifié avec succès`);
+            this.router.navigate(['/administration']);
+            this.loggedIn = true;
+
+            // Création d'un cookie pour l'authentification
+            const expirationDate = new Date();
+            expirationDate.setHours(expirationDate.getHours() + 1); // 1 heure
+            this.cookieService.set('loggedInconcepts&travauxback', 'true', { expires: expirationDate });
           },
           (error) => {
             console.error('Erreur lors de l\'identification de l\'utilisateur :', error);
             this.message.create('error', `Erreur lors de l\'identification de l\'utilisateur`);
-          })
-          
-        this.message.create('success', `Utilisateur identifié avec succès`);
-        this.router.navigate(['/administration']);
-        this.loggedIn = true;
-        // Créer un cookie pour stocker l'information de connexion avec expiration dans 1 heure
-        const expirationDate = new Date();
-        expirationDate.setHours(expirationDate.getHours() + 1); // Ajouter 1 heure
-
-        this.cookieService.set('loggedInconcepts&travauxback', 'true', {
-          expires: expirationDate,
-          /* Autres options */
-        });
+          }
+        );
       },
       (error) => {
         console.error('Erreur lors de l\'identification de l\'utilisateur :', error);
         this.message.create('error', `Erreur lors de l\'identification de l\'utilisateur`);
       }
     );
-   
   }
-// Méthode pour stocker les données dans le stockage local
-saveDataToLocal(nom:string,data: any): void {
-  localStorage.setItem(nom, JSON.stringify(data));
-}
 
-// Méthode pour récupérer les données du stockage local
-getDataFromLocal(nom:string,): any {
-  const data = localStorage.getItem(nom);
-  return data ? JSON.parse(data) : null;
-}
+  // Méthode pour récupérer les données utilisateur depuis le localStorage
+  getDataFromLocal(nom: string): any {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const data = localStorage.getItem(nom);
+      return data ? JSON.parse(data) : null;
+    }
+    return null;
+  }
 
-// Méthode pour supprimer les données du stockage local
-clearDataFromLocal(nom:string): void {
-  localStorage.removeItem(nom);
-}
+  // Méthode pour stocker les données dans le localStorage
+  saveDataToLocal(nom: string, data: any): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(nom, JSON.stringify(data));
+    }
+  }
+
+  // Récupérer l'utilisateur depuis le BehaviorSubject (au lieu de recréer un Observable à chaque fois)
+  getUser(): Observable<any> {
+    return this.user$;
+  }
+
+  // Supprimer les données du localStorage
+  clearDataFromLocal(nom: string): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.removeItem(nom);
+    }
+  }
+
+  // Logout et nettoyage des données
   logout(): void {
-    // Logique de déconnexion ici
     this.loggedIn = false;
     this.cookieService.delete('loggedInconcepts&travauxback');
     this.message.create('success', `Utilisateur déconnecté`);
-    this.clearDataFromLocal("utilisateur")
+    this.clearDataFromLocal("utilisateur");
+    this.userSubject.next(null);  // Mise à jour du BehaviorSubject avec une valeur nulle
     this.router.navigate(['/login']);
   }
 
+  // Vérifier si l'utilisateur est connecté
   isLoggedIn(): boolean {
-    //return this.loggedIn;
     return this.cookieService.get('loggedInconcepts&travauxback') === 'true';
   }
+
+  // Vérifier si l'utilisateur est un admin
   isAdmin(): boolean {
-    //return this.loggedIn;
-    return this.getDataFromLocal("utilisateur").Role.Id == 1;
-  }
-  isAdminorSuperAdmin(): boolean {
-    //return this.loggedIn;
-    return this.getDataFromLocal("utilisateur").Role.Id == 1||this.getDataFromLocal("utilisateur").Role.Id == 12;
-  }
-  isHim(id:number): boolean {
-    //return this.loggedIn;
-    var iduser=this.getDataFromLocal("utilisateur").Id
-    console.log("comparaison "+iduser+" et "+id)
-   
-      return iduser == id;
-    
-    
-   
-  }
-  isAdminOrHim(id:number){
-    //return this.loggedIn;
-    var iduser=this.getDataFromLocal("utilisateur").Id
-    //console.log("comparaison "+iduser+" et "+id)
-    if(this.getDataFromLocal("utilisateur").Role.Id == 1){
-      return true
-    }else{
-      return iduser == id;
-    }
-  }
-  IsNotArtisan(): boolean {
-    //return this.loggedIn;
-    return this.getDataFromLocal("utilisateur").Role.Id != 2;
-  }
-  isHimOrAdminAndOtherNotAdmin(id:number,other_user_roleId:number){
-    //return this.loggedIn;
-    var iduser=this.getDataFromLocal("utilisateur").Id
-    //console.log("comparaison "+iduser+" et "+id)
-    if((this.getDataFromLocal("utilisateur").Role.Id) == 1 && other_user_roleId!=1){
-      return true
-    }else{
-      return iduser == id;
-    }
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? utilisateur.Role.Id === 1 : false;
   }
 
-  isHimOrSuperAdmin(id:number){
-    //return this.loggedIn;
-    var iduser=this.getDataFromLocal("utilisateur").Id
-    //console.log("comparaison "+iduser+" et "+id)
-    if((this.getDataFromLocal("utilisateur").Role.Id) == 12 ){
-      return true
-    }else{
-      return iduser == id;
-    }
+  // Vérifier si l'utilisateur est un admin ou super admin
+  isAdminorSuperAdmin(): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? (utilisateur.Role.Id === 1 || utilisateur.Role.Id === 12) : false;
+  }
+
+  // Vérifier si c'est le même utilisateur
+  isHim(id: number): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? utilisateur.Id === id : false;
+  }
+
+  // Vérifier si l'utilisateur est admin ou le même utilisateur
+  isAdminOrHim(id: number): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? (utilisateur.Role.Id === 1 || utilisateur.Id === id) : false;
+  }
+
+  // Vérifier si l'utilisateur n'est pas un artisan
+  IsNotArtisan(): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? utilisateur.Role.Id !== 2 : false;
+  }
+
+  // Vérifier si l'utilisateur est lui-même ou un admin avec un autre utilisateur non admin
+  isHimOrAdminAndOtherNotAdmin(id: number, other_user_roleId: number): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? (utilisateur.Role.Id === 1 && other_user_roleId !== 1) || utilisateur.Id === id : false;
+  }
+
+  // Vérifier si l'utilisateur est lui-même ou un super admin
+  isHimOrSuperAdmin(id: number): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? (utilisateur.Role.Id === 12 || utilisateur.Id === id) : false;
   }
 }

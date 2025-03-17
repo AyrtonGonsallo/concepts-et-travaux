@@ -50,13 +50,28 @@ export class DevisPiecesComponent {
 
   ngOnInit(): void {
     this.loadDevisPieces();
+    this.authService.getUser().subscribe(
+      (user) => {
+        console.log('Utilisateur récupéré:', user);
+        this.uid=user.Id
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+      }
+    );
   }
-
+uid=0;
   loadDevisPieces(): void {
     this.devis_pieceService.getAllDevisPieces()
       .subscribe((data: DevisPiece[]) => {
+        if(this.isHimOrSuperAdmin(this.uid)){
+          this.devis_pieces = data.filter(devis => devis.UtilisateurID === this.uid);
+
+          console.log("réponse de la requette get_utilisateur",this.uid,this.devis_pieces)
+        }else{
         this.devis_pieces = data;
         console.log("réponse de la requette get_devis_pieces",this.devis_pieces);
+        }
       });
       console.log("envoi de la requette get_devis_pieces",this.devis_pieces);
       
@@ -67,6 +82,9 @@ export class DevisPiecesComponent {
   }
   isAdminorSuperAdmin(){
     return this.authService.isAdminorSuperAdmin()
+  }
+  isHimOrSuperAdmin(id:number){
+    return this.authService.isHimOrSuperAdmin(id)
   }
   isHimOrAdminAndOtherNotAdmin(id:number,rid:number| undefined){
     return this.authService.isHimOrAdminAndOtherNotAdmin(id,rid?rid:0)
