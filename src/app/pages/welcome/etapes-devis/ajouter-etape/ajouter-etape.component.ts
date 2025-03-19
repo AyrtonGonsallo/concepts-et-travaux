@@ -12,6 +12,7 @@ export class AjouterEtapeDevisComponent {
 
   validateForm: FormGroup<{
     Titre: FormControl<string>;
+    Sous_titre: FormControl<string>;
     Description: FormControl<string>;
     Description_chambre: FormControl<string>;
     Description_sdb: FormControl<string>;
@@ -26,9 +27,9 @@ export class AjouterEtapeDevisComponent {
   liste_des_etapes = [
     'Choix de la pièce',
     'Travaux',
-    'Dimensions',
-    'Etat de surfaces',
-    'Gamme de produits',
+    'Étape 1 (Dimensions)',
+    'Étape 2 (Etat de surfaces)',
+    'Étape 3 (Gamme de produits)',
     'Recapitulatif',
     'Finalisation'
   ] as const;
@@ -63,6 +64,7 @@ export class AjouterEtapeDevisComponent {
   constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Titre: ['', [Validators.required]],
+      Sous_titre: ['', []],
       Description: ['', [Validators.required]],
       Description_chambre: ['', []],
       Description_sdb: ['', []],

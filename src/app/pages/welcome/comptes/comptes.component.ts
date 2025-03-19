@@ -78,7 +78,7 @@ uid=0
   loadUtilisateurs(): void {
     this.http.get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs`)
       .subscribe((data: Utilisateur[]) => {
-        if(this.isHimOrSuperAdmin(this.uid)){
+        if(!this.isAdminorSuperAdmin()){
           this.utilisateurs = data.filter(user => user.Id === this.uid);
 
           console.log("réponse de la requette get_utilisateur",this.uid,this.utilisateurs)
@@ -97,6 +97,9 @@ uid=0
   }
   isHimOrSuperAdmin(id:number){
     return this.authService.isHimOrSuperAdmin(id)
+  }
+  isAdminorSuperAdmin(){
+    return this.authService.isAdminorSuperAdmin()
   }
   cancel(): void {
     this.message.info('suppression annulée');

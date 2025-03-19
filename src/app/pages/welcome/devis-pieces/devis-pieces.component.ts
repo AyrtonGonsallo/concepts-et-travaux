@@ -64,7 +64,7 @@ uid=0;
   loadDevisPieces(): void {
     this.devis_pieceService.getAllDevisPieces()
       .subscribe((data: DevisPiece[]) => {
-        if(this.isHimOrSuperAdmin(this.uid)){
+        if(!this.isAdminorSuperAdmin()){
           this.devis_pieces = data.filter(devis => devis.UtilisateurID === this.uid);
 
           console.log("réponse de la requette get_utilisateur",this.uid,this.devis_pieces)

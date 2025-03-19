@@ -11,6 +11,15 @@
         </nz-form-item>
 
         <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Sous_titre"   nzTooltipTitle="What do you want other to call you" >
+              <span>Sous titre</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Sous_titre!">
+              <input nz-input id="Sous_titre" formControlName="Sous_titre" />
+          </nz-form-control>
+      </nz-form-item>
+
+        <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID" nzRequired>
                 <span>Travail</span>
             </nz-form-label>
