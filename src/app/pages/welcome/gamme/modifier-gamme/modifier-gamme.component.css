@@ -1,0 +1,15 @@
+.appareils-layout{
+    max-width: 866px;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: 1fr 1.5fr 0.5fr 1.5fr 0.5fr;
+    display: grid;
+}
+.appareils-layout .ant-input,.appareils-layout nz-input-number {
+    width: 90%;
+}
+.center{
+    max-width: 866px;
+    margin-left: auto;
+    margin-right: auto;
+}

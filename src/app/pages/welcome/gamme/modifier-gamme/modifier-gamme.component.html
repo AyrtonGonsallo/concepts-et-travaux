@@ -61,6 +61,37 @@
         </nz-form-item>
        
 
+        <div class="center"><u>Ajouter des prix pour plusieurs appareils</u></div>
+        <!-- ⚡ CHAMPS DYNAMIQUES (Appareils et Prix) -->
+        <div formArrayName="PrixMultiples">
+             <nz-form-item *ngFor="let appareil of appareils.controls; let i = index"  [formGroupName]="i" class="appareils-layout" >
+                 <nz-form-label  nzFor="appareilNom-{{i}}" nzRequired>
+                     <span>Nom de l'appareil</span>
+                 </nz-form-label>
+                 <nz-form-control >
+                     <input nz-input id="appareilNom-{{i}}" formControlName="nom" />
+                 </nz-form-control>
+ 
+                 <nz-form-label  nzFor="appareilPrix-{{i}}" nzRequired>
+                     <span>Prix</span>
+                 </nz-form-label>
+                 <nz-form-control >
+                     <nz-input-number id="appareilPrix-{{i}}" formControlName="prix"></nz-input-number>
+                 </nz-form-control>
+ 
+                 <nz-form-control >
+                     <a  (click)="removeAppareil(i)">Supprimer</a>
+                 </nz-form-control>
+             </nz-form-item>
+ 
+             <!-- Bouton pour ajouter un nouvel appareil -->
+             <nz-form-item class="center">
+                 <nz-form-control >
+                     <a (click)="addAppareil()">➕ Ajouter un appareil</a>
+                 </nz-form-control>
+             </nz-form-item>
+        </div>
+
       
         <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">

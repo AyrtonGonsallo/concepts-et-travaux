@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Travail } from '../../../../Models/Travail';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,7 @@ export class ModifierGammeComponent {
     Image: FormControl<string>;
     Pdf: FormControl<string>;
     Prix: FormControl<number>;
+     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
   }>;
   types: Type[] = [
@@ -67,8 +68,8 @@ export class ModifierGammeComponent {
       console.log('submit', this.validateForm.value);
       this.userService.updateGamme(parseInt(this.gammeId),this.validateForm.value).subscribe(
         (response: any) => {
-          console.log('gamme ajoutée avec succès :', response);
-          this.message.create('success', `gamme ajoutée avec succès`);
+          console.log('gamme modifiée avec succès :', response);
+          this.message.create('success', `gamme modifiée avec succès`);
           this.router.navigate(['/administration/gammes']);
         },
         (error: any) => {
@@ -185,12 +186,31 @@ export class ModifierGammeComponent {
       Image: ['', []],
       Pdf: ['', []],
       Prix: [0, [Validators.required]],
+      PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],
       
     });
   }
 
  
+  // Accès facile au FormArray PrixMultiples
+  get appareils(): FormArray {
+    return this.validateForm.get('PrixMultiples') as FormArray;
+  }
+
+  // Ajouter un nouvel appareil avec prix
+  addAppareil(): void {
+    const appareilForm = this.fb.group({
+      nom: ['', Validators.required],  // Nom de l'appareil
+      prix: [0, Validators.required]   // Prix de l'appareil
+    });
+    this.appareils.push(appareilForm);
+  }
+
+  // Supprimer un appareil
+  removeAppareil(index: number): void {
+    this.appareils.removeAt(index);
+  }
   ngOnInit(): void {
     this.loadtravaux()
     this.getDetails(parseInt(this.gammeId) )
@@ -203,10 +223,26 @@ export class ModifierGammeComponent {
         });
   }
   getDetails(id: number): void {
-    this.userService.getGammeById(id ).subscribe(
+    this.userService.getGammeById(id).subscribe(
       (response) => {
-        
+        console.log(response)
+        let pm=JSON.parse(response.PrixMultiples)
+        console.log("pm: ",pm)
+        response.PrixMultiples=null
         this.validateForm.patchValue(response);
+        if (pm && Array.isArray(pm)) {
+          
+          const appareilsArray = this.validateForm.get('PrixMultiples') as FormArray;
+          pm.forEach((appareil: any) => {
+            const appareilForm = this.fb.group({
+              nom: [appareil.nom || '', Validators.required],  // Nom de l'appareil
+              prix: [appareil.prix || 0, Validators.required]   // Prix de l'appareil
+            });
+            appareilsArray.push(appareilForm);
+          });
+        }
+        
+
         console.log("réponse de la requette getdetails",response);
       },
       (error) => {

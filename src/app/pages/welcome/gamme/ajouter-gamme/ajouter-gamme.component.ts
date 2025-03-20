@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -21,6 +21,7 @@ export class AjouterGammeComponent {
     Image: FormControl<string>;
     Pdf: FormControl<string>;
     Prix: FormControl<number>;
+    PrixMultiples: FormArray;
     TravailID: FormControl<number>;
   }>;
   types: Type[] = [
@@ -63,6 +64,7 @@ export class AjouterGammeComponent {
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
+      
       this.userService.addGamme(this.validateForm.value).subscribe(
         (response: any) => {
           console.log('gamme ajoutée avec succès :', response);
@@ -73,6 +75,7 @@ export class AjouterGammeComponent {
           console.error('Erreur lors de l\'ajout de la gamme :', error);
         }
       );
+      
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -184,11 +187,29 @@ export class AjouterGammeComponent {
       Pdf: ['', []],
       Prix: [0, [Validators.required]],
       TravailID: [0, [Validators.required]],
+      PrixMultiples:  this.fb.array([])
       
     });
   }
 
- 
+  // Accès facile au FormArray PrixMultiples
+  get appareils(): FormArray {
+    return this.validateForm.get('PrixMultiples') as FormArray;
+  }
+
+  // Ajouter un nouvel appareil avec prix
+  addAppareil(): void {
+    const appareilForm = this.fb.group({
+      nom: ['', Validators.required],  // Nom de l'appareil
+      prix: [0, Validators.required]   // Prix de l'appareil
+    });
+    this.appareils.push(appareilForm);
+  }
+
+  // Supprimer un appareil
+  removeAppareil(index: number): void {
+    this.appareils.removeAt(index);
+  }
   ngOnInit(): void {
     this.loadtravaux()
   }
