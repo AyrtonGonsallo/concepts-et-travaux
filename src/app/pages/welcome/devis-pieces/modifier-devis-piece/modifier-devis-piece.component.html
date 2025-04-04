@@ -59,6 +59,15 @@
             <nz-switch id="Payed" formControlName="Payed"></nz-switch>
           </nz-form-control>
       </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="VisiteFaite"  >
+            <span>Visite Faite ?</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+          <nz-switch id="VisiteFaite" formControlName="VisiteFaite"></nz-switch>
+        </nz-form-control>
+    </nz-form-item>
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="What do you want other to call you" >
                 <span>Commentaire</span>
@@ -85,15 +94,99 @@
         </nz-form-control>
         </nz-form-item>
     </form>
+    <div class="visite-box">
+      <div class="visite-title">Visite de technicien</div>
+      <div *ngIf="devispiece?.Visite">
+        Visite n°{{ devispiece?.Visite?.ID }} créée le 
+        {{ devispiece?.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss' }} 
+        {{ devispiece?.Visite?.Paye ? 'et payée' : 'et non payée' }}
+      </div>
+      
+      <br>
+      <button nz-button nzType="primary" (click)="add_visite()">Ajouter une visite</button>
+      <br>
+    </div>
 
+    <div class="visite-box">
+      <div class="visite-title">Paiement</div>
+      <nz-table #nzTable2 [nzData]="paiements" nzTableLayout="fixed">
+        <thead>
+          <tr>
+            
+            <th>ID</th>
+            <th>Type de paiement</th>
+            <th>Type</th>
+            <th>Montant</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr *ngFor="let data of nzTable2.data">
+              <td>{{ data.ID }}</td>
+              <td>{{ data.TypeDePaiement }}  </td>
+              <td>{{ data.Type }}</td>
+              <td>{{ data.Montant }} € </td>
+              <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
+            </tr>
+           
+            
+        </tbody>
+      </nz-table>
+      <form nz-form [formGroup]="paiementForm" (ngSubmit)="submitpaiementForm()">
+        <!-- Type de Paiement -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="TypeDePaiement">Type de Paiement</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type de paiement!">
+            <nz-select id="TypeDePaiement" formControlName="TypeDePaiement" nzPlaceHolder="Sélectionner">
+              <nz-option nzValue="virement" nzLabel="Virement"></nz-option>
+              <nz-option nzValue="en ligne" nzLabel="En ligne"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Type -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
+            <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
+              <nz-option nzValue="visite" nzLabel="Visite"></nz-option>
+              <nz-option nzValue="acompte" nzLabel="Acompte"></nz-option>
+              <nz-option nzValue="échéance" nzLabel="Échéance"></nz-option>
+              <nz-option nzValue="solde final" nzLabel="Solde Final"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Montant -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Montant">Montant</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un montant!">
+            <nz-input-number id="Montant" formControlName="Montant"  ></nz-input-number> 
+          </nz-form-control>
+        </nz-form-item>
+      
+        
+      
+        <!-- Bouton de soumission -->
+        <nz-form-item>
+          <nz-form-control [nzSpan]="12" [nzOffset]="5">
+            <button nz-button nzType="primary" [disabled]="paiementForm.invalid">Ajouter un paiement</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      
+      <br>
+    </div>
+    
 
     <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed">
         <thead>
           <tr>
             <th nzWidth="60px"></th>
             <th>ID</th>
-            <th>Type de tache</th>
-            <th>Tache</th>
+            <th>Type de tâche</th>
+            <th>Tâche</th>
             <th>Prix</th>
           </tr>
         </thead>
@@ -104,7 +197,7 @@
               <td>{{ data.ID }}</td>
               <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
               <td>{{ data.TravailSlug }}</td>
-              <td>{{ data.Prix }} <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Calculer le prix</button></td>
+              <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Recalculer le prix</button></td>
             </tr>
             <tr [nzExpand]="expandSet.has(data.ID)">
               <div>
@@ -124,8 +217,8 @@
              <br>
               <ng-container *ngIf="detailsCalcul && detailsCalcul.resultats[data.TravailSlug]">
                 <div>
-                  <span>Prix: {{ detailsCalcul.resultats[data.TravailSlug]?.prix }}</span><br>
-                  <span>Formule: {{ detailsCalcul.resultats[data.TravailSlug]?.formule }}</span>
+                  <span>Prix: {{ detailsCalcul.resultats[data.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
                   <span [innerHTML]="detailsCalcul.resultats[data.TravailSlug]?.formule"></span>
                 </div>
               </ng-container>

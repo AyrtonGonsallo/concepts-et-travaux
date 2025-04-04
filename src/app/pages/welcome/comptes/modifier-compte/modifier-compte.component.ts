@@ -324,6 +324,9 @@ export class ModifierCompteComponent {
   isnotAdmin(){
     return !this.authService.isAdmin()
   }
+  isnotAdminorSuperadmin(){
+    return !this.authService.isAdminorSuperAdmin()
+  }
   loadRoles(): void {
     this.userService.getRoles().subscribe(
       (response) => {

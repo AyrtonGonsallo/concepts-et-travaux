@@ -9,6 +9,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { DevisTache } from '../../../../Models/DevisTache';
 import { DevisPiece } from '../../../../Models/DevisPiece';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
+import { Paiement } from '../../../../Models/Paiement';
 
 @Component({
   selector: 'app-modifier-devis-piece',
@@ -26,6 +27,8 @@ export class ModifierDevisPieceComponent {
     PieceID: FormControl<number>;
     Prix: FormControl<number>;
     Payed: FormControl<boolean>;
+    VisiteFaite: FormControl<boolean>;
+    VisiteID: FormControl<number>;
     DevisID: FormControl<number>;
     
   }>;
@@ -67,6 +70,8 @@ export class ModifierDevisPieceComponent {
       UtilisateurID: [0, []],
       Prix: [0, []],
       Payed: [false, []],
+      VisiteFaite: [false, []],
+      VisiteID: [0, []],
       DevisID: [0, []],
       
     });
@@ -82,6 +87,7 @@ export class ModifierDevisPieceComponent {
     // Utilisez l'ID pour récupérer les détails de l'devis
     this.getDetails(devisId);
     this.getPieces();
+    this.get_all_devis_paiements(devisId);
   }
   apiBaseUrl: string = `${environment.apiUrl}/open-file/`;
   // Méthode pour récupérer les détails de l'devis à partir de l'API
@@ -92,6 +98,7 @@ export class ModifierDevisPieceComponent {
        this.listOfTaches=response.DevisTaches
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_devis",response);
+        
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details devis :', error);
@@ -99,8 +106,23 @@ export class ModifierDevisPieceComponent {
     );
     
   }
+
+  get_all_devis_paiements(devisId: string): void {
+    this.devisService.get_all_devis_paiements( parseInt(devisId, 10)).subscribe(
+      (response) => {
+        this.paiements=response
+        console.log("réponse de la requette get_paiments",response);
+        
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details paiments :', error);
+      }
+    );
+    
+  }
   devispiece:any
   pieces:any[]=[];
+  paiements:Paiement[] = [];
   getPieces(): void {
     this.devisService.getPieces().subscribe(
       (response) => {
@@ -183,4 +205,71 @@ export class ModifierDevisPieceComponent {
     );
   }
   
+
+  add_visite(){
+    const visiteData = {
+      Date: new Date().toISOString(), // Génère la date actuelle au format ISO
+      Paye: 0
+    };
+    this.devisService.add_visite( visiteData).subscribe(
+      (response) => {
+        console.log('Visite ajoutee avec succès :', response);
+        this.validateForm.patchValue({ VisiteID: response.ID });
+        this.devisService.updateDevisPiece(this.devisId,this.validateForm.value).subscribe(
+          (response) => {
+            console.log('Devis modifié avec succès :', response);
+            this.message.create('success', `Visite ajoutée et devis modifié avec succès`);
+            //this.router.navigate(['/administration/devis-pieces']);
+          },
+          (error) => {
+            console.error('Erreur lors de la modification de l\'devis :', error);
+          }
+        );
+       
+      },
+      (error) => {
+        console.error('Erreur lors de l\'ajout de la visite :', error);
+      }
+    );
+  }
+
+  paiementForm: FormGroup<{
+    TypeDePaiement: FormControl<string | null>;
+    Type: FormControl<string | null>;
+    Montant: FormControl<number | null>;
+    Date: FormControl<string | null>;
+    DevisID: FormControl<number | null>;
+  }> = this.fb.group({
+    TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+    Type: this.fb.control<string | null>(null, Validators.required),
+    Montant: this.fb.control<number | null>(null, Validators.required),
+    Date: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
+    DevisID: this.fb.control<number | null>(this.devisId, Validators.required), // devispiece.ID sera assigné dynamiquement
+  });
+  
+
+  submitpaiementForm(): void {
+    if (this.paiementForm.valid) {
+      console.log('submit', this.paiementForm.value);
+      this.devisService.add_paiement(this.paiementForm.value).subscribe(
+        (response) => {
+          console.log('paiement ajouté avec succès :', response);
+          this.message.create('success', `paiement ajouté avec succès`);
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du paiement :', error);
+        }
+      );
+    } else {
+      Object.values(this.paiementForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+  add_paiement(){
+
+  }
 }

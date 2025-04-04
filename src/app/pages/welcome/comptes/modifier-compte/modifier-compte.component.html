@@ -6,7 +6,7 @@
                 <span>Rôle</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Rôle" [nzDisabled]="isnotAdmin()">
+                <nz-select id="RoleId" formControlName="RoleId"  nzPlaceHolder="Rôle" [nzDisabled]="isnotAdminorSuperadmin()">
                     <nz-option *ngFor="let option of roles" [nzValue]="option.Id" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
             </nz-form-control>

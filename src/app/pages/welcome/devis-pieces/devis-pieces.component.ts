@@ -22,7 +22,7 @@ export class DevisPiecesComponent {
     },
     
     {
-      title: 'Date',
+      title: 'Date de création',
       compare: (a: DevisPiece, b: DevisPiece) => {
         const dateA = new Date(a.Date).getTime();
         const dateB = new Date(b.Date).getTime();
@@ -64,7 +64,7 @@ uid=0;
   loadDevisPieces(): void {
     this.devis_pieceService.getAllDevisPieces()
       .subscribe((data: DevisPiece[]) => {
-        if(!this.isAdminorSuperAdmin()){
+        if(!this.isTechAdminorSuperAdmin()){
           this.devis_pieces = data.filter(devis => devis.UtilisateurID === this.uid);
 
           console.log("réponse de la requette get_utilisateur",this.uid,this.devis_pieces)
@@ -80,8 +80,8 @@ uid=0;
 
     return this.authService.isAdmin()
   }
-  isAdminorSuperAdmin(){
-    return this.authService.isAdminorSuperAdmin()
+  isTechAdminorSuperAdmin(){
+    return this.authService.isTechAdminorSuperAdmin()
   }
   isHimOrSuperAdmin(id:number){
     return this.authService.isHimOrSuperAdmin(id)

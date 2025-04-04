@@ -60,6 +60,16 @@ get_projet(userId: number): Observable<any> {
 add_etape_projet(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/ajouter_etape_projet`, userData);
 }
+add_visite(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/add_visite`, userData);
+}
+add_paiement(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/add_paiement`, userData);
+}
+get_all_devis_paiements(devisID: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_all_devis_paiements/${devisID}`;
+  return this.http.get<any>(url);
+}
 add_besoin_projet(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/ajouter_besoin_projet`, userData);
 }
@@ -499,8 +509,23 @@ get_role(userId: number): Observable<any> {
    updateDevisPiece(id: number, devis: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_devis_piece/${id}`, devis);
   }
-
-  
+  addParametre(parametre: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_parametre`, parametre);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getParametreById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_parametre/${id}`);
+  }
+  getParametres(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_parametres`);
+  }
+  deleteParametre(ParametreId: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_parametre/${ParametreId}`);
+  }
+   // Update
+   updateParametre(id: number, Parametre: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_parametre/${id}`, Parametre);
+  }
 
   // Ajouter un nouveau modèle d'équipement
   addGamme(gamme: any): Observable<any> {

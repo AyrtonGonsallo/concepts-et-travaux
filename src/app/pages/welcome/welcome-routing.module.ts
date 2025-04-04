@@ -72,6 +72,9 @@ import { TachesGeneralesComponent } from './taches-generales/taches-generales.co
 import { ModifierTacheGeneraleComponent } from './taches-generales/modifier-tache-generale/modifier-tache-generale.component';
 import { AjouterTacheGeneraleComponent } from './taches-generales/ajouter-tache-generale/ajouter-tache-generale.component';
 import { TestsFormulesComponent } from './tests-formules/tests-formules.component';
+import { ParametresComponent } from './parametres/parametres.component';
+import { AjouterParametreComponent } from './parametres/ajouter-parametre/ajouter-parametre.component';
+import { ModifierParametreComponent } from './parametres/modifier-parametre/modifier-parametre.component';
 
 const routes: Routes = [
  
@@ -115,6 +118,9 @@ const routes: Routes = [
       { path: 'avis', component: AvisComponent },
       { path: 'avis/ajouter-avis', component: AjouterAvisComponent },
       { path: 'avis/modifier-avis/:id', component: ModifierAvisComponent },
+      { path: 'parametres', component: ParametresComponent },
+      { path: 'parametres/ajouter-parametre', component: AjouterParametreComponent },
+      { path: 'parametres/modifier-parametre/:id', component: ModifierParametreComponent },
       { path: 'equipements', component: EquipementsComponent },
       { path: 'formules-et-tests', component: TestsFormulesComponent },
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },

@@ -107,6 +107,12 @@ export class AuthService {
     return utilisateur ? (utilisateur.Role.Id === 1 || utilisateur.Role.Id === 12) : false;
   }
 
+  // Vérifier si l'utilisateur est un admin ou super admin
+  isTechAdminorSuperAdmin(): boolean {
+    const utilisateur = this.getDataFromLocal("utilisateur");
+    return utilisateur ? (utilisateur.Role.Id === 13  || utilisateur.Role.Id === 1 || utilisateur.Role.Id === 12) : false;
+  }
+
   // Vérifier si c'est le même utilisateur
   isHim(id: number): boolean {
     const utilisateur = this.getDataFromLocal("utilisateur");

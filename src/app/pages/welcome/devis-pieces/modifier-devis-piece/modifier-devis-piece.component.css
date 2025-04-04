@@ -5,3 +5,11 @@
 .mr-10{
     margin-right: 10px;
 }
+.visite-title{
+font-weight: bolder;
+}
+.visite-box{
+    margin: 21px 120px;
+    border: solid 2px #bfbfbf;
+    padding: 20px;
+}
