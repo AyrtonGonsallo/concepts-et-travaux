@@ -187,6 +187,10 @@ get_prix_devis_piece(id: number): Observable<any> {
   return this.http.get<any>(url);
 }
 
+get_prix_devis_tache(data: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/get_prix_devis_tache`, data);
+}
+
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;
   return this.http.get<any>(url);
@@ -492,9 +496,19 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement`);
   }
 
-  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getDevisPieceById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_devis_piece/${id}`);
+  }
+
+  get_devis_tache(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_devis_tache/${id}`);
+  }
+  getGammesByTravailAndTypeOrdered(travailID:number,type: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_ordered_gammes_by_type_and_travailID/${travailID}/${type}`);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  get_devis_taches_by_travail(tid: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_devis_taches_by_travail/${tid}`);
   }
 
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée

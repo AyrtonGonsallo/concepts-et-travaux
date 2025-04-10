@@ -1,0 +1,195 @@
+<div class="width-800">
+<h3>Pose de revêtements muraux</h3>
+    
+    <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+        <div formArrayName="murs">
+        <div *ngFor="let mur of murs.controls; let i = index" [formGroupName]="i" class="mur-bloc">
+            <h4>Mur {{ i + 1 }}</h4>
+            <div class="label-number">
+                <label>Hauteur :</label>
+                <input type="number" formControlName="hauteur">
+            </div>
+            
+            <div class="label-number">
+                <label>Longueur :</label>
+                <input type="number" formControlName="longueur"><br>
+            </div>
+
+            <label>Revêtement existant :</label><br>
+            <nz-radio-group   formControlName="depose" class="flx-radio-row3">
+                <div *ngFor="let option of type_de_depose" class="parquet-option">
+                <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix" class="radio-span">
+                    <span>{{ option.Label }}</span>
+                </label>
+                </div>
+                <div  class="parquet-option ant-col tooltip-srf">
+                <label nz-radio nzValue="0:aucun:0">
+                    <span>Aucun</span>
+                </label>
+                </div>
+            </nz-radio-group>
+            <br>
+    
+        
+            <label> État des surfaces :</label><br>
+            <nz-radio-group formControlName="etat" class="rd-grp-w" >
+                <div>
+                    <label nz-radio nzValue="bon" >
+                        <span>Bon : reprise légère d'enduit</span>
+                    </label>
+                </div>
+                <div>
+                    <label nz-radio nzValue="abimé" >
+                        <span>Abimé : rebouchage, réparation de fissures.</span>
+                    </label>
+                </div>
+                <div>
+                    <label nz-radio nzValue="Très abimé" >
+                        <span>Très abimé : Nécessite la pose de plaques de plâtre.</span>
+                    </label>
+                </div>
+            </nz-radio-group>
+            <br>
+
+
+            <label> Nouveau revêtement et gamme du mur :</label><br>
+            <nz-radio-group formControlName="gamme" class="w-80">
+                <!-- Reusable template for displaying options with PDFs -->
+                <ng-container>
+                <div  nz-col class="row-w-grid3">
+                    <div class="">
+                    <label class="" >Peinture : </label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_peinture" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                    
+                </div>
+                </div>
+                </div>
+
+
+
+                <div  nz-col class="row-w-grid3">
+                <div class="" >
+                    <label  class="" >Enduit :</label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_enduit" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                
+                    
+                </div>
+                </div>
+                </div>
+
+
+                <div  nz-col class="row-w-grid3">
+                <div class="">
+                    <label class="" >Papier :</label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_papier" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                
+                
+                </div>
+                </div>
+                </div>
+
+
+                <div  nz-col class="row-w-grid3">
+                <div class="">
+                    <label class="" >Carrelage :</label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_carrelage" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                
+                
+                </div>
+                </div>
+            </div>
+
+            <div  nz-col class="row-w-grid3">
+                <div class="" >
+                    <label  class="" >Bois :</label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_bois" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                    
+                </div>
+                </div>
+            </div>
+
+
+            <div  nz-col class="row-w-grid3">
+                <div class="">
+                    <label  class="" >Tissus :</label>
+                </div>
+                <div class="">
+                <div *ngFor="let option of gammes_tissus" class="parquet-option">
+                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                    <span>
+                        <!-- Dynamically display the label based on the type -->
+                        {{ option.Label }}
+                    </span>
+                    
+                    </label>
+                
+                </div>
+                </div>
+                </div>
+
+                </ng-container>
+            </nz-radio-group>
+    
+        
+    
+            <hr>
+        </div>
+        </div>
+    
+        <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+        <ng-container *ngIf="detailsCalcul">
+            <div>
+              <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+              <span>Formule: </span><br>
+              <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+            </div>
+        </ng-container>
+  </form>
+</div>
+
+  

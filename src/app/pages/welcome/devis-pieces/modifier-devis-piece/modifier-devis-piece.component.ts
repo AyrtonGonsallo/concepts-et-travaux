@@ -149,7 +149,10 @@ export class ModifierDevisPieceComponent {
     }
   }
   detailsCalcul:any
+  
   calculer_prix(tid:number,index:number){
+   
+
     this.calculDevisService.calculer_prix(this.devispiece, index).then((result) => {
       this.detailsCalcul = result
       console.log("Prix reçu :", this.detailsCalcul);

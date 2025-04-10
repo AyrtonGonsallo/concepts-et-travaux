@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiConceptsEtTravauxService } from './api-concepts-et-travaux.service';
 import { DevisPiece } from '../Models/DevisPiece';
+import { DevisTache } from '../Models/DevisTache';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,20 @@ export class CalculDevisService {
         },
         (error) => {
           console.error('Erreur lors de la récupération des get_prix_devis_piece :', error);
+          reject(error); // En cas d'erreur, rejette la promesse
+        }
+      );
+    });
+  }
+
+  calculer_prix_tache(devistache: DevisTache,): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.userService.get_prix_devis_tache(devistache).subscribe(
+        (response) => {
+          resolve(response); // Renvoie la réponse quand elle est prête
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des get_prix_devis_tache :', error);
           reject(error); // En cas d'erreur, rejette la promesse
         }
       );

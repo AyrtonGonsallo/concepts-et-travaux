@@ -75,6 +75,8 @@ import { TestsFormulesComponent } from './tests-formules/tests-formules.componen
 import { ParametresComponent } from './parametres/parametres.component';
 import { AjouterParametreComponent } from './parametres/ajouter-parametre/ajouter-parametre.component';
 import { ModifierParametreComponent } from './parametres/modifier-parametre/modifier-parametre.component';
+import { PoseDeRevetementsMurauxCalculComponent } from './formulaires-taches/pose-de-revetements-muraux-calcul/pose-de-revetements-muraux-calcul.component';
+import { PoseDeRevetementsMurauxListeComponent } from './formulaires-taches/pose-de-revetements-muraux-liste/pose-de-revetements-muraux-liste.component';
 
 const routes: Routes = [
  
@@ -123,6 +125,9 @@ const routes: Routes = [
       { path: 'parametres/modifier-parametre/:id', component: ModifierParametreComponent },
       { path: 'equipements', component: EquipementsComponent },
       { path: 'formules-et-tests', component: TestsFormulesComponent },
+      { path: 'formules-et-tests/tester-revetements-muraux/:id', component: PoseDeRevetementsMurauxCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/revetements-muraux', component: PoseDeRevetementsMurauxListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
       { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },
       { path: 'travaux', component: TravauxComponent },
@@ -148,7 +153,7 @@ const routes: Routes = [
       { path: 'taches-generales', component: TachesGeneralesComponent },
       { path: 'taches-generales/modifier-tache-generale/:id', component: ModifierTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'taches-generales/ajouter-tache-generale', component: AjouterTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      
+     
       { path: 'comptes/modifier-compte/:id', component: ModifierCompteComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'comptes/ajouter-compte', component: AjouterCompteComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID

@@ -63,7 +63,7 @@ export class ProjetComponent {
   }
 
   loadProjets(): void {
-    if(this.authService.isAdmin()){
+    if(this.authService.isAdminorSuperAdmin()){
       this.userService.getProjets().subscribe(
         (response) => {
           this.projets = response;
