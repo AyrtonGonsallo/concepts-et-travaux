@@ -190,6 +190,10 @@ get_prix_devis_piece(id: number): Observable<any> {
 get_prix_devis_tache(data: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/get_prix_devis_tache`, data);
 }
+// Read by Type
+getEquipementsByType(type: string): Observable<any> {
+  return this.http.get<any>(`${environment.apiUrl}/get_equipements_by_type/${type}`);
+}
 
 get_autorisation(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_autorisation/${userId}`;

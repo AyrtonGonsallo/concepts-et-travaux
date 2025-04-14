@@ -77,6 +77,14 @@ import { AjouterParametreComponent } from './parametres/ajouter-parametre/ajoute
 import { ModifierParametreComponent } from './parametres/modifier-parametre/modifier-parametre.component';
 import { PoseDeRevetementsMurauxCalculComponent } from './formulaires-taches/pose-de-revetements-muraux-calcul/pose-de-revetements-muraux-calcul.component';
 import { PoseDeRevetementsMurauxListeComponent } from './formulaires-taches/pose-de-revetements-muraux-liste/pose-de-revetements-muraux-liste.component';
+import { PoseDeRevetementSurPlafondCalculComponent } from './formulaires-taches/pose-de-revetement-sur-plafond-calcul/pose-de-revetement-sur-plafond-calcul.component';
+import { PoseDeRevetementSurPlafondListeComponent } from './formulaires-taches/pose-de-revetement-sur-plafond-liste/pose-de-revetement-sur-plafond-liste.component';
+import { PoseDeRevetementDeSolCalculComponent } from './formulaires-taches/pose-de-revetement-de-sol-calcul/pose-de-revetement-de-sol-calcul.component';
+import { PoseDeRevetementDeSolListeComponent } from './formulaires-taches/pose-de-revetement-de-sol-liste/pose-de-revetement-de-sol-liste.component';
+import { RemplacementDePortesCalculComponent } from './formulaires-taches/remplacement-de-portes-calcul/remplacement-de-portes-calcul.component';
+import { RemplacementDePortesListeComponent } from './formulaires-taches/remplacement-de-portes-liste/remplacement-de-portes-liste.component';
+import { RenovationElectriquePartielleCalculComponent } from './formulaires-taches/renovation-electrique-partielle-calcul/renovation-electrique-partielle-calcul.component';
+import { RenovationElectriquePartielleListeComponent } from './formulaires-taches/renovation-electrique-partielle-liste/renovation-electrique-partielle-liste.component';
 
 const routes: Routes = [
  
@@ -127,6 +135,14 @@ const routes: Routes = [
       { path: 'formules-et-tests', component: TestsFormulesComponent },
       { path: 'formules-et-tests/tester-revetements-muraux/:id', component: PoseDeRevetementsMurauxCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/revetements-muraux', component: PoseDeRevetementsMurauxListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-revetements-plafond/:id', component: PoseDeRevetementSurPlafondCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/revetements-plafond', component: PoseDeRevetementSurPlafondListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-revetements-sol/:id', component: PoseDeRevetementDeSolCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/revetements-sol', component: PoseDeRevetementDeSolListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-remplacement-portes/:id', component: RemplacementDePortesCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/remplacement-portes', component: RemplacementDePortesListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-renovation-electrique/:id', component: RenovationElectriquePartielleCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/renovation-electrique', component: RenovationElectriquePartielleListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
       { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },

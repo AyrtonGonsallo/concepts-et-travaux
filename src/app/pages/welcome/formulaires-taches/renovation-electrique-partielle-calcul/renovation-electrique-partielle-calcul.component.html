@@ -1,1 +1,61 @@
-<p>renovation-electrique-partielle-calcul works!</p>
+<div class="width-800">
+    <h3>remplacement electrique partiel </h3>
+        
+        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+            
+        
+               
+                <div formArrayName="appareils">
+                  <div *ngFor="let appCtrl of appareils.controls; let i = index" [formGroupName]="i">
+                    <h4>{{ appCtrl.value.titre }}</h4>
+                    <label>À créer</label>
+                    <input type="number" formControlName="nombre_a_creer" />
+              
+                    <label>À remplacer</label>
+                    <input type="number" formControlName="nombre_a_remplacer" />
+                  </div>
+                </div>
+             
+              
+  
+                <div>
+                    <div class="" >
+                        <label>Gamme d'appareillage :</label>
+                    </div>
+                    <nz-radio-group formControlName="gamme" class="">
+                        <!-- Reusable template for displaying options with PDFs -->
+                        <div nz-col class="flx-radio-row1">
+                            <div *ngFor="let option of gammes_appareillage" class="parquet-option  tooltip-srf  flex-see-gamme">
+                            <label class="radio-span" nz-radio [nzValue]="option.ID + '-' + option.PrixMultiples + '-' + option.Label"  class="with-link">
+                                <span>
+                                <!-- Dynamically display the label based on the type -->
+                                {{ option.Label }}
+                                </span>
+                            </label>
+                            
+                            </div>
+                        </div>
+                    </nz-radio-group>
+                </div>
+                
+  
+                
+        
+
+
+
+
+
+        
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <ng-container *ngIf="detailsCalcul">
+                <div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                </div>
+            </ng-container>
+      </form>
+    </div>
+    
+      

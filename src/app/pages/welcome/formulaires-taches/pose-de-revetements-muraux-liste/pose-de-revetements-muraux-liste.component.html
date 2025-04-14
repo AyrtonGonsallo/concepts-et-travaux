@@ -1,4 +1,4 @@
-<p>pose-de-revetements-muraux-liste works!</p>
+<p>pose-de-revetements-muraux  works!</p>
 <nz-table #sortTable [nzData]="devis_pieces"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
     <thead>
       <tr>
@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of sortTable.data" >
-        <td >{{ data.ID }}</td>
+        <td >{{ data.TravailSlug }} : {{ data.ID }}</td>
         <td>{{ data.Prix?data.Prix:0 }} €</td> 
         
         
