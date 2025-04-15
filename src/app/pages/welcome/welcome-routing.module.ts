@@ -85,6 +85,18 @@ import { RemplacementDePortesCalculComponent } from './formulaires-taches/rempla
 import { RemplacementDePortesListeComponent } from './formulaires-taches/remplacement-de-portes-liste/remplacement-de-portes-liste.component';
 import { RenovationElectriquePartielleCalculComponent } from './formulaires-taches/renovation-electrique-partielle-calcul/renovation-electrique-partielle-calcul.component';
 import { RenovationElectriquePartielleListeComponent } from './formulaires-taches/renovation-electrique-partielle-liste/renovation-electrique-partielle-liste.component';
+import { DemolitionCloisonsCalculComponent } from './formulaires-taches/demolition-cloisons-calcul/demolition-cloisons-calcul.component';
+import { DemolitionCloisonsListeComponent } from './formulaires-taches/demolition-cloisons-liste/demolition-cloisons-liste.component';
+import { RemplacementRadiateurCalculComponent } from './formulaires-taches/remplacement-radiateur-calcul/remplacement-radiateur-calcul.component';
+import { RemplacementRadiateurListeComponent } from './formulaires-taches/remplacement-radiateur-liste/remplacement-radiateur-liste.component';
+import { InstallationSanitairesCalculComponent } from './formulaires-taches/installation-sanitaires-calcul/installation-sanitaires-calcul.component';
+import { InstallationSanitairesListeComponent } from './formulaires-taches/installation-sanitaires-liste/installation-sanitaires-liste.component';
+import { RenovationElectriqueCompleteCalculComponent } from './formulaires-taches/renovation-electrique-complete-calcul/renovation-electrique-complete-calcul.component';
+import { RenovationElectriqueCompleteListeComponent } from './formulaires-taches/renovation-electrique-complete-liste/renovation-electrique-complete-liste.component';
+import { PoseEquipementsCuisineCalculComponent } from './formulaires-taches/pose-equipements-cuisine-calcul/pose-equipements-cuisine-calcul.component';
+import { PoseEquipementsCuisineListeComponent } from './formulaires-taches/pose-equipements-cuisine-liste/pose-equipements-cuisine-liste.component';
+import { CreationMursNonPorteursListeComponent } from './formulaires-taches/creation-murs-non-porteurs-liste/creation-murs-non-porteurs-liste.component';
+import { CreationMursNonPorteursCalculComponent } from './formulaires-taches/creation-murs-non-porteurs-calcul/creation-murs-non-porteurs-calcul.component';
 
 const routes: Routes = [
  
@@ -143,6 +155,19 @@ const routes: Routes = [
       { path: 'formules-et-tests/remplacement-portes', component: RemplacementDePortesListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/tester-renovation-electrique/:id', component: RenovationElectriquePartielleCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/renovation-electrique', component: RenovationElectriquePartielleListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      
+      { path: 'formules-et-tests/tester-demolition-cloisons/:id', component: DemolitionCloisonsCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/demolition-cloisons', component: DemolitionCloisonsListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-installation-sanitaires/:id', component: InstallationSanitairesCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/installation-sanitaires', component: InstallationSanitairesListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-renovation-electrique-complete/:id', component: RenovationElectriqueCompleteCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/renovation-electrique-complete', component: RenovationElectriqueCompleteListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/pose-equipements-cuisine', component: PoseEquipementsCuisineListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-pose-equipements-cuisine/:id', component: PoseEquipementsCuisineCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/remplacement-radiateur', component: RemplacementRadiateurListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-remplacement-radiateur/:id', component: RemplacementRadiateurCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/creation-murs-non-porteur', component: CreationMursNonPorteursListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/tester-creation-murs-non-porteur/:id', component: CreationMursNonPorteursCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
       { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },

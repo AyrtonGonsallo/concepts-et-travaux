@@ -1,0 +1,26 @@
+<p>Remplacement de radiateur</p>
+<nz-table #sortTable [nzData]="devis_pieces"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+    <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortOrder]="column.order" [nzSortPriority]="column.priority">
+          {{ column.title }}
+        </th>
+        
+        <th>
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of sortTable.data" >
+        <td >{{ data.TravailSlug }} : {{ data.ID }}</td>
+        <td>{{ data.Prix?data.Prix:0 }} €</td> 
+        
+        
+        <td> 
+          <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="tester" [routerLink]="['/administration', 'formules-et-tests', 'tester-remplacement-radiateur',data.ID]">Tester</button>
+        
+        </td>
+      </tr>
+    </tbody>
+</nz-table>
