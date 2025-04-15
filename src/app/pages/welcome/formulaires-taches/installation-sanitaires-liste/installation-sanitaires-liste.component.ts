@@ -37,7 +37,7 @@ size: NzButtonSize = 'large';
   }
   
   loadDevisTaches(): void {
-    this.devis_pieceService.get_devis_taches_by_travail(166)
+    this.devis_pieceService.get_devis_taches_by_travail(16)
       .subscribe((data: DevisTache[]) => {
         this.devis_pieces = data;
         console.log("envoi de la requette get_devis_pieces",this.devis_pieces); 

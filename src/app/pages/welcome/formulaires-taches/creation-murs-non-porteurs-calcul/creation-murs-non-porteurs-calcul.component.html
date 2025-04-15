@@ -1,1 +1,101 @@
-<p>creation-murs-non-porteurs-calcul works!</p>
+<div class="width-800">
+    <h3>demolition cloisons</h3>
+        
+        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+            
+            <div formArrayName="murs_non_porteurs">
+                <div *ngFor="let mur of murs_non_porteurs.controls; let i = index" [formGroupName]="i">
+                  
+                    <div class="mur-btn-div">
+                        <span class="mur-ttl">Dimensions du mur {{i + 1}}</span>
+                    </div>
+                    <div >
+                        <div >
+                            <label for="hauteur">Hauteur (cm) :</label>
+                            <input type="number" id="hauteur" formControlName="hauteur" min="1" max="4000" />
+                        </div>
+                        <div >
+                            <label for="longueur">Longueur (cm) :</label>
+                            <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  />
+                        </div>
+                    </div>
+                    <div nz-col>
+                        <div nz-col class="row-w-grid">
+                            <label for="epaisseur">Epaisseur (cm) :</label><br>
+                            <nz-radio-group formControlName="epaisseur" class="flx-radio-row">
+                                <div>
+                                    <label nz-radio nzValue="5"> 5</label>
+                                </div>
+                                <div>
+                                    <label nz-radio nzValue="7"> 7</label>
+                                </div>
+                                <div>
+                                    <label nz-radio nzValue="10"> 10</label>
+                                </div>
+                                <div>
+                                    <label nz-radio nzValue="0"> supérieur à 10</label>
+                                </div>
+                            </nz-radio-group> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div formArrayName="portes">
+                <div *ngFor="let mur of portes.controls; let i = index" [formGroupName]="i">
+                    <div class="mur-btn-div coll-100">
+                        <span class="mur-ttl">Caractéristiques de la porte nº{{i + 1}}</span>
+                    </div>
+                    
+                    <div >
+                        <label for="largeur">Largeur (cm) :  </label><br>
+                        <nz-radio-group formControlName="largeur" class="flx-radio-row">
+                            <div>
+                                <label nz-radio nzValue="60"> 60</label>
+                            </div>
+                            <div>
+                                <label nz-radio nzValue="70"> 70</label>
+                            </div>
+                            <div>
+                                <label nz-radio nzValue="80"> 80</label>
+                            </div>
+                            <div>
+                                <label nz-radio nzValue="90"> 90</label>
+                            </div>
+                        </nz-radio-group> 
+                    </div>
+                    
+        
+                    <div >
+                        <label for="gamme">Gamme  :  </label><br>
+                        <nz-radio-group formControlName="gamme" class="flx-radio-row1 tooltip-srf w-100">
+                            <div  *ngFor="let option of gammes"  class="flex-see-gamme">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">
+                                    <span>{{option.Label}}</span>
+                                </label>
+                            </div>
+                        </nz-radio-group>
+                    </div>
+                    
+                </div>
+                
+            </div>
+                 
+               
+        
+            
+             
+
+        
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <ng-container *ngIf="detailsCalcul">
+                <div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                </div>
+            </ng-container>
+      </form>
+    </div>
+    
+      

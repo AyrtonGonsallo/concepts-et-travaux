@@ -1,1 +1,91 @@
-<p>demolition-cloisons-calcul works!</p>
+<div class="width-800">
+    <h3>demolition cloisons</h3>
+        
+        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+            
+            <div formArrayName="mursNonporteurs">
+                <div *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
+                    <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques du mur {{i+1}}</span></div>
+                    
+                    <label class="">Longueur :</label> 
+                    <input formControlName="longueur" placeholder="Longueur du mur">
+                    <br>
+                    <label class="">Hauteur :</label> 
+                    <input formControlName="hauteur" placeholder="Hauteur du mur">
+                    <br>
+                    <label class="">Épaisseur :</label> 
+                    <input formControlName="epaisseur" placeholder="Épaisseur">
+                    <br>
+                    <label class="">Nombre de portes :</label> 
+                    <input formControlName="ndp" placeholder="Nombre de portes">
+                    <br>
+                    <label class="">Type de cloison :</label> <br>
+                    <nz-radio-group formControlName="cloison" class="radio-flx-spc">
+                        <ng-container>
+                            <div *ngFor="let option of gammes_cloison" class="parquet-option  flex-see-gamme">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
+                                    <span>
+                                    {{ option.Label }}
+                                    </span>
+                                </label>
+                            </div>
+                        </ng-container>
+                    </nz-radio-group>
+                  <!-- etc. -->
+                </div>
+              </div>
+            
+              <div formArrayName="ouverturePartielle">
+                <div *ngFor="let ouverture of ouverturePartielle.controls; let j = index" [formGroupName]="j">
+                    <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques de la cloison {{j+1}}</span></div>
+                    <label class="">Longueur :</label> 
+                    <input formControlName="longueur" placeholder="Longueur">
+                    <br>
+                    <label class="">hauteur :</label> 
+                    <input formControlName="hauteur" placeholder="hauteur">
+                    <br>
+                    <label class="">epaisseur :</label> 
+                    <input formControlName="epaisseur" placeholder="epaisseur">
+                    <br>
+                    <label class="">longueur_ouverture :</label> 
+                    <input formControlName="longueur_ouverture" placeholder="longueur_ouverture">
+                    <br>
+                    <label class="">Hauteur de l'ouverture :</label> 
+                    <input formControlName="hauteur_ouverture" placeholder="Hauteur ouverture">
+                    <br>
+                    <label class="">hauteur_depuis_le_plafond :</label> 
+                    <input formControlName="hauteur_depuis_le_plafond" placeholder="hauteur_depuis_le_plafond">
+                    <br>
+                    <label class="">hauteur_depuis_le_sol :</label> 
+                    <input formControlName="hauteur_depuis_le_sol" placeholder="hauteur_depuis_le_sol">
+                    <br>
+                    <label class="">Type de cloison :</label><br>
+                    <nz-radio-group formControlName="cloison" class="radio-flx-spc">
+                        <ng-container >
+                          <div *ngFor="let option of gammes_cloison" class="parquet-option  flex-see-gamme">
+                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
+                              <span>
+                                {{ option.Label }}
+                              </span>
+                            </label>
+                          </div>
+                        </ng-container>
+                      </nz-radio-group>
+                </div>
+              </div>
+            
+             
+
+        
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <ng-container *ngIf="detailsCalcul">
+                <div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                </div>
+            </ng-container>
+      </form>
+    </div>
+    
+      

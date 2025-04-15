@@ -1,1 +1,73 @@
-<p>remplacement-radiateur-calcul works!</p>
+<div class="width-800">
+    <h3>demolition cloisons</h3>
+        
+        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+            
+            <div>
+                <div>
+                  <label for="surface">Surface de la pièce (m²)</label>
+                  <input  type="number" id="surface" formControlName="surface"  min="1">
+                </div>
+                <div>
+                  <label for="hauteur">Hauteur de la pièce (cm)<span class="error-message">*</span> :</label>
+                  <input  type="number" id="hauteur" formControlName="hauteur" max="700" min="1">
+                </div>
+            </div>
+            <div formArrayName="type_radiateurs_form">
+                <div *ngFor="let radiateur of type_radiateurs_form.controls; let j = index" [formGroupName]="j">
+                    <div>
+                        <div class="">
+                            <label class="">Type radiateur {{j+1}}:</label>
+                        </div>
+                        <nz-radio-group formControlName="type" class="">
+                            <div class="flx-radio-row2">
+                                <div *ngFor="let option of types">
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    <span>{{ option.Label }}</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </nz-radio-group>
+                    </div>
+                </div>
+            </div>
+            <div formArrayName="gamme_radiateurs_form">
+                <div *ngFor="let radiateur of gamme_radiateurs_form.controls; let i = index" [formGroupName]="i">
+                    <div>
+                        <div class="">
+                            <label class="">Gamme radiateur {{i+1}}:</label>
+                        </div>
+                        <nz-radio-group formControlName="gamme" class="rd-grp-w">
+                            <div class="flx-radio-row2-w">
+                                <div *ngFor="let option of gammes_radiateurs" class="parquet-option nt-col tooltip-srf flex-see-gamme" >
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label"   class="with-link">
+                                        <span>
+                                            {{ option.Label }}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </nz-radio-group>
+                    </div>
+                </div>
+            </div>
+            
+          
+           
+       
+
+
+
+        
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <ng-container *ngIf="detailsCalcul">
+                <div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                </div>
+            </ng-container>
+      </form>
+    </div>
+    
+      
