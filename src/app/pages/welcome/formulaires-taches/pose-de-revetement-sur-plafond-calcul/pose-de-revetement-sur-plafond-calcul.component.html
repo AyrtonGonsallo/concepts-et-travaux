@@ -1,32 +1,37 @@
 <div class="width-800">
-    <h3>Pose de revêtements muraux</h3>
+    <h1 class="ttl-recap">Pose de revêtement sur plafond</h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+          <div class="mur-btn-div tooltip-srf">
+            <div style="margin-right:auto;text-align: left;" >
+              <span class="mur-ttl">Quel est l'état de votre plafond ?</span>
+            </div>
+        </div>
+
             <div>
-                <div>
+                <div class="flx-radio-row2">
                    <label for="longueur">
-                     Longueur (cm)
-                     <span class="error-message">*</span> :
+                     Longueur (cm) :
                    </label>
                    <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  required>
                    
                 </div>
         
-                <br>
+               
         
-                <div>
+                <div class="flx-radio-row2">
                   <label for="largeur">
-                    Largeur (cm)
-                    <span class="error-message">*</span> :
+                    Largeur (cm) :
                   </label>
                   <input type="number" id="largeur" formControlName="largeur" min="1" max="10000"  required>
                  
                 </div>
 
                 
-                <div>
+                <div class="flx-radio-row2">
                     <label for="hauteur">
-                    Hauteur du plafond (cm)<span class="error-message">*</span> : </label>
+                    Hauteur du plafond (cm) : 
+                  </label>
                     <input  type="number" id="hauteur" formControlName="hauteur" required max="600" min="1">
                 </div>
         
@@ -35,9 +40,9 @@
            
             <div>
                 <label class="">
-                    Revêtement à déposer <span class="error-message">*</span>:
+                    Revêtement existant:
                 </label> 
-                <nz-radio-group formControlName="depose" class="flx-radio-row2">
+                <nz-radio-group formControlName="depose" class="flx-radio-row3">
                     <div *ngFor="let option of gammes_depose" class="parquet-option tooltip-srf">
                         <label nz-radio [nzValue]="option.ID +  ':' + option.Label+ ':' + option.Prix">
                             <span>  {{ option.Label }}</span>
@@ -53,7 +58,7 @@
 
             <div class="mur-btn-div tooltip-srf">
                 <div style="margin-right:auto;text-align: left;" >
-                  <span class="mur-ttl">Quel est l'état de votre sol ?</span>
+                  <span class="mur-ttl">Quel est l'état de votre plafond ?</span>
                 </div>
             </div>
             <div nz-col nzSpan="12" class="" style="max-width: 100% !important;">
@@ -61,23 +66,18 @@
                 <nz-radio-group formControlName="etat" class="rd-grp-w">
                 
                     <div>
-                        <label nz-radio nzValue="Bon" style="padding-block: 10px;">
-                            <span>Bon : grattage, réagreage</span>
+                      <label nz-radio nzValue="Bon" style="padding-block: 10px;">
+                        <span>Bon : reprise légère d'enduit</span>
                         </label>
                     </div>
                     <div>
-                        <label nz-radio nzValue="abimé" style="padding-block: 10px;">
-                            <span>Abimé :  rebouchage, réparation de fissures, réagreage</span>
+                      <label nz-radio nzValue="abimé" style="padding-block: 10px;">
+                        <span>Abimé : rebouchage, réparation de fissures</span>
                         </label>
                     </div>
                     <div>
-                        <label nz-radio nzValue="Très abimé" style="padding-block: 10px;">
-                            <span>Très abimé :  rebouchage, réparation de fissures, réagreage fibré</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label nz-radio nzValue="Rattrapage de niveau" style="padding-block: 10px;">
-                            <span>Rattrapage de niveau : chape</span>
+                      <label nz-radio nzValue="très abimé" style="padding-block: 10px;">
+                        <span>Très abimé : nécéssite la pose de plaques de plâtre</span>
                         </label>
                     </div>
                 </nz-radio-group>
@@ -85,7 +85,11 @@
                
              <!-- Choix du revêtement -->
 <div>
-    <label>Choix du nouveau revêtement</label>
+    <div class="mur-btn-div tooltip-srf">
+        <div style="margin-right:auto;text-align: left;" >
+          <span class="mur-ttl">Choix du nouveau revêtement</span>
+        </div>
+    </div>
     <nz-radio-group formControlName="gamme">
       <!-- Boucle sur chaque gamme -->
       <ng-container *ngFor="let gamme of [
@@ -114,7 +118,7 @@
   
   
     <!-- Champ "autre" -->
-    <div >
+    <div  class="flx-radio-row2">
       <label for="autre_gamme">Autre :</label>
       <input type="text" id="autre_gamme" formControlName="autre_gamme">
     </div>

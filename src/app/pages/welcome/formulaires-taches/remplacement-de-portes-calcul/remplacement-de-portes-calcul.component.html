@@ -1,9 +1,9 @@
 <div class="width-800">
-    <h3>Remplacement de portes</h3>
+    <h1 class="ttl-recap">Remplacement de portes</h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             <div formArrayName="portes">
-                <div *ngFor="let porte of portes.controls; let i = index" [formGroupName]="i" class="mur-bloc">
+                <div *ngFor="let porte of portes.controls; let i = index" [formGroupName]="i" class="mur-bloc bg-light-gray">
                     <h4>Porte {{ i + 1 }}</h4>
                     
                     <div class="form-group" nz-col nzJustify="start" class="">

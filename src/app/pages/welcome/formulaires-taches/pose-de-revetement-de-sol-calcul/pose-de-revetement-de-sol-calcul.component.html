@@ -1,23 +1,25 @@
 <div class="width-800">
-    <h3>Pose de revêtements muraux</h3>
+    <h1 class="ttl-recap">Pose de revêtement de sol</h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+          <div class="mur-btn-div">
+            <span class="mur-ttl">
+              Dimensions de la pièce
+            </span>
+          </div>
+
             <div>
-                <div>
+                <div class="flx-radio-row2">
                    <label for="longueur">
-                     Longueur (cm)
-                     <span class="error-message">*</span> :
+                     Longueur (cm) :
                    </label>
                    <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  required>
                    
                 </div>
         
-                <br>
-        
-                <div>
+                <div class="flx-radio-row2">
                   <label for="largeur">
-                    Largeur (cm)
-                    <span class="error-message">*</span> :
+                    Largeur (cm) :
                   </label>
                   <input type="number" id="largeur" formControlName="largeur" min="1" max="10000"  required>
                  
@@ -28,7 +30,7 @@
            
             <div>
                 <label class="">
-                    Revêtement à déposer <span class="error-message">*</span>:
+                    Revêtement à déposer :
                 </label> 
                 <nz-radio-group formControlName="depose" class="flx-radio-row2">
                     <div *ngFor="let option of gammes_depose" class="parquet-option tooltip-srf">
@@ -78,8 +80,13 @@
                
              <!-- Choix du revêtement -->
 <div>
-    <label>Choix du nouveau revêtement</label>
-    <nz-radio-group formControlName="gamme">
+  <div class="mur-btn-div">
+    <span class="mur-ttl"> 
+      Choix du nouveau revêtement
+    </span>
+  </div>
+  
+    <nz-radio-group formControlName="gamme" class="flx-radio-row3">
       <!-- Boucle sur chaque gamme -->
       <ng-container *ngFor="let gamme of [
         { label: 'Peinture de sol', options: gammes_peinture_sol },
@@ -110,7 +117,7 @@
   
   
     <!-- Champ "autre" -->
-    <div >
+    <div  class="flx-radio-row2">
       <label for="autre_gamme">Autre :</label>
       <input type="text" id="autre_gamme" formControlName="autre_gamme">
     </div>
@@ -125,7 +132,7 @@
     </nz-radio-group>
   
     <!-- Longueur linéaire -->
-    <div >
+    <div  class="flx-radio-row2">
       <label for="lineaire">Longueur totale des plinthes (cm) :</label>
       <input type="number" id="lineaire" formControlName="lineaire" min="1" max="10000">
       

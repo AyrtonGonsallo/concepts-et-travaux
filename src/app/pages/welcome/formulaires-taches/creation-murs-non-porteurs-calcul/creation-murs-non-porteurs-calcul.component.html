@@ -1,5 +1,6 @@
 <div class="width-800">
-    <h3>demolition cloisons</h3>
+    <h1 class="ttl-recap">Création de murs non porteurs
+    </h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
@@ -10,18 +11,18 @@
                         <span class="mur-ttl">Dimensions du mur {{i + 1}}</span>
                     </div>
                     <div >
-                        <div >
+                        <div class="flx-radio-row2">
                             <label for="hauteur">Hauteur (cm) :</label>
                             <input type="number" id="hauteur" formControlName="hauteur" min="1" max="4000" />
                         </div>
-                        <div >
+                        <div class="flx-radio-row2">
                             <label for="longueur">Longueur (cm) :</label>
                             <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  />
                         </div>
                     </div>
                     <div nz-col>
-                        <div nz-col class="row-w-grid">
-                            <label for="epaisseur">Epaisseur (cm) :</label><br>
+                        <div nz-col class="row-w-grid flx-radio-row2" >
+                            <label for="epaisseur">Epaisseur (cm) :</label>
                             <nz-radio-group formControlName="epaisseur" class="flx-radio-row">
                                 <div>
                                     <label nz-radio nzValue="5"> 5</label>
@@ -47,8 +48,8 @@
                         <span class="mur-ttl">Caractéristiques de la porte nº{{i + 1}}</span>
                     </div>
                     
-                    <div >
-                        <label for="largeur">Largeur (cm) :  </label><br>
+                    <div class="flx-radio-row2">
+                        <label for="largeur">Largeur (cm) :  </label>
                         <nz-radio-group formControlName="largeur" class="flx-radio-row">
                             <div>
                                 <label nz-radio nzValue="60"> 60</label>
@@ -66,8 +67,8 @@
                     </div>
                     
         
-                    <div >
-                        <label for="gamme">Gamme  :  </label><br>
+                    <div class="flx-radio-row2">
+                        <label for="gamme">Gamme  :  </label>
                         <nz-radio-group formControlName="gamme" class="flx-radio-row1 tooltip-srf w-100">
                             <div  *ngFor="let option of gammes"  class="flex-see-gamme">
                                 <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">

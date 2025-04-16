@@ -1,10 +1,14 @@
 <div class="width-800">
-<h3>Pose de revêtements muraux</h3>
+<h1 class="ttl-recap">Pose de revêtements muraux</h1>
     
     <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
         <div formArrayName="murs">
         <div *ngFor="let mur of murs.controls; let i = index" [formGroupName]="i" class="mur-bloc">
-            <h4>Mur {{ i + 1 }}</h4>
+            <div _ngcontent-ng-c3639225644="" class="mur-btn-div">
+                <span _ngcontent-ng-c3639225644="" class="mur-ttl">
+                Dimensions du mur {{ i + 1 }}
+            </span>
+            </div>
             <div class="label-number">
                 <label>Hauteur :</label>
                 <input type="number" formControlName="hauteur">
@@ -30,8 +34,11 @@
             </nz-radio-group>
             <br>
     
-        
-            <label> État des surfaces :</label><br>
+            <div class="mur-btn-div tooltip-srf">
+                <span  class="mur-ttl">
+                    Quel est l'état du mur {{ i + 1 }} ?
+                </span>
+            </div>
             <nz-radio-group formControlName="etat" class="rd-grp-w" >
                 <div>
                     <label nz-radio nzValue="bon" >
@@ -51,9 +58,14 @@
             </nz-radio-group>
             <br>
 
-
-            <label> Nouveau revêtement et gamme du mur :</label><br>
-            <nz-radio-group formControlName="gamme" class="w-80">
+            <div  class="mur-btn-div grid-1">
+                <div  style="text-align: left !important; width: 100%!important;">
+                    <span _ngcontent-ng-c2428400515="" class="mur-ttl">
+                        Choisissez le type de revêtement et la gamme du mur {{ i + 1 }}
+                    </span>
+                </div>
+            </div>
+            <nz-radio-group formControlName="gamme" class="w-80 flx-radio-row3">
                 <!-- Reusable template for displaying options with PDFs -->
                 <ng-container>
                 <div  nz-col class="row-w-grid3">

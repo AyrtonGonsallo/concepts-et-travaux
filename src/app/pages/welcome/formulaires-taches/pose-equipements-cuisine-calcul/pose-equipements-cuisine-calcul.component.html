@@ -1,5 +1,6 @@
 <div class="width-800">
-    <h3>pose cuisine</h3>
+    <h1 class="ttl-recap">Pose de nouveaux équipements de cuisine
+    </h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
@@ -10,20 +11,20 @@
                    <div class="div-chauf-gm"><h3 class="ttl-type jaune">{{appareils_cuisine && appareils_cuisine[i] ? appareils_cuisine[i].Titre : ""}}</h3></div> 
                         <div class="flex-2">
                             <div>
-                                <div *ngIf="appareils_cuisine[i].AfficherLongueur">
+                                <div *ngIf="appareils_cuisine[i].AfficherLongueur" class="flx-radio-row2">
                                     <label for="longueur">Longueur (cm) :</label>
                                     <input   id="longueur" type="number" formControlName="longueur" min="0"/>     
                                 </div>  
-                                <div *ngIf="appareils_cuisine[i].AfficherLargeur">
+                                <div *ngIf="appareils_cuisine[i].AfficherLargeur" class="flx-radio-row2">
                                     <label for="largeur">Largeur (cm) :</label>
                                     <input   id="largeur" type="number" formControlName="largeur" min="0"/>     
                                 </div>  
-                                <div  *ngIf="appareils_cuisine[i].AfficherVasque">
+                                <div  *ngIf="appareils_cuisine[i].AfficherVasque" class="flx-radio-row2">
                                     <label for="nombre_de_vasque">Nombre de vasque :</label>
                                     <input   id="nombre_de_vasque" type="number" formControlName="nombre_de_vasque" min="0"/>     
                                 </div>  
                 
-                                <div nz-col  *ngIf="appareils_cuisine[i].AfficherEncastreeApparente">
+                                <div nz-col  *ngIf="appareils_cuisine[i].AfficherEncastreeApparente" class="flx-radio-row2">
                                     <label for="encastre_ou_apparente">Encastré ou apparente  ?</label>
                                     <nz-radio-group formControlName="encastre_ou_apparente" nzName="radiogroup" class="sidebyside">
                                       <label nz-radio nzValue="encastré">Encastré</label>
@@ -31,7 +32,7 @@
                                     </nz-radio-group>
                                 </div> 
                             </div>
-                            <div>
+                            <div class="flx-radio-row2">
                                 <div class="">
                                     <label class=""> Gamme :</label>  
                                 </div>
@@ -56,9 +57,13 @@
                 </div>
               </div>
               
-              <h3>Dépose</h3>
+                <div class="renov-elec-div">
+                    <span class="mur-ttl">
+                        Dépose d'anciennes installations
+                    </span>
+                </div>
               <div formArrayName="gammes_depose_form">
-                <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i">
+                <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i" class="flx-radio-row2">
                     <div >
                         <strong>
                           {{ gamme.get('titre')?.value }}

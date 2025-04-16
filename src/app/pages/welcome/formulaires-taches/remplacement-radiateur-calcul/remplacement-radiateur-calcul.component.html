@@ -1,21 +1,22 @@
 <div class="width-800">
-    <h3>demolition cloisons</h3>
+    <h1 class="ttl-recap">Remplacement de radiateur
+    </h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
             <div>
-                <div>
+                <div class="flx-radio-row2 ">
                   <label for="surface">Surface de la pièce (m²)</label>
                   <input  type="number" id="surface" formControlName="surface"  min="1">
                 </div>
-                <div>
+                <div class="flx-radio-row2 ">
                   <label for="hauteur">Hauteur de la pièce (cm)<span class="error-message">*</span> :</label>
                   <input  type="number" id="hauteur" formControlName="hauteur" max="700" min="1">
                 </div>
             </div>
             <div formArrayName="type_radiateurs_form">
                 <div *ngFor="let radiateur of type_radiateurs_form.controls; let j = index" [formGroupName]="j">
-                    <div>
+                    <div class="flx-radio-row2 ">
                         <div class="">
                             <label class="">Type radiateur {{j+1}}:</label>
                         </div>
@@ -33,7 +34,7 @@
             </div>
             <div formArrayName="gamme_radiateurs_form">
                 <div *ngFor="let radiateur of gamme_radiateurs_form.controls; let i = index" [formGroupName]="i">
-                    <div>
+                    <div class="flx-radio-row2 ">
                         <div class="">
                             <label class="">Gamme radiateur {{i+1}}:</label>
                         </div>

@@ -1,5 +1,5 @@
 <div class="width-800">
-    <h3>remplacement electrique partiel </h3>
+    <h1 class="ttl-recap">Rénovation électrique partielle</h1>
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
@@ -8,17 +8,22 @@
                 <div formArrayName="appareils">
                   <div *ngFor="let appCtrl of appareils.controls; let i = index" [formGroupName]="i">
                     <h4>{{ appCtrl.value.titre }}</h4>
-                    <label>À créer</label>
-                    <input type="number" formControlName="nombre_a_creer" />
-              
-                    <label>À remplacer</label>
-                    <input type="number" formControlName="nombre_a_remplacer" />
+                    <div class="rempl_creer">
+                        <div>
+                            <label>À créer</label>
+                            <input type="number" formControlName="nombre_a_creer" />
+                        </div>
+                        <div>
+                            <label>À remplacer</label>
+                            <input type="number" formControlName="nombre_a_remplacer" />
+                        </div>
+                    </div>
                   </div>
                 </div>
              
               
   
-                <div>
+                <div class="flx-radio-row2">
                     <div class="" >
                         <label>Gamme d'appareillage :</label>
                     </div>

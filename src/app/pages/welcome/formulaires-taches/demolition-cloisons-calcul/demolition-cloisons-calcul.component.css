@@ -14,3 +14,79 @@
     margin-left: auto;
     margin-right: auto;
 }
+.label, label{
+    text-align: left;
+    margin-bottom: 10px;
+    font-size: 13px ;
+    color: #000;
+}
+.flx-radio-row3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    gap: 10px;
+}
+.mur-btn-div {
+    margin-inline: auto;
+    margin-bottom: 10px ;
+    grid-area: 5px;
+    grid-template-columns: 1fr;
+    display: grid;
+    align-items: center;
+    justify-items: end;
+    margin-top: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ffc736;
+}
+.mur-ttl {
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    color: ·#000;
+    font-weight: bolder;
+}
+.plaf-dim, input {
+    border: 1px solid #FFC736 ;
+    border-radius: 2px ;
+}
+.width-800 input[type=radio], .width-800 input[type=checkbox] {
+    border: 1px solid  #FFC736 ;
+    border-radius: 2px ;
+}
+.ttl-recap{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-bottom: 20px ;
+    line-height: 24px;
+}
+.flx-radio-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    gap: 10px;
+    padding: 12px 0 ;
+}
+.bg-light-gray{
+    background-color: #efefef;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+.row-w-grid5 {
+    padding: 12px 0 ;
+    max-width: 100% ;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    justify-items: start ;
+    align-items: start ;
+    justify-content: center;
+    align-content: space-evenly;
+}
+.rempl_creer{
+    margin: auto ;
+    display: grid ;
+    gap: 0px 30px ;
+    grid-template-columns: 1fr 1fr ;
+    align-items: center ;
+}

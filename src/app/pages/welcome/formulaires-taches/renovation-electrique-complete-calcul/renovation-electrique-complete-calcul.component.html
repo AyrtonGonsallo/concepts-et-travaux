@@ -1,42 +1,41 @@
 <div class="width-800">
-    <h3>renovation electrique complete</h3>
+    <h1 class="ttl-recap">Rénovation électrique complète
+    </h1>
         
     <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
         <div class="w-80">
-            <div nz-col nzJustify="start" class="tooltip-srf" style="display:block !important;">
-                <div  nz-col class="">
-                    <div nz-col class="row-w-grid6">
-                        <label for="surface">Surface de la pièce (m²)<span class="error-message">*</span> : </label>
-                        <input type="number" id="surface" formControlName="surface" max="100" min="1">
-                    </div>
-                </div>
-        
-                <div  nz-col class="">
-                    <div nz-col class="row-w-grid6">
-                        <div nz-col  class="">
-                            <label for="mise_en_securite">Mise en sécurité : </label>
-                        </div>
-                        <div nz-col  class="">
-                            <nz-radio-group  formControlName="mise_en_securite" id="mise_en_securite" nzName="radiogroup" class="sidebyside">
-                                <label nz-radio [nzValue]="true">Oui</label>
-                                <label nz-radio [nzValue]="false">Non</label>
-                            </nz-radio-group>
-                        </div>
-                    </div> 
-                </div>
-                <div  nz-col class="row-w-grid6">
-                    <div nz-col  class="">
-                        <label for="renovation_conforme">Rénovation conforme à la norme C15100 </label>
-                    </div> 
-                <div>
-                <nz-radio-group formControlName="renovation_conforme" id="renovation_conforme" nzName="radiogroup" class="sidebyside">
-                    <label nz-radio [nzValue]="true">Oui</label>
-                    <label nz-radio [nzValue]="false">Non</label>
-                </nz-radio-group>
+            
+            <div  class="flx-radio-row2">
+                <label for="surface">Surface de la pièce (m²)<span class="error-message">*</span> : </label>
+                <input type="number" id="surface" formControlName="surface" max="100" min="1">
             </div>
                 
-            <div  nz-col class="row-w-grid6">
-                <div nz-col  class="">
+            <div  class="flx-radio-row2">
+                <div   class="">
+                    <label for="mise_en_securite">Mise en sécurité : </label>
+                </div>
+                <div   class="">
+                    <nz-radio-group  formControlName="mise_en_securite" id="mise_en_securite" nzName="radiogroup" class="sidebyside">
+                        <label nz-radio [nzValue]="true">Oui</label>
+                        <label nz-radio [nzValue]="false">Non</label>
+                    </nz-radio-group>
+                </div>
+            </div> 
+                
+            <div   class="flx-radio-row2">
+                <div   >
+                    <label for="renovation_conforme">Rénovation conforme à la norme C15100 </label>
+                </div> 
+                <div>
+                    <nz-radio-group formControlName="renovation_conforme" id="renovation_conforme" nzName="radiogroup" class="sidebyside">
+                        <label nz-radio [nzValue]="true">Oui</label>
+                        <label nz-radio [nzValue]="false">Non</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div  class="flx-radio-row2">
+                <div   class="">
                     <label for="chauffage_exist">Y-a-t-il un chauffage électrique ? </label>
                 </div>
                 <div> 
@@ -47,18 +46,14 @@
                 </div>  
             </div> 
         
-            
-            <div nz-col nzSpan="12" class="" >
-                <div  nz-col class="flx-radio-row4">
-                    <label for="quantite_chauffage">Quantité de chauffage <span class="error-message">*</span> : </label>
-                    <input type="number" id="quantite_chauffage" formControlName="quantite_chauffage" max="10" min="1">
-                </div>
+            <div   class="flx-radio-row2">
+                <label for="quantite_chauffage">Quantité de chauffage <span class="error-message">*</span> : </label>
+                <input type="number" id="quantite_chauffage" formControlName="quantite_chauffage" max="10" min="1">
             </div>
-        </div>   
-     
-    </div>  
-       
-</div>  
+            
+             
+            
+        </div>  
 
 
         
