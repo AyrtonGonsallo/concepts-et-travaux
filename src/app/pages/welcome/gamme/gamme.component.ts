@@ -6,6 +6,8 @@ import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-t
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { environment } from '../../../environments/environment';
+import { Travail } from '../../../Models/Travail';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'app-gamme',
@@ -15,6 +17,7 @@ import { environment } from '../../../environments/environment';
 export class GammeComponent {
   baseurl=environment.imagesUrl
   size: NzButtonSize = 'large';
+  sel_size: NzSelectSizeType = 'default';
   listOfColumn = [
     {
       title: 'Id',
@@ -22,7 +25,12 @@ export class GammeComponent {
       priority: 3,
       order:'descend'
     },
-   
+    {
+      title: 'Travail',
+      compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
+      priority: 1,
+      order:null
+    },
     {
       title: 'Label',
       compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
@@ -32,12 +40,6 @@ export class GammeComponent {
     {
       title: 'Type',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
-      priority: 1,
-      order:null
-    },
-    {
-      title: 'Image',
-      compare: (a: Gamme, b: Gamme) => (a.Image??"").localeCompare(b.Image??""),
       priority: 1,
       order:null
     },
@@ -53,12 +55,7 @@ export class GammeComponent {
       priority: 1,
       order:null
     },
-    {
-      title: 'TravailID',
-      compare: (a: Gamme, b: Gamme) => a.TravailID-(b.TravailID),
-      priority: 1,
-      order:null
-    }
+    
   ];
   gamme:Gamme[] = [];
   listOfDisplayData :any;
@@ -66,9 +63,18 @@ export class GammeComponent {
 
   ngOnInit(): void {
     this.loadGamme();
-    
+    this.loadTravaux()
   }
 
+  filteredTravail=""
+  travaux:Travail[] = [];
+  loadTravaux(): void {
+    this.userService.getTravaux()
+      .subscribe((data: Travail[]) => {
+        this.travaux = data;
+        console.log("réponse de la requette get_travail",this.travaux);
+      });
+  }
   loadGamme(): void {
     this.userService.getGammes()
       .subscribe((data: Gamme[]) => {
@@ -79,6 +85,14 @@ export class GammeComponent {
       console.log("envoi de la requette get_gamme",this.gamme);
       
   }
+  get_travail(id: number): Travail | undefined {
+    return this.travaux.find(travail => travail.ID === id);
+  }
+  get_travail_title(id: number): string {
+    const travail = this.travaux.find(travail => travail.ID === id);
+    return travail ? travail.Titre : '';
+  }
+  
   isAdminOrHim(id:number){
 
     return this.authService.isAdminOrHim(id)
@@ -116,11 +130,21 @@ export class GammeComponent {
   visible = false;
   reset(): void {
     this.searchValue = '';
-    this.search();
+    this.applyFilters();
   }
 
   search(): void {
     this.visible = false;
-    this.listOfDisplayData = this.gamme.filter((item: Gamme) => item.Label.indexOf(this.searchValue) !== -1);
+    this.applyFilters();
+  }
+  search2(): void {
+    this.applyFilters();
+  }
+  applyFilters(): void {
+    this.listOfDisplayData = this.gamme.filter((item: Gamme) => {
+      const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
+      const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;
+      return matchLabel && matchTravail;
+    });
   }
 }

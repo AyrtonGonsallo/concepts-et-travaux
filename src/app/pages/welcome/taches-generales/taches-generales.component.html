@@ -1,6 +1,13 @@
 <div>
-    <h2>Liste des tâche générales</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches-generales', 'ajouter-tache-generale']">Ajouter une tâche générale</button>
+    <h2>Liste des tâche générales </h2>    
+    <div>Il s'agit des prix pour les tâches de dépose, remplacement, création et rénovation.</div>
+    <div class="select-add">
+      <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;">
+        <nz-option  nzLabel="Choix de la rubrique" nzValue=""></nz-option>
+        <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.Titre"></nz-option>
+      </nz-select>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches-generales', 'ajouter-tache-generale']">Ajouter une tâche générale</button>
+    </div> 
 
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <div class="ant-table-filter-dropdown">
@@ -30,9 +37,10 @@
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
             <td>{{ data.ID }}</td>
+            <td>{{ get_travail_title(data.TravailID) }}</td>
             <td>{{ data.Label }}</td>
             <td>{{ data.Prix }} €</td>
-            <td>{{ data.TravailID }}</td>
+            
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'taches-generales', 'modifier-tache-generale',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm

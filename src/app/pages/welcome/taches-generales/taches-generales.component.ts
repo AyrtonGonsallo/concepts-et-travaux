@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Travail } from '../../../Models/Travail';
 
 @Component({
   selector: 'app-taches-generales',
@@ -19,7 +20,12 @@ export class TachesGeneralesComponent {
       compare: (a: TacheGenerale, b: TacheGenerale) => a.ID - b.ID,
       priority: 3
     },
-   
+   {
+         title: 'Travail',
+         compare: (a: TacheGenerale, b: TacheGenerale) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
+         priority: 1,
+         order:null
+       },
     {
       title: 'Label',
       compare: (a: TacheGenerale, b: TacheGenerale) => a.Label.localeCompare(b.Label),
@@ -29,11 +35,6 @@ export class TachesGeneralesComponent {
       title: 'Prix',
       compare: (a: TacheGenerale, b: TacheGenerale) => a.Prix-(b.Prix),
       priority: 1
-    },
-    {
-      title: 'TravailID',
-      compare: (a: TacheGenerale, b: TacheGenerale) => a.TravailID-(b.TravailID),
-      priority: 1
     }
   ];
   tache_generale:TacheGenerale[] = [];
@@ -42,8 +43,17 @@ export class TachesGeneralesComponent {
 
   ngOnInit(): void {
     this.loadTacheGenerale();
+    this.loadTravaux()
   }
-
+ filteredTravail=""
+  travaux:Travail[] = [];
+  loadTravaux(): void {
+    this.userService.getTravaux()
+      .subscribe((data: Travail[]) => {
+        this.travaux = data;
+        console.log("réponse de la requette get_travail",this.travaux);
+      });
+  }
   loadTacheGenerale(): void {
     this.userService.getTacheGenerales()
       .subscribe((data: TacheGenerale[]) => {
@@ -86,17 +96,34 @@ export class TachesGeneralesComponent {
     
   }
 
+  get_travail(id: number): Travail | undefined {
+    return this.travaux.find(travail => travail.ID === id);
+  }
+  get_travail_title(id: number): string {
+    const travail = this.travaux.find(travail => travail.ID === id);
+    return travail ? travail.Titre : '';
+  }
+  
+  
+  searchValue = '';
+  visible = false;
+  reset(): void {
+    this.searchValue = '';
+    this.applyFilters();
+  }
 
-  
-    searchValue = '';
-    visible = false;
-    reset(): void {
-      this.searchValue = '';
-      this.search();
-    }
-  
-    search(): void {
-      this.visible = false;
-      this.listOfDisplayData = this.tache_generale.filter((item: TacheGenerale) => item.Label.indexOf(this.searchValue) !== -1);
-    }
+  search(): void {
+    this.visible = false;
+    this.applyFilters();
+  }
+  search2(): void {
+    this.applyFilters();
+  }
+  applyFilters(): void {
+    this.listOfDisplayData = this.tache_generale.filter((item: TacheGenerale) => {
+      const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
+      const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;
+      return matchLabel && matchTravail;
+    });
+  }
 }

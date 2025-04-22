@@ -1,0 +1,6 @@
+.select-add{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 10px 30px 10px;
+}
