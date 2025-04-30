@@ -54,27 +54,11 @@
             <div nz-col nzSpan="12" class="" style="max-width: 100% !important;">
                 <!-- <label for="etat">État du sol: </label> -->
                 <nz-radio-group formControlName="etat" class="rd-grp-w">
-                
-                    <div>
-                        <label nz-radio nzValue="Bon" style="padding-block: 10px;">
-                            <span>Bon : grattage, réagreage</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label nz-radio nzValue="abimé" style="padding-block: 10px;">
-                            <span>Abimé :  rebouchage, réparation de fissures, réagreage</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label nz-radio nzValue="Très abimé" style="padding-block: 10px;">
-                            <span>Très abimé :  rebouchage, réparation de fissures, réagreage fibré</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label nz-radio nzValue="Rattrapage de niveau" style="padding-block: 10px;">
-                            <span>Rattrapage de niveau : chape</span>
-                        </label>
-                    </div>
+                  <div *ngFor="let option of etat_des_surfaces">
+                    <label nz-radio [nzValue]="option.ID + '-' + option.Label + '-' + option.Prix" style="padding-block: 10px;">
+                      <span>{{ option.Label }}</span>
+                    </label>
+                  </div>
                 </nz-radio-group>
             </div>
                
@@ -86,7 +70,7 @@
     </span>
   </div>
   
-    <nz-radio-group formControlName="gamme" class="flx-radio-row3">
+    <nz-radio-group formControlName="gamme" >
       <!-- Boucle sur chaque gamme -->
       <ng-container *ngFor="let gamme of [
         { label: 'Peinture de sol', options: gammes_peinture_sol },
@@ -97,13 +81,16 @@
         { label: 'Parquet Flottant', options: gammes_parquet_flottant },
         { label: 'Parquet Massif', options: gammes_parquet_massif }
       ]">
-        <div>
+        <div class="flx-radio-row2">
           <label>{{ gamme.label }} :</label>
-          <div *ngFor="let option of gamme.options">
-            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-              {{ option.Label }}
-            </label>
+          <div>
+            <div *ngFor="let option of gamme.options">
+              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                {{ option.Label }}
+              </label>
+            </div>
           </div>
+          
         </div>
       </ng-container>
   
@@ -142,45 +129,50 @@
     <div >
       <nz-radio-group formControlName="plinthes">
         <!-- Plinthes bois -->
-        <div>
+        <div class="flx-radio-row2">
           <label>Plinthes en bois :</label>
-          <div *ngFor="let option of gammes_plithes_bois">
-            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-              {{ option.Label }}
-            </label>
+          <div>
+            <div *ngFor="let option of gammes_plithes_bois">
+              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                {{ option.Label }}
+              </label>
+            </div>
           </div>
+          
         </div>
   
         <!-- Plinthes carrelage -->
-        <div>
+        <div class="flx-radio-row2">
           <label>Plinthes avec carrelage :</label>
-          <div *ngFor="let option of gammes_plithes_carrelage">
-            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-              {{ option.Label }}
-            </label>
+          <div>
+            <div *ngFor="let option of gammes_plithes_carrelage">
+              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                {{ option.Label }}
+              </label>
+            </div>
           </div>
+          
         </div>
       </nz-radio-group>
     </div>
   </div>
   
-                
-        
+  <div class="grid-btn-action">
+    <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+</div>
+  
+  <ng-container *ngIf="detailsCalcul">
+      <div>
+        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+        <span>Formule: </span><br>
+        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+      </div>
+  </ng-container>
+  
+</form>
 
+<button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
-
-
-
-        
-            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
-            <ng-container *ngIf="detailsCalcul">
-                <div>
-                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-                  <span>Formule: </span><br>
-                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
-                </div>
-            </ng-container>
-      </form>
-    </div>
+</div>
     
       

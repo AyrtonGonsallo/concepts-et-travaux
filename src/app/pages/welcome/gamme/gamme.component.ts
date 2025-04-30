@@ -32,26 +32,27 @@ export class GammeComponent {
       order:null
     },
     {
-      title: 'Label',
-      compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
-      priority: 2,
-      order:null
-    },
-    {
       title: 'Type',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
       priority: 1,
       order:null
     },
     {
-      title: 'Pdf',
-      compare: (a: Gamme, b: Gamme) => (a.Pdf??"").localeCompare(b.Pdf??""),
+      title: 'Label',
+      compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
+      priority: 2,
+      order:null
+    },
+    
+    {
+      title: 'Prix',
+      compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
       priority: 1,
       order:null
     },
     {
-      title: 'Prix',
-      compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
+      title: 'Pdf',
+      compare: (a: Gamme, b: Gamme) => (a.Pdf??"").localeCompare(b.Pdf??""),
       priority: 1,
       order:null
     },

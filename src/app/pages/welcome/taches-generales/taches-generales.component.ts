@@ -79,18 +79,18 @@ export class TachesGeneralesComponent {
       this.userService.deleteTacheGenerale(id).subscribe(
         () => {
           //console.log('TacheGenerale supprimé avec succès');
-          this.message.success( 'TacheGenerale supprimé avec succès');
+          this.message.success( 'Tâche générale supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des tache_generale si nécessaire
           this.loadTacheGenerale();
         },
         (error) => {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+          this.message.error( 'Erreur lors de la suppression de la tâche');
         }
       );
       return true
     } else {
-      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette tache`);
       return false;
     }
     

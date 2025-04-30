@@ -18,15 +18,33 @@ export class PoseDeRevetementsMurauxCalculComponent {
   formulaire!: FormGroup;
   devisTache!:DevisTache;
   detailsCalcul:any
+  edit_mode=false
 
   constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
   
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const mode = params['mode'];
+      if (mode === 'modification') {
+        // Mode modification activé
+        console.log('On est en mode modification');
+        this.edit_mode=true
+      } else {
+        // Mode création/test
+        console.log('On est en mode test');
+      }
+    });
+    this.route.params.subscribe(params => {
+      this.tacheId = params['id'] ?? '0';
+      console.log('Tache ID récupéré:', this.tacheId);
+    });
+
     this.getDetails(parseInt(this.tacheId, 10))
     this.load_types()
     this.load_gammes()
+    this.load_etats()
   }
 
   getDetails(id: number): void {
@@ -72,7 +90,18 @@ export class PoseDeRevetementsMurauxCalculComponent {
       }
     );
   }
-
+etat_des_surfaces:any
+load_etats(){
+  this.userService.getGammesByTravailAndTypeOrdered(5,"etat-des-surfaces-murs").subscribe(
+    (response: any) => {
+      console.log('recuperation des etat-des-surfaces-murs	:', response);
+      this.etat_des_surfaces=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des etat-des-surfaces-murs	 :', error);
+    }
+  );
+}
     
   gammes_peinture:any
   gammes_enduit:any
@@ -185,6 +214,73 @@ export class PoseDeRevetementsMurauxCalculComponent {
     }).catch((error) => {
       console.error("Erreur lors du calcul :", error);
     });
+  }
+
+
+  modifier(){
+    console.log(this.formulaire.value)
+    const mursFormArray = this.formulaire.value.murs;
+    this.devisTache.Donnees = {
+      "dimensions-pose-murs": {
+        murs: mursFormArray.map((mur: any) => ({
+          hauteur: mur.hauteur,
+          longueur: mur.longueur,
+          depose: mur.depose,
+          image: null // ou garde l’ancienne valeur si dispo
+        }))
+      },
+      "etat-surfaces-pose-murs": {
+        murs: mursFormArray.map((mur: any) => ({
+          etat: mur.etat
+        }))
+      },
+      "gammes-produits-pose-murs": {
+        murs: mursFormArray.map((mur: any) => ({
+          gamme: mur.gamme,
+          carrelage: 0,
+          papier: 0,
+          enduit: 0,
+          peinture: 0
+        }))
+      }
+    };
+  
+    console.log("Données avant modification", this.devisTache);
+
+    this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
+      this.detailsCalcul = result;
+      let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+      if (formule) {
+        formule = formule.replace(/\n/g, '<br>');
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule: formule
+        };
+      }
+      const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
+      console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
+
+      if (prixCalcule !== undefined) {
+        this.devisTache.Prix = prixCalcule;
+      }
+
+      console.log("Données après modification", this.devisTache);
+
+      this.userService.updateDevistache(parseInt(this.tacheId),this.devisTache).subscribe(
+        (response) => {
+          console.log('Tache modifiée avec succès :', response);
+          this.message.create('success', `Tache modifié avec succès`);
+        },
+        (error) => {
+          console.error('Erreur lors de la modification de la tache :', error);
+        }
+      );
+    }).catch(error => {
+      console.error('Erreur lors du calcul du prix:', error);
+    });
+
+
+   
   }
 
 

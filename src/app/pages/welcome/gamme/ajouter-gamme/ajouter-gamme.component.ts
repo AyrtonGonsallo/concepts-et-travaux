@@ -51,7 +51,10 @@ export class AjouterGammeComponent {
     { slug: 'renovation-electrique-partielle', label: 'Rénovation électrique partielle (Appareillage)' },
     { slug: 'renovation-electrique-complete', label: 'Rénovation électrique complete' },
     { slug: 'radiateur', label: 'Radiateur' },
-    { slug: 'type-de-porte-creation-murs-non-porteurs', label: 'Type de porte (cmnp)' },
+    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_5', label: 'Type de porte pour épaisseur = 5 (cmnp)' },
+    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_7', label: 'Type de porte pour épaisseur = 7 (cmnp)' },
+    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_10', label: 'Type de porte pour épaisseur = 10 (cmnp)' },
+    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_10+', label: 'Type de porte pour épaisseur > 10 (cmnp)' },
     { slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
     { slug: 'depose-murs', label: 'Dépose de murs' },
     { slug: 'depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'élements de salle de bain/salle d\'eau' },
@@ -59,6 +62,9 @@ export class AjouterGammeComponent {
     { slug: 'depose-revetement-plafond', label: 'Dépose de revetements pour plafond' },
     { slug: 'depose-revetement-sol', label: 'Dépose de revetements pour sol' },
     { slug: 'type-de-radiateur', label: 'Type de radiateur' },
+    { slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
+    { slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
+    { slug: 'etat-des-surfaces-sol', label: 'État des surfaces (sol)' },
   ];
   travaux:Travail[]=[]
   submitForm(): void {

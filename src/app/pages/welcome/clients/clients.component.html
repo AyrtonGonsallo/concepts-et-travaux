@@ -1,0 +1,27 @@
+<div>
+    <h2>Liste des clients</h2>    
+
+    <nz-table #sortTable [nzData]="utilisateurs"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Id }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Nom }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Prenom }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Email }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.Id)"> 
+              <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'clients', 'voir-devis-client',data.Id]"><span nz-icon nzType="eye"></span></button>
+             
+          </tr>
+        </tbody>
+    </nz-table>
+</div>

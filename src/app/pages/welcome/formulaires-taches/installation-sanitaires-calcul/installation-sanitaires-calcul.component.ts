@@ -20,11 +20,27 @@ export class InstallationSanitairesCalculComponent {
   formulaire!: FormGroup;
   devisTache!:DevisTache;
   detailsCalcul:any
+  edit_mode=false
 
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
 
     ngOnInit(): void {
+      this.route.queryParams.subscribe(params => {
+        const mode = params['mode'];
+        if (mode === 'modification') {
+          // Mode modification activé
+          console.log('On est en mode modification');
+          this.edit_mode=true
+        } else {
+          // Mode création/test
+          console.log('On est en mode test');
+        }
+      });
+      this.route.params.subscribe(params => {
+        this.tacheId = params['id'] ?? '0';
+        console.log('Tache ID récupéré:', this.tacheId);
+      });
       this.getDetails(parseInt(this.tacheId, 10))
       this.loadAppareils()
 
@@ -38,7 +54,7 @@ export class InstallationSanitairesCalculComponent {
         this.formulaire = this.fb.group({
           appareils_salle_de_bain_form: this.fb.array([]),
           gammes_depose_form: this.fb.array(
-            this.donnees["gammes-produits-pose-app-san"].gammes_depose_form.map((gamme: any) => {
+            this.donnees["dimensions-pose-app-san"].gammes_depose_form.map((gamme: any) => {
               return this.fb.group({
                 quantite: [gamme.quantite],
                 titre: [gamme.titre],
@@ -94,6 +110,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           let modele=""
           let active=false
           let longueur=0
+          let titre=""
           let largeur=0
           let nombre_de_vasque=0
           let encastre_ou_apparente=false
@@ -105,7 +122,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
             largeur=form?.appareils_salle_de_bain[i]?.largeur
             nombre_de_vasque=form?.appareils_salle_de_bain[i]?.nombre_de_vasque
             encastre_ou_apparente=form?.appareils_salle_de_bain[i]?.encastre_ou_apparente
-            
+            titre=form?.appareils_salle_de_bain[i]?.titre
           }
         
              // Créer un FormGroup pour chaque appareil
@@ -117,6 +134,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           appareilGroup.addControl("encastre_ou_apparente", this.fb.control(encastre_ou_apparente, ));
           appareilGroup.addControl("active", this.fb.control(active, ));
           appareilGroup.addControl("modele", this.fb.control(modele, ));
+          appareilGroup.addControl("titre", this.fb.control(titre, ));
          
 
           // Obtenez les contrôles pour pouvoir les manipuler
@@ -213,5 +231,62 @@ submit() {
 }
 
 
+
+
+  
+modifier(){
+  const gammes_depose_form = this.formulaire.value.gammes_depose_form;
+  const appareils_salle_de_bain_form = this.formulaire.value.appareils_salle_de_bain_form;
+ 
+
+  this.devisTache.Donnees = {
+    "gammes-produits-pose-app-san": {
+      gammes_depose_form: gammes_depose_form,
+      appareils_salle_de_bain:appareils_salle_de_bain_form,
+    },
+    "etat-surfaces-pose-app-san": {
+      gammes_depose_form: gammes_depose_form,
+      appareils_salle_de_bain:appareils_salle_de_bain_form,
+    },
+    "dimensions-pose-app-san": {
+      gammes_depose_form: gammes_depose_form,
+      appareils_salle_de_bain:appareils_salle_de_bain_form,
+    }
+  };
+
+  console.log("Données avant modification", this.devisTache);
+
+  this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
+    this.detailsCalcul = result;
+    let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+    if (formule) {
+      formule = formule.replace(/\n/g, '<br>');
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule: formule
+      };
+    }
+    const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
+    console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
+
+    if (prixCalcule !== undefined) {
+      this.devisTache.Prix = prixCalcule;
+    }
+
+    console.log("Données après modification", this.devisTache);
+
+    this.userService.updateDevistache(parseInt(this.tacheId),this.devisTache).subscribe(
+      (response) => {
+        console.log('Tache modifiée avec succès :', response);
+        this.message.create('success', `Tache modifiée avec succès`);
+      },
+      (error) => {
+        console.error('Erreur lors de la modification de la tache :', error);
+      }
+    );
+  }).catch(error => {
+    console.error('Erreur lors du calcul du prix:', error);
+  });
+}
 
 }

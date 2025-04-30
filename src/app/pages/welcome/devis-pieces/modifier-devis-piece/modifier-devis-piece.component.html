@@ -94,16 +94,36 @@
         </nz-form-control>
         </nz-form-item>
     </form>
-    <div class="visite-box">
+    <div class="visite-box" *ngIf="devispiece?.Visite">
       <div class="visite-title">Visite de technicien</div>
-      <div *ngIf="devispiece?.Visite">
+      <div >
         Visite n°{{ devispiece?.Visite?.ID }} créée le 
         {{ devispiece?.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss' }} 
         {{ devispiece?.Visite?.Paye ? 'et payée' : 'et non payée' }}
       </div>
       
       <br>
-      <button nz-button nzType="primary" (click)="add_visite()">Ajouter une visite</button>
+      <form nz-form [formGroup]="visiteForm" (ngSubmit)="add_visite_date()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="12" [nzXs]="12" nzRequired>Date de programmation de la visite</nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="12" nzErrorTip="Entrez une date">
+            <nz-date-picker nzShowTime formControlName="DateDeProgrammation"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-radio-group formControlName="Objet">
+            <label nz-radio nzValue="prog_date">Programmer une date de visite</label>
+            <label nz-radio nzValue="notif_client">Notifier le client par mail que la visite est finie</label>
+          </nz-radio-group>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control [nzSm]="12" [nzXs]="12">
+            <button nz-button nzType="primary" >valider</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
       <br>
     </div>
 
@@ -118,6 +138,7 @@
             <th>Type</th>
             <th>Montant</th>
             <th>Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -128,6 +149,13 @@
               <td>{{ data.Type }}</td>
               <td>{{ data.Montant }} € </td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
+              <td> 
+                <button nz-button nzType="primary" class="negative-action mb-5"  title="supprimer"  nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer ce paiement ?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deletePaiement(data.ID)"
+                (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+              </td>
             </tr>
            
             
@@ -183,7 +211,6 @@
     <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed">
         <thead>
           <tr>
-            <th nzWidth="60px"></th>
             <th>ID</th>
             <th>Type de tâche</th>
             <th>Tâche</th>
@@ -193,52 +220,12 @@
         <tbody>
           <ng-container *ngFor="let data of nzTable.data;let i=index">
             <tr>
-              <td [nzExpand]="expandSet.has(data.ID)" [nzExpandIcon]="expandIcon"></td>
               <td>{{ data.ID }}</td>
               <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
               <td>{{ data.TravailSlug }}</td>
-              <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="calculer_prix(data.ID,i)" >Recalculer le prix</button></td>
+              <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="modifier_tache(data.Travail.ID,data.ID)" >modifier la tâche</button></td>
             </tr>
-            <tr [nzExpand]="expandSet.has(data.ID)">
-              <div>
-                <input #textToCopy type="text" [value]="data.Donnees" readonly aria-hidden="true" style="display:none;" />
-                <textarea #textToedit rows="4"  [(ngModel)]="new_json" nz-input *ngIf="want_to_edit"></textarea>
-                <br><br>
-                <button nz-button nzType="primary" class="mr-10" (click)="editjson(data.ID,data.Donnees)"><span nz-icon nzType="edit" nzTheme="outline"></span> Modifier le json</button>
-                <button nz-button nzType="primary" class="mr-10" (click)="copyToClipboard(textToCopy.value)" *ngIf="want_to_edit"><span nz-icon nzType="copy" nzTheme="outline"></span> Copier les détails du json</button>
-
-               
-                
-              </div>
-              
-              <p *ngIf="copied">Json copié avec succès !</p>
-              <p *ngIf="edited">Json edité avec succès !</p>
-              
-             <br>
-              <ng-container *ngIf="detailsCalcul && detailsCalcul.resultats[data.TravailSlug]">
-                <div>
-                  <span>Prix: {{ detailsCalcul.resultats[data.TravailSlug]?.prix }} €</span><br>
-                  <span>Formule: </span><br>
-                  <span [innerHTML]="detailsCalcul.resultats[data.TravailSlug]?.formule"></span>
-                </div>
-              </ng-container>
-            </tr>
-            <ng-template #expandIcon>
-              <span
-                nz-icon
-                *ngIf="!expandSet.has(data.ID)"
-                nzType="plus-circle"
-                nzTheme="outline"
-                (click)="onExpandChange(data.ID, true)"
-              ></span>
-              <span
-                nz-icon
-                *ngIf="expandSet.has(data.ID)"
-                nzType="minus-circle"
-                nzTheme="outline"
-                (click)="onExpandChange(data.ID, false)"
-              ></span>
-            </ng-template>
+            
           </ng-container>
         </tbody>
       </nz-table>

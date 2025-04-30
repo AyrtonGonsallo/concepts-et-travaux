@@ -38,7 +38,7 @@ export class ModifierDevisPieceComponent {
     if (this.validateForm.valid) {
 
       console.log('submit', this.validateForm.value);
-      this.devisService.updateDevisPiece(this.devisId,this.validateForm.value).subscribe(
+      this.devisService.updateDevisPiece(parseInt(this.devisId),this.validateForm.value).subscribe(
         (response) => {
           console.log('Devis modifié avec succès :', response);
           this.message.create('success', `Devis modifié avec succès`);
@@ -80,14 +80,21 @@ export class ModifierDevisPieceComponent {
   }
 
   
-  devisId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
+  devisId="";
   ngOnInit(): void {
     // Obtenez l'ID de l'devis à partir de l'URL
-    const devisId = this.route.snapshot.paramMap.get('id')??'0';
+    this.devisId = (this.route.snapshot.paramMap.get('id')??'0');
     // Utilisez l'ID pour récupérer les détails de l'devis
-    this.getDetails(devisId);
+    this.getDetails(this.devisId);
     this.getPieces();
-    this.get_all_devis_paiements(devisId);
+    this.get_all_devis_paiements(this.devisId);
+    this.paiementForm = this.fb.group({
+      TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+      Type: this.fb.control<string | null>(null, Validators.required),
+      Montant: this.fb.control<number | null>(null, Validators.required),
+      Date: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
+      DevisID: this.fb.control<number | null>(parseInt(this.devisId), Validators.required), // devispiece.ID sera assigné dynamiquement
+    });
   }
   apiBaseUrl: string = `${environment.apiUrl}/open-file/`;
   // Méthode pour récupérer les détails de l'devis à partir de l'API
@@ -98,7 +105,10 @@ export class ModifierDevisPieceComponent {
        this.listOfTaches=response.DevisTaches
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_devis",response);
-        
+        this.visiteForm = this.fb.group({
+          DateDeProgrammation: this.fb.control<Date | null>((this.devispiece.Visite)?this.devispiece.Visite.DateDeProgrammation:null, [ Validators.required, ]),
+          Objet: this.fb.control< string| null>("prog_date", [ Validators.required, ])
+        });
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details devis :', error);
@@ -140,100 +150,76 @@ export class ModifierDevisPieceComponent {
     return !this.authService.isAdmin()
   }
   listOfTaches:DevisTache[] =[]
-  expandSet = new Set<number>();
-  onExpandChange(id: number, checked: boolean): void {
-    if (checked) {
-      this.expandSet.add(id);
-    } else {
-      this.expandSet.delete(id);
-    }
-  }
-  detailsCalcul:any
+ 
   
-  calculer_prix(tid:number,index:number){
-   
-
-    this.calculDevisService.calculer_prix(this.devispiece, index).then((result) => {
-      this.detailsCalcul = result
-      console.log("Prix reçu :", this.detailsCalcul);
-    }).catch((error) => {
-      console.error("Erreur lors du calcul :", error);
-    });
-  }
-  new_json:any
-  editjson(id:number,json:any){
+  
+  visiteForm: FormGroup<{
+    DateDeProgrammation: FormControl<Date | null>;
+    Objet: FormControl<string | null>;
     
-    this.want_to_edit=true
-    setTimeout(() => {
-      this.is_editing=!this.is_editing
-    }, 2000);
-    if(this.is_editing){
-      this.new_json=json
-    }
-    else{
-      this.devisService.edit_devis_tache(id,JSON.parse(this.new_json) ).subscribe(
-        (response) => {
-          console.log('Tâche modifiée avec succès :', response);
-          this.edited = true;
-          setTimeout(() => {
-            this.edited = false;
-            this.want_to_edit=false
-          }, 2000); // Cache le message après 2 secondes
-          //this.message.create('success', `Devis modifié avec succès`);
-          //this.router.navigate(['/administration/devis-pieces']);
-        },
-        (error) => {
-          console.error('Erreur lors de la modification de la tâche :', error);
-        }
-      );
-      
-    }
-  }
-
-  copied: boolean = false;
-  want_to_edit: boolean = false;
-  is_editing: boolean = true;
-  edited: boolean = false;
-  copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        this.copied = true;
-        setTimeout(() => {
-          this.copied = false;
-        }, 2000); // Cache le message après 2 secondes
-      },
-      (err) => {
-        console.error('Erreur lors de la copie :', err);
-      }
-    );
-  }
+  }> = this.fb.group({
+    DateDeProgrammation: this.fb.control<Date | null>(null, [Validators.required]),
+    Objet: this.fb.control<string | null>('prog_date', [ Validators.required, ])
+  });
+  add_visite_date(){
   
 
-  add_visite(){
-    const visiteData = {
-      Date: new Date().toISOString(), // Génère la date actuelle au format ISO
-      Paye: 0
-    };
-    this.devisService.add_visite( visiteData).subscribe(
-      (response) => {
-        console.log('Visite ajoutee avec succès :', response);
-        this.validateForm.patchValue({ VisiteID: response.ID });
-        this.devisService.updateDevisPiece(this.devisId,this.validateForm.value).subscribe(
+
+    if (this.visiteForm.valid) {
+      const dateProg = this.visiteForm.get('DateDeProgrammation')?.value;
+      const obj = this.visiteForm.get('Objet')?.value;
+      const visiteData = {
+        Date: new Date().toISOString(), // Génère la date actuelle au format ISO
+        DateDeProgrammation:dateProg
+      };
+      if(obj=="prog_date"){
+        console.log('Visite envoyée :', visiteData);
+        this.devisService.update_visite(this.devispiece.Visite.ID, visiteData).subscribe(
           (response) => {
-            console.log('Devis modifié avec succès :', response);
-            this.message.create('success', `Visite ajoutée et devis modifié avec succès`);
-            //this.router.navigate(['/administration/devis-pieces']);
+            console.log('Visite programée avec succès :', response);
+            this.message.success("Visite programée avec succès")        
+            this.devisService.send_visite_scheduled(this.devispiece.Visite.ID).subscribe(
+              (response) => {
+                console.log('Message de visite programmée envoyé au client avec succès :', response);
+                this.message.success("Message de visite programmée envoyé au client avec succès")        
+               
+              },
+              (error) => {
+                console.error('Erreur lors de l\'envoi du message de visite programmée :', error);
+              }
+            );
           },
           (error) => {
-            console.error('Erreur lors de la modification de l\'devis :', error);
+            console.error('Erreur lors de l\'ajout de la visite :', error);
           }
         );
-       
-      },
-      (error) => {
-        console.error('Erreur lors de l\'ajout de la visite :', error);
+      }else{
+        this.devisService.send_visite_done(this.devispiece.Visite.ID).subscribe(
+          (response) => {
+            console.log('Message de visite terminée envoyé au client avec succès :', response);
+            this.message.success("Message de visite terminée envoyé au client avec succès")        
+           
+          },
+          (error) => {
+            console.error('Erreur lors de l\'envoi du message de visite terminée :', error);
+          }
+        );
       }
-    );
+      
+    } else {
+      Object.values(this.visiteForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+
+  
+  }
+
+  notify_client_visit_ended(){
+
   }
 
   paiementForm: FormGroup<{
@@ -246,8 +232,8 @@ export class ModifierDevisPieceComponent {
     TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
     Type: this.fb.control<string | null>(null, Validators.required),
     Montant: this.fb.control<number | null>(null, Validators.required),
-    Date: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
-    DevisID: this.fb.control<number | null>(this.devisId, Validators.required), // devispiece.ID sera assigné dynamiquement
+    Date: this.fb.control<string | null>(null, Validators.required), // Date du jour
+    DevisID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
   });
   
 
@@ -258,6 +244,7 @@ export class ModifierDevisPieceComponent {
         (response) => {
           console.log('paiement ajouté avec succès :', response);
           this.message.create('success', `paiement ajouté avec succès`);
+          this.get_all_devis_paiements(this.devisId);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du paiement :', error);
@@ -272,7 +259,80 @@ export class ModifierDevisPieceComponent {
       });
     }
   }
-  add_paiement(){
-
+  cancel(): void {
+    this.message.info('suppression annulée');
   }
+  deletePaiement(p_Id: number) {
+    if (this.authService.isAdminorSuperAdmin()) {
+      this.devisService.delete_paiement(p_Id).subscribe(
+        () => {
+          //console.log('DevisPiece supprimé avec succès');
+          this.message.success( 'Paiement supprimé avec succès');
+          // Mettez ici le code pour actualiser la liste des devis_pieces si nécessaire
+          this.get_all_devis_paiements((this.devisId));
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+        }
+      );
+      
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour faire cette opération`);
+      return false;
+    }
+    
+  }
+
+  modifier_tache(type_de_travail_id: number|undefined, tacheID: number) {
+    let url = '';
+  
+    switch (type_de_travail_id) {
+      case 4: // Création de murs non porteurs
+        url = `/admin/administration/formules-et-tests/modifier-creation-murs-non-porteur/${tacheID}?mode=modification`;
+        break;
+      case 3: // Démolition de cloisons ou ouverture partielle
+        url = `/admin/administration/formules-et-tests/modifier-demolition-cloisons/${tacheID}?mode=modification`;
+        break;
+      case 7: // Dépose des anciennes installations de salle de bain
+        url = `/admin/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
+        break;
+      case 13: // Rénovation électrique partielle
+        url = `/admin/administration/formules-et-tests/modifier-renovation-electrique/${tacheID}?mode=modification`;
+        break;
+      case 15: // Rénovation électrique complète
+        url = `/admin/administration/formules-et-tests/modifier-renovation-electrique-complete/${tacheID}?mode=modification`;
+        break;
+      case 12: // Remplacement de radiateur
+        url = `/admin/administration/formules-et-tests/modifier-remplacement-radiateur/${tacheID}?mode=modification`;
+        break;
+      case 16: // Installation de nouveaux équipements sanitaires
+        url = `/admin/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
+        break;
+      case 2: // Pose de nouveaux équipements de cuisine
+        url = `/admin/administration/formules-et-tests/modifier-pose-equipements-cuisine/${tacheID}?mode=modification`;
+        break;
+      case 5: // Pose de revêtements muraux
+        url = `/admin/administration/formules-et-tests/modifier-revetements-muraux/${tacheID}?mode=modification`;
+        break;
+      case 8: // Pose de revêtements muraux
+        url = `/admin/administration/formules-et-tests/modifier-revetements-plafond/${tacheID}?mode=modification`;
+        break;
+      case 9: // Pose de revêtements muraux
+        url = `/admin/administration/formules-et-tests/modifier-revetements-sol/${tacheID}?mode=modification`;
+        break;
+      case 10: // Remplacement de portes
+        url = `/admin/administration/formules-et-tests/modifier-remplacement-portes/${tacheID}?mode=modification`;
+        break;
+      default:
+        console.error('Type de travail inconnu :', type_de_travail_id);
+        return;
+    }
+  
+    // Redirection
+    window.location.href = url;
+  }
+  
+
 }

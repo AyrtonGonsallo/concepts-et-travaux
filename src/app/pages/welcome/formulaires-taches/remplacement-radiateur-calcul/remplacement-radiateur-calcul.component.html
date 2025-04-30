@@ -54,21 +54,22 @@
             </div>
             
           
-           
-       
-
-
-
-        
-            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
-            <ng-container *ngIf="detailsCalcul">
-                <div>
-                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-                  <span>Formule: </span><br>
-                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
-                </div>
-            </ng-container>
-      </form>
-    </div>
+            <div class="grid-btn-action">
+                <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+           </div>
+              
+               <ng-container *ngIf="detailsCalcul">
+                   <div>
+                     <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                     <span>Formule: </span><br>
+                     <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                   </div>
+               </ng-container>
+               
+         </form>
+   
+         <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+   
+       </div>
     
       

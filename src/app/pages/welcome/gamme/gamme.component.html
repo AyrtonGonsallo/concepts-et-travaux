@@ -36,13 +36,14 @@
           <tr *ngFor="let data of sortTable.data" >
             <td >{{ data.ID }}</td>
             <td>{{ get_travail_title(data.TravailID) }}</td>
-            <td>{{ data.Label }}</td>
             <td>{{ data.Type }}</td>
+            <td>{{ data.Label }}</td>
+            <td>{{ data.Prix }} €</td>
             <td>
               <a [href]="baseurl + data.Pdf" target="_blank" class="link-tooltip">{{data.Pdf}}</a>
 
             </td>
-            <td>{{ data.Prix }} €</td>
+          
            
             
             <td> 

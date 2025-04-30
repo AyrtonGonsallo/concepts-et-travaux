@@ -63,11 +63,26 @@ add_etape_projet(userData: any): Observable<any> {
 add_visite(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/add_visite`, userData);
 }
+
+update_visite(id: number, visite: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_visite/${id}`;
+  return this.http.put<any>(url, visite);
+}
 add_paiement(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/add_paiement`, userData);
 }
 get_all_devis_paiements(devisID: number): Observable<any> {
   const url = `${environment.apiUrl}/get_all_devis_paiements/${devisID}`;
+  return this.http.get<any>(url);
+}
+
+send_visite_scheduled(visiteID: number): Observable<any> {
+  const url = `${environment.apiUrl}/send_visite_scheduled/${visiteID}`;
+  return this.http.get<any>(url);
+}
+
+send_visite_done(visiteID: number): Observable<any> {
+  const url = `${environment.apiUrl}/send_visite_done/${visiteID}`;
   return this.http.get<any>(url);
 }
 add_besoin_projet(userData: any): Observable<any> {
@@ -94,6 +109,12 @@ deleteEtapeProjet(id: number): Observable<any> {
   const url = `${environment.apiUrl}/delete_etape_projet/${id}`;
   return this.http.delete<any>(url);
 }
+
+delete_paiement(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_paiement/${id}`;
+  return this.http.delete<any>(url);
+}
+
 add_etape_devis(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/ajouter_etape_devis`, userData);
 }
@@ -439,7 +460,10 @@ get_role(userId: number): Observable<any> {
   updateEquipement(id: number, equipement: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_equipement/${id}`, equipement);
   }
-
+  updateDevistache(id: number, dt: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_devis_tache/${id}`, dt);
+  }
+  
   // Delete
   deleteEquipement(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_equipement/${id}`);
@@ -518,6 +542,11 @@ get_role(userId: number): Observable<any> {
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getAllDevisPieces(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_all_devis_piece`);
+  }
+
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getUserDevisPieces(uid: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_user_devis_piece/${uid}`);
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteDevisPiece(devisPieceId: number): Observable<any> {

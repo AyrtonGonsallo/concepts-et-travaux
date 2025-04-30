@@ -18,14 +18,30 @@ export class PoseDeRevetementDeSolCalculComponent {
   formulaire!: FormGroup;
   devisTache!:DevisTache;
   detailsCalcul:any
-
+  edit_mode=false
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
 
     ngOnInit(): void {
+      this.route.queryParams.subscribe(params => {
+        const mode = params['mode'];
+        if (mode === 'modification') {
+          // Mode modification activé
+          console.log('On est en mode modification');
+          this.edit_mode=true
+        } else {
+          // Mode création/test
+          console.log('On est en mode test');
+        }
+      });
+      this.route.params.subscribe(params => {
+        this.tacheId = params['id'] ?? '0';
+        console.log('Tache ID récupéré:', this.tacheId);
+      });
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes_depose()
       this.load_gammes_pose()
+      this.load_types()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -177,7 +193,6 @@ load_gammes_pose(){
 
 submit(){
   console.log(this.formulaire.value)
-  const mursFormArray = this.formulaire.value.murs;
   this.devisTache.Donnees = {
     "dimensions-pose-sol": {
       longueur: this.formulaire.value.longueur,
@@ -214,6 +229,74 @@ submit(){
     
   }).catch((error) => {
     console.error("Erreur lors du calcul :", error);
+  });
+}
+
+etat_des_surfaces:any
+load_types(){
+  this.userService.getGammesByTravailAndTypeOrdered(9,"etat-des-surfaces-sol").subscribe(
+    (response: any) => {
+      console.log('recuperation des etat-des-surfaces-murs	:', response);
+      this.etat_des_surfaces=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des etat-des-surfaces-murs	 :', error);
+    }
+  );
+}
+
+
+modifier(){
+  this.devisTache.Donnees = {
+    "dimensions-pose-sol": {
+      longueur: this.formulaire.value.longueur,
+      largeur: this.formulaire.value.largeur,
+      depose: this.formulaire.value.depose
+    },
+    "etat-surfaces-pose-sol": {
+      etat: this.formulaire.value.etat
+    },
+    "gammes-produits-pose-sol": {
+      gamme: this.formulaire.value.gamme,
+      autre_gamme: this.formulaire.value.autre_gamme,
+      lineaire: this.formulaire.value.lineaire,
+      plinthes: this.formulaire.value.plinthes,
+      has_plinthes: this.formulaire.value.has_plinthes
+    }
+  };
+
+  console.log("Données avant modification", this.devisTache);
+
+  this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
+    this.detailsCalcul = result;
+    let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+    if (formule) {
+      formule = formule.replace(/\n/g, '<br>');
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule: formule
+      };
+    }
+    const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
+    console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
+
+    if (prixCalcule !== undefined) {
+      this.devisTache.Prix = prixCalcule;
+    }
+
+    console.log("Données après modification", this.devisTache);
+
+    this.userService.updateDevistache(parseInt(this.tacheId),this.devisTache).subscribe(
+      (response) => {
+        console.log('Tache modifiée avec succès :', response);
+        this.message.create('success', `Tache modifiée avec succès`);
+      },
+      (error) => {
+        console.error('Erreur lors de la modification de la tache :', error);
+      }
+    );
+  }).catch(error => {
+    console.error('Erreur lors du calcul du prix:', error);
   });
 }
 }

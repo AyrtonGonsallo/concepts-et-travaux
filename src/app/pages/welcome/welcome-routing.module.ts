@@ -97,6 +97,8 @@ import { PoseEquipementsCuisineCalculComponent } from './formulaires-taches/pose
 import { PoseEquipementsCuisineListeComponent } from './formulaires-taches/pose-equipements-cuisine-liste/pose-equipements-cuisine-liste.component';
 import { CreationMursNonPorteursListeComponent } from './formulaires-taches/creation-murs-non-porteurs-liste/creation-murs-non-porteurs-liste.component';
 import { CreationMursNonPorteursCalculComponent } from './formulaires-taches/creation-murs-non-porteurs-calcul/creation-murs-non-porteurs-calcul.component';
+import { VoirDevisClientsComponent } from './clients/voir-devis-clients/voir-devis-clients.component';
+import { ClientsComponent } from './clients/clients.component';
 
 const routes: Routes = [
  
@@ -168,7 +170,22 @@ const routes: Routes = [
       { path: 'formules-et-tests/tester-remplacement-radiateur/:id', component: RemplacementRadiateurCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/creation-murs-non-porteur', component: CreationMursNonPorteursListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/tester-creation-murs-non-porteur/:id', component: CreationMursNonPorteursCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'formules-et-tests/modifier-revetements-muraux/:id', component: PoseDeRevetementsMurauxCalculComponent },
+      { path: 'formules-et-tests/modifier-revetements-plafond/:id', component: PoseDeRevetementSurPlafondCalculComponent },
+      { path: 'formules-et-tests/modifier-revetements-sol/:id', component: PoseDeRevetementDeSolCalculComponent },
+      { path: 'formules-et-tests/modifier-remplacement-portes/:id', component: RemplacementDePortesCalculComponent },
+      { path: 'formules-et-tests/modifier-renovation-electrique/:id', component: RenovationElectriquePartielleCalculComponent },
+      { path: 'formules-et-tests/modifier-demolition-cloisons/:id', component: DemolitionCloisonsCalculComponent },
+      { path: 'formules-et-tests/modifier-installation-sanitaires/:id', component: InstallationSanitairesCalculComponent },
+      { path: 'formules-et-tests/modifier-renovation-electrique-complete/:id', component: RenovationElectriqueCompleteCalculComponent },
+      { path: 'formules-et-tests/modifier-pose-equipements-cuisine/:id', component: PoseEquipementsCuisineCalculComponent },
+      { path: 'formules-et-tests/modifier-remplacement-radiateur/:id', component: RemplacementRadiateurCalculComponent },
+      { path: 'formules-et-tests/modifier-creation-murs-non-porteur/:id', component: CreationMursNonPorteursCalculComponent },
       
+      { path: 'clients', component: ClientsComponent },
+      { path: 'clients/voir-devis-client/:id', component: VoirDevisClientsComponent },
+
+
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
       { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },
       { path: 'travaux', component: TravauxComponent },

@@ -18,11 +18,27 @@ export class DemolitionCloisonsCalculComponent {
   formulaire!: FormGroup;
   devisTache!:DevisTache;
   detailsCalcul:any
+  edit_mode=false
 
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
 
     ngOnInit(): void {
+      this.route.queryParams.subscribe(params => {
+        const mode = params['mode'];
+        if (mode === 'modification') {
+          // Mode modification activé
+          console.log('On est en mode modification');
+          this.edit_mode=true
+        } else {
+          // Mode création/test
+          console.log('On est en mode test');
+        }
+      });
+      this.route.params.subscribe(params => {
+        this.tacheId = params['id'] ?? '0';
+        console.log('Tache ID récupéré:', this.tacheId);
+      });
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
     }
@@ -134,6 +150,60 @@ submit(){
     
   }).catch((error) => {
     console.error("Erreur lors du calcul :", error);
+  });
+}
+
+
+
+modifier(){
+  
+  const mursNonporteurs = this.formulaire.value.mursNonporteurs;
+  const ouverturePartielle = this.formulaire.value.ouverturePartielle;
+  const tp1 = this.formulaire.value.tp1;
+  const tp3 = this.formulaire.value.tp3;
+
+  this.devisTache.Donnees = {
+    "gammes-produits-murs-non-porteurs": {
+      mursNonporteurs: mursNonporteurs,
+      ouverturePartielle: ouverturePartielle,
+      tp1: tp1,
+      tp3: tp3
+    }
+  };
+
+
+  console.log("Données avant modification", this.devisTache);
+
+  this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
+    this.detailsCalcul = result;
+    let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+    if (formule) {
+      formule = formule.replace(/\n/g, '<br>');
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule: formule
+      };
+    }
+    const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
+    console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
+
+    if (prixCalcule !== undefined) {
+      this.devisTache.Prix = prixCalcule;
+    }
+
+    console.log("Données après modification", this.devisTache);
+
+    this.userService.updateDevistache(parseInt(this.tacheId),this.devisTache).subscribe(
+      (response) => {
+        console.log('Tache modifiée avec succès :', response);
+        this.message.create('success', `Tache modifiée avec succès`);
+      },
+      (error) => {
+        console.error('Erreur lors de la modification de la tache :', error);
+      }
+    );
+  }).catch(error => {
+    console.error('Erreur lors du calcul du prix:', error);
   });
 }
 }
