@@ -99,6 +99,7 @@ import { CreationMursNonPorteursListeComponent } from './formulaires-taches/crea
 import { CreationMursNonPorteursCalculComponent } from './formulaires-taches/creation-murs-non-porteurs-calcul/creation-murs-non-porteurs-calcul.component';
 import { VoirDevisClientsComponent } from './clients/voir-devis-clients/voir-devis-clients.component';
 import { ClientsComponent } from './clients/clients.component';
+import { FichiersComponent } from './fichiers/fichiers.component';
 
 const routes: Routes = [
  
@@ -184,7 +185,7 @@ const routes: Routes = [
       
       { path: 'clients', component: ClientsComponent },
       { path: 'clients/voir-devis-client/:id', component: VoirDevisClientsComponent },
-
+      { path: 'fichiers', component: FichiersComponent },
 
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },
       { path: 'equipements/modifier-equipement/:id', component: ModifierEquipementComponent },

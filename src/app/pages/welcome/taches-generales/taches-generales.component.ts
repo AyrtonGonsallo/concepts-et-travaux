@@ -42,28 +42,49 @@ export class TachesGeneralesComponent {
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.loadTacheGenerale();
-    this.loadTravaux()
+
+
+    Promise.all([
+      this.loadTacheGenerale(),
+      this.loadTravaux()
+    ]).then(() => {
+      const savedFilter = localStorage.getItem('filteredTravailListeServices');
+      if (savedFilter) {
+        this.filteredTravail = savedFilter;
+        console.log("Filtre récupéré: ", savedFilter);
+      }
+      this.search2();
+    });
   }
  filteredTravail=""
   travaux:Travail[] = [];
-  loadTravaux(): void {
-    this.userService.getTravaux()
-      .subscribe((data: Travail[]) => {
-        this.travaux = data;
-        console.log("réponse de la requette get_travail",this.travaux);
+  loadTravaux(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getTravaux().subscribe({
+        next: (data: Travail[]) => {
+          this.travaux = data;
+          console.log("réponse de la requête get_travail", this.travaux);
+          resolve();
+        },
+        error: (err) => reject(err)
       });
+    });
   }
-  loadTacheGenerale(): void {
-    this.userService.getTacheGenerales()
-      .subscribe((data: TacheGenerale[]) => {
-        this.tache_generale = data;
-        this.listOfDisplayData=data
-        console.log("réponse de la requette get_tache_generale",this.tache_generale);
+  
+  loadTacheGenerale(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getTacheGenerales().subscribe({
+        next: (data: TacheGenerale[]) => {
+          this.tache_generale = data;
+          this.listOfDisplayData = data;
+          console.log("réponse de la requête get_tache_generale", this.tache_generale);
+          resolve();
+        },
+        error: (err) => reject(err)
       });
-      console.log("envoi de la requette get_tache_generale",this.tache_generale);
-      
+    });
   }
+  
   isAdminOrHim(id:number){
 
     return this.authService.isAdminOrHim(id)
@@ -120,6 +141,7 @@ export class TachesGeneralesComponent {
     this.applyFilters();
   }
   applyFilters(): void {
+    localStorage.setItem('filteredTravailListeServices', this.filteredTravail);
     this.listOfDisplayData = this.tache_generale.filter((item: TacheGenerale) => {
       const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
       const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;

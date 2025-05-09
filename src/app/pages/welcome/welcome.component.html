@@ -8,16 +8,19 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzOpen nzTitle="Projets & Devis" nzIcon="schedule">
+        <li nz-submenu [nzOpen]="false" nzTitle="Projets & Devis" nzIcon="schedule">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/projets">Liste des projets</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/devis-pieces">Listes des devis</a>
+              <a routerLink="/administration/devis-pieces">Liste des devis</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/clients">Listes des clients</a>
+              <a routerLink="/administration/clients">Liste des clients</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/fichiers">Liste des fichiers</a>
             </li>
             <!--
             <li nz-menu-item nzMatchRouter>
@@ -32,7 +35,7 @@
             </li>-->
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Pièces et travaux" nzIcon="home" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="Pièces et travaux" nzIcon="home" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/pieces">Liste des pièces</a>
@@ -69,7 +72,7 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Réalisations" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="Réalisations" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/realisations">Liste des realisations</a>
@@ -79,7 +82,7 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="FAQ" nzIcon="question-circle" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="FAQ" nzIcon="question-circle" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/questions">Liste des questions</a>
@@ -90,7 +93,7 @@
             
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Avis" nzIcon="star" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="Avis" nzIcon="star" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/avis">Liste des avis</a>
@@ -100,7 +103,7 @@
 
 
 
-        <li nz-submenu nzOpen nzTitle="Administration" nzIcon="dashboard">
+        <li nz-submenu [nzOpen]="false" nzTitle="Administration" nzIcon="dashboard">
           <ul>
             <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/autorisations">Autorisations</a>

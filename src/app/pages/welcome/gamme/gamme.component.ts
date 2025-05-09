@@ -63,28 +63,46 @@ export class GammeComponent {
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.loadGamme();
-    this.loadTravaux()
+    Promise.all([
+      this.loadGamme(),
+      this.loadTravaux()
+    ]).then(() => {
+      const savedFilter = localStorage.getItem('filteredTravailListeGammes');
+      if (savedFilter) {
+        this.filteredTravail = savedFilter;
+        console.log("Filtre récupéré: ", savedFilter);
+      }
+      this.search2();
+    });
   }
 
   filteredTravail=""
   travaux:Travail[] = [];
-  loadTravaux(): void {
-    this.userService.getTravaux()
-      .subscribe((data: Travail[]) => {
-        this.travaux = data;
-        console.log("réponse de la requette get_travail",this.travaux);
+  loadTravaux(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getTravaux().subscribe({
+        next: (data: Travail[]) => {
+          this.travaux = data;
+          console.log("réponse de la requête getTravaux", this.travaux);
+          resolve();
+        },
+        error: (err) => reject(err)
       });
+    });
   }
-  loadGamme(): void {
-    this.userService.getGammes()
-      .subscribe((data: Gamme[]) => {
-        this.gamme = data;
-        this.listOfDisplayData = [...this.gamme];
-        console.log("réponse de la requette get_gamme",this.gamme);
+  
+  loadGamme(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getGammes().subscribe({
+        next: (data: Gamme[]) => {
+          this.gamme = data;
+          this.listOfDisplayData = [...this.gamme];
+          console.log("réponse de la requête getGammes", this.gamme);
+          resolve();
+        },
+        error: (err) => reject(err)
       });
-      console.log("envoi de la requette get_gamme",this.gamme);
-      
+    });
   }
   get_travail(id: number): Travail | undefined {
     return this.travaux.find(travail => travail.ID === id);
@@ -139,9 +157,11 @@ export class GammeComponent {
     this.applyFilters();
   }
   search2(): void {
+
     this.applyFilters();
   }
   applyFilters(): void {
+  localStorage.setItem('filteredTravailListeGammes', this.filteredTravail);
     this.listOfDisplayData = this.gamme.filter((item: Gamme) => {
       const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
       const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;

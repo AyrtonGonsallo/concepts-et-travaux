@@ -76,6 +76,16 @@ get_all_devis_paiements(devisID: number): Observable<any> {
   return this.http.get<any>(url);
 }
 
+getFichiers(): Observable<any> {
+  const url = `${environment.apiUrl}/get_fichiers/`;
+  return this.http.get<any>(url);
+}
+
+deleteFichier(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_fichier/${id}`;
+  return this.http.delete<any>(url);
+}
+
 send_visite_scheduled(visiteID: number): Observable<any> {
   const url = `${environment.apiUrl}/send_visite_scheduled/${visiteID}`;
   return this.http.get<any>(url);
