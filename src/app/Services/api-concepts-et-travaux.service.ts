@@ -566,6 +566,10 @@ get_role(userId: number): Observable<any> {
    updateDevisPiece(id: number, devis: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_devis_piece/${id}`, devis);
   }
+  // Update
+  updateCommentaireDevisPiece(id: number, devis: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_commentaire_devis_piece/${id}`, devis);
+  }
   addParametre(parametre: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_parametre`, parametre);
   }

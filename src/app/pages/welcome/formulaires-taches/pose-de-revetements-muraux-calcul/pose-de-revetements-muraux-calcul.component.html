@@ -9,12 +9,12 @@
                 Dimensions du mur {{ i + 1 }}
             </span>
             </div>
-            <div class="label-number">
+            <div class="flx-radio-row2">
                 <label>Hauteur :</label>
                 <input type="number" formControlName="hauteur">
             </div>
             
-            <div class="label-number">
+            <div class="flx-radio-row2">
                 <label>Longueur :</label>
                 <input type="number" formControlName="longueur"><br>
             </div>
@@ -186,6 +186,8 @@
     
         <div class="grid-btn-action">
             <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
        </div>
           
            <ng-container *ngIf="detailsCalcul">
@@ -198,7 +200,6 @@
            
      </form>
 
-     <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
    </div>
 

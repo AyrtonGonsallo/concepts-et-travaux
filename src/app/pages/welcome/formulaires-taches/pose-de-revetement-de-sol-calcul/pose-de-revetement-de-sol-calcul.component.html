@@ -95,7 +95,7 @@
       </ng-container>
   
       <!-- Autre -->
-      <div>
+      <div class="flx-radio-row2">
         <label>Autre :</label>
         <label nz-radio nzValue="0:autre:0">autre</label>
       </div>
@@ -111,12 +111,15 @@
   </div>
   
   <!-- Section Plinthes -->
-  <div>
-    <label>Faut-il des plinthes ?</label>
-    <nz-radio-group formControlName="has_plinthes">
-      <label nz-radio [nzValue]="true">Oui</label>
-      <label nz-radio [nzValue]="false">Non</label>
-    </nz-radio-group>
+  <div >
+    <div class="flx-radio-row2">
+      <label>Faut-il des plinthes ?</label>
+      <nz-radio-group formControlName="has_plinthes">
+        <label nz-radio [nzValue]="true">Oui</label>
+        <label nz-radio [nzValue]="false">Non</label>
+      </nz-radio-group>
+    </div>
+    
   
     <!-- Longueur linéaire -->
     <div  class="flx-radio-row2">
@@ -159,6 +162,8 @@
   
   <div class="grid-btn-action">
     <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+    <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
 </div>
   
   <ng-container *ngIf="detailsCalcul">
@@ -171,7 +176,6 @@
   
 </form>
 
-<button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
 </div>
     

@@ -27,6 +27,8 @@ export class AjouterProjetComponent {
   validateForm: FormGroup<{
     Nom: FormControl<string>;
     Description: FormControl<string>;
+    Date_de_debut_des_travaux: FormControl<Date>;
+    Date_de_fin_des_travaux: FormControl<Date>;
     User_id: FormControl<number>;
     Client_id: FormControl<number>;
   }>;
@@ -114,6 +116,8 @@ private padZero(num: number): string {
     this.validateForm = this.fb.group({
       Nom: ["", [Validators.required]],
       Description: ['', [Validators.required]],
+      Date_de_debut_des_travaux: [new Date(), []],
+      Date_de_fin_des_travaux: [new Date(), []],
       User_id: [this.auth.getDataFromLocal("utilisateur").Id , []],
       Client_id: [0, []],
     });

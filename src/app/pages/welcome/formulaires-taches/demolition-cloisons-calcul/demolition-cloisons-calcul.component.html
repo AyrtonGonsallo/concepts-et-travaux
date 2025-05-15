@@ -6,28 +6,28 @@
             <div formArrayName="mursNonporteurs">
                 <div *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
                     <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques du mur {{i+1}}</span></div>
-                    <div class="flx-radio-row2">
-                      <div class="flx-radio-row2">
+                    <div class="flx-radio-row11">
+                      <div class="flx-radio-row11">
                         <label class="">Longueur :</label> 
                         <input formControlName="longueur" placeholder="Longueur du mur">
                       </div>
-                      <div class="flx-radio-row2">
+                      <div class="flx-radio-row11">
                         <label class="">Hauteur :</label> 
                         <input formControlName="hauteur" placeholder="Hauteur du mur">
                       </div>
                     </div>
-                    <div class="flx-radio-row2">
-                      <div class="flx-radio-row2">
+                    <div class="flx-radio-row11">
+                      <div class="flx-radio-row11">
                         <label class="">Épaisseur :</label> 
                         <input formControlName="epaisseur" placeholder="Épaisseur">
                       </div>
-                      <div class="flx-radio-row2">
+                      <div class="flx-radio-row11">
                         <label class="">Nombre de portes :</label> 
                         <input formControlName="ndp" placeholder="Nombre de portes">
                       </div>
                     </div>
                     
-                    <div class="flx-radio-row2">
+                    <div class="flx-radio-row11">
                       <label class="">Type de cloison :</label> 
                       <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
                           <ng-container>
@@ -99,6 +99,8 @@
         
               <div class="grid-btn-action">
                 <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+                <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
             </div>
               
               <ng-container *ngIf="detailsCalcul">
@@ -111,7 +113,6 @@
               
             </form>
             
-            <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
             
             </div>
     

@@ -24,7 +24,7 @@ export class FichiersComponent {
       compare: (a: Fichier, b: Fichier) => a.ID - b.ID,
       priority: 3,
       order:null,
-      width:"100px",
+      width:"70px",
     },
     {
       title: 'Nom du fichier',
@@ -56,7 +56,7 @@ export class FichiersComponent {
       compare: (a: Fichier, b: Fichier) => (a.DevisID??0)-(b.DevisID??0),
       priority: 1,
       order:null,
-      width:"200px",
+      width:"150px",
     }
     
   ];

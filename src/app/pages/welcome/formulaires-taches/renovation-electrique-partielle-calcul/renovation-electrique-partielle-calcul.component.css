@@ -90,3 +90,9 @@
     grid-template-columns: 1fr 1fr ;
     align-items: center ;
 }
+.grid-btn-action{
+    display: flex;
+    width: 177px;
+    flex-direction: row;
+    justify-content: space-between;
+}

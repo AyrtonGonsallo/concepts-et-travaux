@@ -114,6 +114,8 @@
                    
   <div class="grid-btn-action">
     <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+    <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
 </div>
   
   <ng-container *ngIf="detailsCalcul">
@@ -126,7 +128,6 @@
   
 </form>
 
-<button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
 </div>
       

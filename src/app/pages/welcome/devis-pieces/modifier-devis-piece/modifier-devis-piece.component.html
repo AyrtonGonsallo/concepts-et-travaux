@@ -1,135 +1,80 @@
 <div>
-    <h2>Gestion des devis</h2>  
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID" >
-                <span>Pièce</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="PieceID" formControlName="PieceID"  nzPlaceHolder="Pièce" [nzDisabled]="true">
-                    <nz-option *ngFor="let option of pieces" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="UtilisateurID"  >
-                <span>UtilisateurID</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="UtilisateurID" formControlName="UtilisateurID" [nzDisabled]="true" ></nz-input-number> 
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Username"   nzTooltipTitle="What do you want other to call you" >
-                <span>Username</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Username!" >
-                <textarea rows="2" nz-input id="Username" formControlName="Username" readonly></textarea> 
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdresseIP"   nzTooltipTitle="What do you want other to call you" >
-                <span>AdresseIP</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre AdresseIP!">
-                <input nz-input id="AdresseIP" formControlName="AdresseIP" readonly/>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Date"   nzTooltipTitle="What do you want other to call you" >
-                <span>Date</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Date!">
-                <nz-date-picker nzShowTime formControlName="Date" [nzDisabled]="true"></nz-date-picker>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >
-                <span>Prix</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="Prix" formControlName="Prix" [nzDisabled]="true" ></nz-input-number> 
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >
-              <span>Devis payé ?</span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-            <nz-switch id="Payed" formControlName="Payed"></nz-switch>
-          </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="VisiteFaite"  >
-            <span>Visite Faite ?</span>
-        </nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-          <nz-switch id="VisiteFaite" formControlName="VisiteFaite"></nz-switch>
-        </nz-form-control>
-    </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="What do you want other to call you" >
-                <span>Commentaire</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Commentaire!">
-                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
-                  id="tiny-editor"
-                  formControlName="Commentaire"
-                  [init]="{
-                    plugins: 'link image code',
-                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-                  }"
-                ></editor>
-              </nz-form-control>
-        </nz-form-item>
-        
-        
-       
-
-        
-        <nz-form-item nz-row class="register-area">
-        <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button nz-button nzType="primary">Modifier</button>
-        </nz-form-control>
-        </nz-form-item>
-    </form>
+    <h2>Modifier le devis nº{{devispiece?.ID}} de {{devispiece?.Utilisateur?.Nom}} {{devispiece?.Utilisateur?.Prenom}}</h2>  
+    
     <div class="visite-box" *ngIf="devispiece?.Visite">
       <div class="visite-title">Visite de technicien</div>
-      <div >
-        Visite n°{{ devispiece?.Visite?.ID }} créée le 
-        {{ devispiece?.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss' }} 
-        {{ devispiece?.Visite?.Paye ? 'et payée' : 'et non payée' }}
+      <div>
+        Payée le : {{ devispiece?.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss' }}
+        {{ devispiece?.Visite?.DateDeProgrammation ? (' - Programmée le : ' + (devispiece?.Visite?.DateDeProgrammation | date:'dd/MM/yyyy HH:mm:ss')) : '' }}
+        {{ devispiece?.VisiteFaite ? '- effectuée' : '' }}
       </div>
-      
-      <br>
-      <form nz-form [formGroup]="visiteForm" (ngSubmit)="add_visite_date()">
-        <nz-form-item>
-          <nz-form-label [nzSm]="12" [nzXs]="12" nzRequired>Date de programmation de la visite</nz-form-label>
-          <nz-form-control [nzSm]="12" [nzXs]="12" nzErrorTip="Entrez une date">
-            <nz-date-picker nzShowTime formControlName="DateDeProgrammation"></nz-date-picker>
-          </nz-form-control>
-        </nz-form-item>
-        
-        <nz-form-item>
-          <nz-radio-group formControlName="Objet">
-            <label nz-radio nzValue="prog_date">Programmer une date de visite</label>
-            <label nz-radio nzValue="notif_client">Notifier le client par mail que la visite est finie</label>
-          </nz-radio-group>
-        </nz-form-item>
 
-        <nz-form-item>
-          <nz-form-control [nzSm]="12" [nzXs]="12">
-            <button nz-button nzType="primary" >valider</button>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
+     
+      Programmer une date de visite<br>
+      <nz-form-label [nzSpan]="6" >Date de la visite</nz-form-label>
+      <nz-date-picker nzShowTime [(ngModel)]="date_de_programmation"></nz-date-picker><br>
+      <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
+      <nz-divider></nz-divider>
+      <label nz-checkbox [(ngModel)]="notifier_le_client_que_la_visite_est_finie">Notifier le client que la visite a été effectuée</label><br>
+      <button nz-button nzType="primary" (click)="add_visite_date()">valider</button>
+
       <br>
     </div>
 
     <div class="visite-box">
+      <div class="visite-title">Modification du devis</div>
+      <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed" [nzShowPagination]="'false'">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type de tâche</th>
+              <th>Tâche</th>
+              <th>Prix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of nzTable.data;let i=index">
+              <tr>
+                <td>{{ data.ID }}</td>
+                <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
+                <td>{{ data.TravailSlug }}</td>
+                <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="modifier_tache(data.Travail.ID,data.ID)" >modifier la tâche</button></td>
+              </tr>
+              
+            </ng-container>
+          </tbody>
+        </nz-table>
+        <br><br>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          
+          <nz-form-item>
+              <nz-form-label [nzSm]="12" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="Ici le technicien peut ajouter ses remarques sur le devis" >
+                  <span>Commentaires du technicien après la visite</span>
+              </nz-form-label>
+              <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="votre Commentaire!">
+                  <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                    id="tiny-editor"
+                    formControlName="Commentaire"
+                    [init]="{
+                      plugins: 'link image code',
+                      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                    }"
+                  ></editor>
+                </nz-form-control>
+          </nz-form-item>
+          
+          
+          <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="12">
+              <button nz-button nzType="primary">Modifier</button>
+          </nz-form-control>
+          </nz-form-item>
+      </form>
+    </div>
+
+    <div class="visite-box">
       <div class="visite-title">Paiement</div>
-      <nz-table #nzTable2 [nzData]="paiements" nzTableLayout="fixed">
+      <nz-table #nzTable2 [nzData]="paiements" [nzShowPagination]="'false'" nzTableLayout="fixed" >
         <thead>
           <tr>
             
@@ -161,6 +106,7 @@
             
         </tbody>
       </nz-table>
+      <br><br>
       <form nz-form [formGroup]="paiementForm" (ngSubmit)="submitpaiementForm()">
         <!-- Type de Paiement -->
         <nz-form-item>
@@ -207,26 +153,5 @@
       <br>
     </div>
     
-
-    <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Type de tâche</th>
-            <th>Tâche</th>
-            <th>Prix</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let data of nzTable.data;let i=index">
-            <tr>
-              <td>{{ data.ID }}</td>
-              <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
-              <td>{{ data.TravailSlug }}</td>
-              <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="modifier_tache(data.Travail.ID,data.ID)" >modifier la tâche</button></td>
-            </tr>
-            
-          </ng-container>
-        </tbody>
-      </nz-table>
+    
 </div>

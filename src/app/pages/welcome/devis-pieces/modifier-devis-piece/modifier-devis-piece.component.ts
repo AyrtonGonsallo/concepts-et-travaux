@@ -19,17 +19,9 @@ import { Paiement } from '../../../../Models/Paiement';
 export class ModifierDevisPieceComponent {
 
   validateForm: FormGroup<{
-    Username: FormControl<string>;
-    AdresseIP: FormControl<string>;
-    UtilisateurID: FormControl<number>;
-    Date: FormControl<string>;
+    
     Commentaire: FormControl<string>;
-    PieceID: FormControl<number>;
-    Prix: FormControl<number>;
-    Payed: FormControl<boolean>;
-    VisiteFaite: FormControl<boolean>;
-    VisiteID: FormControl<number>;
-    DevisID: FormControl<number>;
+   
     
   }>;
  
@@ -38,7 +30,7 @@ export class ModifierDevisPieceComponent {
     if (this.validateForm.valid) {
 
       console.log('submit', this.validateForm.value);
-      this.devisService.updateDevisPiece(parseInt(this.devisId),this.validateForm.value).subscribe(
+      this.devisService.updateCommentaireDevisPiece(parseInt(this.devisId),this.validateForm.value).subscribe(
         (response) => {
           console.log('Devis modifié avec succès :', response);
           this.message.create('success', `Devis modifié avec succès`);
@@ -62,17 +54,9 @@ export class ModifierDevisPieceComponent {
 
   constructor(private authService: AuthService,private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private http: HttpClient,private devisService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
-      Username: ['', [Validators.required]],
-      AdresseIP: ['', [Validators.required]],
-      Date: ['', [Validators.required]],
+      
       Commentaire: ['', []],
-      PieceID: [0, []],
-      UtilisateurID: [0, []],
-      Prix: [0, []],
-      Payed: [false, []],
-      VisiteFaite: [false, []],
-      VisiteID: [0, []],
-      DevisID: [0, []],
+     
       
     });
 
@@ -105,10 +89,8 @@ export class ModifierDevisPieceComponent {
        this.listOfTaches=response.DevisTaches
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_devis",response);
-        this.visiteForm = this.fb.group({
-          DateDeProgrammation: this.fb.control<Date | null>((this.devispiece.Visite)?this.devispiece.Visite.DateDeProgrammation:null, [ Validators.required, ]),
-          Objet: this.fb.control< string| null>("prog_date", [ Validators.required, ])
-        });
+        this.date_de_programmation=(this.devispiece.Visite)?this.devispiece.Visite.DateDeProgrammation:null
+        
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details devis :', error);
@@ -153,26 +135,21 @@ export class ModifierDevisPieceComponent {
  
   
   
-  visiteForm: FormGroup<{
-    DateDeProgrammation: FormControl<Date | null>;
-    Objet: FormControl<string | null>;
-    
-  }> = this.fb.group({
-    DateDeProgrammation: this.fb.control<Date | null>(null, [Validators.required]),
-    Objet: this.fb.control<string | null>('prog_date', [ Validators.required, ])
-  });
+  
+
+  date_de_programmation=null
+  notifier_le_client_que_la_visite_est_finie = false;
   add_visite_date(){
   
 
 
-    if (this.visiteForm.valid) {
-      const dateProg = this.visiteForm.get('DateDeProgrammation')?.value;
-      const obj = this.visiteForm.get('Objet')?.value;
+    if (this.notifier_le_client_que_la_visite_est_finie || this.date_de_programmation) {
+      const dateProg = this.date_de_programmation;
       const visiteData = {
         Date: new Date().toISOString(), // Génère la date actuelle au format ISO
         DateDeProgrammation:dateProg
       };
-      if(obj=="prog_date"){
+      if(this.date_de_programmation && !this.notifier_le_client_que_la_visite_est_finie){
         console.log('Visite envoyée :', visiteData);
         this.devisService.update_visite(this.devispiece.Visite.ID, visiteData).subscribe(
           (response) => {
@@ -206,14 +183,7 @@ export class ModifierDevisPieceComponent {
         );
       }
       
-    } else {
-      Object.values(this.visiteForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
+    } 
 
   
   }

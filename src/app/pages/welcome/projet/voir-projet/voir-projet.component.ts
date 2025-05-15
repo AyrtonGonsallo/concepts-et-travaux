@@ -16,6 +16,8 @@ export class VoirProjetComponent {
     Nom: FormControl<string>;
     Description: FormControl<string>;
     Status: FormControl<string>;
+    Date_de_debut_des_travaux: FormControl<Date>;
+    Date_de_fin_des_travaux: FormControl<Date>;
   }>;
   size: NzSelectSizeType = 'default';
 
@@ -61,11 +63,11 @@ export class VoirProjetComponent {
 
   constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
-      
       Nom: ['', [Validators.required]],
-    Description: ['', [Validators.required]],
-    Status: ['', [Validators.required]],
-      
+      Description: ['', [Validators.required]],
+      Status: ['', [Validators.required]],
+      Date_de_debut_des_travaux: [new Date(), []],
+      Date_de_fin_des_travaux: [new Date(), []],
     });
   }
 

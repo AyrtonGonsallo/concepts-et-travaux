@@ -101,7 +101,7 @@
       </ng-container>
   
       <!-- Autre -->
-      <div>
+      <div class="flx-radio-row2">
         <label>Autre :</label>
         <label nz-radio nzValue="0:autre:0">autre</label>
       </div>
@@ -119,6 +119,8 @@
 
     <div class="grid-btn-action">
       <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+      <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
   </div>
     
     <ng-container *ngIf="detailsCalcul">
@@ -131,7 +133,6 @@
     
   </form>
 
-  <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
 </div>
     

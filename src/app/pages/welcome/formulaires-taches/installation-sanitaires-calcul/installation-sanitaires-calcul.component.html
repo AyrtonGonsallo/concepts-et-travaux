@@ -24,7 +24,7 @@
                                     <input   id="nombre_de_vasque" type="number" formControlName="nombre_de_vasque" min="0"/>     
                                 </div>  
                 
-                                <div nz-col  *ngIf="appareils_salle_de_bain[i].AfficherEncastreeApparente">
+                                <div nz-col  *ngIf="appareils_salle_de_bain[i].AfficherEncastreeApparente" class="flx-radio-row2">
                                     <label for="encastre_ou_apparente">Encastré ou apparente  ?</label>
                                     <nz-radio-group formControlName="encastre_ou_apparente" nzName="radiogroup" class="sidebyside">
                                       <label nz-radio nzValue="encastré">Encastré</label>
@@ -70,12 +70,9 @@
                           {{ gamme.get('titre')?.value }}
                         </strong>
                       </div>
-                      <div class="flex-2">
-                        <label>
-                            Quantité :
-                            <input type="number" formControlName="quantite" placeholder="Quantité" />
-                        </label>
-                      </div>
+                      <input type="number" formControlName="quantite" placeholder="Quantité" />
+                        
+                     
                   
                   
                   
@@ -92,6 +89,8 @@
        
               <div class="grid-btn-action">
                 <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+                <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+
             </div>
               
               <ng-container *ngIf="detailsCalcul">
@@ -104,6 +103,5 @@
               
             </form>
             
-            <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
             
             </div>

@@ -26,6 +26,8 @@ export class ModifierProjetComponent {
   validateForm: FormGroup<{
     Description: FormControl<string>;
     Status: FormControl<string>;
+    Date_de_debut_des_travaux: FormControl<Date>;
+    Date_de_fin_des_travaux: FormControl<Date>;
   }>;
 
    liste_des_status = [
@@ -77,6 +79,8 @@ export class ModifierProjetComponent {
       
     Description: ['', [Validators.required]],
     Status: ['', [Validators.required]],
+    Date_de_debut_des_travaux: [new Date(), []],
+    Date_de_fin_des_travaux: [new Date(), []],
       
     });
   }

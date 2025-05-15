@@ -229,6 +229,9 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
         (response) => {
           console.log('Tache modifiée avec succès :', response);
           this.message.create('success', `Tache modifiée avec succès`);
+          setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
         },
         (error) => {
           console.error('Erreur lors de la modification de la tache :', error);

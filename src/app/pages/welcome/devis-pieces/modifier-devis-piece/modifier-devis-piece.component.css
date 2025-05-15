@@ -6,7 +6,9 @@
     margin-right: 10px;
 }
 .visite-title{
-font-weight: bolder;
+    font-weight: bolder;
+    margin: 0px 0px 20px 0px;
+    font-size: 17px;
 }
 .visite-box{
     margin: 21px 120px;

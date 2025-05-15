@@ -66,18 +66,11 @@
                 <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i" class="flx-radio-row2">
                     <div >
                         <strong>
-                          {{ gamme.get('titre')?.value }}
+                            {{ gamme.get('titre')?.value }}
                         </strong>
-                      </div>
-                      <div class="flex-2">
-                        <label>
-                            Quantité :
-                            <input type="number" formControlName="quantite" placeholder="Quantité" />
-                        </label>
-                      </div>
-                  
-                  
-                  
+                    </div>
+                    <input type="number" formControlName="quantite" placeholder="Quantité" />
+                
                 </div>
               </div>
               
@@ -91,6 +84,8 @@
 
         <div class="grid-btn-action">
              <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+             <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
         </div>
            
             <ng-container *ngIf="detailsCalcul">
@@ -103,7 +98,6 @@
             
       </form>
 
-      <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
     </div>
     
