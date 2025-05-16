@@ -19,7 +19,10 @@
             <td>{{ data.Nom }}</td>
             <td>{{ data.Description }}</td>
             <td>{{ data.Status }}</td>
-            <td>{{ data.Utilisateur?.Prenom }} {{ data.Utilisateur?.Nom }}</td>
+            <td>
+                <span *ngIf="data.Valider" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
+                <span *ngIf="!data.Valider" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
+            </td>
             <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
             <td> 
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="voir" [routerLink]="['/administration', 'projets', 'voir-projet',data.Id]"><span nz-icon nzType="eye"></span></button>

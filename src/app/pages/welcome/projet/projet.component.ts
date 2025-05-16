@@ -40,8 +40,8 @@ export class ProjetComponent {
       order: null
     },
     {
-      title: 'Créé par',
-      compare: (a: Projet, b: Projet) => (a.Utilisateur?.Prenom?? '').localeCompare(b.Utilisateur?.Prenom ?? ''),
+      title: 'Validé ?',
+      compare: (a: Projet, b: Projet) => 1,
       priority: false,
       order: null
     },

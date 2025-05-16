@@ -35,7 +35,12 @@
                 <nz-date-picker formControlName="Date_de_fin_des_travaux"></nz-date-picker>
             </nz-form-control>
         </nz-form-item>
-
+        <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" >Autoriser le paiement</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-switch formControlName="Valider"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
 
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="artisans"   nzTooltipTitle="What do you want other to call you" >

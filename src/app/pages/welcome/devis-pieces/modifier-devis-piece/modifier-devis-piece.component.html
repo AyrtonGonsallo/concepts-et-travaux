@@ -29,7 +29,7 @@
               <th>ID</th>
               <th>Type de tâche</th>
               <th>Tâche</th>
-              <th>Prix</th>
+              <th>Prix TTC</th>
             </tr>
           </thead>
           <tbody>
@@ -38,7 +38,7 @@
                 <td>{{ data.ID }}</td>
                 <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
                 <td>{{ data.TravailSlug }}</td>
-                <td>{{ data.Prix }} € <button nz-button nzType="primary" (click)="modifier_tache(data.Travail.ID,data.ID)" >modifier la tâche</button></td>
+                <td>{{ data.Prix * 1.25 | number:'1.2-2' }} € <button nz-button nzType="primary" (click)="modifier_tache(data.Travail.ID,data.ID)" >modifier la tâche</button></td>
               </tr>
               
             </ng-container>

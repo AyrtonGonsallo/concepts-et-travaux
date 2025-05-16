@@ -38,7 +38,7 @@ export class DevisPiecesComponent {
       order:null, 
     },
     {
-      title: 'Prix',
+      title: 'Prix TTC',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
       order:null, 

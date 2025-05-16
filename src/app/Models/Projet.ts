@@ -7,6 +7,7 @@ export interface Projet {
     Status: 'devis en cours' | 'devis à finaliser' | 'devis à valider' | 'travaux à démarrer' | 'travaux en cours' | 'travaux achevés' | 'chantier réceptionné';
     Description: string;
     User_id: number;
+    Valider:boolean;
     Utilisateur?:Utilisateur;
   }
   

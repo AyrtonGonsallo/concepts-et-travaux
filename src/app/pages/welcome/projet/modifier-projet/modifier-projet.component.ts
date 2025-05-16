@@ -11,6 +11,7 @@ interface FormValues {
   Description?: string;
   User_id?: number;
   Client_id?: number;
+  Valider?:boolean;
   Artisans?: any[]; // Type de la liste des artisans, ajustez selon le besoin
   Devis?: any[]; // Type de la liste des devis, ajustez selon le besoin
 }
@@ -26,11 +27,13 @@ export class ModifierProjetComponent {
   validateForm: FormGroup<{
     Description: FormControl<string>;
     Status: FormControl<string>;
+    Valider:FormControl<boolean>;
     Date_de_debut_des_travaux: FormControl<Date>;
     Date_de_fin_des_travaux: FormControl<Date>;
   }>;
 
    liste_des_status = [
+    'visite à faire',
     'devis en cours',
     'devis à finaliser',
     'devis à valider',
@@ -79,6 +82,7 @@ export class ModifierProjetComponent {
       
     Description: ['', [Validators.required]],
     Status: ['', [Validators.required]],
+    Valider: [false, [Validators.required]],
     Date_de_debut_des_travaux: [new Date(), []],
     Date_de_fin_des_travaux: [new Date(), []],
       
