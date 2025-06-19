@@ -151,7 +151,7 @@ load_gammes_pose(){
       console.error('Erreur lors de la recuperation des gammes carrelage-sol :', error);
     }
   );
-  this.userService.getGammesByTravailAndType(9,"plinthes-carrelage").subscribe(
+  this.userService.getGammesByTravailAndType(9,"plinthes-carrelage-sol").subscribe(
     (response: any) => {
       console.log('recuperation des gammes plinthes-carrelage:', response);
       this.gammes_plithes_carrelage=response
@@ -160,7 +160,7 @@ load_gammes_pose(){
       console.error('Erreur lors de la recuperation des gammes plinthes :', error);
     }
   );
-  this.userService.getGammesByTravailAndType(9,"plinthes-bois").subscribe(
+  this.userService.getGammesByTravailAndType(9,"plinthes-bois-sol").subscribe(
     (response: any) => {
       console.log('recuperation des gammes plinthes-bois:', response);
       this.gammes_plithes_bois=response

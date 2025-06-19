@@ -64,7 +64,6 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
               return this.fb.group({
                 largeur: [porte.largeur],
                 gamme: [porte.gamme],
-                epaisseur: [porte.epaisseur],
               });
             })
           ),

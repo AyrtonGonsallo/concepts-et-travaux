@@ -67,32 +67,14 @@
                     </div>
                     
         
-                    <div nz-col class="flx-radio-row2">
-                        <label for="epaisseur">Epaisseur (cm) :</label>
-                        <nz-radio-group formControlName="epaisseur" class="flx-radio-row">
-                          <div>
-                            <label nz-radio nzValue="5"> 5</label>
-                          </div>
-                          <div>
-                            <label nz-radio nzValue="7"> 7</label>
-                          </div>
-                          <div>
-                            <label nz-radio nzValue="10"> 10</label>
-                          </div>
-                          <div>
-                            <label nz-radio nzValue="0"> supérieur à 10</label>
-                          </div>
-                         
-                        </nz-radio-group> 
-                      
-                      </div>
+                    
                       
         
                       <div nz-col class="flx-radio-row2">
                         <label for="gamme">Gamme :  </label>
                         <nz-radio-group formControlName="gamme" class="flx-radio-row1 w-100">
         
-                          <ng-container *ngIf="portes.controls[i].get('epaisseur')?.value === '5'">
+                          <ng-container *ngIf="murs_non_porteurs.controls[i].get('epaisseur')?.value === '5'">
                             <div *ngFor="let option of gammes1" class="flex-see-gamme">
                               <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">
                                 <span>{{ option.Label }}</span>
@@ -100,7 +82,7 @@
                             </div>
                           </ng-container>
                         
-                          <ng-container *ngIf="portes.controls[i].get('epaisseur')?.value === '7'">
+                          <ng-container *ngIf="murs_non_porteurs.controls[i].get('epaisseur')?.value === '7'">
                             <div *ngFor="let option of gammes2" class="flex-see-gamme">
                               <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">
                                 <span>{{ option.Label }}</span>
@@ -108,7 +90,7 @@
                             </div>
                           </ng-container>
                         
-                          <ng-container *ngIf="portes.controls[i].get('epaisseur')?.value === '10'">
+                          <ng-container *ngIf="murs_non_porteurs.controls[i].get('epaisseur')?.value === '10'">
                             <div *ngFor="let option of gammes3" class="flex-see-gamme">
                               <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">
                                 <span>{{ option.Label }}</span>
@@ -116,7 +98,7 @@
                             </div>
                           </ng-container>
                         
-                          <ng-container *ngIf="portes.controls[i].get('epaisseur')?.value === '0'">
+                          <ng-container *ngIf="murs_non_porteurs.controls[i].get('epaisseur')?.value === '0'">
                             <div *ngFor="let option of gammes4" class="flex-see-gamme">
                               <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label" class="with-link">
                                 <span>{{ option.Label }}</span>
