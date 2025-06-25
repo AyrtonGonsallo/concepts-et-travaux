@@ -28,12 +28,6 @@ export class ProjetComponent {
       order: null
     },
     {
-      title: 'Description',
-      compare: (a: Projet, b: Projet) => a.Description.localeCompare(b.Description),
-      priority: false,
-      order: null
-    },
-    {
       title: 'Status',
       compare: (a: Projet, b: Projet) => a.Status.localeCompare(b.Status),
       priority: false,
@@ -67,7 +61,7 @@ export class ProjetComponent {
       this.userService.getProjets().subscribe(
         (response) => {
           this.projets = response;
-          console.log("réponse de la requette get_projets",this.projets);
+          console.log("réponse de la requette get_projets",response);
         },
         (error) => {
           console.error('Erreur lors de la recuperation des projets :', error);

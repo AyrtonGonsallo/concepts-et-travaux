@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../Services/auth.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-welcome',
@@ -7,6 +8,7 @@ import { AuthService } from '../../Services/auth.service';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
+  assetsUrl=environment.assetsUrl
   isCollapsed = true;
   user:any
   constructor(private auth:AuthService) { }

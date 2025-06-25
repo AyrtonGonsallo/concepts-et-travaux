@@ -8,15 +8,7 @@
             <th *ngFor="let column of listOfColumn" [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
             </th>
-            <th>
-                Paiement de la visite
-            </th>
-            <th>
-                Visite faite ?
-            </th>
-            <th>
-              Acompte payé ?
-            </th>
+           
             <th>
               Actions
             </th>
@@ -29,15 +21,7 @@
             <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
             <td>{{ data.Utilisateur?.Nom }} {{ data.Utilisateur?.Prenom }}</td>
             <td>{{ data.Prix?data.Prix:0 }} €</td> 
-            <td>{{ data.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-            <td>
-              <span *ngIf="data.VisiteFaite" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
-              <span *ngIf="!data.VisiteFaite" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
-            </td>
-            <td>
-              <span *ngIf="data.Payed" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
-              <span *ngIf="!data.Payed" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
-            </td>
+           
               
                 
             <td> 

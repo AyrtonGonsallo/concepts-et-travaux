@@ -52,7 +52,7 @@ export class FichiersComponent {
       width:"200px",
     },
     {
-      title: 'Numero du devis',
+      title: 'Numero du projet',
       compare: (a: Fichier, b: Fichier) => (a.DevisID??0)-(b.DevisID??0),
       priority: 1,
       order:null,

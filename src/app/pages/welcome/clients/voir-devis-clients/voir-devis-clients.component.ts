@@ -7,6 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute } from '@angular/router';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { Projet } from '../../../../Models/Projet';
 
 @Component({
   selector: 'app-voir-devis-clients',
@@ -35,12 +36,7 @@ export class VoirDevisClientsComponent {
       priority: 1,
       order:'descend', 
     },
-    {
-      title: 'Utilisateur',
-      compare: (a: DevisPiece, b: DevisPiece) => (a.UtilisateurID  ?? 0)-(b.UtilisateurID ?? 0),
-      priority: 1,
-      order:null, 
-    },
+    
     {
       title: 'Prix',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
@@ -70,10 +66,13 @@ export class VoirDevisClientsComponent {
     
   }
   loadDevisPieces(): void {
-    this.devis_pieceService.getUserDevisPieces(this.userId)
-      .subscribe((data: DevisPiece[]) => {
-        
-        this.devis_pieces = data;
+    this.devis_pieceService.getUserProjects(this.userId)
+      .subscribe((data: Projet[]) => {
+        data.forEach(projet => {
+          if (projet.Devis && Array.isArray(projet.Devis)) {
+            this.devis_pieces = this.devis_pieces.concat(projet.Devis);
+          }
+        });
         console.log("réponse de la requette get_devis_pieces",this.devis_pieces);
        
       });

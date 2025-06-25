@@ -1,25 +1,7 @@
 <div>
     <h2>Modifier le devis nº{{devispiece?.ID}} de {{devispiece?.Utilisateur?.Nom}} {{devispiece?.Utilisateur?.Prenom}}</h2>  
     
-    <div class="visite-box" *ngIf="devispiece?.Visite">
-      <div class="visite-title">Visite de technicien</div>
-      <div>
-        Payée le : {{ devispiece?.Visite?.Date | date:'dd/MM/yyyy HH:mm:ss' }}
-        {{ devispiece?.Visite?.DateDeProgrammation ? (' - Programmée le : ' + (devispiece?.Visite?.DateDeProgrammation | date:'dd/MM/yyyy HH:mm:ss')) : '' }}
-        {{ devispiece?.VisiteFaite ? '- effectuée' : '' }}
-      </div>
-
-     
-      Programmer une date de visite<br>
-      <nz-form-label [nzSpan]="6" >Date de la visite</nz-form-label>
-      <nz-date-picker nzShowTime [(ngModel)]="date_de_programmation"></nz-date-picker><br>
-      <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
-      <nz-divider></nz-divider>
-      <label nz-checkbox [(ngModel)]="notifier_le_client_que_la_visite_est_finie">Notifier le client que la visite a été effectuée</label><br>
-      <button nz-button nzType="primary" (click)="add_visite_date()">valider</button>
-
-      <br>
-    </div>
+    
 
     <div class="visite-box">
       <div class="visite-title">Modification du devis</div>
@@ -72,86 +54,7 @@
       </form>
     </div>
 
-    <div class="visite-box">
-      <div class="visite-title">Paiement</div>
-      <nz-table #nzTable2 [nzData]="paiements" [nzShowPagination]="'false'" nzTableLayout="fixed" >
-        <thead>
-          <tr>
-            
-            <th>ID</th>
-            <th>Type de paiement</th>
-            <th>Type</th>
-            <th>Montant</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-            <tr *ngFor="let data of nzTable2.data">
-              <td>{{ data.ID }}</td>
-              <td>{{ data.TypeDePaiement }}  </td>
-              <td>{{ data.Type }}</td>
-              <td>{{ data.Montant }} € </td>
-              <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
-              <td> 
-                <button nz-button nzType="primary" class="negative-action mb-5"  title="supprimer"  nz-popconfirm
-                nzPopconfirmTitle="Voulez-vous vraiment supprimer ce paiement ?"
-                nzPopconfirmPlacement="bottom"
-                (nzOnConfirm)="deletePaiement(data.ID)"
-                (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
-              </td>
-            </tr>
-           
-            
-        </tbody>
-      </nz-table>
-      <br><br>
-      <form nz-form [formGroup]="paiementForm" (ngSubmit)="submitpaiementForm()">
-        <!-- Type de Paiement -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="TypeDePaiement">Type de Paiement</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type de paiement!">
-            <nz-select id="TypeDePaiement" formControlName="TypeDePaiement" nzPlaceHolder="Sélectionner">
-              <nz-option nzValue="virement" nzLabel="Virement"></nz-option>
-              <nz-option nzValue="en ligne" nzLabel="En ligne"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      
-        <!-- Type -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
-            <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
-              <nz-option nzValue="visite" nzLabel="Visite"></nz-option>
-              <nz-option nzValue="acompte" nzLabel="Acompte"></nz-option>
-              <nz-option nzValue="échéance" nzLabel="Échéance"></nz-option>
-              <nz-option nzValue="solde final" nzLabel="Solde Final"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      
-        <!-- Montant -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Montant">Montant</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un montant!">
-            <nz-input-number id="Montant" formControlName="Montant"  ></nz-input-number> 
-          </nz-form-control>
-        </nz-form-item>
-      
-        
-      
-        <!-- Bouton de soumission -->
-        <nz-form-item>
-          <nz-form-control [nzSpan]="12" [nzOffset]="5">
-            <button nz-button nzType="primary" [disabled]="paiementForm.invalid">Ajouter un paiement</button>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-      
-      <br>
-    </div>
+    
     
     
 </div>

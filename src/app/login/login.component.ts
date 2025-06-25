@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
   host: {'class': 'login-layout'}
 })
 export class LoginComponent {
+  assetsUrl=environment.assetsUrl
   validateForm: FormGroup<{
     email: FormControl<string>;
     password: FormControl<string>;

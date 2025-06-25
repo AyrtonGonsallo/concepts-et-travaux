@@ -10,11 +10,8 @@ export interface DevisPiece {
     Commentaire?: string;
     PieceID: number;
     Prix?: number ;
-    VisiteFaite: boolean ;
-    VisiteID?: number;
-    Payed: boolean ;
     UtilisateurID?: number;
     Utilisateur:Utilisateur;
     DevisTaches:DevisTache[];
-    Visite?: Visite;
+    
   }

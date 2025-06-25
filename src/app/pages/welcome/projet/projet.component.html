@@ -9,6 +9,9 @@
             {{ column.title }}
             </th>
             <th>
+                Devis
+              </th>
+            <th>
                 Actions
               </th>
         </tr>
@@ -17,13 +20,13 @@
         <tr *ngFor="let data of sortTable.data">
             <td>{{ data.Id }}</td>
             <td>{{ data.Nom }}</td>
-            <td>{{ data.Description }}</td>
             <td>{{ data.Status }}</td>
             <td>
                 <span *ngIf="data.Valider" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
                 <span *ngIf="!data.Valider" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
             </td>
             <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
+            <td><div *ngFor="let devisPiece of data?.Devis"><span>devis #{{devisPiece.ID}}</span><br></div></td>
             <td> 
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="voir" [routerLink]="['/administration', 'projets', 'voir-projet',data.Id]"><span nz-icon nzType="eye"></span></button>
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
