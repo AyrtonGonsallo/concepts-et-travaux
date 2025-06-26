@@ -114,6 +114,10 @@ updateEtapeProjet(id: number, etape: any): Observable<any> {
   const url = `${environment.apiUrl}/update_etape_projet/${id}`;
   return this.http.put<any>(url, etape);
 }
+update_project_status( donnees: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_project_status`;
+  return this.http.post<any>(url, donnees);
+}
 
 deleteEtapeProjet(id: number): Observable<any> {
   const url = `${environment.apiUrl}/delete_etape_projet/${id}`;

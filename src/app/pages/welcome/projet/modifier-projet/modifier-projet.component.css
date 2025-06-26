@@ -12,6 +12,12 @@
 }
 .visite-box{
     margin: 21px 120px;
-    border: solid 2px #bfbfbf;
+    border: solid 1px #bfbfbf;
     padding: 20px;
+}
+.fixed_saving{
+    position: fixed;
+    z-index: 222;
+    right: 24px;
+    bottom: 30px;
 }

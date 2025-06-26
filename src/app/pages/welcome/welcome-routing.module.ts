@@ -15,7 +15,6 @@ import { IsHimGuard } from '../../Guards/IsHimGuard';
 import { ProjetComponent } from './projet/projet.component';
 import { ModifierProjetComponent } from './projet/modifier-projet/modifier-projet.component';
 import { AjouterProjetComponent } from './projet/ajouter-projet/ajouter-projet.component';
-import { VoirProjetComponent } from './projet/voir-projet/voir-projet.component';
 import { IsNotArtisanGuard } from '../../Guards/IsNotArtisanGuard';
 import { EtapesProjetComponent } from './etapes-projet/etapes-projet.component';
 import { BesoinProjetComponent } from './besoin-projet/besoin-projet.component';
@@ -112,7 +111,6 @@ const routes: Routes = [
       { path: 'comptes', component: ComptesComponent },
       { path: 'roles', component: RolesComponent },
       { path: 'projets', component: ProjetComponent },
-      { path: 'projets/voir-projet/:id', component: VoirProjetComponent ,}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'projets/modifier-projet/:id', component: ModifierProjetComponent ,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'projets/ajouter-projet', component: AjouterProjetComponent,canActivate: [IsNotArtisanGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'etapes-projet', component: EtapesProjetComponent },

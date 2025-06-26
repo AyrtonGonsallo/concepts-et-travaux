@@ -9,15 +9,10 @@ import { AuthService } from '../../../../Services/auth.service';
 import { Paiement } from '../../../../Models/Paiement';
 import { Projet } from '../../../../Models/Projet';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
-interface FormValues {
-  Nom?: string;
-  Status?: string;
-  Description?: string;
-  User_id?: number;
-  Client_id?: number;
-  Valider?:boolean;
-  Artisans?: any[]; // Type de la liste des artisans, ajustez selon le besoin
-  Devis?: any[]; // Type de la liste des devis, ajustez selon le besoin
+interface ArtisanOption {
+  label: string;
+  value: number;
+  checked: boolean;
 }
 
 @Component({
@@ -29,85 +24,108 @@ export class ModifierProjetComponent {
   size: NzSelectSizeType = 'default';
   paiements:Paiement[] = [];
   project:any;
+  paiement_visite=false
+  date_paiement_visite=""
+  programmation_visite=false
+  date_programmation_visite=""
+  projet_valide=false
+  date_validation_projet=""
+  paiement_autorise=false
+  date_autorisation_paiement=""
+  acompte_paye=false
+  date_paiement_acompte=""
+  travaux_demarres=false
+  travaux_en_cours=false
+  travaux_acheves=false
+  travaux_livres=false
+  notes_remarques=""
 
-  validateForm: FormGroup<{
-    Description: FormControl<string>;
-    Status: FormControl<string>;
-    Valider:FormControl<boolean>;
-    Date_de_debut_des_travaux: FormControl<Date>;
-    Date_de_fin_des_travaux: FormControl<Date>;
-  }>;
-   liste_des_status = [
-    'visite à régler',
-    'visite programmée',
-    'projet validé',
-    'acompte payé',
-    'travaux démarrés',
-    'travaux en cours',
-    'travaux achevés',
-    'travaux livrés'
-  ] as const;
-  multipleValue : number[] = [];
-  multipleValue2 : number[] = [];
+
   artisans: any;
+ checkOptionsOne: ArtisanOption[] = [];
+
+ 
+add_artisan(value: object[]): void {
+   // console.log(value);
+  }
   
-  submitForm(): void {
-    if (this.validateForm.valid) {
-      const formValues: FormValues = { ...this.validateForm.value };
-          // Ajout du champ 'Autorisations' avec la liste des autorisations
-          formValues.Artisans = this.multipleValue;
-          formValues.Devis = this.multipleValue2;
-          console.log('submit', formValues);
-          this.userService.updateProjet(parseInt(this.projetId??'0'),formValues).subscribe(
-            (response: any) => {
-              console.log('projet modifiée avec succès :', response);
-              this.message.create('success', `projet modifiée avec succès`);
-              this.router.navigate(['/administration/projets']);
-            },
-            (error: any) => {
-              console.error('Erreur lors de la modification de l\'projet :', error);
-            }
-          );
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
+  save(): void {
+    const selectedIds = this.checkOptionsOne
+    .filter(option => option.checked)
+    .map(option => option.value);
+
+
+    const etatProjet = {
+      projet_id:this.projetId,
+    paiement_visite: this.paiement_visite? 1 : 0,
+    programmation_visite: this.programmation_visite? 1 : 0,
+    projet_valide: this.projet_valide? 1 : 0,
+    paiement_autorise: this.paiement_autorise? 1 : 0,
+    acompte_paye: this.acompte_paye? 1 : 0,
+    travaux_demarres: this.travaux_demarres? 1 : 0,
+    travaux_en_cours: this.travaux_en_cours? 1 : 0,
+    travaux_acheves: this.travaux_acheves? 1 : 0,
+    travaux_livres: this.travaux_livres? 1 : 0,
+    notes_remarques: this.notes_remarques,
+    selected_artisans:selectedIds
+    
+
+  };
+
+  console.log("JSON du projet :", etatProjet);
+  this.userService.update_project_status(etatProjet).subscribe(
+      (response: any) => {
+       
+        console.log('reponse de la mise a jour :', response);
+       
+        this.message.create('success', `Informations du projet mises à jour`);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation de la mise à jour :', error);
+      }
+    );
   }
 
-
+  isLoadingSave = false;
+  loadSave(): void {
+    this.isLoadingSave = true;
+    this.save()
+    setTimeout(() => {
+      this.isLoadingSave = false;
+    }, 5000);
+  }
 
   devis:any
 
   constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private authService: AuthService,private calculDevisService:CalculDevisService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
-    this.validateForm = this.fb.group({
-      
-    Description: ['', [Validators.required]],
-    Status: ['', [Validators.required]],
-    Valider: [false, [Validators.required]],
-    Date_de_debut_des_travaux: [new Date(), []],
-    Date_de_fin_des_travaux: [new Date(), []],
-      
-    });
+    
   }
 
   projetId:string =  this.route.snapshot.paramMap.get('id')??'0';
 
   ngOnInit(): void {
-    this.getProjetDetails(this.projetId);
     this.userService.getUsersByRole(2).subscribe(
       (response: any) => {
+       
         console.log('liste des artisans récupérée :', response);
-        this.artisans=response
+        response.forEach((artisan: { Nom: any;Prenom: any; Id: number; }) => {
+          this.checkOptionsOne.push({
+            label: artisan.Nom+' '+artisan.Prenom,
+            value:  artisan.Id ,
+            checked: false
+          });
+        });
+
+         this.getProjetDetails(this.projetId);
+        
         //this.message.create('success', `liste des artisans récupérée`);
       },
       (error: any) => {
         console.error('Erreur lors de la recuperation des artisans :', error);
       }
     );
+   
+    
 
     this.userService.getAllDevisPieces().subscribe(
       (response: any) => {
@@ -151,16 +169,49 @@ export class ModifierProjetComponent {
     this.userService.get_projet( parseInt(userId, 10)).subscribe(
       (response) => {
         this.project=response
-        this.validateForm.patchValue(response);
+        this.paiement_visite=this.project.Visite?.Paye
+        this.date_paiement_visite=this.project.Visite?.Date
+        this.programmation_visite=(this.project.Visite?.DateDeProgrammation)?true:false
+        this.date_programmation_visite=this.project.Visite?.DateDeProgrammation
+        this.projet_valide=(this.project.Date_de_validation)?true:false
+        this.date_validation_projet=this.project.Date_de_validation
+        this.paiement_autorise=this.project.Valider
+        this.notes_remarques=this.project.Description
+        this.acompte_paye=(this.project.Payed)?true:false
+        this.date_paiement_acompte=this.project.Date_de_paiement_acompte
         this.date_de_programmation=(this.project.Visite)?this.project.Visite.DateDeProgrammation:null
-        response.Artisans.forEach((artisan: any) => {
-          // Ajouter l'ID de l'artisan à multipleValue
-          this.multipleValue.push(artisan.Id);
+        const artisanIdsProjet = this.project.Artisans.map((a: { Id: any; }) => a.Id); // Récupère les IDs associés au projet
+
+        this.checkOptionsOne.forEach(option => {
+          if (artisanIdsProjet.includes(option.value)) {
+            option.checked = true;
+          }
         });
-        response.Devis.forEach((d: any) => {
-          // Ajouter l'ID de l'artisan à multipleValue
-          this.multipleValue2.push(d.ID);
-        });
+        
+        switch (this.project.Status) {
+          case "travaux démarrés":
+            this.travaux_demarres=true
+            break;
+          case "travaux en cours":
+            this.travaux_demarres=true
+            this.travaux_en_cours=true
+            break;
+          case "travaux achevés":
+            this.travaux_demarres=true
+            this.travaux_en_cours=true
+            this.travaux_acheves=true
+            break;
+          case "travaux livrés":
+            this.travaux_demarres=true
+            this.travaux_en_cours=true
+            this.travaux_acheves=true
+            this.travaux_livres=true
+            break;
+        
+          default:
+            break;
+        }
+        
         console.log("réponse de la requette get_projet",this.project);
       },
       (error) => {
@@ -271,8 +322,15 @@ export class ModifierProjetComponent {
             console.error('Erreur lors de l\'ajout de la visite :', error);
           }
         );
-      }else{
-        this.userService.send_visite_done(this.project.Visite.ID,this.project.Id).subscribe(
+      }
+      
+    } 
+
+  
+  }
+
+  notify_client_visit_ended(){
+      this.userService.send_visite_done(this.project.Visite.ID,this.project.Id).subscribe(
           (response) => {
             console.log('Message de visite terminée envoyé au client avec succès :', response);
             this.message.success("Message de visite terminée envoyé au client avec succès")        
@@ -282,20 +340,24 @@ export class ModifierProjetComponent {
             console.error('Erreur lors de l\'envoi du message de visite terminée :', error);
           }
         );
-      }
-      
-    } 
-
-  
   }
 
-  notify_client_visit_ended(){
-
+   isLoadingvisit_ended = false;
+  loadvisit_ended(): void {
+    this.isLoadingvisit_ended = true;
+    this.notify_client_visit_ended()
+    setTimeout(() => {
+      this.isLoadingvisit_ended = false;
+    }, 5000);
   }
+
+
 disableBeforeToday = (current: Date): boolean => {
   const today = new Date();
   // Supprime l'heure pour ne comparer que les dates
   today.setHours(0, 0, 0, 0);
   return current < today;
 };
+  
+
 }
