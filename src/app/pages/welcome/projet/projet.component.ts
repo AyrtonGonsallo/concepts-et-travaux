@@ -24,8 +24,8 @@ export class ProjetComponent {
     {
      title: 'Nom',
       compare: (a: Projet, b: Projet) => a.Nom.localeCompare(b.Nom),
-      priority: 3,
-      order:'ascend', 
+      priority: false,
+      order:null, 
     },
     {
       title: 'Status',
@@ -45,8 +45,8 @@ export class ProjetComponent {
         if (!a.Date_de_creation || !b.Date_de_creation) return 0;
         return new Date(a.Date_de_creation).getTime() - new Date(b.Date_de_creation).getTime();
       },
-      priority: 2,
-      order:'descend', 
+      priority: false,
+      order:null, 
     }
   ];
 

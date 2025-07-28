@@ -213,6 +213,7 @@ add_artisan(value: object[]): void {
         }
         
         console.log("réponse de la requette get_projet",this.project);
+
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details projet :', error);
