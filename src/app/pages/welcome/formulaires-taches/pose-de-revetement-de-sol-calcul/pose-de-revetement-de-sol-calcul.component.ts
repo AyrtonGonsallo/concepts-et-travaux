@@ -46,6 +46,7 @@ export class PoseDeRevetementDeSolCalculComponent {
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
+        console.log(response)
         this.devisTache=response
         this.element =response
         this.donnees = JSON.parse(response.Donnees) 
@@ -64,12 +65,14 @@ export class PoseDeRevetementDeSolCalculComponent {
             autre_gamme: this.donnees["gammes-produits-pose-sol"].autre_gamme,
             lineaire: this.donnees["gammes-produits-pose-sol"].lineaire,
             plinthes: this.donnees["gammes-produits-pose-sol"].plinthes,
-            has_plinthes: this.donnees["gammes-produits-pose-sol"].has_plinthes
-          
+            has_plinthes: this.donnees["gammes-produits-pose-sol"].has_plinthes,
+            fournisseur_gamme:(this.donnees["gammes-produits-pose-sol"].fournisseur_gamme)?this.donnees["gammes-produits-pose-sol"].fournisseur_gamme:"",
+            fournisseur_plinthes:(this.donnees["gammes-produits-pose-sol"].fournisseur_plinthes)?this.donnees["gammes-produits-pose-sol"].fournisseur_plinthes:"",
         });
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
+        this.load_fournisseur_gammes(this.donnees["gammes-produits-pose-sol"].gamme,this.donnees["gammes-produits-pose-sol"].plinthes)
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);
@@ -104,6 +107,32 @@ gammes_plithes_carrelage:any
 gammes_plithes_bois:any
 gamme_resine_decorative:any
 gamme_moquette_sol:any
+gammes_fournisseur_plinthes:any
+gammes_fournisseur_gamme:any
+
+load_fournisseur_gammes(gamme:string, plinthe:string){
+  let gamme_id=parseInt(gamme.split(":")[0]);
+  let plinthe_id=parseInt(plinthe.split(":")[0]);
+  this.userService.getFournisseursGammesByGammeReference(gamme_id).subscribe(
+    (response: any) => {
+      console.log('recuperation des getFournisseursGammesByGammeReference:', response);
+      this.gammes_fournisseur_plinthes=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des getFournisseursGammesByGammeReference :', error);
+    }
+  );
+
+  this.userService.getFournisseursGammesByGammeReference(plinthe_id).subscribe(
+    (response: any) => {
+      console.log('recuperation des getFournisseursGammesByGammeReference:', response);
+      this.gammes_fournisseur_gamme=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des getFournisseursGammesByGammeReference :', error);
+    }
+  );
+}
 
 load_gammes_pose(){
   this.userService.getGammesByTravailAndType(9,"peinture-de-sol").subscribe(
@@ -207,7 +236,9 @@ submit(){
       autre_gamme: this.formulaire.value.autre_gamme,
       lineaire: this.formulaire.value.lineaire,
       plinthes: this.formulaire.value.plinthes,
-      has_plinthes: this.formulaire.value.has_plinthes
+      has_plinthes: this.formulaire.value.has_plinthes,
+      fournisseur_gamme:this.formulaire.value.fournisseur_gamme,
+      fournisseur_plinthes:this.formulaire.value.fournisseur_plinthes,
     }
   };
   console.log("donnees", this.devisTache)
@@ -261,7 +292,9 @@ modifier(){
       autre_gamme: this.formulaire.value.autre_gamme,
       lineaire: this.formulaire.value.lineaire,
       plinthes: this.formulaire.value.plinthes,
-      has_plinthes: this.formulaire.value.has_plinthes
+      has_plinthes: this.formulaire.value.has_plinthes,
+      fournisseur_gamme:this.formulaire.value.fournisseur_gamme,
+      fournisseur_plinthes:this.formulaire.value.fournisseur_plinthes,
     }
   };
 
@@ -291,7 +324,7 @@ modifier(){
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
         setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+         // this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
         }, 2000);
       },
       (error) => {

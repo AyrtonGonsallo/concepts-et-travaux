@@ -1,11 +1,29 @@
 <div>
     <h2>Prix des fournitures et gammes</h2>   
     <div class="select-add">
-      <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;">
+      <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;" class=" mb-5 mt-5">
         <nz-option  nzLabel="Choix de la rubrique" nzValue=""></nz-option>
         <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.Titre"></nz-option>
       </nz-select>
-      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter une gamme</button>
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter une gamme</button>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les gammes</button>
+ <button
+      nz-popconfirm
+      nzPopconfirmTitle="Voulez-vous vraiment supprimer toutes les gammes ?"
+      [nzBeforeConfirm]="beforeConfirm_supression"
+      (nzOnConfirm)="confirm_supression()"
+      (nzOnCancel)="cancel_supression()"
+      nz-button
+      nzType="primary"
+       class="positive-action mb-5 mt-5"
+    >
+      Supprimer toutes les gammes
+    </button>
+      </div> 
+    <div class="select-add">
+      <input type="file" (change)="onFileSelected($event)" />
+      <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" class=" mb-5 mt-5">Télécharger le modèle</a>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des gammes</button>
     </div> 
    
     <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -39,6 +57,7 @@
             <td>{{ data.Type }}</td>
             <td>{{ data.Label }}</td>
             <td>{{ data.Prix }} €</td>
+            <td>{{ getLabel(data.ActiverFournisseur) }}</td>
             <td>
               <a [href]="baseurl + data.Pdf" target="_blank" class="link-tooltip">{{data.Pdf}}</a>
 

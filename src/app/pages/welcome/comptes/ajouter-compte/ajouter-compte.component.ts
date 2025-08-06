@@ -32,6 +32,10 @@ export class AjouterCompteComponent {
     References: FormControl<string>;
     QuestionnaireTarif: FormControl<string>;
     AssuranceRCDecennale: FormControl<string>;
+    Adresse: FormControl<string>;
+    NomDirigeant: FormControl<string>;
+    ZoneGeographiqueDactivite: FormControl<string>;
+    Qualifications: FormControl<string>;
     KBis: FormControl<string>;
     RoleId: FormControl<number>;
     Agree: FormControl<boolean>;
@@ -201,6 +205,12 @@ export class AjouterCompteComponent {
     }
     return {};
   };
+  isSousTraitant(){
+    return this.validateForm.value.RoleId==14
+  }
+  isArtisanOrSousTraitant(){
+    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14
+  }
 
   isArtisan(){
     return this.validateForm.value.RoleId==2
@@ -230,6 +240,10 @@ export class AjouterCompteComponent {
       CA: [0, []],
       Effectif: [0, []],
       References: ['', []],
+      Adresse: ['', []],
+      NomDirigeant: ['', []],
+      ZoneGeographiqueDactivite: ['', []],
+      Qualifications: ['', []],
       QuestionnaireTarif: ['', []],
       AssuranceRCDecennale: ['', []],
       KBis: ['', []],

@@ -4,6 +4,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../../Models/Travail';
+import { Utilisateur } from '../../../../Models/Utilisateurs';
 export interface Type {
   slug: string;
   label: string;
@@ -23,6 +24,10 @@ export class AjouterGammeComponent {
     Prix: FormControl<number>;
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
+    ActiverFournisseur: FormControl<boolean>;
+    ActiverPrixMultiples: FormControl<boolean>;
+    FournisseurID: FormControl<number>;
+    GammeDeReferenceID: FormControl<number>;
   }>;
   types: Type[] = [
     { slug: 'peinture', label: 'Peinture (murs)' },
@@ -67,6 +72,7 @@ export class AjouterGammeComponent {
     { slug: 'etat-des-surfaces-sol', label: 'État des surfaces (sol)' },
   ];
   travaux:Travail[]=[]
+  fournisseurs:Utilisateur[]=[]
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
@@ -183,7 +189,13 @@ export class AjouterGammeComponent {
         console.log(file);
     }
   }
+  activerFournisseur(){
+    return this.validateForm.value.ActiverFournisseur==true
+  }
 
+  activerPrixMultiples(){
+    return this.validateForm.value.ActiverPrixMultiples==true
+  }
 
   constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
@@ -193,6 +205,10 @@ export class AjouterGammeComponent {
       Pdf: ['', []],
       Prix: [0, [Validators.required]],
       TravailID: [0, [Validators.required]],
+      ActiverFournisseur:  [false, []],
+      ActiverPrixMultiples:  [false, []],
+      FournisseurID: [0, []],
+      GammeDeReferenceID: [0, []],
       PrixMultiples:  this.fb.array([])
       
     });
@@ -218,6 +234,7 @@ export class AjouterGammeComponent {
   }
   ngOnInit(): void {
     this.loadtravaux()
+    this.loadFournisseurs()
   }
 loadtravaux(){
   this.userService.getTravaux()
@@ -226,5 +243,14 @@ loadtravaux(){
         console.log("réponse de la requette get_travaux",this.travaux);
       });
 }
+loadFournisseurs(){
+    this.userService.getUsersByRole(14)
+        .subscribe((data: Utilisateur[]) => {
+          this.fournisseurs = data;
+          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+        });
+  }
+
+ 
   
 }

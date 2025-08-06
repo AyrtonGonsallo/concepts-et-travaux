@@ -4,6 +4,7 @@ import { Travail } from '../../../../Models/Travail';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Utilisateur } from '../../../../Models/Utilisateurs';
 export interface Type {
   slug: string;
   label: string;
@@ -24,6 +25,10 @@ export class ModifierGammeComponent {
     Prix: FormControl<number>;
      PrixMultiples: FormArray;
     TravailID: FormControl<number>;
+    ActiverFournisseur: FormControl<boolean>;
+    ActiverPrixMultiples: FormControl<boolean>;
+    FournisseurID: FormControl<number>;
+    GammeDeReferenceID: FormControl<number>;
   }>;
   types: Type[] = [
     { slug: 'peinture', label: 'Peinture (murs)' },
@@ -69,8 +74,10 @@ export class ModifierGammeComponent {
     
   ];
   travaux:Travail[]=[]
+  fournisseurs:Utilisateur[]=[]
   submitForm(): void {
     if (this.validateForm.valid) {
+      
       console.log('submit', this.validateForm.value);
       this.userService.updateGamme(parseInt(this.gammeId),this.validateForm.value).subscribe(
         (response: any) => {
@@ -91,7 +98,13 @@ export class ModifierGammeComponent {
       });
     }
   }
+  activerFournisseur(){
+    return this.validateForm.value.ActiverFournisseur==true
+  }
 
+  activerPrixMultiples(){
+    return this.validateForm.value.ActiverPrixMultiples==true
+  }
   slugify(text: string) {
     const lastDotIndex = text.lastIndexOf('.'); // Trouver l'index du dernier point
   
@@ -194,7 +207,10 @@ export class ModifierGammeComponent {
       Prix: [0, [Validators.required]],
       PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],
-      
+      ActiverFournisseur:  [false, []],
+      ActiverPrixMultiples:  [false, []],
+      FournisseurID: [0, []],
+      GammeDeReferenceID: [0, []],
     });
   }
 
@@ -219,6 +235,7 @@ export class ModifierGammeComponent {
   }
   ngOnInit(): void {
     this.loadtravaux()
+    this.loadFournisseurs()
     this.getDetails(parseInt(this.gammeId) )
   }
   loadtravaux(){
@@ -226,6 +243,13 @@ export class ModifierGammeComponent {
         .subscribe((data: Travail[]) => {
           this.travaux = data;
           console.log("réponse de la requette get_travaux",this.travaux);
+        });
+  }
+  loadFournisseurs(){
+    this.userService.getUsersByRole(14)
+        .subscribe((data: Utilisateur[]) => {
+          this.fournisseurs = data;
+          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
         });
   }
   getDetails(id: number): void {

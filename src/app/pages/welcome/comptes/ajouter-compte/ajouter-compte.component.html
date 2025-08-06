@@ -71,9 +71,16 @@
             </nz-form-control>
             </nz-form-item>
            
-           
+           <nz-form-item *ngIf="isSousTraitant()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Adresse"  >
+                    <span>Adresse</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <input nz-input id="Adresse" formControlName="Adresse" />
+                </nz-form-control>
+            </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
                     <span>Raison sociale</span>
                 </nz-form-label>
@@ -82,7 +89,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()"> 
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()"> 
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NumeroSIRET"  >
                     <span>Numero SIRET</span>
                 </nz-form-label>
@@ -118,7 +125,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Activite"  >
                     <span>Activite</span>
                 </nz-form-label>
@@ -127,7 +134,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CA"  >
                     <span>CA</span>
                 </nz-form-label>
@@ -136,7 +143,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Effectif"  >
                     <span>Effectif</span>
                 </nz-form-label>
@@ -146,12 +153,21 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="References"  >
                     <span>References</span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                     <textarea rows="4" nz-input id="References" formControlName="References"></textarea> 
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="isSousTraitant()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Qualifications"  >
+                    <span>Qualifications</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <textarea rows="4" nz-input id="Qualifications" formControlName="Qualifications"></textarea> 
                 </nz-form-control>
             </nz-form-item>
     
@@ -163,6 +179,24 @@
                     <input type="text" id="QuestionnaireTarif"  formControlName="QuestionnaireTarif" hidden />
                     <input type="file" nz-upload  (change)="handleFileInput($event)" accept=".png,.jpeg,.jpg,.docx,.xlsx,.pdf"  [attr.maxFileSize]="10 * 1024 * 1024"/>                
                     Formats autorisés: .png, .jpeg, .jpg, .docx, .xlsx, .pdf et taille < 10 MB     
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="isSousTraitant()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ZoneGeographiqueDactivite"  >
+                    <span>Zone géographique d'activité</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <input nz-input id="ZoneGeographiqueDactivite" formControlName="ZoneGeographiqueDactivite" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="isSousTraitant()">
+                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NomDirigeant"  >
+                    <span>Nom du dirigeant</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <input nz-input id="NomDirigeant" formControlName="NomDirigeant" />
                 </nz-form-control>
             </nz-form-item>
     
@@ -177,7 +211,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisan()">
+            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="KBis"  >
                     <span>KBis</span>
                 </nz-form-label>

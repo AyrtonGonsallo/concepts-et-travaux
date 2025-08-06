@@ -32,11 +32,20 @@ export class ModifierCompteComponent {
     Effectif: FormControl<number>;
     References: FormControl<string>;
     QuestionnaireTarif: FormControl<string>;
+    Adresse: FormControl<string>;
+    NomDirigeant: FormControl<string>;
+    ZoneGeographiqueDactivite: FormControl<string>;
+    Qualifications: FormControl<string>;
     AssuranceRCDecennale: FormControl<string>;
     KBis: FormControl<string>;
     RoleId: FormControl<number>;
   }>;
- 
+ isSousTraitant(){
+    return this.validateForm.value.RoleId==14
+  }
+  isArtisanOrSousTraitant(){
+    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14
+  }
   isArtisan(){
     return this.validateForm.value.RoleId==2
   }
@@ -104,6 +113,10 @@ export class ModifierCompteComponent {
       CA: [0, []],
       Effectif: [0, []],
       References: ['', []],
+      Adresse: ['', []],
+      NomDirigeant: ['', []],
+      ZoneGeographiqueDactivite: ['', []],
+      Qualifications: ['', []],
       QuestionnaireTarif: ['', []],
       AssuranceRCDecennale: ['', []],
       KBis: ['', []],

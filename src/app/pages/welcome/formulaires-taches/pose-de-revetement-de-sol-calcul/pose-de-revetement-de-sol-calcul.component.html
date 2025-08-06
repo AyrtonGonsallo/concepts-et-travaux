@@ -159,6 +159,35 @@
       </nz-radio-group>
     </div>
   </div>
+
+   Fournisseurs de gammes<br>
+  <nz-radio-group formControlName="fournisseur_plinthes">
+    <!-- Plinthes bois -->
+    <div class="flx-radio-row2">
+      <label>Plinthes :</label>
+      <div>
+        <div *ngFor="let option of gammes_fournisseur_plinthes">
+          <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+            {{ option.Label }} ({{ option.Fournisseur?.RaisonSociale }})
+          </label>
+        </div>
+      </div>
+    </div>
+  </nz-radio-group>
+
+  <nz-radio-group formControlName="fournisseur_gamme">
+    <!-- Plinthes bois -->
+    <div class="flx-radio-row2">
+      <label>Revêtement à poser :</label>
+      <div>
+        <div *ngFor="let option of gammes_fournisseur_gamme">
+          <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+            {{ option.Label }} ({{ option.Fournisseur?.RaisonSociale }})
+          </label>
+        </div>
+      </div>
+    </div>
+  </nz-radio-group>
   
   <div class="grid-btn-action">
     <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
@@ -174,7 +203,10 @@
       </div>
   </ng-container>
   
+ 
 </form>
+
+
 
 
 </div>

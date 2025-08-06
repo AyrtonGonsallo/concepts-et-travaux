@@ -5,6 +5,7 @@ import { Equipement } from '../../../../Models/Equipement';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
+import { Utilisateur } from '../../../../Models/Utilisateurs';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -35,6 +36,9 @@ export class AjouterModeleComponent {
     NombreDeVasques: FormControl<number>;
     Matiere: FormControl<string>;
     EquipementID: FormControl<number>;
+     ActiverFournisseur: FormControl<boolean>;
+    FournisseurID: FormControl<number>;
+    ModeleDeReferenceID: FormControl<number>;
   }>;
   fileSizeError = false;
   maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
@@ -122,11 +126,22 @@ export class AjouterModeleComponent {
       console.log(file);
   }
   }
-
+fournisseurs:Utilisateur[]=[]
+loadFournisseurs(){
+    this.userService.getUsersByRole(14)
+        .subscribe((data: Utilisateur[]) => {
+          this.fournisseurs = data;
+          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+        });
+  }
   ngOnInit(): void {
     this.loadEquipements();
+    
+    this.loadFournisseurs()
   }
-
+activerFournisseur(){
+    return this.validateForm.value.ActiverFournisseur==true
+  }
   loadEquipements(): void {
     this.userService.getEquipements().subscribe(
       (response) => {
@@ -152,6 +167,10 @@ export class AjouterModeleComponent {
     NombreDeVasques: [0, [ ]],
     Matiere: ['', [ ]],
     EquipementID: [0, [Validators.required ]],
+    
+     ActiverFournisseur: [false, [ ]],
+    FournisseurID:[0, [ ]],
+    ModeleDeReferenceID: [0, [ ]],
     });
   }
 }

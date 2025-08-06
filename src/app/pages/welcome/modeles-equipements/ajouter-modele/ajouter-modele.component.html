@@ -47,7 +47,7 @@
                 <span>Équipement</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="RoleId" formControlName="EquipementID"  nzPlaceHolder="Galerie d'images" >
+                <nz-select id="RoleId" formControlName="EquipementID"  nzPlaceHolder="Type d'équipement" >
                     <nz-option *ngFor="let option of equipements" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
             </nz-form-control>
@@ -105,6 +105,35 @@
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-input-number id="NombreDeVasques" formControlName="NombreDeVasques" [nzMin]="1"  [nzStep]="1"></nz-input-number> 
 
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverFournisseur" >
+                <span>Cet article est-il lié à un fournisseur ? </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-switch id="ActiverFournisseur" formControlName="ActiverFournisseur"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+
+       <nz-form-item *ngIf="activerFournisseur()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="FournisseurID"  >
+                <span>Fournisseur</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="FournisseurID" formControlName="FournisseurID"  nzPlaceHolder="Fournisseur" >
+                    <nz-option *ngFor="let option of fournisseurs" [nzValue]="option.Id" [nzLabel]="option.Nom+' '+option.Prenom+' ('+option.RaisonSociale+')'"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item *ngIf="activerFournisseur()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ModeleDeReferenceID"  >
+                <span>Gamme de référence</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="ModeleDeReferenceID" formControlName="ModeleDeReferenceID"  ></nz-input-number> 
             </nz-form-control>
         </nz-form-item>
 

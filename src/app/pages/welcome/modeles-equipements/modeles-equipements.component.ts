@@ -38,7 +38,13 @@ export class ModelesEquipementsComponent {
       compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
       order:null
-    }
+    },
+    {
+          title: 'Fournisseur',
+          compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.ActiverFournisseur ? '1' : '0').localeCompare(b.ActiverFournisseur ? '1' : '0'),
+          priority: 4,
+          order:null
+        },
   ];
   modeles:ModeleEquipement[] = [];
 
@@ -56,6 +62,9 @@ export class ModelesEquipementsComponent {
       });
       console.log("envoi de la requette get_categories_piece",this.modeles);
       
+  }
+  getLabel(booleen:boolean){
+    return booleen?"Oui":"Non"
   }
   isAdminOrHim(id:number){
 
@@ -88,4 +97,74 @@ export class ModelesEquipementsComponent {
     }
     
   }
+
+  
+
+   exporter() {
+    this.userService.getExportModelesEquipements().subscribe((blob: Blob) => {
+      // Créer une URL temporaire pour le fichier
+      const url = window.URL.createObjectURL(blob);
+
+      // Créer un lien HTML temporaire
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'modeles_export.csv';  // Nom du fichier
+
+      // Déclencher le téléchargement
+      a.click();
+
+      // Libérer l’URL blob après téléchargement
+      window.URL.revokeObjectURL(url);
+
+      console.log("Fichier exporté avec succès.");
+    }, (error) => {
+      console.error('Erreur lors de l\'export', error);
+    });
+  }
+
+
+  
+selectedFile: File | null = null;
+
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+}
+
+
+  importer() {
+  if (this.selectedFile) {
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+
+    this.userService.upload_import_equipements(formData).subscribe({
+      next: (res) => {
+        console.log('Fichier uploadé avec succès', res);
+        this.message.success("Fichier uploadé avec succès. Import fini")
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'upload', err);
+        this.message.error("Erreur lors de l\'upload/import")
+      }
+    });
+  } else {
+    alert('Veuillez sélectionner un fichier.');
+  }
+}
+
+cancel_supression(): void {
+    this.message.info('Supression annulée !');
+  }
+
+  confirm_supression(): void {
+    this.message.success('Supression réussie !');
+  }
+
+  beforeConfirm_supression(): Promise<boolean> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 3000);
+    });
+  }
+
 }

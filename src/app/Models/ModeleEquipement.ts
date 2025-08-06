@@ -10,5 +10,6 @@ export interface ModeleEquipement {
     Epaisseur?: number ;
     Matiere?: string ;
     EquipementID: number; // Assurez-vous de correspondre au type utilisé dans Equipement
+    ActiverFournisseur:boolean;
   }
   

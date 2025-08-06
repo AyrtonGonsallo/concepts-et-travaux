@@ -314,6 +314,17 @@ get_role(userId: number): Observable<any> {
   upload_file(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/upload`, userData);
   }
+
+  upload_import_gammes_file(formData: any): Observable<any> {
+
+  return this.http.post<any>(`${environment.apiUrl}/import_gammes`, formData);
+}
+
+  upload_import_equipements(formData: any): Observable<any> {
+
+  return this.http.post<any>(`${environment.apiUrl}/import_equipements`, formData);
+}
+
   deleteUser(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/delete_utilisateur/${userId}`;
     return this.http.delete<any>(url);
@@ -518,6 +529,21 @@ get_role(userId: number): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_modele_equipement`, modeleEquipement);
   }
 
+ 
+
+  getExportGammes(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_gammes`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+  getExportModelesEquipements(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_modeles_equipement`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+
   // Récupérer un modèle d'équipement par son ID
   getModeleEquipementById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_modele_equipement/${id}`);
@@ -602,6 +628,10 @@ get_role(userId: number): Observable<any> {
   }
   getGammesByTravailAndType(travailID:number,type: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_by_type_and_travailID/${travailID}/${type}`);
+  }
+
+  getFournisseursGammesByGammeReference(refID:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_Fournisseurs_gammes_by_refID/${refID}`);
   }
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammes(): Observable<any> {

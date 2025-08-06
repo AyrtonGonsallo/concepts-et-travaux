@@ -1,7 +1,27 @@
 <div>
     <h2>Liste des équipements</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'modeles-equipements', 'ajouter-modele']">Ajouter un modèle</button>
+    <div class="select-add">
+        <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'modeles-equipements', 'ajouter-modele']">Ajouter un modèle</button>
+        <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les modèles</button>
+        <button
+      nz-popconfirm
+      nzPopconfirmTitle="Voulez-vous vraiment supprimer tous les modèles d'équipements ?"
+      [nzBeforeConfirm]="beforeConfirm_supression"
+      (nzOnConfirm)="confirm_supression()"
+      (nzOnCancel)="cancel_supression()"
+      nz-button
+      nzType="primary"
+       class="positive-action mb-5 mt-5"
+    >
+      Supprimer tout les modèles
+    </button>
+    </div>
 
+    <div class="select-add">
+      <input type="file" (change)="onFileSelected($event)" />
+      <a href="https://api.homeren.fr/modeles_equipements_import.xlsx" class=" mb-5 mt-5" target="_blank">Télécharger le modèle</a>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des modèles</button>
+    </div> 
     <nz-table #sortTable [nzData]="modeles"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
@@ -22,6 +42,7 @@
             <td>{{ data.Titre }}</td>
             <td [innerHTML]="data.Description"></td>
             <td>{{ data.Prix }} €</td>
+            <td>{{ getLabel(data.ActiverFournisseur) }}</td>
             <td>{{  data.EquipementID }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'modeles-equipements', 'modifier-modele',data.ID]"><span nz-icon nzType="edit"></span></button>
