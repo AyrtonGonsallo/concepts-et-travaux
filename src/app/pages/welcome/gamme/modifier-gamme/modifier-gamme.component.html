@@ -16,7 +16,16 @@
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
-                    <nz-option *ngFor="let option of types" [nzValue]="option.slug" [nzLabel]="option.label"></nz-option>
+
+                    <ng-container *ngFor="let groupName of groupedTypeKeys()">
+                        <nz-option-group [nzLabel]="groupName">
+                        <nz-option
+                            *ngFor="let type of groupedTypes[groupName]"
+                            [nzValue]="type.slug"
+                            [nzLabel]="type.label">
+                        </nz-option>
+                        </nz-option-group>
+                    </ng-container>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>

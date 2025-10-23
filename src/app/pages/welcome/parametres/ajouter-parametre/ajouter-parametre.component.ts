@@ -14,6 +14,7 @@ export class AjouterParametreComponent {
 validateForm: FormGroup<{
   Nom: FormControl<string>;
   Valeur: FormControl<number>;
+  Type: FormControl<string>;
 }>;
 
 
@@ -47,8 +48,8 @@ constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsE
   this.validateForm = this.fb.group({
    
     Nom: ['', [Validators.required]],
-  
     Valeur: [0, [Validators.required]],
+    Type: ['', [Validators.required]],
     
   });
 }

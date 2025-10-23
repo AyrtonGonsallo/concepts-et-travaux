@@ -21,7 +21,19 @@
             </nz-form-control>
         </nz-form-item>
         
-       
+       <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="What do you want other to call you" >
+                <span>Type </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
+                    <nz-option nzValue="nombre" nzLabel="nombre"></nz-option>
+                    <nz-option nzValue="coût fixe" nzLabel="coût fixe"></nz-option>
+                    <nz-option nzValue="coefficient" nzLabel="coefficient"></nz-option>
+                    <nz-option nzValue="pourcentage" nzLabel=" pourcentage"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
 
       
         <nz-form-item nz-row class="register-area">

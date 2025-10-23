@@ -30,6 +30,11 @@ size: NzButtonSize = 'large';
       compare: (a: Parametre, b: Parametre) => a.Valeur-(b.Valeur),
       priority: 1
     },
+    {
+      title: 'Type',
+      compare: (a: Parametre, b: Parametre) => a.Type.localeCompare(b.Type),
+      priority: 1
+    },
     
   ];
   tache_generale:Parametre[] = [];
@@ -60,7 +65,7 @@ size: NzButtonSize = 'large';
   cancel(): void {
     this.message.info('suppression annulée');
   }
- /* deleteParametre(id: number) {
+ deleteParametre(id: number) {
     if (this.authService.isAdminorSuperAdmin()) {
       this.userService.deleteParametre(id).subscribe(
         () => {
@@ -81,7 +86,7 @@ size: NzButtonSize = 'large';
     }
    
   }
- */
+ 
 
   
     searchValue = '';

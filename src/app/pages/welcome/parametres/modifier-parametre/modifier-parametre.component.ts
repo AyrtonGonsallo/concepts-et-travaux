@@ -15,6 +15,7 @@ export class ModifierParametreComponent {
   validateForm: FormGroup<{
     Nom: FormControl<string>;
   Valeur: FormControl<number>;
+  Type: FormControl<string>;
   }>;
  
   paramId:string =  this.route.snapshot.paramMap.get('id')??'0';
@@ -50,6 +51,7 @@ export class ModifierParametreComponent {
     this.validateForm = this.fb.group({
       Nom: ['', [Validators.required]],
       Valeur: [0, [Validators.required]],
+       Type: ['', [Validators.required]],
     });
   }
 

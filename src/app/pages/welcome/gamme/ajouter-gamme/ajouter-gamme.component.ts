@@ -8,6 +8,7 @@ import { Utilisateur } from '../../../../Models/Utilisateurs';
 export interface Type {
   slug: string;
   label: string;
+   group: string;
 }
 
 @Component({
@@ -29,48 +30,74 @@ export class AjouterGammeComponent {
     FournisseurID: FormControl<number>;
     GammeDeReferenceID: FormControl<number>;
   }>;
-  types: Type[] = [
-    { slug: 'peinture', label: 'Peinture (murs)' },
-    { slug: 'enduit-decoratif', label: 'Enduit decoratif (murs)' },
-    { slug: 'papier-peint', label: 'Papier peint (murs)' },
-    { slug: 'bois', label: 'Bois (murs)' },
-    { slug: 'tissus', label: 'Tissus (murs)' },
-    { slug: 'carrelage', label: 'Carrelage (murs)' },
-    { slug: 'peinture-de-sol', label: 'Peinture de sol' },
-    { slug: 'moquette-de-sol', label: 'Moquette (sol)' },
-    { slug: 'sol-souple', label: 'Sol souple (sol)' },
-    { slug: 'resine-decorative-de-sol', label: 'Résine décorative (sol)' },
-    { slug: 'carrelage-sol', label: 'Carrelage (sol)' },
-    { slug: 'papier-massif-sol', label: 'Parquet Massif (sol)' },
-    { slug: 'parquet-flottant-sol', label: 'Parquet Flottant (sol)' },
-    { slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage (sol)' },
-    { slug: 'plinthes-bois-sol', label: 'Plinthes bois (sol)' },
-    { slug: 'depose', label: 'Dépose' },
-    { slug: 'cloison', label: 'Cloison' },
-    { slug: 'materiaux', label: 'Matériau' },
-    { slug: 'type-de-porte-simple', label: 'Type de porte simple' },
-    { slug: 'type-de-porte-double', label: 'Type de porte double' },
-    { slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
-    { slug: 'gamme-de-porte', label: 'Gamme de porte' },
-    { slug: 'nature-porte', label: 'Nature de la porte' },
-    { slug: 'renovation-electrique-partielle', label: 'Rénovation électrique partielle (Appareillage)' },
-    { slug: 'renovation-electrique-complete', label: 'Rénovation électrique complete' },
-    { slug: 'radiateur', label: 'Radiateur' },
-    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_5', label: 'Type de porte pour épaisseur = 5 (cmnp)' },
-    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_7', label: 'Type de porte pour épaisseur = 7 (cmnp)' },
-    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_10', label: 'Type de porte pour épaisseur = 10 (cmnp)' },
-    { slug: 'type-de-porte-creation-murs-non-porteurs_ep_10+', label: 'Type de porte pour épaisseur > 10 (cmnp)' },
-    { slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
-    { slug: 'depose-murs', label: 'Dépose de murs' },
-    { slug: 'depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'élements de salle de bain/salle d\'eau' },
-    { slug: 'depose-cuisine', label: 'Dépose d\'élements de cuisine' },
-    { slug: 'depose-revetement-plafond', label: 'Dépose de revetements pour plafond' },
-    { slug: 'depose-revetement-sol', label: 'Dépose de revetements pour sol' },
-    { slug: 'type-de-radiateur', label: 'Type de radiateur' },
-    { slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
-    { slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
-    { slug: 'etat-des-surfaces-sol', label: 'État des surfaces (sol)' },
+  
+  
+types: Type[] = [
+    { group: 'Murs', slug: 'bois', label: 'Bois' },
+    { group: 'Murs',slug: 'carrelage', label: 'Carrelage mural' },
+    { group: 'Murs',slug: 'enduit-decoratif', label: 'Enduit decoratif' },
+    { group: 'Murs',slug: 'etat-des-surfaces-murs', label: 'État des surfaces' },
+    { group: 'Murs',slug: 'papier-peint', label: 'Papier peint' },
+    { group: 'Murs',slug: 'peinture', label: 'Peinture murale' },
+    { group: 'Murs',slug: 'tissus', label: 'Tissus muraux' },
+    
+    { group: 'Sols',slug: 'carrelage-sol', label: 'Carrelage' },
+    { group: 'Sols',slug: 'etat-des-surfaces-sol', label: 'État des surfaces' },
+    { group: 'Sols',slug: 'moquette-de-sol', label: 'Moquette' },
+    { group: 'Sols',slug: 'parquet-flottant-sol', label: 'Parquet Flottant' },
+    { group: 'Sols',slug: 'papier-massif-sol', label: 'Parquet Massif' },
+    { group: 'Sols',slug: 'peinture-de-sol', label: 'Peinture de sol' },
+    { group: 'Sols',slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage' },
+    { group: 'Sols',slug: 'plinthes-bois-sol', label: 'Plinthes bois' },
+    { group: 'Sols',slug: 'resine-decorative-de-sol', label: 'Résine décorative' },
+    { group: 'Sols',slug: 'sol-souple', label: 'Sol souple' },
+    
+    { group: 'Porte',slug: 'gamme-de-porte', label: 'Gamme de porte' },
+    { group: 'Porte',slug: 'nature-porte', label: 'Nature de la porte' },
+    { group: 'Porte',slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
+    { group: 'Porte',slug: 'type-de-porte-double', label: 'Type de porte double' },
+    { group: 'Porte',slug: 'type-de-porte-simple', label: 'Type de porte simple' },
+    
+    { group: 'Porte',slug: 'type-de-porte-creation-murs-non-porteurs_ep_5', label: 'Type de porte pour épaisseur = 5 (cmnp)' },
+    { group: 'Porte',slug: 'type-de-porte-creation-murs-non-porteurs_ep_7', label: 'Type de porte pour épaisseur = 7 (cmnp)' },
+    { group: 'Porte',slug: 'type-de-porte-creation-murs-non-porteurs_ep_10', label: 'Type de porte pour épaisseur = 10 (cmnp)' },
+    { group: 'Porte',slug: 'type-de-porte-creation-murs-non-porteurs_ep_10+', label: 'Type de porte pour épaisseur > 10 (cmnp)' },
+    { group: 'Porte',slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (cmnp)' },
+    
+    
+    { group: 'Divers',slug: 'cloison', label: 'Cloison' },
+    { group: 'Divers',slug: 'depose', label: 'Dépose' },
+    { group: 'Divers',slug: 'materiaux', label: 'Matériau' },
+    { group: 'Divers',slug: 'depose-murs', label: 'Dépose de murs' },
+    { group: 'Divers',slug: 'depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'élements de salle de bain/salle d\'eau' },
+    { group: 'Divers',slug: 'depose-cuisine', label: 'Dépose d\'élements de cuisine' },
+    { group: 'Divers',slug: 'depose-revetement-plafond', label: 'Dépose de revetements pour plafond' },
+    { group: 'Divers',slug: 'depose-revetement-sol', label: 'Dépose de revetements pour sol' },
+  
+    { group: 'Renovation electrique partielle',slug: 'renovation-electrique-partielle', label: 'Rénovation électrique partielle (Appareillage)' },
+    { group: 'Renovation electrique complete',slug: 'renovation-electrique-complete', label: 'Rénovation électrique complete' },
+   
+
+    { group: 'Radiateur',slug: 'radiateur', label: 'Radiateur' },
+    { group: 'Radiateur',slug: 'type-de-radiateur', label: 'Type de radiateur' },
+
+    { group: 'Plafond',slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
+
+    
   ];
+
+  groupedTypes = this.types.reduce((acc, type) => {
+    if (!acc[type.group]) {
+      acc[type.group] = [];
+    }
+    acc[type.group].push(type);
+    return acc;
+  }, {} as { [key: string]: Type[] });
+
+groupedTypeKeys(): string[] {
+  return Object.keys(this.groupedTypes);
+}
+
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
   submitForm(): void {
