@@ -137,15 +137,19 @@ add_artisan(value: object[]): void {
       }
     );
 
-     this.get_all_projet_paiements(this.projetId);
-        this.paiementForm = this.fb.group({
-          TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
-          Type: this.fb.control<string | null>(null, Validators.required),
-          Montant: this.fb.control<number | null>(null, Validators.required),
-          Date: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
-          DevisID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
-        });
+    this.get_all_projet_paiements(this.projetId);
 
+    this.paiementForm = this.fb.group({
+      TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+      Commentaire: this.fb.control<string | null>(null, Validators.required),
+      Titre: this.fb.control<string | null>(null, Validators.required),
+      Type: this.fb.control<string | null>(null, Validators.required),
+      Montant: this.fb.control<number | null>(null, Validators.required),
+      Requette: this.fb.control<string | null>("demande", Validators.required),
+      Status: this.fb.control<boolean | null>(false, Validators.required),
+      DateCreation: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
+      ProjetID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
+    });
 
   }
 
@@ -227,23 +231,32 @@ add_artisan(value: object[]): void {
 
   paiementForm: FormGroup<{
     TypeDePaiement: FormControl<string | null>;
+    Commentaire: FormControl<string | null>;
+    Titre: FormControl<string | null>;
     Type: FormControl<string | null>;
     Montant: FormControl<number | null>;
-    Date: FormControl<string | null>;
-    DevisID: FormControl<number | null>;
+    Requette: FormControl<string | null>;
+    Status: FormControl<boolean | null>;
+    DateCreation: FormControl<string | null>;
+    ProjetID: FormControl<number | null>;
   }> = this.fb.group({
     TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+    Commentaire: this.fb.control<string | null>(null, Validators.required),
+    Titre: this.fb.control<string | null>(null, Validators.required),
     Type: this.fb.control<string | null>(null, Validators.required),
     Montant: this.fb.control<number | null>(null, Validators.required),
-    Date: this.fb.control<string | null>(null, Validators.required), // Date du jour
-    DevisID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
+    Requette: this.fb.control<string | null>("demande", Validators.required),
+    Status: this.fb.control<boolean | null>(false, Validators.required),
+    DateCreation: this.fb.control<string | null>(null, Validators.required), // Date du jour
+    ProjetID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
   });
   
 
   submitpaiementForm(): void {
     if (this.paiementForm.valid) {
       console.log('submit', this.paiementForm.value);
-      this.userService.add_paiement(this.paiementForm.value).subscribe(
+      
+      this.userService.add_demande_paiement(this.paiementForm.value).subscribe(
         (response) => {
           console.log('paiement ajouté avec succès :', response);
           this.message.create('success', `paiement ajouté avec succès`);
@@ -260,6 +273,8 @@ add_artisan(value: object[]): void {
           control.updateValueAndValidity({ onlySelf: true });
         }
       });
+
+      
     }
   }
   cancel(): void {
@@ -299,7 +314,7 @@ add_artisan(value: object[]): void {
     if (this.notifier_le_client_que_la_visite_est_finie || this.date_de_programmation) {
       const dateProg = this.date_de_programmation;
       const visiteData = {
-        Date: new Date().toISOString(), // Génère la date actuelle au format ISO
+        DateCreation: new Date().toISOString(), // Génère la date actuelle au format ISO
         DateDeProgrammation:dateProg
       };
       if(this.date_de_programmation && !this.notifier_le_client_que_la_visite_est_finie){

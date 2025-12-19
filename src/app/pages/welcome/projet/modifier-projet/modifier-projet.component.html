@@ -96,22 +96,28 @@
         <thead>
           <tr>
             
-            <th>ID</th>
+            <th>Titre</th>
             <th>Type de paiement</th>
             <th>Type</th>
             <th>Montant</th>
             <th>Date</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           
             <tr *ngFor="let data of nzTable2.data">
-              <td>{{ data.ID }}</td>
+              <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
               <td>{{ data.TypeDePaiement }}  </td>
               <td>{{ data.Type }}</td>
               <td>{{ data.Montant }} € </td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
+              <td> 
+                <span *ngIf="data.Status" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
+                <span *ngIf="!data.Status" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
+           
+              </td>
               <td> 
                 <button nz-button nzType="primary" class="negative-action mb-5"  title="supprimer"  nz-popconfirm
                 nzPopconfirmTitle="Voulez-vous vraiment supprimer ce paiement ?"
@@ -126,6 +132,12 @@
       </nz-table>
       <br><br>
       <form nz-form [formGroup]="paiementForm" (ngSubmit)="submitpaiementForm()">
+        <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="Titre" nzRequired>Titre</nz-form-label>
+        <nz-form-control  [nzSpan]="12" nzErrorTip="Please input Titre!">
+          <input nz-input id="Titre" formControlName="Titre" placeholder="Titre" />
+        </nz-form-control>
+      </nz-form-item>
         <!-- Type de Paiement -->
         <nz-form-item>
           <nz-form-label [nzSpan]="5" nzRequired nzFor="TypeDePaiement">Type de Paiement</nz-form-label>
@@ -157,13 +169,19 @@
             <nz-input-number id="Montant" formControlName="Montant"  ></nz-input-number> 
           </nz-form-control>
         </nz-form-item>
-      
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Commentaire">Commentaire</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
+            <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
+          </nz-form-control>
+        </nz-form-item>
         
       
         <!-- Bouton de soumission -->
         <nz-form-item>
           <nz-form-control [nzSpan]="12" [nzOffset]="5">
-            <button nz-button nzType="primary" [disabled]="paiementForm.invalid">Ajouter un paiement</button>
+            <button nz-button nzType="primary" [disabled]="paiementForm.invalid">Ajouter une demande de paiement</button>
           </nz-form-control>
         </nz-form-item>
       </form>

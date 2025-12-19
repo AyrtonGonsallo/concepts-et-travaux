@@ -125,40 +125,40 @@ export class ModifierDevisPieceComponent {
   
     switch (type_de_travail_id) {
       case 4: // Création de murs non porteurs
-        url = `/admin/administration/formules-et-tests/modifier-creation-murs-non-porteur/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-creation-murs-non-porteur/${tacheID}?mode=modification`;
         break;
       case 3: // Démolition de cloisons ou ouverture partielle
-        url = `/admin/administration/formules-et-tests/modifier-demolition-cloisons/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-demolition-cloisons/${tacheID}?mode=modification`;
         break;
       case 7: // Dépose des anciennes installations de salle de bain
-        url = `/admin/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
         break;
       case 13: // Rénovation électrique partielle
-        url = `/admin/administration/formules-et-tests/modifier-renovation-electrique/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-renovation-electrique/${tacheID}?mode=modification`;
         break;
       case 15: // Rénovation électrique complète
-        url = `/admin/administration/formules-et-tests/modifier-renovation-electrique-complete/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-renovation-electrique-complete/${tacheID}?mode=modification`;
         break;
       case 12: // Remplacement de radiateur
-        url = `/admin/administration/formules-et-tests/modifier-remplacement-radiateur/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-remplacement-radiateur/${tacheID}?mode=modification`;
         break;
       case 16: // Installation de nouveaux équipements sanitaires
-        url = `/admin/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=modification`;
         break;
       case 2: // Pose de nouveaux équipements de cuisine
-        url = `/admin/administration/formules-et-tests/modifier-pose-equipements-cuisine/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-pose-equipements-cuisine/${tacheID}?mode=modification`;
         break;
       case 5: // Pose de revêtements muraux
-        url = `/admin/administration/formules-et-tests/modifier-revetements-muraux/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-revetements-muraux/${tacheID}?mode=modification`;
         break;
       case 8: // Pose de revêtements muraux
-        url = `/admin/administration/formules-et-tests/modifier-revetements-plafond/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-revetements-plafond/${tacheID}?mode=modification`;
         break;
       case 9: // Pose de revêtements muraux
-        url = `/admin/administration/formules-et-tests/modifier-revetements-sol/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-revetements-sol/${tacheID}?mode=modification`;
         break;
       case 10: // Remplacement de portes
-        url = `/admin/administration/formules-et-tests/modifier-remplacement-portes/${tacheID}?mode=modification`;
+        url = `/administration/formules-et-tests/modifier-remplacement-portes/${tacheID}?mode=modification`;
         break;
       default:
         console.error('Type de travail inconnu :', type_de_travail_id);
@@ -166,7 +166,11 @@ export class ModifierDevisPieceComponent {
     }
   
     // Redirection
-    window.location.href = url;
+    // window.location.href = url;
+
+    this.router.navigateByUrl(url, {
+      state: { mode: 'modification' } // optionnel
+    });
   }
   
 

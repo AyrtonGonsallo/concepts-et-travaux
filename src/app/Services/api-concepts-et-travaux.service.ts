@@ -71,6 +71,11 @@ update_visite(id: number, visite: any): Observable<any> {
 add_paiement(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/add_paiement`, userData);
 }
+
+add_demande_paiement(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/add_demande_paiement`, userData);
+}
+
 get_all_projet_paiements(devisID: number): Observable<any> {
   const url = `${environment.apiUrl}/get_all_projet_paiements/${devisID}`;
   return this.http.get<any>(url);
