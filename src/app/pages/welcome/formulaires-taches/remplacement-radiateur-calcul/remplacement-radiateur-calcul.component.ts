@@ -127,6 +127,8 @@ submit() {
   const surface = this.formulaire.value.surface;
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-pose-chauffage": {
       radiateurs: gamme_radiateurs
     },
@@ -169,6 +171,8 @@ modifier(){
   const surface = this.formulaire.value.surface;
 
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-pose-chauffage": {
       radiateurs: gamme_radiateurs
     },

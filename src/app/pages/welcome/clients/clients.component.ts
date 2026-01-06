@@ -36,9 +36,24 @@ size: NzButtonSize = 'large';
       compare: (a: Utilisateur, b: Utilisateur) => a.Email.localeCompare(b.Email),
       priority: 1
     },
+    {
+      title: 'DateDeCreation',
+      compare: (a: Utilisateur, b: Utilisateur) => {
+        const dateA = new Date(a.DateDeCreation ?? 0).getTime();
+        const dateB = new Date(b.DateDeCreation ?? 0).getTime();
+
+        return dateA - dateB;
+      },
+      priority: 1,
+      order:'descend', 
+    },
    
   ];
-  utilisateurs:Utilisateur[] = [];
+
+
+  utilisateurs: Utilisateur[] = [];
+  utilisateursSource: Utilisateur[] = [];
+  searchValue = '';
 
   constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
@@ -57,21 +72,32 @@ size: NzButtonSize = 'large';
   }
 uid=0
   loadUtilisateurs(): void {
-    this.http.get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs_by_role/3`)
-      .subscribe((data: Utilisateur[]) => {
-        if(!this.isAdminorSuperAdmin()){
-          this.utilisateurs = data.filter(user => user.Id === this.uid);
+  this.http
+    .get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs_by_role/3`)
+    .subscribe((data: Utilisateur[]) => {
 
-          console.log("réponse de la requette get_utilisateur",this.uid,this.utilisateurs)
-        }else{
-          this.utilisateurs = data;
-        console.log("réponse de la requette get_utilisateurs",this.utilisateurs)
-        }
-        ;
-      });
-      console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
-      
-  }
+      if (!this.isAdminorSuperAdmin()) {
+        this.utilisateursSource = data.filter(user => user.Id === this.uid);
+      } else {
+        this.utilisateursSource = data;
+      }
+
+      // affichage initial
+      this.utilisateurs = [...this.utilisateursSource];
+    });
+}
+
+
+onSearch(): void {
+  const value = this.searchValue.toLowerCase();
+
+  this.utilisateurs = this.utilisateursSource.filter(user =>
+    user.Nom?.toLowerCase().includes(value) ||
+    user.Prenom?.toLowerCase().includes(value) ||
+    user.Email?.toLowerCase().includes(value)
+  );
+}
+
   isAdminOrHim(id:number){
 
     return this.authService.isAdminOrHim(id)

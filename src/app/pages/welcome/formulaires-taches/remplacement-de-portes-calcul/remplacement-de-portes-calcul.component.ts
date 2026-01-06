@@ -143,7 +143,8 @@ load_gammes(){
     console.log(this.formulaire.value)
     const portesFormArray = this.formulaire.value.portes;
     this.devisTache.Donnees = {
-      
+      "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
       "gammes-produits-pose-portes": {
         portes: portesFormArray.map((porte: any) => ({
           gamme: porte.gamme,
@@ -180,7 +181,8 @@ load_gammes(){
   modifier(){
     const portesFormArray = this.formulaire.value.portes;
     this.devisTache.Donnees = {
-      
+       "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
       "gammes-produits-pose-portes": {
         portes: portesFormArray.map((porte: any) => ({
           gamme: porte.gamme,

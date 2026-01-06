@@ -19,12 +19,20 @@ import { Paiement } from '../../../../Models/Paiement';
 export class ModifierDevisPieceComponent {
 
   validateForm: FormGroup<{
-    
+    Titre: FormControl<string>;
     Commentaire: FormControl<string>;
    
     
   }>;
  
+  reloadCurrentRoute(): void {
+    const currentUrl = this.router.url;
+
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
   submitForm(): void {
     
     if (this.validateForm.valid) {
@@ -34,7 +42,7 @@ export class ModifierDevisPieceComponent {
         (response) => {
           console.log('Devis modifié avec succès :', response);
           this.message.create('success', `Devis modifié avec succès`);
-          this.router.navigate(['/administration/devis-pieces']);
+          this.reloadCurrentRoute()
         },
         (error) => {
           console.error('Erreur lors de la modification de l\'devis :', error);
@@ -56,7 +64,7 @@ export class ModifierDevisPieceComponent {
     this.validateForm = this.fb.group({
       
       Commentaire: ['', []],
-     
+     Titre: ['', [Validators.required]],
       
     });
 

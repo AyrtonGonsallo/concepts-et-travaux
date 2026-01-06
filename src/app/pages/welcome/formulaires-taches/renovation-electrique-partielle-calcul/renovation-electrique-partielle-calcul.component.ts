@@ -168,6 +168,8 @@ export class RenovationElectriquePartielleCalculComponent {
       const appareils = this.formulaire.value.appareils;
     
       this.devisTache.Donnees = {
+        "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
         "gammes-produits-pose-electricite": {
           gamme: gamme,
           appareils_electrique_a_remplacer: appareils
@@ -204,6 +206,8 @@ export class RenovationElectriquePartielleCalculComponent {
       const appareils = this.formulaire.value.appareils;
     
       this.devisTache.Donnees = {
+         "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
         "gammes-produits-pose-electricite": {
           gamme: gamme,
           appareils_electrique_a_remplacer: appareils

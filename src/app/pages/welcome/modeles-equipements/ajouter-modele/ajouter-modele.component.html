@@ -1,6 +1,21 @@
 <div>
     <h2>Ajouter un modèle d'équipement</h2>   
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="EquipementID"  >
+                <span>Catégorie d'équipement</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="RoleId" formControlName="EquipementID"  nzPlaceHolder="Type d'équipement" >
+                    <nz-option *ngFor="let option of equipements" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Titre!">
@@ -42,16 +57,7 @@
         </nz-form-item>
 
         
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="EquipementID"  >
-                <span>Équipement</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="RoleId" formControlName="EquipementID"  nzPlaceHolder="Type d'équipement" >
-                    <nz-option *ngFor="let option of equipements" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+        
         
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix"  >

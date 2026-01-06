@@ -490,6 +490,12 @@ get_role(userId: number): Observable<any> {
   updateEquipement(id: number, equipement: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_equipement/${id}`, equipement);
   }
+
+  restaurerDevisTache(id_tache: number, id_historique: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/restaurer_devis_tache/${id_tache}/${id_historique}`, null);
+  }
+
+
   updateDevistache(id: number, dt: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_devis_tache/${id}`, dt);
   }
@@ -512,6 +518,11 @@ get_role(userId: number): Observable<any> {
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getTravailById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_travail/${id}`);
+  }
+
+  // Méthode pour récupérer 
+  getHistoriqueDevisTacheById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_historique_devis_tache/${id}`);
   }
 
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée

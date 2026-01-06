@@ -1,6 +1,29 @@
 <div>
     <h2>Liste des clients</h2>    
 
+    <div nz-row style="margin:10px 20px;">
+      <div nz-col nzSpan="12" nzOffset="6">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input
+            type="text"
+            nz-input
+            placeholder="Rechercher..."
+            [(ngModel)]="searchValue"
+            (ngModelChange)="onSearch()"
+          />
+        </nz-input-group>
+
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch>
+            <span nz-icon nzType="search"></span>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+
+  
+
+
     <nz-table #sortTable [nzData]="utilisateurs"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
@@ -18,6 +41,7 @@
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Nom }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Prenom }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Email }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.DateDeCreation | date:'dd/MM/yyyy HH:mm:ss'}}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)"> 
               <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'clients', 'voir-devis-client',data.Id]"><span nz-icon nzType="eye"></span></button>
              

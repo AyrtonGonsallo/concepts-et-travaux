@@ -45,6 +45,7 @@ export class PoseDeRevetementsMurauxCalculComponent {
     this.load_types()
     this.load_gammes()
     this.load_etats()
+    this.load_historiques()
   }
 
   getDetails(id: number): void {
@@ -76,6 +77,33 @@ export class PoseDeRevetementsMurauxCalculComponent {
 
   get murs() {
     return this.formulaire.get('murs') as FormArray;
+  }
+
+  historique:any
+  load_historiques(){
+     this.userService.getHistoriqueDevisTacheById( parseInt(this.tacheId) ).subscribe(
+      (response) => {
+        this.historique=response
+       
+       // this.validateForm.patchValue(response);
+        console.log("historique ",this.historique);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+  }
+  restaurer(id:number){
+    this.userService.restaurerDevisTache( parseInt(this.tacheId),id ).subscribe(
+      (response) => {
+        console.log("devis restauré ",response);
+        this.reloadCurrentRoute()
+
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
   }
 
   type_de_depose:any
@@ -171,6 +199,8 @@ load_etats(){
     console.log(this.formulaire.value)
     const mursFormArray = this.formulaire.value.murs;
     this.devisTache.Donnees = {
+       "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
       "dimensions-pose-murs": {
         murs: mursFormArray.map((mur: any) => ({
           hauteur: mur.hauteur,
@@ -221,6 +251,8 @@ load_etats(){
     console.log(this.formulaire.value)
     const mursFormArray = this.formulaire.value.murs;
     this.devisTache.Donnees = {
+      "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
       "dimensions-pose-murs": {
         murs: mursFormArray.map((mur: any) => ({
           hauteur: mur.hauteur,
@@ -271,7 +303,7 @@ load_etats(){
           console.log('Tache modifiée avec succès :', response);
           this.message.create('success', `Tache modifié avec succès`);
           setTimeout(() => {
-            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          this.reloadCurrentRoute()
           }, 2000);
         },
         (error) => {
@@ -285,6 +317,18 @@ load_etats(){
 
    
   }
+
+
+  reloadCurrentRoute(): void {
+  const currentUrlTree = this.router.parseUrl(this.router.url); // récupère URL + query params
+
+  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigate([currentUrlTree.root.children['primary'].segments.map(it => it.path).join('/')], {
+      queryParams: currentUrlTree.queryParams
+    });
+  });
+}
+
 
 
 }

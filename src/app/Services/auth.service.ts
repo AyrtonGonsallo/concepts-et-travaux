@@ -31,14 +31,31 @@ export class AuthService {
             this.saveDataToLocal("utilisateur", response2);
             this.userSubject.next(response2);  // Mise à jour du BehaviorSubject avec les nouvelles données
             this.message.create('success', `Utilisateur identifié avec succès`);
-            this.router.navigate(['/administration']);
+            
             this.loggedIn = true;
-
             // Création d'un cookie pour l'authentification
             const expirationDate = new Date();
-            expirationDate.setHours(expirationDate.getHours() + 1); // 1 heure
-            this.cookieService.set('loggedInconcepts&travauxback', 'true', { expires: expirationDate });
-          },
+            expirationDate.setHours(expirationDate.getHours() + 3);
+
+
+            this.cookieService.set(
+              'loggedInconcepts&travauxback',
+              'true',
+              { expires: expirationDate }
+            );
+
+            // on sauvegarde aussi l'expiration
+            localStorage.setItem(
+              'auth_expiration',
+              expirationDate.toISOString()
+            );
+        
+
+            
+            this.router.navigate(['/administration']);
+            
+
+            },
           (error) => {
             console.error('Erreur lors de l\'identification de l\'utilisateur :', error);
             this.message.create('error', `Erreur lors de l\'identification de l\'utilisateur`);
@@ -142,4 +159,17 @@ export class AuthService {
     const utilisateur = this.getDataFromLocal("utilisateur");
     return utilisateur ? (utilisateur.Role.Id === 12 || utilisateur.Id === id) : false;
   }
+
+
+    isSessionExpired(): boolean {
+    const expiration = localStorage.getItem('auth_expiration');
+    if (!expiration) {
+      return true;
+    }
+
+    return new Date(expiration) <= new Date();
+  }
+
+
+
 }

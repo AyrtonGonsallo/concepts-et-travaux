@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DevisPiece } from '../../../../Models/DevisPiece';
+import { Projet } from '../../../../Models/Projet';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../../Services/auth.service';
@@ -7,7 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute } from '@angular/router';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
-import { Projet } from '../../../../Models/Projet';
+import { DevisPiece } from '../../../../Models/DevisPiece';
 
 @Component({
   selector: 'app-voir-devis-clients',
@@ -21,16 +21,21 @@ export class VoirDevisClientsComponent {
   listOfColumn = [
     {
       title: 'ID',
-      compare: (a: DevisPiece, b: DevisPiece) => a.ID - b.ID,
+      compare: (a: Projet, b: Projet) => a.Id - b.Id,
       priority: 3,
       order:null, 
     },
-    
+    {
+      title: 'Nom',
+      compare: (a: Projet, b: Projet) => (a.Nom ).localeCompare(b.Nom),
+      priority: 3,
+      order:null, 
+    },
     {
       title: 'Date de création',
-      compare: (a: DevisPiece, b: DevisPiece) => {
-        const dateA = new Date(a.Date).getTime();
-        const dateB = new Date(b.Date).getTime();
+      compare: (a: Projet, b: Projet) => {
+        const dateA = new Date(a.Date_de_creation).getTime();
+        const dateB = new Date(b.Date_de_creation).getTime();
         return dateA - dateB;
       },
       priority: 1,
@@ -38,18 +43,30 @@ export class VoirDevisClientsComponent {
     },
     
     {
+      title: 'Status',
+      compare: (a: Projet, b: Projet) => (a.Status ).localeCompare(b.Status),
+      priority: 1,
+      order:null, 
+    },
+    {
       title: 'Prix',
-      compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
+      compare: (a: Projet, b: Projet) => {
+        const totalA = a.Devis?.reduce((t, d) => t + Number(d.Prix), 0) ?? 0;
+        const totalB = b.Devis?.reduce((t, d) => t + Number(d.Prix), 0) ?? 0;
+
+        return totalA - totalB; // tri numérique correct
+      },
+
       priority: 1,
       order:null, 
     }
   ];
-  devis_pieces:DevisPiece[] = [];
+  devis_pieces:Projet[] = [];
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private authService: AuthService,private message: NzMessageService,private devis_pieceService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.loadDevisPieces();
+    this.loadProjets();
     this.getUserDetails(this.userId.toString());
   }
   getUserDetails(userId: string): void {
@@ -65,20 +82,33 @@ export class VoirDevisClientsComponent {
     );
     
   }
-  loadDevisPieces(): void {
+  loadProjets(): void {
     this.devis_pieceService.getUserProjects(this.userId)
       .subscribe((data: Projet[]) => {
-        data.forEach(projet => {
-          if (projet.Devis && Array.isArray(projet.Devis)) {
-            this.devis_pieces = this.devis_pieces.concat(projet.Devis);
-          }
-        });
+        
+            this.devis_pieces = data;
+          
         console.log("réponse de la requette get_devis_pieces",this.devis_pieces);
        
       });
       console.log("envoi de la requette get_devis_pieces",this.devis_pieces);
       
   }
+
+getTotalHT(devis?: DevisPiece[]): number {
+  if (!devis || devis.length === 0) {
+    return 0;
+  }
+
+  return devis.reduce((total, d) => {
+    const prix = d.Prix ?? 0; // si undefined → 0
+    return total + prix;
+  }, 0);
+}
+
+
+
+
   isAdmin(){
 
     return this.authService.isAdmin()
@@ -97,12 +127,12 @@ export class VoirDevisClientsComponent {
   }
   deleteDevis(devis_pieceId: number) {
     if (this.authService.isAdminorSuperAdmin()) {
-      this.devis_pieceService.deleteDevisPiece(devis_pieceId).subscribe(
+      this.devis_pieceService.deleteProjet(devis_pieceId).subscribe(
         () => {
-          //console.log('DevisPiece supprimé avec succès');
-          this.message.success( 'DevisPiece supprimé avec succès');
+          //console.log('Projet supprimé avec succès');
+          this.message.success( 'Projet supprimé avec succès');
           // Mettez ici le code pour actualiser la liste des devis_pieces si nécessaire
-          this.loadDevisPieces();
+          this.loadProjets();
         },
         (error) => {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);

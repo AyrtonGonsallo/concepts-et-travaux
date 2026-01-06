@@ -122,6 +122,8 @@ submit(){
   const tp3 = this.formulaire.value.tp3;
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-murs-non-porteurs": {
       mursNonporteurs: mursNonporteurs,
       ouverturePartielle: ouverturePartielle,
@@ -163,6 +165,8 @@ modifier(){
   const tp3 = this.formulaire.value.tp3;
 
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-murs-non-porteurs": {
       mursNonporteurs: mursNonporteurs,
       ouverturePartielle: ouverturePartielle,

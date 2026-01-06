@@ -28,6 +28,13 @@
         </nz-table>
         <br><br>
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="12" [nzXs]="24" nzRequired nzLabelAlign="right" >Titre  </nz-form-label>
+            <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip=" Titre" >
+              <input formControlName="Titre" nz-input placeholder="Titre" />
+            </nz-form-control>
+          </nz-form-item>
           
           <nz-form-item>
               <nz-form-label [nzSm]="12" [nzXs]="24"  nzFor="Commentaire"   nzTooltipTitle="Ici le technicien peut ajouter ses remarques sur le devis" >
@@ -48,7 +55,7 @@
           
           <nz-form-item nz-row class="register-area">
           <nz-form-control [nzSpan]="14" [nzOffset]="12">
-              <button nz-button nzType="primary">Modifier</button>
+              <button nz-button nzType="primary" [disabled]="!validateForm.valid">Modifier</button>
           </nz-form-control>
           </nz-form-item>
       </form>

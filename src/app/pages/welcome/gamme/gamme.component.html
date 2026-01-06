@@ -1,15 +1,15 @@
 <div>
-    <h2>Prix des fournitures et gammes</h2>   
+    <h2>Prix des fournitures et produit</h2>   
     <div class="select-add">
       <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;" class=" mb-5 mt-5">
         <nz-option  nzLabel="Choix de la rubrique" nzValue=""></nz-option>
         <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.Titre"></nz-option>
       </nz-select>
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter une gamme</button>
-      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les gammes</button>
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter un produit</button>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les produits</button>
  <button
       nz-popconfirm
-      nzPopconfirmTitle="Voulez-vous vraiment supprimer toutes les gammes ?"
+      nzPopconfirmTitle="Voulez-vous vraiment supprimer toutes les produits ?"
       [nzBeforeConfirm]="beforeConfirm_supression"
       (nzOnConfirm)="confirm_supression()"
       (nzOnCancel)="cancel_supression()"
@@ -17,13 +17,13 @@
       nzType="primary"
        class="positive-action mb-5 mt-5"
     >
-      Supprimer toutes les gammes
+      Supprimer tous les produits
     </button>
       </div> 
     <div class="select-add">
       <input type="file" (change)="onFileSelected($event)" />
       <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" class=" mb-5 mt-5">Télécharger le modèle</a>
-      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des gammes</button>
+      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des produits</button>
     </div> 
    
     <nz-dropdown-menu #menu="nzDropdownMenu">

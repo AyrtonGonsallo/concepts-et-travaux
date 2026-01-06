@@ -100,6 +100,8 @@ submit() {
 
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-renovation-electrique": {
         chauffage_exist: chauffage_exist,
         mise_en_securite: mise_en_securite,
@@ -158,6 +160,8 @@ modifier(){
 
 
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-renovation-electrique": {
         chauffage_exist: chauffage_exist,
         mise_en_securite: mise_en_securite,

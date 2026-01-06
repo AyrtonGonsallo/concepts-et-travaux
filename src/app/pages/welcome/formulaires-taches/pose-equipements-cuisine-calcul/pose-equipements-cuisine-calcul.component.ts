@@ -190,6 +190,8 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
    
   
     this.devisTache.Donnees = {
+       "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
       "gammes-produits-pose-elementcuisines": {
         gammes_depose_form: gammes_depose_form,
         appareils_cuisine:appareils_cuisine_form,
@@ -254,6 +256,8 @@ submit() {
  
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-pose-elementcuisines": {
       gammes_depose_form: gammes_depose_form,
       appareils_cuisine:appareils_cuisine_form,

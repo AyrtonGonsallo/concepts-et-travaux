@@ -1,5 +1,5 @@
 <div>
-    <h2>Gamme</h2>  
+    <h2>Produits</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Label"  nzRequired nzTooltipTitle="What do you want other to call you" >
@@ -11,8 +11,8 @@
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="What do you want other to call you" >
-                <span>Type de gamme</span>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="Type de gamme" >
+                <span>Type de produit</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
@@ -25,6 +25,17 @@
                         </nz-option>
                         </nz-option-group>
                     </ng-container>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >
+                <span>Travail associé</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
+                    <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>
@@ -57,16 +68,7 @@
                 Formats autorisés: .pdf et taille < 10 MB          
             </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >
-                <span>Travail associé</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
-                    <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+        
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverPrixMultiples" >
                 <span>Activer les prix multiples ? </span>

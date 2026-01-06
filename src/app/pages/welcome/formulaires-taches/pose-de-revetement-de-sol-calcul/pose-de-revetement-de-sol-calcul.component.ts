@@ -223,6 +223,8 @@ load_gammes_pose(){
 submit(){
   console.log(this.formulaire.value)
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "dimensions-pose-sol": {
       longueur: this.formulaire.value.longueur,
       largeur: this.formulaire.value.largeur,
@@ -279,6 +281,8 @@ load_types(){
 
 modifier(){
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "dimensions-pose-sol": {
       longueur: this.formulaire.value.longueur,
       largeur: this.formulaire.value.largeur,

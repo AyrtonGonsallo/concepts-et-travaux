@@ -200,6 +200,13 @@
            
      </form>
 
+     <div *ngIf="historique" style="margin-top: 20px;">
+        <h3>Historique</h3>
+        <div *ngFor="let h of historique" class="parquet-option">
+            Version du {{h.Date | date:'dd/MM/yyyy HH:mm:ss' }}  <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="restaurer(h.ID)">Restaurer</button>
+        </div>
+     </div>
+
 
    </div>
 

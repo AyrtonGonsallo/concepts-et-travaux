@@ -1,5 +1,5 @@
 <div>
-    <h2>État des devis de {{user?.Nom}}</h2>    
+    <h2>État des projets de {{user?.Nom}}</h2>    
 
 
     <nz-table #sortTable [nzData]="devis_pieces"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
@@ -16,19 +16,19 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
-            <td >{{ data.ID }}</td>
-            
-            <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-            <td>{{ data.Prix?data.Prix:0 }} €</td> 
-           
-              
+            <td >{{ data.Id }}</td>
+            <td >{{ data.Nom }}</td>
+            <td>{{ data.Date_de_creation | date:'dd/MM/yyyy '}}</td>
+            <td>{{ data.Status}} </td> 
+            <td>{{ getTotalHT(data.Devis) | number:'1.0-0' }} €</td>
+
                 
             <td> 
-              <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isTechAdminorSuperAdmin()" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'devis-pieces', 'modifier-devis-piece',data.ID]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isTechAdminorSuperAdmin()" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
               nzPopconfirmTitle="Are you sure delete this devis?"
               nzPopconfirmPlacement="bottom"
-              (nzOnConfirm)="deleteDevis(data.ID)"
+              (nzOnConfirm)="deleteDevis(data.Id)"
               (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
             </td>
           </tr>

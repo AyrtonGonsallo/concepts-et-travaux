@@ -146,6 +146,8 @@ submit(){
   const has_portes = this.formulaire.value.has_portes;
 
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-creation-murs-non-porteurs--portes": {
       murs_non_porteurs: murs_non_porteurs,
       portes: portes,
@@ -184,6 +186,8 @@ modifier(){
   const has_portes = this.formulaire.value.has_portes;
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-creation-murs-non-porteurs--portes": {
       murs_non_porteurs: murs_non_porteurs,
       portes: portes,

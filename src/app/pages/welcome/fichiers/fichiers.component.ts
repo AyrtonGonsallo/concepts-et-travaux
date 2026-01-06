@@ -52,8 +52,14 @@ export class FichiersComponent {
       width:"200px",
     },
     {
-      title: 'Numero du projet',
-      compare: (a: Fichier, b: Fichier) => (a.DevisID??0)-(b.DevisID??0),
+      title: 'Utilisateur',
+      compare: (a: Fichier, b: Fichier) => {
+        const nomA = a.Projet?.Utilisateur?.Nom ?? ''; // si undefined → ''
+        const nomB = b.Projet?.Utilisateur?.Nom ?? '';
+
+        return nomA.localeCompare(nomB);
+      },
+
       priority: 1,
       order:null,
       width:"150px",

@@ -195,6 +195,8 @@ submit() {
  
 
   this.devisTache.Donnees = {
+    "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-pose-app-san": {
       gammes_depose_form: gammes_depose_form,
       appareils_salle_de_bain:appareils_salle_de_bain_form,
@@ -240,6 +242,8 @@ modifier(){
  
 
   this.devisTache.Donnees = {
+     "nomtache":this.devisTache.TravailSlug,
+      "idtache":this.devisTache.TravailID,
     "gammes-produits-pose-app-san": {
       gammes_depose_form: gammes_depose_form,
       appareils_salle_de_bain:appareils_salle_de_bain_form,

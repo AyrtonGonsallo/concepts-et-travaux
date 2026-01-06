@@ -29,7 +29,7 @@
               {{ column.title }}
             </th>
             <th >
-              Equipement
+              Catégorie d'équipement
             </th>
             <th>
               Actions
@@ -38,11 +38,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
-            <td>{{ data.ID }}</td>
             <td>{{ data.Titre }}</td>
-            <td [innerHTML]="data.Description"></td>
             <td>{{ data.Prix }} €</td>
-            <td>{{ getLabel(data.ActiverFournisseur) }}</td>
             <td>{{  data.EquipementID }}</td>
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'modeles-equipements', 'modifier-modele',data.ID]"><span nz-icon nzType="edit"></span></button>
