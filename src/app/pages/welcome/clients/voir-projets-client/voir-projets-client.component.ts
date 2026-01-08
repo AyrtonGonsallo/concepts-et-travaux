@@ -6,16 +6,14 @@ import { AuthService } from '../../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { ActivatedRoute } from '@angular/router';
-import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { DevisPiece } from '../../../../Models/DevisPiece';
-
 @Component({
-  selector: 'app-voir-devis-clients',
-  templateUrl: './voir-devis-clients.component.html',
-  styleUrl: './voir-devis-clients.component.css'
+  selector: 'app-voir-projets-client',
+  templateUrl: './voir-projets-client.component.html',
+  styleUrl: './voir-projets-client.component.css'
 })
-export class VoirDevisClientsComponent {
-  userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
+export class VoirProjetsClientComponent {
+userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
   user:any
  size: NzButtonSize = 'large';
   listOfColumn = [

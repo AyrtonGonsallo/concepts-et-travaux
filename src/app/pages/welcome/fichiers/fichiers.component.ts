@@ -52,7 +52,7 @@ export class FichiersComponent {
       width:"200px",
     },
     {
-      title: 'Utilisateur',
+      title: 'Nom du client',
       compare: (a: Fichier, b: Fichier) => {
         const nomA = a.Projet?.Utilisateur?.Nom ?? ''; // si undefined → ''
         const nomB = b.Projet?.Utilisateur?.Nom ?? '';

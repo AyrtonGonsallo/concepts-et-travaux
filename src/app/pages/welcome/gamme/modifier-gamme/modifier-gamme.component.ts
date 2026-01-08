@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { environment } from '../../../../environments/environment';
 export interface Type {
   slug: string;
   label: string;
@@ -17,6 +18,7 @@ export interface Type {
   styleUrl: './modifier-gamme.component.css'
 })
 export class ModifierGammeComponent {
+   apiUrl = environment.imagesUrl;
   gammeId:string =  this.route.snapshot.paramMap.get('id')??'0';
   validateForm: FormGroup<{
     Type: FormControl<string>;

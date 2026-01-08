@@ -76,6 +76,16 @@ add_demande_paiement(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/add_demande_paiement`, userData);
 }
 
+ressend_demande_paiement(id: number): Observable<any> {
+  return this.http.get<any>(`${environment.apiUrl}/ressend_demande_paiement/${id}`);
+}
+
+
+update_status_demande_paiement(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/update_status_demande_paiement/${id}`;
+  return this.http.put<any>(url, null);
+}
+
 get_all_projet_paiements(devisID: number): Observable<any> {
   const url = `${environment.apiUrl}/get_all_projet_paiements/${devisID}`;
   return this.http.get<any>(url);
@@ -481,6 +491,16 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_equipement/${id}`);
   }
 
+  get_all_projet_remises(pid: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_all_remises_by_project/${pid}`);
+  }
+  add_remise(remise: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/add_remise/`, remise);
+  }
+  delete_remise(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_remise/${id}`);
+  }
+
   // Read by PieceID
   getEquipementsByPiece(pieceID: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_equipements_by_piece/${pieceID}`);
@@ -595,9 +615,14 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_devis_taches_by_travail/${tid}`);
   }
 
-  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  // Méthode pour récupérer les devis
   getAllDevisPieces(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_all_devis_piece`);
+  }
+
+  // Méthode pour récupérer les devis avec les projets
+  getAllDevisPieceswithProjects(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_all_devis_piece_with_projects`);
   }
 
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée

@@ -28,9 +28,6 @@
             <th *ngFor="let column of listOfColumn" [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
             </th>
-            <th >
-              Catégorie d'équipement
-            </th>
             <th>
               Actions
             </th>
@@ -39,8 +36,9 @@
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
             <td>{{ data.Titre }}</td>
+            <td>{{  data.Equipement.Titre }} ({{  data.Equipement.Type }})</td>
             <td>{{ data.Prix }} €</td>
-            <td>{{  data.EquipementID }}</td>
+            
             <td> 
               <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'modeles-equipements', 'modifier-modele',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm

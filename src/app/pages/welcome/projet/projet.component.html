@@ -1,5 +1,5 @@
 <div>
-    <h2>Toutes les projets</h2>
+    <h2>Liste des projets</h2>
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'projets', 'ajouter-projet']">Ajouter un projet</button>
 
     <nz-table  #sortTable  [nzData]="projets" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
@@ -19,14 +19,12 @@
         <tbody>
         <tr *ngFor="let data of sortTable.data">
             <td>{{ data.Id }}</td>
+            <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
+
             <td>{{ data.Nom }}</td>
             <td>{{ data.Status }}</td>
-            <td>
-                <span *ngIf="data.Valider" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
-                <span *ngIf="!data.Valider" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
-            </td>
-            <td>{{ data.Date_de_creation | date: 'dd/MM/yyyy' }}</td>
-            <td><div *ngFor="let devisPiece of data?.Devis"><span>devis #{{devisPiece.ID}}</span><br></div></td>
+            
+            <td><div *ngFor="let devisPiece of data?.Devis"><span>devis #{{devisPiece.ID}} - {{devisPiece.Prix}} €</span><br></div></td>
             <td> 
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
                 <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteProjet(data.Id)"><span nz-icon nzType="delete"></span></button>

@@ -31,7 +31,7 @@ export class AjouterGammeComponent {
     GammeDeReferenceID: FormControl<number>;
   }>;
   
-  
+  radioValue=""
 types: Type[] = [
     { group: 'Murs', slug: 'bois', label: 'Bois' },
     { group: 'Murs',slug: 'carrelage', label: 'Carrelage mural' },
@@ -104,6 +104,8 @@ groupedTypeKeys(): string[] {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
       
+
+      
       this.userService.addGamme(this.validateForm.value).subscribe(
         (response: any) => {
           console.log('gamme ajoutée avec succès :', response);
@@ -114,6 +116,7 @@ groupedTypeKeys(): string[] {
           console.error('Erreur lors de l\'ajout de la gamme :', error);
         }
       );
+      
       
     } else {
       Object.values(this.validateForm.controls).forEach(control => {

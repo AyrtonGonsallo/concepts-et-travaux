@@ -2,6 +2,8 @@
     <h2>Modifier un modèle d'équipement</h2>   
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
 
+        <!--
+        
          <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="EquipementID"  >
                 <span>Catégorie d'équipement</span>
@@ -13,6 +15,37 @@
             </nz-form-control>
         </nz-form-item>
 
+        -->
+
+
+        
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="EquipementID"  nzRequired nzTooltipTitle="Type de gamme" >
+                <span>Catégorie d'équipement </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+            
+                <nz-radio-group class="parent-container" id="EquipementID"  formControlName="EquipementID">
+
+                    <ng-container *ngFor="let groupName of groupedTypeKeys()">
+                        <div class="boxes" >
+                            <div class="group-title">
+                                {{ groupName }}
+                            </div>
+
+                            <label nz-radio  *ngFor="let type of groupedTypes[groupName]" [nzValue]="type.ID">
+                            {{ type.Titre }}
+                            </label>
+                        </div>
+                        
+                    </ng-container>
+
+                </nz-radio-group>
+                
+            </nz-form-control>
+        </nz-form-item>
+        
 
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre</nz-form-label>
@@ -35,6 +68,7 @@
                 ></editor>
             </nz-form-control>
           </nz-form-item>
+          <!--
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Matiere"  >
                 <span>Matiere</span>
@@ -43,11 +77,14 @@
                 <input nz-input id="Matiere" formControlName="Matiere" />
             </nz-form-control>
         </nz-form-item>
+          -->
+          
           <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image"  >
                 <span>Image</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <a *ngIf="validateForm.controls.Image.value" [href]="apiUrl+validateForm.controls.Image.value" target="_blank">{{validateForm.controls.Image.value}}</a>
                 <input type="text" id="Image" formControlName="Image" hidden />
                 <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput($event)" />                
                 Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     

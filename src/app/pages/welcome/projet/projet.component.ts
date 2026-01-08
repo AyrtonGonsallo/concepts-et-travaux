@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-projet',
@@ -22,37 +23,33 @@ export class ProjetComponent {
        order:'descend', 
     },
     {
-     title: 'Nom',
-      compare: (a: Projet, b: Projet) => a.Nom.localeCompare(b.Nom),
-      priority: false,
-      order:null, 
-    },
-    {
-      title: 'Status',
-      compare: (a: Projet, b: Projet) => a.Status.localeCompare(b.Status),
-      priority: false,
-      order: null
-    },
-    {
-      title: 'Paiement autorisé',
-      compare: (a: Projet, b: Projet) => 1,
-      priority: false,
-      order: null
-    },
-    {
-      title: 'Date de création',
+      title: 'Date',
       compare: (a: Projet, b: Projet) => {
         if (!a.Date_de_creation || !b.Date_de_creation) return 0;
         return new Date(a.Date_de_creation).getTime() - new Date(b.Date_de_creation).getTime();
       },
       priority: false,
       order:null, 
-    }
+    },
+    {
+     title: 'Nom',
+      compare: (a: Projet, b: Projet) => a.Nom.localeCompare(b.Nom),
+      priority: false,
+      order:null, 
+    },
+    {
+      title: 'Statut',
+      compare: (a: Projet, b: Projet) => a.Status.localeCompare(b.Status),
+      priority: false,
+      order: null
+    },
+    
   ];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des projets');
     this.loadProjets();
   }
 

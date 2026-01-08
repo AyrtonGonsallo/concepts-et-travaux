@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoirDevisClientsComponent } from './voir-devis-clients.component';
+import { VoirDevisClientsComponent } from './voir-details-client.component';
 
 describe('VoirDevisClientsComponent', () => {
   let component: VoirDevisClientsComponent;

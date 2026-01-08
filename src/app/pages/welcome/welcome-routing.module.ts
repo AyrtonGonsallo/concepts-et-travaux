@@ -96,9 +96,10 @@ import { PoseEquipementsCuisineCalculComponent } from './formulaires-taches/pose
 import { PoseEquipementsCuisineListeComponent } from './formulaires-taches/pose-equipements-cuisine-liste/pose-equipements-cuisine-liste.component';
 import { CreationMursNonPorteursListeComponent } from './formulaires-taches/creation-murs-non-porteurs-liste/creation-murs-non-porteurs-liste.component';
 import { CreationMursNonPorteursCalculComponent } from './formulaires-taches/creation-murs-non-porteurs-calcul/creation-murs-non-porteurs-calcul.component';
-import { VoirDevisClientsComponent } from './clients/voir-devis-clients/voir-devis-clients.component';
+import { VoirDetailsClientComponent } from './clients/voir-details-client/voir-details-client.component';
 import { ClientsComponent } from './clients/clients.component';
 import { FichiersComponent } from './fichiers/fichiers.component';
+import { VoirProjetsClientComponent } from './clients/voir-projets-client/voir-projets-client.component';
 
 const routes: Routes = [
  
@@ -182,7 +183,8 @@ const routes: Routes = [
       { path: 'formules-et-tests/modifier-creation-murs-non-porteur/:id', component: CreationMursNonPorteursCalculComponent },
       
       { path: 'clients', component: ClientsComponent },
-      { path: 'clients/voir-devis-client/:id', component: VoirDevisClientsComponent },
+      { path: 'clients/voir-details-client/:id', component: VoirDetailsClientComponent },
+      { path: 'clients/voir-projets-client/:id', component: VoirProjetsClientComponent },
       { path: 'fichiers', component: FichiersComponent },
 
       { path: 'equipements/ajouter-equipement', component: AjouterEquipementComponent },

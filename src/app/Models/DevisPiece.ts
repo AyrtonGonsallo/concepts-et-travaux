@@ -13,5 +13,5 @@ export interface DevisPiece {
     UtilisateurID?: number;
     Utilisateur:Utilisateur;
     DevisTaches:DevisTache[];
-    
+    Projets?:any;
   }

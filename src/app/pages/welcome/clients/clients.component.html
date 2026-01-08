@@ -43,8 +43,9 @@
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Email }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.DateDeCreation | date:'dd/MM/yyyy HH:mm:ss'}}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)"> 
-              <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'clients', 'voir-devis-client',data.Id]"><span nz-icon nzType="eye"></span></button>
-             
+              <button nz-button nzType="primary" class="positive-action mb-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="Voir détails client" [routerLink]="['/administration', 'clients', 'voir-details-client',data.Id]"><span nz-icon nzType="eye"></span></button>
+              <button nz-button nzType="default" class="mb-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="Voir projets client" [routerLink]="['/administration', 'clients', 'voir-projets-client',data.Id]"><span nz-icon nzType="unordered-list" nzTheme="outline"></span></button>
+
           </tr>
         </tbody>
     </nz-table>

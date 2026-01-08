@@ -8,6 +8,7 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
 import { environment } from '../../../environments/environment';
 import { Travail } from '../../../Models/Travail';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-gamme',
@@ -20,10 +21,16 @@ export class GammeComponent {
   sel_size: NzSelectSizeType = 'default';
   listOfColumn = [
     {
-      title: 'Id',
-      compare: (a: Gamme, b: Gamme) => a.ID - b.ID,
-      priority: 3,
-      order:'descend'
+      title: 'Titre',
+      compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
+      priority: 2,
+      order:"ascend"
+    },
+    {
+      title: 'Catégorie',
+      compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
+      priority: 1,
+      order:null
     },
     {
       title: 'Travail',
@@ -31,18 +38,8 @@ export class GammeComponent {
       priority: 1,
       order:null
     },
-    {
-      title: 'Type',
-      compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
-      priority: 1,
-      order:null
-    },
-    {
-      title: 'Label',
-      compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
-      priority: 2,
-      order:null
-    },
+    
+    
     
     {
       title: 'Prix',
@@ -50,25 +47,14 @@ export class GammeComponent {
       priority: 1,
       order:null
     },
-    {
-      title: 'Fournisseur',
-      compare: (a: Gamme, b: Gamme) => (a.ActiverFournisseur ? '1' : '0').localeCompare(b.ActiverFournisseur ? '1' : '0'),
-      priority: 4,
-      order:null
-    },
-    {
-      title: 'Pdf',
-      compare: (a: Gamme, b: Gamme) => (a.Pdf??"").localeCompare(b.Pdf??""),
-      priority: 1,
-      order:null
-    },
     
   ];
   gamme:Gamme[] = [];
   listOfDisplayData :any;
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des fournitures et produits');
     Promise.all([
       this.loadGamme(),
       this.loadTravaux()

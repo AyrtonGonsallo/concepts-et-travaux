@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-modeles-equipements',
@@ -23,6 +24,12 @@ export class ModelesEquipementsComponent {
       order:'ascend'
     },
     {
+      title: 'Catégorie',
+      compare: (a: ModeleEquipement, b: ModeleEquipement) => a.Titre.localeCompare(b.Titre),
+      priority: 2,
+      order:'ascend'
+    },
+    {
       title: 'Prix',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
@@ -32,9 +39,10 @@ export class ModelesEquipementsComponent {
   ];
   modeles:ModeleEquipement[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des équipements');
     this.loadModeleEquipements();
   }
 

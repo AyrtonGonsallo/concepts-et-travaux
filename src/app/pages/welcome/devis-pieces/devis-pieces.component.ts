@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-devis-pieces',
@@ -22,7 +23,7 @@ export class DevisPiecesComponent {
     },
     
     {
-      title: 'Date de création',
+      title: 'Date',
       compare: (a: DevisPiece, b: DevisPiece) => {
         const dateA = new Date(a.Date).getTime();
         const dateB = new Date(b.Date).getTime();
@@ -32,7 +33,13 @@ export class DevisPiecesComponent {
       order:'descend', 
     },
     {
-      title: 'Utilisateur',
+      title: 'Client',
+      compare: (a: DevisPiece, b: DevisPiece) => (a.UtilisateurID  ?? 0)-(b.UtilisateurID ?? 0),
+      priority: 1,
+      order:null, 
+    },
+    {
+      title: 'Projet',
       compare: (a: DevisPiece, b: DevisPiece) => (a.UtilisateurID  ?? 0)-(b.UtilisateurID ?? 0),
       priority: 1,
       order:null, 
@@ -46,9 +53,10 @@ export class DevisPiecesComponent {
   ];
   devis_pieces:DevisPiece[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private devis_pieceService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private devis_pieceService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des devis');
     this.loadDevisPieces();
     this.authService.getUser().subscribe(
       (user) => {
@@ -62,18 +70,18 @@ export class DevisPiecesComponent {
   }
 uid=0;
   loadDevisPieces(): void {
-    this.devis_pieceService.getAllDevisPieces()
+    this.devis_pieceService.getAllDevisPieceswithProjects()
       .subscribe((data: DevisPiece[]) => {
         if(!this.isTechAdminorSuperAdmin()){
           this.devis_pieces = data.filter(devis => devis.UtilisateurID === this.uid);
 
-          console.log("réponse de la requette get_utilisateur",this.uid,this.devis_pieces)
+          console.log("réponse de la requette getAllDevisPieceswithProjects",this.uid,this.devis_pieces)
         }else{
         this.devis_pieces = data;
-        console.log("réponse de la requette get_devis_pieces",this.devis_pieces);
+        console.log("réponse de la requette getAllDevisPieceswithProjects",this.devis_pieces);
         }
       });
-      console.log("envoi de la requette get_devis_pieces",this.devis_pieces);
+      console.log("envoi de la requette getAllDevisPieceswithProjects",this.devis_pieces);
       
   }
   isAdmin(){

@@ -121,8 +121,24 @@
            
               </td>
               <td> 
-                <button nz-button nzType="primary" class="negative-action mb-5"  title="supprimer"  nz-popconfirm
-                nzPopconfirmTitle="Voulez-vous vraiment supprimer ce paiement ?"
+
+                <button *ngIf="data.Requette == 'demande'" nz-button nzType="primary" class=" mb-5"  title="renvoyer"  nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment renvoyer cette demande de paiement ?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="ressendPaiement(data.ID)"
+                (nzOnCancel)="cancel()" ><span nz-icon nzType="send" nzTheme="outline"></span></button>
+
+                <button *ngIf="data.Requette == 'demande'" nz-button nzType="default" class=" mb-5"  title="changer de statut"  nz-popconfirm
+                  nzPopconfirmTitle="Voulez-vous vraiment valider ce paiement ?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="update_status_demande_paiement(data.ID)"
+                  (nzOnCancel)="cancel()" >
+                    <span *ngIf="!data.Status" nz-icon nzType="check-circle" nzTheme="outline"></span>
+                    <span *ngIf="data.Status" nz-icon nzType="close" nzTheme="outline"></span>
+                </button>
+
+                <button *ngIf="data.Requette == 'demande'" nz-button nzType="default" nzDanger class="negative-action mb-5"  title="supprimer"  nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer cette demande de paiement ?"
                 nzPopconfirmPlacement="bottom"
                 (nzOnConfirm)="deletePaiement(data.ID)"
                 (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
@@ -184,6 +200,108 @@
         <nz-form-item>
           <nz-form-control [nzSpan]="12" [nzOffset]="5">
             <button nz-button nzType="primary" [disabled]="paiementForm.invalid">Ajouter une demande de paiement</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      
+      <br>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="visite-box">
+      <div class="visite-title">Remises</div>
+      <nz-table #nzTable3 [nzData]="remises" *ngIf="remises"  [nzShowPagination]="'false'" nzTableLayout="fixed" >
+        <thead>
+          <tr>
+            
+            <th>Titre</th>
+            <th>Type</th>
+            <th>Pourcentage/Valeur </th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr *ngFor="let data of nzTable3.data">
+              <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
+              <td>{{ data.Type }}</td>
+              <td>{{ data.Type=="pourcentage"  ? data.Pourcentage + ' %' : data.Valeur + ' €' }} </td>
+              <td> 
+
+                
+
+                <button  nz-button nzType="default" nzDanger class="negative-action mb-5"  title="supprimer"  nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer cette remise ?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deleteRemise(data.ID)"
+                (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+              </td>
+            </tr>
+           
+            
+        </tbody>
+      </nz-table>
+      <br><br>
+      <form nz-form [formGroup]="remiseForm" (ngSubmit)="submitremiseForm()">
+        <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="Titre" nzRequired>Titre</nz-form-label>
+        <nz-form-control  [nzSpan]="12" nzErrorTip="Please input Titre!">
+          <input nz-input id="Titre" formControlName="Titre" placeholder="Titre" />
+        </nz-form-control>
+      </nz-form-item>
+      
+        <!-- Type -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
+            <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
+              <nz-option nzValue="pourcentage" nzLabel="pourcentage"></nz-option>
+              <nz-option nzValue="fixe" nzLabel="Fixe"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Montant -->
+        <nz-form-item *ngIf="remiseForm.controls.Type.value=='pourcentage'">
+          <nz-form-label [nzSpan]="5"  nzFor="Pourcentage">Pourcentage</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Pourcentage!">
+            <nz-input-number id="Pourcentage" formControlName="Pourcentage"  ></nz-input-number> 
+          </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item *ngIf="remiseForm.controls.Type.value=='fixe'">
+          <nz-form-label [nzSpan]="5"  nzFor="Valeur">Valeur</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Valeur!">
+            <nz-input-number id="Valeur" formControlName="Valeur"  ></nz-input-number> 
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5"  nzFor="Commentaire">Commentaire</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
+            <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+        
+      
+        <!-- Bouton de soumission -->
+        <nz-form-item>
+          <nz-form-control [nzSpan]="12" [nzOffset]="5">
+            <button nz-button nzType="primary" [disabled]="remiseForm.invalid">Ajouter une remise</button>
           </nz-form-control>
         </nz-form-item>
       </form>

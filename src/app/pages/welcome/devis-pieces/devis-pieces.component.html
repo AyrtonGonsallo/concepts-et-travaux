@@ -1,5 +1,5 @@
 <div>
-    <h2>Gestion des devis</h2>    
+    <h2>Liste des devis</h2>    
 
 
     <nz-table #sortTable [nzData]="devis_pieces"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
@@ -18,8 +18,9 @@
           <tr *ngFor="let data of sortTable.data" >
             <td >{{ data.ID }}</td>
             
-            <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{ data.Date | date:'dd/MM/yyyy'}}</td>
             <td>{{ data.Utilisateur?.Nom }} {{ data.Utilisateur?.Prenom }}</td>
+            <td>{{ data.Projets[0]?.Nom }} </td>
             <td>{{ data.Prix?data.Prix:0 }} €</td> 
            
               

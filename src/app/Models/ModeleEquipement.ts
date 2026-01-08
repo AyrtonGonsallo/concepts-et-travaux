@@ -11,5 +11,6 @@ export interface ModeleEquipement {
     Matiere?: string ;
     EquipementID: number; // Assurez-vous de correspondre au type utilisé dans Equipement
     ActiverFournisseur:boolean;
+    Equipement?:any
   }
   

@@ -46,6 +46,22 @@ export class AjouterModeleComponent {
   size: NzSelectSizeType = 'default';
   multipleValue : number[] = [];
   equipements: Equipement[] = [];
+ 
+  groupedTypes = this.equipements.reduce((acc, eq) => {
+    if (!acc[eq.Type]) {
+      acc[eq.Type] = [];
+    }
+    acc[eq.Type].push(eq);
+    return acc;
+  }, {} as { [key: string]: Equipement[] });
+
+
+  groupedTypeKeys(): string[] {
+    return Object.keys(this.groupedTypes);
+  }
+
+
+
   submitForm(): void {
     if (this.validateForm.valid) {
       const formValues: FormValues = { ...this.validateForm.value };
@@ -146,10 +162,18 @@ activerFournisseur(){
     this.userService.getEquipements().subscribe(
       (response) => {
         this.equipements= response;
-        console.log("réponse de la requette getCategoriesPiece",this.equipements);
+        console.log("réponse de la requette getEquipements",this.equipements);
+
+         this.groupedTypes = this.equipements.reduce((acc, eq) => {
+      if (!acc[eq.Type]) {
+        acc[eq.Type] = [];
+      }
+      acc[eq.Type].push(eq);
+      return acc;
+    }, {} as { [key: string]: Equipement[] });
       },
       (error) => {
-        console.error('Erreur lors de la recuperation des CategoriesPiece :', error);
+        console.error('Erreur lors de la recuperation des getEquipements :', error);
       }
     );
   }
@@ -167,7 +191,6 @@ activerFournisseur(){
     NombreDeVasques: [0, [ ]],
     Matiere: ['', [ ]],
     EquipementID: [0, [Validators.required ]],
-    
      ActiverFournisseur: [false, [ ]],
     FournisseurID:[0, [ ]],
     ModeleDeReferenceID: [0, [ ]],

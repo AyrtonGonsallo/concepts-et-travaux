@@ -6,6 +6,8 @@ import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../Models/Travail';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-taches-generales',
@@ -16,9 +18,9 @@ export class TachesGeneralesComponent {
   size: NzButtonSize = 'large';
   listOfColumn = [
     {
-      title: 'Id',
-      compare: (a: TacheGenerale, b: TacheGenerale) => a.ID - b.ID,
-      priority: 3
+      title: 'Titre',
+      compare: (a: TacheGenerale, b: TacheGenerale) => a.Label.localeCompare(b.Label),
+      priority: 2
     },
    {
          title: 'Travail',
@@ -26,11 +28,7 @@ export class TachesGeneralesComponent {
          priority: 1,
          order:null
        },
-    {
-      title: 'Label',
-      compare: (a: TacheGenerale, b: TacheGenerale) => a.Label.localeCompare(b.Label),
-      priority: 2
-    },
+    
     {
       title: 'Prix',
       compare: (a: TacheGenerale, b: TacheGenerale) => a.Prix-(b.Prix),
@@ -39,11 +37,11 @@ export class TachesGeneralesComponent {
   ];
   tache_generale:TacheGenerale[] = [];
   listOfDisplayData:any
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
 
-
+    this.titleService.setTitle('Liste des services');
     Promise.all([
       this.loadTacheGenerale(),
       this.loadTravaux()

@@ -8,6 +8,7 @@ import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { AuthService } from '../../../../Services/auth.service';
 import { Paiement } from '../../../../Models/Paiement';
 import { Projet } from '../../../../Models/Projet';
+import { Remise } from '../../../../Models/Remise';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
 interface ArtisanOption {
   label: string;
@@ -23,6 +24,7 @@ interface ArtisanOption {
 export class ModifierProjetComponent {
   size: NzSelectSizeType = 'default';
   paiements:Paiement[] = [];
+  remises:Remise[] = [];
   project:any;
   paiement_visite=false
   date_paiement_visite=""
@@ -138,6 +140,7 @@ add_artisan(value: object[]): void {
     );
 
     this.get_all_projet_paiements(this.projetId);
+    this.get_all_projet_remises(this.projetId);
 
     this.paiementForm = this.fb.group({
       TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
@@ -164,6 +167,20 @@ add_artisan(value: object[]): void {
         },
         (error) => {
           console.error('Erreur lors de la recuperation des details paiments :', error);
+        }
+      );
+      
+    }
+
+    get_all_projet_remises(devisId: string): void {
+      this.userService.get_all_projet_remises( parseInt(devisId, 10)).subscribe(
+        (response) => {
+          this.remises=response
+          console.log("réponse de la requette get_all_projet_remises",response);
+          
+        },
+        (error) => {
+          console.error('Erreur lors de la recuperation des get_all_projet_remises :', error);
         }
       );
       
@@ -250,6 +267,23 @@ add_artisan(value: object[]): void {
     DateCreation: this.fb.control<string | null>(null, Validators.required), // Date du jour
     ProjetID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
   });
+
+  
+  remiseForm: FormGroup<{
+    Titre: FormControl<string | null>;
+    Type: FormControl<string | null>;
+    Pourcentage: FormControl<number | null>;
+    Valeur: FormControl<number | null>;
+    Commentaire: FormControl<string | null>;
+    ProjetID: FormControl<number | null>;
+  }> = this.fb.group({
+    Titre: this.fb.control<string | null>(null, Validators.required),
+    Type: this.fb.control<string | null>(null, Validators.required),
+    Pourcentage: this.fb.control<number | null>(null, ),
+    Valeur: this.fb.control<number | null>(null, ),
+    Commentaire: this.fb.control<string | null>(null, ),
+    ProjetID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
+  });
   
 
   submitpaiementForm(): void {
@@ -261,6 +295,17 @@ add_artisan(value: object[]): void {
           console.log('paiement ajouté avec succès :', response);
           this.message.create('success', `paiement ajouté avec succès`);
           this.get_all_projet_paiements(this.projetId);
+          this.paiementForm = this.fb.group({
+            TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+            Commentaire: this.fb.control<string | null>(null, Validators.required),
+            Titre: this.fb.control<string | null>(null, Validators.required),
+            Type: this.fb.control<string | null>(null, Validators.required),
+            Montant: this.fb.control<number | null>(null, Validators.required),
+            Requette: this.fb.control<string | null>("demande", Validators.required),
+            Status: this.fb.control<boolean | null>(false, Validators.required),
+            DateCreation: this.fb.control<string | null>(null, Validators.required), // Date du jour
+            ProjetID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
+          });
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du paiement :', error);
@@ -277,6 +322,76 @@ add_artisan(value: object[]): void {
       
     }
   }
+
+
+  
+  submitremiseForm(): void {
+    if (this.remiseForm.valid) {
+      console.log('submit', this.remiseForm.value);
+      
+      this.userService.add_remise(this.remiseForm.value).subscribe(
+        (response) => {
+          console.log('remise ajoutée avec succès :', response);
+          this.message.create('success', `remise ajoutée avec succès`);
+          this.get_all_projet_remises(this.projetId);
+          this.remiseForm = this.fb.group({
+            Titre: this.fb.control<string | null>(null, Validators.required),
+            Type: this.fb.control<string | null>(null, Validators.required),
+            Pourcentage: this.fb.control<number | null>(null, ),
+            Valeur: this.fb.control<number | null>(null, ),
+            Commentaire: this.fb.control<string | null>(null, ),
+            ProjetID: this.fb.control<number | null>(parseInt(this.projetId) , Validators.required), // devispiece.ID sera assigné dynamiquement
+          });
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de la remise :', error);
+        }
+      );
+    } else {
+      Object.values(this.paiementForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+
+      
+    }
+  }
+
+  ressendPaiement(id:number): void {
+    
+      
+      this.userService.ressend_demande_paiement(id).subscribe(
+        (response) => {
+          console.log('rappel de demande de paiement envoyé avec succès :', response);
+          this.message.create('success', `rappel de demande de paiement envoyé avec succès`);
+        },
+        (error) => {
+          console.error('Erreur lors de l\'envoi du rappel :', error);
+        }
+      );
+
+    
+  }
+
+  update_status_demande_paiement(id:number): void {
+    
+      
+      this.userService.update_status_demande_paiement(id).subscribe(
+        (response) => {
+          console.log('changement de status effectué avec succès :', response);
+          this.message.create('success', `changement de status effectué avec succès`);
+          this.get_all_projet_paiements(this.projetId);
+        },
+        (error) => {
+          console.error('Erreur lors du changement de status :', error);
+        }
+      );
+
+    
+  }
+
   cancel(): void {
     this.message.info('suppression annulée');
   }
@@ -290,8 +405,32 @@ add_artisan(value: object[]): void {
           this.get_all_projet_paiements((this.projetId));
         },
         (error) => {
-          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+          console.error('Erreur lors de la suppression du paiement :', error);
+          this.message.error( 'Erreur lors de la suppression du paiement');
+        }
+      );
+      
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour faire cette opération`);
+      return false;
+    }
+    
+  }
+
+
+  deleteRemise(p_Id: number) {
+    if (this.authService.isAdminorSuperAdmin()) {
+      this.userService.delete_remise(p_Id).subscribe(
+        () => {
+          //console.log('DevisPiece supprimé avec succès');
+          this.message.success( 'remise supprimée avec succès');
+          // Mettez ici le code pour actualiser la liste des devis_pieces si nécessaire
+          this.get_all_projet_remises((this.projetId));
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de la remise:', error);
+          this.message.error( 'Erreur lors de la suppression de la remise');
         }
       );
       

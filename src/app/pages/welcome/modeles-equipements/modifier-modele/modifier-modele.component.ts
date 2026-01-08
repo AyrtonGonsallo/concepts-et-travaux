@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { environment } from '../../../../environments/environment';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -24,6 +25,8 @@ interface FormValues {
   styleUrl: './modifier-modele.component.css'
 })
 export class ModifierModeleComponent {
+  apiUrl = environment.imagesUrl;
+  
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     Image: FormControl<string>;
@@ -49,6 +52,23 @@ export class ModifierModeleComponent {
   size: NzSelectSizeType = 'default';
   multipleValue : number[] = [];
   equipements: Equipement[] = [];
+  groupedTypes = this.equipements.reduce((acc, eq) => {
+    if (!acc[eq.Type]) {
+      acc[eq.Type] = [];
+    }
+    acc[eq.Type].push(eq);
+    return acc;
+  }, {} as { [key: string]: Equipement[] });
+
+
+  groupedTypeKeys(): string[] {
+    return Object.keys(this.groupedTypes);
+  }
+
+
+
+
+
   submitForm(): void {
     if (this.validateForm.valid) {
       const formValues: FormValues = { ...this.validateForm.value };
@@ -148,6 +168,13 @@ loadFournisseurs(){
       (response) => {
         this.equipements= response;
         console.log("réponse de la requette getCategoriesPiece",this.equipements);
+        this.groupedTypes = this.equipements.reduce((acc, eq) => {
+        if (!acc[eq.Type]) {
+          acc[eq.Type] = [];
+        }
+        acc[eq.Type].push(eq);
+        return acc;
+      }, {} as { [key: string]: Equipement[] });
       },
       (error) => {
         console.error('Erreur lors de la recuperation des CategoriesPiece :', error);
