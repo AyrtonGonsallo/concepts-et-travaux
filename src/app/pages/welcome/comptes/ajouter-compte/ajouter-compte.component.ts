@@ -37,6 +37,7 @@ export class AjouterCompteComponent {
     ZoneGeographiqueDactivite: FormControl<string>;
     Qualifications: FormControl<string>;
     KBis: FormControl<string>;
+    CategorieArtisan: FormControl<string>;
     RoleId: FormControl<number>;
     Agree: FormControl<boolean>;
   }>;
@@ -247,6 +248,7 @@ export class AjouterCompteComponent {
       QuestionnaireTarif: ['', []],
       AssuranceRCDecennale: ['', []],
       KBis: ['', []],
+      CategorieArtisan: ['', []],
       RoleId: [0, []],
     });
 

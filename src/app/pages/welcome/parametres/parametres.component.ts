@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { Parametre } from '../../../Models/Parametre';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-parametres',
@@ -39,9 +40,10 @@ size: NzButtonSize = 'large';
   ];
   tache_generale:Parametre[] = [];
   listOfDisplayData:any
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des paramètres');
     this.loadParametre();
   }
 

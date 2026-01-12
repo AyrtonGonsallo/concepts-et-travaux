@@ -40,7 +40,7 @@ export class DevisPiecesComponent {
     },
     {
       title: 'Projet',
-      compare: (a: DevisPiece, b: DevisPiece) => (a.UtilisateurID  ?? 0)-(b.UtilisateurID ?? 0),
+      compare: (a: DevisPiece, b: DevisPiece) => (a.Projets[0].Id  ?? 0)-(b.Projets[0].Id ?? 0),
       priority: 1,
       order:null, 
     },

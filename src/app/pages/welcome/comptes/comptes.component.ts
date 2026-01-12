@@ -6,6 +6,7 @@ import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-t
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-comptes',
@@ -59,9 +60,10 @@ export class ComptesComponent {
   ];
   utilisateurs:Utilisateur[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des comptes');
     this.loadUtilisateurs();
     this.authService.getUser().subscribe(
       (user) => {

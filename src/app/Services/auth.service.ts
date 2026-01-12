@@ -104,7 +104,7 @@ export class AuthService {
     this.message.create('success', `Utilisateur déconnecté`);
     this.clearDataFromLocal("utilisateur");
     this.userSubject.next(null);  // Mise à jour du BehaviorSubject avec une valeur nulle
-    this.router.navigate(['/login']);
+    this.router.navigate(['login']);
   }
 
   // Vérifier si l'utilisateur est connecté

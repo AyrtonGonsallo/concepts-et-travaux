@@ -228,6 +228,19 @@
               </div>
         </nz-form-item>
 
+        <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CategorieArtisan"  >
+                <span>Catégorie d'artisan</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="CategorieArtisan" formControlName="CategorieArtisan">
+                    <nz-option nzLabel="peintre" nzValue="peintre"></nz-option>
+                    <nz-option nzLabel="électricien" nzValue="électricien"></nz-option>
+                    <nz-option nzLabel="maçon" nzValue="maçon"></nz-option>
+                </nz-select>       
+            </nz-form-control>
+        </nz-form-item>
+
         
         
        

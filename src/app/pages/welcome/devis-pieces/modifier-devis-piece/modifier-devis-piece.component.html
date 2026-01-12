@@ -1,10 +1,11 @@
 <div>
-    <h2>Modifier le devis nº{{devispiece?.ID}} de {{devispiece?.Utilisateur?.Nom}} {{devispiece?.Utilisateur?.Prenom}}</h2>  
+  <div style="display: flex;flex-direction: row-reverse;justify-content: center;">
+        <h2>Modification - devis nº{{devispiece?.ID}} - {{devispiece?.Utilisateur?.Nom}} {{devispiece?.Utilisateur?.Prenom}}</h2>  
+  </div>
     
     
 
     <div class="visite-box">
-      <div class="visite-title">Modification du devis</div>
       <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed" [nzShowPagination]="'false'">
           <thead>
             <tr>
@@ -62,6 +63,160 @@
     </div>
 
     
+
+
+    <div class="visite-box">
+      <div class="visite-title">Remises</div>
+      <nz-table #nzTable3 [nzData]="remises" *ngIf="remises"  [nzShowPagination]="'false'" nzTableLayout="fixed" >
+        <thead>
+          <tr>
+            
+            <th>Titre</th>
+            <th>Type</th>
+            <th>Pourcentage/Valeur </th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr *ngFor="let data of nzTable3.data">
+              <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
+              <td>{{ data.Type }}</td>
+              <td>{{ data.Type=="pourcentage"  ? data.Pourcentage + ' %' : data.Valeur + ' €' }} </td>
+              <td> 
+
+                
+
+                <button  nz-button nzType="default" nzDanger class="negative-action mb-5"  title="supprimer"  nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer cette remise ?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deleteRemise(data.ID)"
+                (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
+              </td>
+            </tr>
+           
+            
+        </tbody>
+      </nz-table>
+      <br><br>
+      <form nz-form [formGroup]="remiseForm" (ngSubmit)="submitremiseForm()">
+        <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="Titre" nzRequired>Titre</nz-form-label>
+        <nz-form-control  [nzSpan]="12" nzErrorTip="Please input Titre!">
+          <input nz-input id="Titre" formControlName="Titre" placeholder="Titre" />
+        </nz-form-control>
+      </nz-form-item>
+      
+        <!-- Type -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
+            <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
+              <nz-option nzValue="pourcentage" nzLabel="pourcentage"></nz-option>
+              <nz-option nzValue="fixe" nzLabel="Fixe"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Montant -->
+        <nz-form-item *ngIf="remiseForm.controls.Type.value=='pourcentage'">
+          <nz-form-label [nzSpan]="5"  nzFor="Pourcentage">Pourcentage</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Pourcentage!">
+            <nz-input-number id="Pourcentage" formControlName="Pourcentage"  ></nz-input-number> 
+          </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item *ngIf="remiseForm.controls.Type.value=='fixe'">
+          <nz-form-label [nzSpan]="5"  nzFor="Valeur">Valeur</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Valeur!">
+            <nz-input-number id="Valeur" formControlName="Valeur"  ></nz-input-number> 
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5"  nzFor="Commentaire" >Commentaire</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
+            <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+        
+      
+        <!-- Bouton de soumission -->
+        <nz-form-item>
+          <nz-form-control [nzSpan]="12" [nzOffset]="5">
+            <button nz-button nzType="primary" [disabled]="remiseForm.invalid">Ajouter une remise</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      
+      <br>
+    </div>
+
+
+    <div class="visite-box">
+      
+      <div class="visite-title">Artisans</div>
+      <nz-form-item>
+        <nz-form-label>Catégorie</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [(ngModel)]="selectedCategorie"
+            (ngModelChange)="onCategorieChange()"
+            nzPlaceHolder="Sélectionnez une catégorie"
+            [nzAllowClear]="true"
+          >
+            <nz-option
+              *ngFor="let cat of categories"
+              [nzLabel]="cat.nom"
+              [nzValue]="cat.nom"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Artisans</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [(ngModel)]="selectedArtisans"
+            nzPlaceHolder="Sélectionnez des artisans"
+            [nzMode]="'multiple'"
+            [nzMaxTagCount]="3"
+          >
+            <nz-option
+              *ngFor="let art of filteredArtisans"
+              [nzLabel]="art.Nom + ' ' + art.Prenom"
+              [nzValue]="art.Id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="ajouterArtisans()">Ajouter</button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div *ngIf="artisansAjoutes.length > 0" class="artisans-liste">
+        <h4>Artisans ajoutés :</h4>
+        <ul>
+          <li *ngFor="let art of artisansAjoutes">
+            {{ art.Nom }} {{ art.Prenom }}
+            <button (click)="supprimerArtisan(art.Id)">Supprimer</button>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="artisansAjoutes.length === 0">
+        Aucun artisan ajouté.
+      </div>
+
+
+
+  
+
+    </div>
     
     
 </div>

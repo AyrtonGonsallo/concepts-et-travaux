@@ -20,7 +20,15 @@
             
             <td>{{ data.Date | date:'dd/MM/yyyy'}}</td>
             <td>{{ data.Utilisateur?.Nom }} {{ data.Utilisateur?.Prenom }}</td>
-            <td>{{ data.Projets[0]?.Nom }} </td>
+            <td>
+              <a
+                [routerLink]="['/administration', 'projets', 'modifier-projet', data.Projets[0]?.Id]"
+                style="color:black;text-decoration: underline;"
+              >
+                Projet {{ data.Projets[0]?.Id }}
+              </a>
+            </td>
+
             <td>{{ data.Prix?data.Prix:0 }} €</td> 
            
               

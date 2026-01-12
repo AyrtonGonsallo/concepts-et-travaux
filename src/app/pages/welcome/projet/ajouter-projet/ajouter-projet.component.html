@@ -40,17 +40,7 @@
             </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="artisans"   nzTooltipTitle="What do you want other to call you" >
-                <span>Artisans</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre artisans!">
-                <nz-select id="artisans" [(ngModel)]="multipleValue" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
-                    <nz-option *ngFor="let option of artisans" [nzLabel]="option.Nom + ' ' +option.Prenom" [nzValue]="option.Id"></nz-option>
-                  </nz-select>
-            </nz-form-control>
-        
-        </nz-form-item>
+       
         
 
         <nz-form-item>

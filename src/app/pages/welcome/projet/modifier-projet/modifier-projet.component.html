@@ -51,6 +51,17 @@
           <div class="inner-box">
             Travaux livrés<br>
             <label nz-checkbox [(ngModel)]="travaux_livres"></label>
+                <nz-date-picker *ngIf="travaux_livres"  [(ngModel)]="date_travaux_livres" [nzDisabledDate]="disabledDate"
+ (ngModelChange)="onChange($event)"></nz-date-picker>
+
+          </div>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="4" *ngIf="travaux_livres">
+          <div class="inner-box">
+            Fin de GPA<br>
+            <label nz-checkbox [(ngModel)]="fin_gpa"></label>
+                <nz-date-picker [(ngModel)]="date_fin_gpa" [nzDisabledDate]="disabledDate" (ngModelChange)="onChange($event)"></nz-date-picker>
+
           </div>
         </div>
       </div>
@@ -68,9 +79,14 @@
       <button nz-button nzType="primary" [nzLoading]="isLoadingvisit_ended" (click)="loadvisit_ended()">valider</button>
 
       <br><br>
-      Commentaire :
-      <br>
-      <textarea rows="4" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" style="margin-top: 10px;"></textarea> 
+      <div nz-row>
+        <nz-form-label [nzSpan]="5"  nzFor="Commentaire" nzTooltipTitle="Ce commentaire sera ajouté au mail envoyé au client"
+        [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label>
+        <div nz-col  nzSpan="18">
+          <textarea  id="CommentaireVisite" rows="4" style="width:100%;margin-top: 10px;" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" ></textarea> 
+        </div>
+      </div>
+      
     </div>
 
     <div class="visite-box" *ngIf="project?.Devis">
@@ -79,12 +95,6 @@
         <a [routerLink]="['/administration', 'devis-pieces', 'modifier-devis-piece',devis.ID]" style="color:black;text-decoration: underline;">Devis {{devis.ID}}</a><br>
       </span>
       
-    </div>
-
-    <div class="visite-box">
-      <h2>Artisans</h2>
-      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="add_artisan(checkOptionsOne)"></nz-checkbox-group>
-
     </div>
 
 
@@ -189,7 +199,8 @@
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Commentaire">Commentaire</nz-form-label>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Commentaire" nzTooltipTitle="Ce commentaire sera intégré au mail envoyé au client"
+          [nzTooltipIcon]="paiementTooltipIcon">Commentaire</nz-form-label>
           <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
             <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
           </nz-form-control>
@@ -221,93 +232,6 @@
 
 
 
-
-    <div class="visite-box">
-      <div class="visite-title">Remises</div>
-      <nz-table #nzTable3 [nzData]="remises" *ngIf="remises"  [nzShowPagination]="'false'" nzTableLayout="fixed" >
-        <thead>
-          <tr>
-            
-            <th>Titre</th>
-            <th>Type</th>
-            <th>Pourcentage/Valeur </th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-            <tr *ngFor="let data of nzTable3.data">
-              <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
-              <td>{{ data.Type }}</td>
-              <td>{{ data.Type=="pourcentage"  ? data.Pourcentage + ' %' : data.Valeur + ' €' }} </td>
-              <td> 
-
-                
-
-                <button  nz-button nzType="default" nzDanger class="negative-action mb-5"  title="supprimer"  nz-popconfirm
-                nzPopconfirmTitle="Voulez-vous vraiment supprimer cette remise ?"
-                nzPopconfirmPlacement="bottom"
-                (nzOnConfirm)="deleteRemise(data.ID)"
-                (nzOnCancel)="cancel()" ><span nz-icon nzType="delete"></span></button>
-              </td>
-            </tr>
-           
-            
-        </tbody>
-      </nz-table>
-      <br><br>
-      <form nz-form [formGroup]="remiseForm" (ngSubmit)="submitremiseForm()">
-        <nz-form-item>
-        <nz-form-label [nzSpan]="5" nzFor="Titre" nzRequired>Titre</nz-form-label>
-        <nz-form-control  [nzSpan]="12" nzErrorTip="Please input Titre!">
-          <input nz-input id="Titre" formControlName="Titre" placeholder="Titre" />
-        </nz-form-control>
-      </nz-form-item>
-      
-        <!-- Type -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
-            <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
-              <nz-option nzValue="pourcentage" nzLabel="pourcentage"></nz-option>
-              <nz-option nzValue="fixe" nzLabel="Fixe"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      
-        <!-- Montant -->
-        <nz-form-item *ngIf="remiseForm.controls.Type.value=='pourcentage'">
-          <nz-form-label [nzSpan]="5"  nzFor="Pourcentage">Pourcentage</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Pourcentage!">
-            <nz-input-number id="Pourcentage" formControlName="Pourcentage"  ></nz-input-number> 
-          </nz-form-control>
-        </nz-form-item>
-
-         <nz-form-item *ngIf="remiseForm.controls.Type.value=='fixe'">
-          <nz-form-label [nzSpan]="5"  nzFor="Valeur">Valeur</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Valeur!">
-            <nz-input-number id="Valeur" formControlName="Valeur"  ></nz-input-number> 
-          </nz-form-control>
-        </nz-form-item>
-
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5"  nzFor="Commentaire">Commentaire</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
-            <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
-          </nz-form-control>
-        </nz-form-item>
-        
-      
-        <!-- Bouton de soumission -->
-        <nz-form-item>
-          <nz-form-control [nzSpan]="12" [nzOffset]="5">
-            <button nz-button nzType="primary" [disabled]="remiseForm.invalid">Ajouter une remise</button>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-      
-      <br>
-    </div>
 
         <button nz-button nzType="primary" (click)="loadSave()" [nzLoading]="isLoadingSave" class="fixed_saving">Enregistrer</button>
 

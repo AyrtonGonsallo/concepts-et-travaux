@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-categorie-piece',
@@ -33,9 +34,10 @@ export class CategoriePieceComponent {
   ];
   categories_de_pieces:CategoriePiece[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des catégories de pièces');
     this.loadCategoriePieces();
   }
 

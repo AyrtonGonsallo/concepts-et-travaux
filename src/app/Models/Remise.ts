@@ -7,6 +7,6 @@ export interface Remise {
     Pourcentage: number;
     Valeur: number;
     Commentaire?: string;
-    ProjetID?: number; // Le point d'interrogation indique que la propriété est facultative
+    DevisID?: number; // Le point d'interrogation indique que la propriété est facultative
   }
   

@@ -38,6 +38,7 @@ export class ModifierCompteComponent {
     Qualifications: FormControl<string>;
     AssuranceRCDecennale: FormControl<string>;
     KBis: FormControl<string>;
+    CategorieArtisan: FormControl<string>;
     RoleId: FormControl<number>;
   }>;
  isSousTraitant(){
@@ -120,6 +121,7 @@ export class ModifierCompteComponent {
       QuestionnaireTarif: ['', []],
       AssuranceRCDecennale: ['', []],
       KBis: ['', []],
+      CategorieArtisan: ['', []],
       RoleId: [0, []],
     });
 

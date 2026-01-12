@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './Guards/AuthGuard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/login' },
-  { path: 'administration', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule), canActivate: [AuthGuard] },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'administration', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule),  canMatch: [AuthGuard] },
   { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) }
 ];
 
@@ -12,4 +12,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { 
+  
+}

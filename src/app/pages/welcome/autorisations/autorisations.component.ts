@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-t
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-autorisations',
@@ -40,9 +41,10 @@ export class AutorisationsComponent {
     }
   ];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des autorisations');
     this.loadAutorisations();
   }
 

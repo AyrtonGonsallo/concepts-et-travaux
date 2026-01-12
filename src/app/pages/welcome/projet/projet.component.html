@@ -27,7 +27,7 @@
             <td><div *ngFor="let devisPiece of data?.Devis"><span>devis #{{devisPiece.ID}} - {{devisPiece.Prix}} €</span><br></div></td>
             <td> 
                 <button nz-button nzType="primary" class="positive-action mb-5" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'projets', 'modifier-projet',data.Id]"><span nz-icon nzType="edit"></span></button>
-                <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteProjet(data.Id)"><span nz-icon nzType="delete"></span></button>
+                <button *ngIf="data.Status=='visite à régler'" nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer" (click)="deleteProjet(data.Id)"><span nz-icon nzType="delete"></span></button>
               </td>
         </tr>
         </tbody>

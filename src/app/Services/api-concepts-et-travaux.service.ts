@@ -491,8 +491,8 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_equipement/${id}`);
   }
 
-  get_all_projet_remises(pid: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/get_all_remises_by_project/${pid}`);
+  get_all_devis_remises(did: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_all_remises_by_devis/${did}`);
   }
   add_remise(remise: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_remise/`, remise);

@@ -5,6 +5,7 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-roles',
@@ -33,9 +34,10 @@ export class RolesComponent {
   ];
   roles: Role[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des rôles');
     this.loadRoles();
   }
 

@@ -6,6 +6,7 @@ import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { presetColors } from 'ng-zorro-antd/core/color';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-question',
@@ -33,9 +34,10 @@ export class QuestionComponent {
   ];
   questions:Question[] = [];
 
-  constructor(private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Liste des questions');
     this.loadQuestions();
   }
 

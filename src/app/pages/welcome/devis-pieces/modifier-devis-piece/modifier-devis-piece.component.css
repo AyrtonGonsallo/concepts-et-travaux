@@ -15,3 +15,13 @@
     border: solid 2px #bfbfbf;
     padding: 20px;
 }
+
+.artisans-liste ul{
+    list-style: none;
+}
+.artisans-liste li{
+    border-bottom: solid black 1px;
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+}
