@@ -1,30 +1,128 @@
 <div>
-    <h2>Liste des fournitures et produits</h2>   
-    <div class="select-add">
-      <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;" class=" mb-5 mt-5">
-        <nz-option  nzLabel="Choix de la rubrique" nzValue=""></nz-option>
-        <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.Titre"></nz-option>
-      </nz-select>
+    <h2>Liste des fournitures et produits</h2>  
+    
+    <div>
+      <fieldset>
+        <legend>Gestion:</legend>
+            
+          <div class="select-add">
+      
             <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter un produit</button>
-      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les produits</button>
- <button
-      nz-popconfirm
-      nzPopconfirmTitle="Voulez-vous vraiment supprimer toutes les produits ?"
-      [nzBeforeConfirm]="beforeConfirm_supression"
-      (nzOnConfirm)="confirm_supression()"
-      (nzOnCancel)="cancel_supression()"
-      nz-button
-      nzType="primary"
-       class="positive-action mb-5 mt-5"
-    >
-      Supprimer tous les produits
-    </button>
-      </div> 
-    <div class="select-add">
-      <input type="file" (change)="onFileSelected($event)" />
-      <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" class=" mb-5 mt-5">Télécharger le modèle</a>
-      <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des produits</button>
-    </div> 
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les produits</button>
+            <button
+              nz-popconfirm
+              nzPopconfirmTitle="Voulez-vous vraiment supprimer toutes les produits ?"
+              [nzBeforeConfirm]="beforeConfirm_supression"
+              (nzOnConfirm)="confirm_supression()"
+              (nzOnCancel)="cancel_supression()"
+              nz-button
+              nzType="primary"
+              class="positive-action mb-5 mt-5"
+            >
+              Supprimer tous les produits
+            </button>
+          </div> 
+          <div class="select-add">
+            <input type="file" (change)="onFileSelected($event)" />
+            <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" class=" mb-5 mt-5">Télécharger le modèle</a>
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des produits</button>
+          </div> 
+      </fieldset>
+    </div>
+
+    <div>
+      <fieldset>
+        <legend>Filtres:</legend>
+            
+        Travail : 
+        <nz-select [(ngModel)]="filteredTravail" (ngModelChange)="search2()"  style="width: 400px;" class=" mb-5 mt-5">
+          <nz-option  nzLabel="Tous les travaux" nzValue=""></nz-option>
+          <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.Titre"></nz-option>
+        </nz-select>
+        <br>
+
+        Étape : 
+        <nz-select [(ngModel)]="filteredEtape" (ngModelChange)="search2()">
+          <nz-option  nzLabel="Toutes les étapes" nzValue=""></nz-option>
+            <nz-option nzValue="etape1" nzLabel="Étape 1"></nz-option>
+            <nz-option nzValue="etape2" nzLabel="Étape 2"></nz-option>
+            <nz-option nzValue="etape3" nzLabel="Étape 3"></nz-option>
+        </nz-select>
+        <br>
+
+        Sous catégorie : 
+        <nz-select
+          [(ngModel)]="filteredSouscategorie"
+          (ngModelChange)="search2()"
+          nzPlaceHolder="Toutes les sous-catégories"
+          class="select-large"
+        >
+          <nz-option nzLabel="Toutes les sous-catégories" nzValue=""></nz-option>
+
+          <!-- C -->
+          <nz-option nzLabel="Carrelage mural" nzValue="carrelage"></nz-option>
+          <nz-option nzLabel="Carrelage (sol)" nzValue="carrelage-sol"></nz-option>
+          <nz-option nzLabel="Cloison" nzValue="cloison"></nz-option>
+
+          <!-- D -->
+          <nz-option nzLabel="Dépose" nzValue="depose"></nz-option>
+          <nz-option nzLabel="Dépose cuisine" nzValue="depose-cuisine"></nz-option>
+          <nz-option nzLabel="Dépose murs" nzValue="depose-murs"></nz-option>
+          <nz-option nzLabel="Dépose revêtements plafond" nzValue="depose-revetement-plafond"></nz-option>
+          <nz-option nzLabel="Dépose revêtements sol" nzValue="depose-revetement-sol"></nz-option>
+          <nz-option nzLabel="Dépose éléments salle de bain / eau" nzValue="depose-salle-de-bain-salle-d-eau"></nz-option>
+
+          <!-- E -->
+          <nz-option nzLabel="Enduit décoratif" nzValue="enduit-decoratif"></nz-option>
+          <nz-option nzLabel="État des surfaces (murs)" nzValue="etat-des-surfaces-murs"></nz-option>
+          <nz-option nzLabel="État des surfaces (sol)" nzValue="etat-des-surfaces-sol"></nz-option>
+          <nz-option nzLabel="État des surfaces (plafond)" nzValue="etat-des-surfaces-plafond"></nz-option>
+
+          <!-- G -->
+          <nz-option nzLabel="Gamme de porte" nzValue="gamme-de-porte"></nz-option>
+
+          <!-- M -->
+          <nz-option nzLabel="Matériaux" nzValue="materiaux"></nz-option>
+          <nz-option nzLabel="Moquette" nzValue="moquette-de-sol"></nz-option>
+
+          <!-- N -->
+          <nz-option nzLabel="Nature de la porte" nzValue="nature-porte"></nz-option>
+
+          <!-- P -->
+          <nz-option nzLabel="Papier peint" nzValue="papier-peint"></nz-option>
+          <nz-option nzLabel="Parquet flottant" nzValue="parquet-flottant-sol"></nz-option>
+          <nz-option nzLabel="Parquet massif" nzValue="papier-massif-sol"></nz-option>
+          <nz-option nzLabel="Peinture murale" nzValue="peinture"></nz-option>
+          <nz-option nzLabel="Peinture de sol" nzValue="peinture-de-sol"></nz-option>
+          <nz-option nzLabel="Plinthes bois" nzValue="plinthes-bois-sol"></nz-option>
+          <nz-option nzLabel="Plinthes carrelage" nzValue="plinthes-carrelage-sol"></nz-option>
+
+          <!-- R -->
+          <nz-option nzLabel="Radiateur" nzValue="radiateur"></nz-option>
+          <nz-option nzLabel="Résine décorative (sol)" nzValue="resine-decorative-de-sol"></nz-option>
+          <nz-option nzLabel="Rénovation électrique partielle" nzValue="renovation-electrique-partielle"></nz-option>
+          <nz-option nzLabel="Rénovation électrique complète" nzValue="renovation-electrique-complete"></nz-option>
+
+          <!-- S -->
+          <nz-option nzLabel="Sol souple" nzValue="sol-souple"></nz-option>
+
+          <!-- T -->
+          <nz-option nzLabel="Tissus muraux" nzValue="tissus"></nz-option>
+          <nz-option nzLabel="Type de cloison (mur non porteur)" nzValue="type-de-cloison-murs-non-porteurs"></nz-option>
+          <nz-option nzLabel="Type de porte coulissante" nzValue="type-de-porte-coulissante"></nz-option>
+          <nz-option nzLabel="Type de porte double" nzValue="type-de-porte-double"></nz-option>
+          <nz-option nzLabel="Type de porte simple" nzValue="type-de-porte-simple"></nz-option>
+          <nz-option nzLabel="Type de porte épaisseur 5 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_5"></nz-option>
+          <nz-option nzLabel="Type de porte épaisseur 7 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_7"></nz-option>
+          <nz-option nzLabel="Type de porte épaisseur 10 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_10"></nz-option>
+          <nz-option nzLabel="Type de porte épaisseur > 10 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_10+"></nz-option>
+          <nz-option nzLabel="Type de radiateur" nzValue="type-de-radiateur"></nz-option>
+        </nz-select>
+
+
+      </fieldset>
+    </div>
+    
    
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <div class="ant-table-filter-dropdown">

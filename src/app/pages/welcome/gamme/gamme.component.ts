@@ -71,6 +71,8 @@ export class GammeComponent {
     return booleen?"Oui":"Non"
   }
   filteredTravail=""
+  filteredEtape=""
+  filteredSouscategorie=""
   travaux:Travail[] = [];
   loadTravaux(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -123,7 +125,17 @@ export class GammeComponent {
           //console.log('Gamme supprimé avec succès');
           this.message.success( 'Gamme supprimé avec succès');
           // Mettez ici le code pour actualiser la liste des gamme si nécessaire
-          this.loadGamme();
+          Promise.all([
+            this.loadGamme(),
+            this.loadTravaux()
+          ]).then(() => {
+            const savedFilter = localStorage.getItem('filteredTravailListeGammes');
+            if (savedFilter) {
+              this.filteredTravail = savedFilter;
+              console.log("Filtre récupéré: ", savedFilter);
+            }
+            this.search2();
+          });
         },
         (error) => {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);
@@ -156,10 +168,13 @@ export class GammeComponent {
   }
   applyFilters(): void {
   localStorage.setItem('filteredTravailListeGammes', this.filteredTravail);
+  localStorage.setItem('filteredEtapeListeGammes', this.filteredEtape);
     this.listOfDisplayData = this.gamme.filter((item: Gamme) => {
       const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
       const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;
-      return matchLabel && matchTravail;
+      const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
+      const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
+      return matchLabel && matchTravail && matchEtape  && matchType;
     });
   }
 

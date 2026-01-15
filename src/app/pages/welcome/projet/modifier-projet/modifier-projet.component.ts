@@ -8,6 +8,7 @@ import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { AuthService } from '../../../../Services/auth.service';
 import { Paiement } from '../../../../Models/Paiement';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { environment } from '../../../../environments/environment';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
 
 
@@ -17,9 +18,12 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
   styleUrl: './modifier-projet.component.css'
 })
 export class ModifierProjetComponent {
+
+  assetsUrl = environment.assetsUrl
   size: NzSelectSizeType = 'default';
   paiements:Paiement[] = [];
   project:any;
+  send_mail_visite=false
   paiement_visite=false
   date_paiement_visite=""
   programmation_visite=false
@@ -31,12 +35,12 @@ export class ModifierProjetComponent {
   acompte_paye=false
   date_paiement_acompte=""
   travaux_demarres=false
-   fin_gpa=false
    date_fin_gpa : Date = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
    date_travaux_livres : Date = new Date(); 
   travaux_en_cours=false
   travaux_acheves=false
   travaux_livres=false
+  gpa_termine=false
   notes_remarques=""
 
     onChange(result: Date): void {
@@ -65,10 +69,10 @@ export class ModifierProjetComponent {
     paiement_autorise: this.paiement_autorise? 1 : 0,
     acompte_paye: this.acompte_paye? 1 : 0,
     travaux_demarres: this.travaux_demarres? 1 : 0,
-    
     travaux_en_cours: this.travaux_en_cours? 1 : 0,
     travaux_acheves: this.travaux_acheves? 1 : 0,
     travaux_livres: this.travaux_livres? 1 : 0,
+    gpa_termine: this.gpa_termine? 1 : 0,
     notes_remarques: this.notes_remarques,
     Date_de_fin_des_travaux:this.date_travaux_livres,
     Date_de_fin_gpa:this.date_fin_gpa,
@@ -357,45 +361,97 @@ export class ModifierProjetComponent {
   date_de_programmation=null
   notifier_le_client_que_la_visite_est_finie = false;
   add_visite_date(){
-  
 
+    const etatProjet = {
+      projet_id:this.projetId,
+      paiement_visite: this.paiement_visite? 1 : 0,
+      programmation_visite: this.programmation_visite? 1 : 0,
+      projet_valide: this.projet_valide? 1 : 0,
+      paiement_autorise: this.paiement_autorise? 1 : 0,
+      acompte_paye: this.acompte_paye? 1 : 0,
+      travaux_demarres: this.travaux_demarres? 1 : 0,
+      travaux_en_cours: this.travaux_en_cours? 1 : 0,
+      travaux_acheves: this.travaux_acheves? 1 : 0,
+      travaux_livres: this.travaux_livres? 1 : 0,
+      gpa_termine: this.gpa_termine? 1 : 0,
+      notes_remarques: this.notes_remarques,
+      Date_de_fin_des_travaux:this.date_travaux_livres,
+      Date_de_fin_gpa:this.date_fin_gpa,
+    };
 
-    if (this.notifier_le_client_que_la_visite_est_finie || this.date_de_programmation) {
-      const dateProg = this.date_de_programmation;
-      const visiteData = {
-        DateCreation: new Date().toISOString(), // Génère la date actuelle au format ISO
-        DateDeProgrammation:dateProg
-      };
-      if(this.date_de_programmation && !this.notifier_le_client_que_la_visite_est_finie){
-        console.log('Visite envoyée :', visiteData);
-        this.userService.update_visite(this.project.Visite.ID, visiteData).subscribe(
-          (response) => {
-            console.log('Visite programée avec succès :', response);
-            this.message.success("Visite programée avec succès")        
-            this.userService.send_visite_scheduled(this.project.Visite.ID,this.project.Id).subscribe(
+    console.log("JSON du projet :", etatProjet);
+    this.userService.update_project_status(etatProjet).subscribe(
+      (response: any) => {
+       
+        console.log('reponse de la mise a jour :', response);
+        this.message.create('success', `Informations du projet mises à jour`);
+
+        if (this.notifier_le_client_que_la_visite_est_finie || this.date_de_programmation) {
+          const dateProg = this.date_de_programmation;
+          const visiteData = {
+            DateCreation: new Date().toISOString(), // Génère la date actuelle au format ISO
+            DateDeProgrammation:dateProg
+          };
+          if(this.date_de_programmation && !this.notifier_le_client_que_la_visite_est_finie){
+            console.log('Visite envoyée :', visiteData);
+            this.userService.update_visite(this.project.Visite.ID, visiteData).subscribe(
               (response) => {
-                console.log('Message de visite programmée envoyé au client avec succès :', response);
-                this.message.success("Message de visite programmée envoyé au client avec succès")        
-               
+                console.log('Visite programée avec succès :', response);
+                this.message.success("Visite programée avec succès")        
+                this.userService.send_visite_scheduled(this.project.Visite.ID,this.project.Id,this.send_mail_visite).subscribe(
+                  (response) => {
+                    console.log('Visite programmée  avec succès :', response);
+                    this.message.success(response.message)        
+                  
+                  },
+                  (error) => {
+                    console.error('Erreur lors de la programmation de la visite:', error);
+                  }
+                );
               },
               (error) => {
-                console.error('Erreur lors de l\'envoi du message de visite programmée :', error);
+                console.error('Erreur lors de l\'ajout de la visite :', error);
               }
             );
-          },
-          (error) => {
-            console.error('Erreur lors de l\'ajout de la visite :', error);
           }
-        );
-      }
-      
-    } 
+          
+        }
 
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation de la mise à jour :', error);
+      }
+    );
   
   }
 
   notify_client_visit_ended(){
-      this.userService.send_visite_done(this.project.Visite.ID,this.project.Id).subscribe(
+
+    const etatProjet = {
+      projet_id:this.projetId,
+      paiement_visite: this.paiement_visite? 1 : 0,
+      programmation_visite: this.programmation_visite? 1 : 0,
+      projet_valide: this.projet_valide? 1 : 0,
+      paiement_autorise: this.paiement_autorise? 1 : 0,
+      acompte_paye: this.acompte_paye? 1 : 0,
+      travaux_demarres: this.travaux_demarres? 1 : 0,
+      travaux_en_cours: this.travaux_en_cours? 1 : 0,
+      travaux_acheves: this.travaux_acheves? 1 : 0,
+      travaux_livres: this.travaux_livres? 1 : 0,
+      gpa_termine: this.gpa_termine? 1 : 0,
+      notes_remarques: this.notes_remarques,
+      Date_de_fin_des_travaux:this.date_travaux_livres,
+      Date_de_fin_gpa:this.date_fin_gpa,
+    };
+
+    console.log("JSON du projet :", etatProjet);
+    this.userService.update_project_status(etatProjet).subscribe(
+      (response: any) => {
+       
+        console.log('reponse de la mise a jour :', response);
+        this.message.create('success', `Informations du projet mises à jour`);
+
+        this.userService.send_visite_done(this.project.Visite.ID,this.project.Id).subscribe(
           (response) => {
             console.log('Message de visite terminée envoyé au client avec succès :', response);
             this.message.success("Message de visite terminée envoyé au client avec succès")        
@@ -405,9 +461,16 @@ export class ModifierProjetComponent {
             console.error('Erreur lors de l\'envoi du message de visite terminée :', error);
           }
         );
+
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation de la mise à jour :', error);
+      }
+    );
+
   }
 
-   isLoadingvisit_ended = false;
+  isLoadingvisit_ended = false;
   loadvisit_ended(): void {
     this.isLoadingvisit_ended = true;
     this.notify_client_visit_ended()

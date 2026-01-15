@@ -101,8 +101,8 @@ deleteFichier(id: number): Observable<any> {
   return this.http.delete<any>(url);
 }
 
-send_visite_scheduled(visiteID: number,projectID:number): Observable<any> {
-  const url = `${environment.apiUrl}/send_visite_scheduled/${visiteID}/${projectID}`;
+send_visite_scheduled(visiteID: number,projectID:number,sendEmail:boolean): Observable<any> {
+  const url = `${environment.apiUrl}/send_visite_scheduled/${visiteID}/${projectID}/${sendEmail}`;
   return this.http.get<any>(url);
 }
 

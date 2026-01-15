@@ -5,6 +5,7 @@ export interface Gamme {
     Prix: number;
     Image?: string; // Optional field
     Pdf?: string; // Optional field
+    Etape: string;
     TravailID: number;
     ActiverPrixMultiples: boolean;
     ActiverFournisseur: boolean;

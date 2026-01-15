@@ -25,8 +25,9 @@ export class ModifierGammeComponent {
     Label: FormControl<string>;
     Image: FormControl<string>;
     Pdf: FormControl<string>;
+    Etape: FormControl<string>;
     Prix: FormControl<number>;
-     PrixMultiples: FormArray;
+    PrixMultiples: FormArray;
     TravailID: FormControl<number>;
     ActiverFournisseur: FormControl<boolean>;
     ActiverPrixMultiples: FormControl<boolean>;
@@ -229,6 +230,7 @@ groupedTypeKeys(): string[] {
       Label: ['', [Validators.required]],
       Image: ['', []],
       Pdf: ['', []],
+      Etape: ['', [Validators.required]],
       Prix: [0, [Validators.required]],
       PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],

@@ -59,7 +59,7 @@
         <div nz-col class="gutter-row" [nzSpan]="4" *ngIf="travaux_livres">
           <div class="inner-box">
             Fin de GPA<br>
-            <label nz-checkbox [(ngModel)]="fin_gpa"></label>
+            <label nz-checkbox [(ngModel)]="gpa_termine"></label>
                 <nz-date-picker [(ngModel)]="date_fin_gpa" [nzDisabledDate]="disabledDate" (ngModelChange)="onChange($event)"></nz-date-picker>
 
           </div>
@@ -74,18 +74,27 @@
     
       <span style="margin-right: 10px;">> Programmer une date de visite :</span>
       <nz-date-picker style="margin-right: 10px;margin-bottom: 10px;" nzShowTime [(ngModel)]="date_de_programmation" [nzDisabledDate]="disableBeforeToday"></nz-date-picker>
+      <label nz-checkbox [(ngModel)]="send_mail_visite">Envoyer le mail</label>
       <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
       <span style="margin-right: 10px;">> Envoyer le devis final au client :</span>
       <button nz-button nzType="primary" [nzLoading]="isLoadingvisit_ended" (click)="loadvisit_ended()">valider</button>
 
       <br><br>
       <div nz-row>
-        <nz-form-label [nzSpan]="5"  nzFor="Commentaire" nzTooltipTitle="Ce commentaire sera ajouté au mail envoyé au client"
-        [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label>
+        <nz-form-label [nzSpan]="5"  nzFor="Commentaire" [nzTooltipTitle]="commVisiteTooltipTemplate"
+        [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label><br>
         <div nz-col  nzSpan="18">
           <textarea  id="CommentaireVisite" rows="4" style="width:100%;margin-top: 10px;" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" ></textarea> 
         </div>
       </div>
+      <ng-template #commVisiteTooltipTemplate>
+        <div class="tooltip">
+          Ce commentaire sera intégré aux mails envoyés au client
+          <br>
+          <a [href]="assetsUrl+'img/email_devis_valide.png'" target="_blank">Aperçu du mail devis validé</a>
+          <a [href]="assetsUrl+'img/email_visite_technicien_programmee.png'" target="_blank">Aperçu du mail visite programmée</a>
+        </div>
+      </ng-template>
       
     </div>
 
@@ -199,13 +208,20 @@
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Commentaire" nzTooltipTitle="Ce commentaire sera intégré au mail envoyé au client"
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Commentaire" [nzTooltipTitle]="commPaiementTooltipTemplate"
           [nzTooltipIcon]="paiementTooltipIcon">Commentaire</nz-form-label>
+          
           <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez entrer un Commentaire!">
             <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
           </nz-form-control>
         </nz-form-item>
-        
+        <ng-template #commPaiementTooltipTemplate>
+          <div class="tooltip">
+            Ce commentaire sera intégré au mail envoyé au client
+            <br>
+            <a [href]="assetsUrl+'img/email_demande_de_paiement.png'" target="_blank">Aperçu du mail</a>
+          </div>
+        </ng-template>
       
         <!-- Bouton de soumission -->
         <nz-form-item>
