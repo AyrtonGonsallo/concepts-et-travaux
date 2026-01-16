@@ -43,18 +43,36 @@ export class ModelesEquipementsComponent {
 
   ngOnInit(): void {
     this.titleService.setTitle('Liste des équipements');
-    this.loadModeleEquipements();
+    
+
+    Promise.all([
+      this.loadModeleEquipements()
+    ]).then(() => {
+      const savedFilter = localStorage.getItem('filteredEtapeListeModeles');
+      if (savedFilter) {
+        this.filteredEtape = (savedFilter);
+        console.log("Filtre récupéré: ", savedFilter);
+      }
+      this.search2();
+    });
   }
 
-  loadModeleEquipements(): void {
-    this.userService.getModelesEquipement()
-      .subscribe((data: ModeleEquipement[]) => {
-        this.modeles = data;
-        console.log("réponse de la requette get modeles",this.modeles);
+ 
+
+  loadModeleEquipements(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.getModelesEquipement().subscribe({
+          next: (data: ModeleEquipement[]) => {
+            this.modele = data;
+            this.listOfDisplayData = [...this.modele];
+            console.log("réponse de la requête getModelesEquipement", this.modele);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
       });
-      console.log("envoi de la requette modeles",this.modeles);
-      
-  }
+    }
+
   getLabel(booleen:boolean){
     return booleen?"Oui":"Non"
   }
@@ -75,7 +93,16 @@ export class ModelesEquipementsComponent {
           //console.log('ModeleEquipement supprimé avec succès');
           this.message.success( 'ModeleEquipement supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des besoins si nécessaire
-          this.loadModeleEquipements();
+          Promise.all([
+            this.loadModeleEquipements()
+          ]).then(() => {
+            const savedFilter = localStorage.getItem('filteredEtapeListeModeles');
+            if (savedFilter) {
+              this.filteredEtape = (savedFilter);
+              console.log("Filtre récupéré: ", savedFilter);
+            }
+            this.search2();
+          });
         },
         (error) => {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);
@@ -158,5 +185,62 @@ cancel_supression(): void {
       }, 3000);
     });
   }
+
+  filteredEtape=""
+
+      
+  liste = [
+      "Création de murs non porteurs - Création des portes",
+      "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition complète de murs non porteurs",
+      "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition partielle de murs non porteurs",
+      "Installation de nouveaux équipements sanitaires - Dépose d'anciennes installations",
+      "Installation de nouveaux équipements sanitaires - Pose de nouveaux équipements sanitaires",
+      "Pose de nouveaux équipements de cuisine - Dépose d'anciennes installations",
+      "Pose de nouveaux équipements de cuisine - Choix des équipements de cuisine",
+      "Pose de revêtement de sol - Choix du nouveau revêtement",
+      "Pose de revêtement de sol - État des surfaces",
+      "Pose de revêtement de sol - Revêtements à retirer",
+      "Pose de revêtement sur plafond - Choix du nouveau revêtement",
+      "Pose de revêtement sur plafond - État des surfaces",
+      "Pose de revêtement sur plafond - Revêtements existants",
+      "Pose de revêtements muraux - Choix du nouveau revêtement",
+      "Pose de revêtements muraux - État des surfaces",
+      "Pose de revêtements muraux - Revêtements existants",
+      "Remplacement de portes - Porte coulissante (de 70 à 90)",
+      "Remplacement de portes - Porte double (de 100 à 140)",
+      "Remplacement de portes - Porte simple (dimensions de 70 à 90)",
+      "Remplacement de radiateurs - Radiateur électrique",
+      "Remplacement de radiateurs - Radiateur à eau (sur chaudière)",
+      "Rénovation électrique complète - Mise aux normes",
+      "Rénovation électrique complète - Mise en sécurité",
+      "Rénovation électrique partielle - Appareillage à créer",
+      "Rénovation électrique partielle - Appareillage à remplacer"
+  ];
+
+listOfDisplayData :any;
+modele:ModeleEquipement[] = [];
+  searchValue = '';
+    visible = false;
+    reset(): void {
+      this.searchValue = '';
+      this.applyFilters();
+    }
+  
+    search(): void {
+      this.visible = false;
+      this.applyFilters();
+    }
+    search2(): void {
+  
+      this.applyFilters();
+    }
+    applyFilters(): void {
+    localStorage.setItem('filteredEtapeListeModeles', this.filteredEtape);
+      this.listOfDisplayData = this.modele.filter((item: ModeleEquipement) => {
+        const matchLabel = !this.searchValue || item.Titre.toLowerCase().includes(this.searchValue.toLowerCase());
+        const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
+        return matchLabel  && matchEtape;
+      });
+    }
 
 }

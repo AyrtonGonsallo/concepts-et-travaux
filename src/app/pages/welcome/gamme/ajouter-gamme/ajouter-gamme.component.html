@@ -72,13 +72,44 @@
         </nz-form-item>
 
         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PrixFournisseur" nzRequired >
+                <span>Prix du fournisseur</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="PrixFournisseur" formControlName="PrixFournisseur"  ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PrixPose" nzRequired >
+                <span>Prix de pose</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="PrixPose" formControlName="PrixPose"  ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Prix" nzRequired >
                 <span>Prix</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="Prix" formControlName="Prix"  ></nz-input-number> 
+                <nz-input-number id="Prix" formControlName="Prix" [nzDisabled]="true" ></nz-input-number> 
             </nz-form-control>
         </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape" nzRequired>
+                <span>Étape </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="Etape" formControlName="Etape">
+                    <nz-option *ngFor="let element of liste"  [nzValue]="element" [nzLabel]="element"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image"  >
                 <span>Image</span>
@@ -106,9 +137,7 @@
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-select id="Etape" formControlName="Etape">
-                    <nz-option nzValue="etape1" nzLabel="Étape 1"></nz-option>
-                    <nz-option nzValue="etape2" nzLabel="Étape 2"></nz-option>
-                    <nz-option nzValue="etape3" nzLabel="Étape 3"></nz-option>
+                    <nz-option *ngFor="let element of liste"  [nzValue]="element" [nzLabel]="element"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>

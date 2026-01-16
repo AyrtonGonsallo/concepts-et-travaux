@@ -4,3 +4,43 @@
     gap:20px;
     margin: 20px 10px 30px 10px;
 }
+
+fieldset{
+    display: block;
+    min-inline-size: min-content;
+    margin-inline: 2px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: threedface;
+    border-image: initial;
+    padding-block: 0.35em 0.625em;
+    padding-inline: 0.75em;
+}
+legend{
+    width: fit-content;
+}
+
+.section-produit {
+    display: flex;
+    gap: 10px;
+}
+.filter-container {
+    display: flex;
+    gap: 20px;
+}
+.section-import{
+    display: flex;
+    gap: 10px;
+}
+.input-link{
+    display: flex;
+    margin-top: 5px;
+    flex-direction: column;
+}
+.input-link a{
+    font-size: 10px;
+    margin: 2px 0px;
+}
+.filter-select{
+    width: 200px;
+}

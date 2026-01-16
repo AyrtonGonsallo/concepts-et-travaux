@@ -27,7 +27,7 @@ export class GammeComponent {
       order:"ascend"
     },
     {
-      title: 'Catégorie',
+      title: 'Sous-catégorie',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
       priority: 1,
       order:null
@@ -59,10 +59,20 @@ export class GammeComponent {
       this.loadGamme(),
       this.loadTravaux()
     ]).then(() => {
-      const savedFilter = localStorage.getItem('filteredTravailListeGammes');
-      if (savedFilter) {
-        this.filteredTravail = savedFilter;
-        console.log("Filtre récupéré: ", savedFilter);
+      const savedfilteredTravailIDListeGammes = localStorage.getItem('filteredTravailIDListeGammes');
+      if (savedfilteredTravailIDListeGammes) {
+        this.filteredTravailID = parseInt(savedfilteredTravailIDListeGammes);
+        console.log("Filtre récupéré travail: ", savedfilteredTravailIDListeGammes);
+      }
+      const savedfilteredEtapeListeGammes = localStorage.getItem('filteredEtapeListeGammes');
+      if (savedfilteredEtapeListeGammes) {
+        this.filteredEtape = (savedfilteredEtapeListeGammes);
+        console.log("Filtre récupéré étape: ", savedfilteredEtapeListeGammes);
+      }
+      const savedfilteredSouscategorieListeGammes = localStorage.getItem('filteredSouscategorieListeGammes');
+      if (savedfilteredSouscategorieListeGammes) {
+        this.filteredSouscategorie = (savedfilteredSouscategorieListeGammes);
+        console.log("Filtre récupéré : ", savedfilteredSouscategorieListeGammes);
       }
       this.search2();
     });
@@ -70,7 +80,8 @@ export class GammeComponent {
  getLabel(booleen:boolean){
     return booleen?"Oui":"Non"
   }
-  filteredTravail=""
+ 
+  filteredTravailID=0
   filteredEtape=""
   filteredSouscategorie=""
   travaux:Travail[] = [];
@@ -129,10 +140,20 @@ export class GammeComponent {
             this.loadGamme(),
             this.loadTravaux()
           ]).then(() => {
-            const savedFilter = localStorage.getItem('filteredTravailListeGammes');
-            if (savedFilter) {
-              this.filteredTravail = savedFilter;
-              console.log("Filtre récupéré: ", savedFilter);
+            const savedfilteredTravailIDListeGammes = localStorage.getItem('filteredTravailIDListeGammes');
+            if (savedfilteredTravailIDListeGammes) {
+              this.filteredTravailID = parseInt(savedfilteredTravailIDListeGammes);
+              console.log("Filtre récupéré travail: ", savedfilteredTravailIDListeGammes);
+            }
+            const savedfilteredEtapeListeGammes = localStorage.getItem('filteredEtapeListeGammes');
+            if (savedfilteredEtapeListeGammes) {
+              this.filteredEtape = (savedfilteredEtapeListeGammes);
+              console.log("Filtre récupéré étape: ", savedfilteredEtapeListeGammes);
+            }
+            const savedfilteredSouscategorieListeGammes = localStorage.getItem('filteredSouscategorieListeGammes');
+            if (savedfilteredSouscategorieListeGammes) {
+              this.filteredSouscategorie = (savedfilteredSouscategorieListeGammes);
+              console.log("Filtre récupéré : ", savedfilteredSouscategorieListeGammes);
             }
             this.search2();
           });
@@ -167,11 +188,12 @@ export class GammeComponent {
     this.applyFilters();
   }
   applyFilters(): void {
-  localStorage.setItem('filteredTravailListeGammes', this.filteredTravail);
+  localStorage.setItem('filteredTravailIDListeGammes', this.filteredTravailID.toString());
   localStorage.setItem('filteredEtapeListeGammes', this.filteredEtape);
+  localStorage.setItem('filteredSouscategorieListeGammes', this.filteredSouscategorie);
     this.listOfDisplayData = this.gamme.filter((item: Gamme) => {
       const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
-      const matchTravail = !this.filteredTravail || this.get_travail_title(item.TravailID) === this.filteredTravail;
+      const matchTravail = !this.filteredTravailID || (item.TravailID) === this.filteredTravailID;
       const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
       const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
       return matchLabel && matchTravail && matchEtape  && matchType;
@@ -244,5 +266,34 @@ cancel_supression(): void {
       }, 3000);
     });
   }
+
+liste = [
+    "Création de murs non porteurs - Création des portes",
+    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition complète de murs non porteurs",
+    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition partielle de murs non porteurs",
+    "Installation de nouveaux équipements sanitaires - Dépose d'anciennes installations",
+    "Installation de nouveaux équipements sanitaires - Pose de nouveaux équipements sanitaires",
+    "Pose de nouveaux équipements de cuisine - Dépose d'anciennes installations",
+    "Pose de nouveaux équipements de cuisine - Choix des équipements de cuisine",
+    "Pose de revêtement de sol - Choix du nouveau revêtement",
+    "Pose de revêtement de sol - État des surfaces",
+    "Pose de revêtement de sol - Revêtements à retirer",
+    "Pose de revêtement sur plafond - Choix du nouveau revêtement",
+    "Pose de revêtement sur plafond - État des surfaces",
+    "Pose de revêtement sur plafond - Revêtements existants",
+    "Pose de revêtements muraux - Choix du nouveau revêtement",
+    "Pose de revêtements muraux - État des surfaces",
+    "Pose de revêtements muraux - Revêtements existants",
+    "Remplacement de portes - Porte coulissante (de 70 à 90)",
+    "Remplacement de portes - Porte double (de 100 à 140)",
+    "Remplacement de portes - Porte simple (dimensions de 70 à 90)",
+    "Remplacement de radiateurs - Radiateur électrique",
+    "Remplacement de radiateurs - Radiateur à eau (sur chaudière)",
+    "Rénovation électrique complète - Mise aux normes",
+    "Rénovation électrique complète - Mise en sécurité",
+    "Rénovation électrique partielle - Appareillage à créer",
+    "Rénovation électrique partielle - Appareillage à remplacer"
+];
+
 
 }
