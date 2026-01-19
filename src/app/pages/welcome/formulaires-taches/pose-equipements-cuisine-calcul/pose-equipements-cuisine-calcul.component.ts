@@ -94,7 +94,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
     this.userService.getEquipementsByPiece(7).subscribe(
       (response: Equipement[]) => {
         const tableauIds=this.tableauIds
-        this.appareils_cuisine = response.filter(equipement => equipement.ModeleEquipements && equipement.ModeleEquipements.length > 0).sort((a, b) => {
+        this.appareils_cuisine = response.filter(equipement => equipement.Modeles && equipement.Modeles.length > 0).sort((a, b) => {
           // Trier selon l'ordre des IDs dans le tableau
           const indexA = tableauIds.indexOf(a.ID);
           const indexB = tableauIds.indexOf(b.ID);

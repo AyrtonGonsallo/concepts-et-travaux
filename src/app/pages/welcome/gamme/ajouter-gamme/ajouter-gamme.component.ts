@@ -10,6 +10,10 @@ export interface Type {
   label: string;
    group: string;
 }
+interface TravailItem {
+  id: number;
+  texte: string;
+}
 
 @Component({
   selector: 'app-ajouter-gamme',
@@ -277,6 +281,9 @@ groupedTypeKeys(): string[] {
     this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
       this.updatePrixTotal();
     });
+      this.validateForm.get('TravailID')!.valueChanges.subscribe((value: number) => {
+      this.doubleSearch(value);
+    });
   }
 
   updatePrixTotal(): void {
@@ -302,34 +309,75 @@ loadFournisseurs(){
   }
 
 
+ filteredList: string[] = [];
+ listeComplete: TravailItem[] = [
+  // ID 2 - Trié alphabétiquement
+  { id: 2, texte: "Étape 1 - Dépose d'anciennes installations" },
+  { id: 2, texte: "Étape 3 - Choix des équipements de cuisine" },
   
-liste = [
-    "Création de murs non porteurs - Création des portes",
-    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition complète de murs non porteurs",
-    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition partielle de murs non porteurs",
-    "Installation de nouveaux équipements sanitaires - Dépose d'anciennes installations",
-    "Installation de nouveaux équipements sanitaires - Pose de nouveaux équipements sanitaires",
-    "Pose de nouveaux équipements de cuisine - Dépose d'anciennes installations",
-    "Pose de nouveaux équipements de cuisine - Choix des équipements de cuisine",
-    "Pose de revêtement de sol - Choix du nouveau revêtement",
-    "Pose de revêtement de sol - État des surfaces",
-    "Pose de revêtement de sol - Revêtements à retirer",
-    "Pose de revêtement sur plafond - Choix du nouveau revêtement",
-    "Pose de revêtement sur plafond - État des surfaces",
-    "Pose de revêtement sur plafond - Revêtements existants",
-    "Pose de revêtements muraux - Choix du nouveau revêtement",
-    "Pose de revêtements muraux - État des surfaces",
-    "Pose de revêtements muraux - Revêtements existants",
-    "Remplacement de portes - Porte coulissante (de 70 à 90)",
-    "Remplacement de portes - Porte double (de 100 à 140)",
-    "Remplacement de portes - Porte simple (dimensions de 70 à 90)",
-    "Remplacement de radiateurs - Radiateur électrique",
-    "Remplacement de radiateurs - Radiateur à eau (sur chaudière)",
-    "Rénovation électrique complète - Mise aux normes",
-    "Rénovation électrique complète - Mise en sécurité",
-    "Rénovation électrique partielle - Appareillage à créer",
-    "Rénovation électrique partielle - Appareillage à remplacer"
+  // ID 3 - Trié alphabétiquement
+  { id: 3, texte: "Étape 1 - Démolition complète de murs non porteurs" },
+  { id: 3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
+  
+  // ID 4
+  { id: 4, texte: "Étape 1 - Création des portes" },
+  
+  // ID 5 - Trié alphabétiquement
+  { id: 5, texte: "Étape 1 - Revêtements existants" },
+  { id: 5, texte: "Étape 2 - État des surfaces" },
+  { id: 5, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 8 - Trié alphabétiquement
+  { id: 8, texte: "Étape 1 - Revêtements existants" },
+  { id: 8, texte: "Étape 2 - État des surfaces" },
+  { id: 8, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 9 - Trié alphabétiquement
+  { id: 9, texte: "Étape 1 - Revêtements à retirer" },
+  { id: 9, texte: "Étape 2 - État des surfaces" },
+  { id: 9, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 10 - Trié alphabétiquement
+  { id: 10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
+  { id: 10, texte: "Étape 3 - Porte double (de 100 à 140)" },
+  { id: 10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
+  
+  // ID 12 - Trié alphabétiquement
+  { id: 12, texte: "Étape 2 - Choix du type de radiateur" },
+  { id: 12, texte: "Étape 3 - Choix de la gamme de radiateur" },
+  
+  // ID 13 - Trié alphabétiquement
+  { id: 13, texte: "Étape 3 - Appareillage à créer" },
+  { id: 13, texte: "Étape 3 - Appareillage à remplacer" },
+  { id: 13, texte: "Étape 3 - Prix des appareils" },
+  
+  // ID 15 - Trié alphabétiquement
+  { id: 15, texte: "Étape 3 - Chauffage" },
+  { id: 15, texte: "Étape 3 - Mise aux normes" },
+  { id: 15, texte: "Étape 3 - Mise en sécurité" },
+  
+  // ID 16 - Trié alphabétiquement
+  { id: 16, texte: "Étape 1 - Dépose d'anciennes installations" },
+  { id: 16, texte: "Étape 3 - Pose de nouveaux équipements sanitaires" }
 ];
- 
+
+  doubleSearch(travailId?: number): void  {
+
+    const filteredTravailID = travailId !== undefined ? travailId : (this.validateForm.get('TravailID')?.value || 0);
+
+    console.log("filteredTravailID",filteredTravailID)
+    
+    // Filtrer selon l'ID
+    if (filteredTravailID === 1) {
+      // ID = 1 : afficher toute la liste
+      this.filteredList = this.listeComplete.map(item => item.texte);
+    } else {
+      // Filtrer par ID spécifique
+      this.filteredList = this.listeComplete
+        .filter(item => item.id === filteredTravailID)
+        .map(item => item.texte);
+    }
+
+  }
   
 }

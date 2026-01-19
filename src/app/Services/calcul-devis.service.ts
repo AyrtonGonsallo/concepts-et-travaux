@@ -15,7 +15,7 @@ export class CalculDevisService {
 
 
 
-  calculer_prix(devispiece: DevisPiece, index: number): Promise<any> {
+  calculer_prix(devispiece: DevisPiece, index: number): Promise<any> {//on s'en sert plus
     return new Promise((resolve, reject) => {
       this.userService.get_prix_devis_piece(devispiece.ID).subscribe(
         (response) => {

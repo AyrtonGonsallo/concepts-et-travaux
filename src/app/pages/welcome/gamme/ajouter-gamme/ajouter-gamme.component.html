@@ -98,16 +98,7 @@
             </nz-form-control>
         </nz-form-item>
 
-          <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape" nzRequired>
-                <span>Étape </span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="Etape" formControlName="Etape">
-                    <nz-option *ngFor="let element of liste"  [nzValue]="element" [nzLabel]="element"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+        
 
         
         <nz-form-item >
@@ -131,13 +122,13 @@
             </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item>
+       <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape" nzRequired>
                 <span>Étape </span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-select id="Etape" formControlName="Etape">
-                    <nz-option *ngFor="let element of liste"  [nzValue]="element" [nzLabel]="element"></nz-option>
+                    <nz-option *ngFor="let element of filteredList"  [nzValue]="element" [nzLabel]="element"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>

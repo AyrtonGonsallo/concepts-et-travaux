@@ -16,6 +16,6 @@ export interface Equipement {
     AfficherEncastreeApparente?: boolean;
     PieceID?: number; // Le point d'interrogation indique que la propriété est facultative
     Piece?: Piece; // Propriété pour stocker l'objet Galerie lié
-    ModeleEquipements: ModeleEquipement[]
+    Modeles: ModeleEquipement[]
   }
   

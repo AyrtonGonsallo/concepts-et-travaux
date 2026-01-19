@@ -144,10 +144,35 @@ export class ModifierDevisPieceComponent {
         console.error('Erreur lors de la récupération des artisans :', error);
       }
     );
+    this.load_parametres()
    
   }
 
 
+
+  
+  tva = 0
+  coefficient = 0
+  load_parametres(){
+    this.devisService.get_parametre_by_id_or_nom(6,"TVA")
+        .subscribe(
+          (data) => {
+            this.tva=1+(data.Valeur/100);
+            console.log("tva",data)
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+
+    this.devisService.get_parametre_by_id_or_nom(1,"coefficient")
+        .subscribe(
+          (data) => {
+            this.coefficient=data.Valeur;
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+  }
   
    remiseForm: FormGroup<{
     Titre: FormControl<string | null>;
@@ -192,6 +217,7 @@ export class ModifierDevisPieceComponent {
           this.message.success( 'remise supprimée avec succès');
           // Mettez ici le code pour actualiser la liste des devis_pieces si nécessaire
           this.get_all_devis_remises((this.devisId));
+          this.getDetails(this.devisId);
         },
         (error) => {
           console.error('Erreur lors de la suppression de la remise:', error);
@@ -229,6 +255,7 @@ export class ModifierDevisPieceComponent {
             Commentaire: this.fb.control<string | null>(null, ),
             DevisID: this.fb.control<number | null>(parseInt(this.devisId) , Validators.required), // devispiece.ID sera assigné dynamiquement
           });
+          this.getDetails(this.devisId);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de la remise :', error);

@@ -51,7 +51,39 @@ export class ProjetComponent {
   ngOnInit(): void {
     this.titleService.setTitle('Liste des projets');
     this.loadProjets();
+    this.load_parametres()
   }
+
+  
+  tva = 0
+  coefficient = 0
+  load_parametres(){
+    this.userService.get_parametre_by_id_or_nom(6,"TVA")
+        .subscribe(
+          (data) => {
+            this.tva=(1+data.Valeur/100);
+            console.log("tva",data)
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+        .subscribe(
+          (data) => {
+            this.coefficient=data.Valeur;
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+  }
+
+  calculerPrixTTC(prix: any): number {
+    if (!prix) return 0;
+    const total = prix * this.coefficient * this.tva;
+    return Math.round(total * 100) / 100; // arrondi à 2 décimales
+  }
+
 
   loadProjets(): void {
     if(this.authService.isAdminorSuperAdmin()){

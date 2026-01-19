@@ -37,7 +37,7 @@
                                     <label class=""> Gamme :</label>  
                                 </div>
                                 <nz-radio-group formControlName="modele" class="">
-                                    <div nz-col nzJustify="start" *ngFor="let modele of appareilGroup.ModeleEquipements">
+                                    <div nz-col nzJustify="start" *ngFor="let modele of appareilGroup.Modeles">
                                         <div nz-col class="">
                                             <label nz-radio [nzValue]="modele.ID + ':' + modele.Titre + ':' + modele.Prix">
                                             <span>

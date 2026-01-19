@@ -179,6 +179,7 @@ export class ModifierProjetComponent {
         this.acompte_paye=(this.project.Payed)?true:false
         this.date_paiement_acompte=this.project.Date_de_paiement_acompte
         this.date_de_programmation=(this.project.Visite)?this.project.Visite.DateDeProgrammation:null
+        this.date_fin_gpa = this.project.Date_de_fin_gpa
 
        
         
@@ -200,6 +201,13 @@ export class ModifierProjetComponent {
             this.travaux_en_cours=true
             this.travaux_acheves=true
             this.travaux_livres=true
+            break;
+          case "gpa terminé":
+            this.travaux_demarres=true
+            this.travaux_en_cours=true
+            this.travaux_acheves=true
+            this.travaux_livres=true
+            this.gpa_termine=true
             break;
         
           default:

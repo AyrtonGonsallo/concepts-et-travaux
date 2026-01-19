@@ -91,8 +91,10 @@
         <div class="tooltip">
           Ce commentaire sera intégré aux mails envoyés au client
           <br>
-          <a [href]="assetsUrl+'img/email_devis_valide.png'" target="_blank">Aperçu du mail devis validé</a>
           <a [href]="assetsUrl+'img/email_visite_technicien_programmee.png'" target="_blank">Aperçu du mail visite programmée</a>
+          <br>
+          <a [href]="assetsUrl+'img/email_devis_valide.png'" target="_blank">Aperçu du mail devis validé</a>
+          
         </div>
       </ng-template>
       
@@ -188,7 +190,7 @@
       
         <!-- Type -->
         <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Type</nz-form-label>
+          <nz-form-label [nzSpan]="5" nzRequired nzFor="Type">Motif</nz-form-label>
           <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type!">
             <nz-select id="Type" formControlName="Type" nzPlaceHolder="Sélectionner">
               <nz-option nzValue="visite" nzLabel="Visite"></nz-option>

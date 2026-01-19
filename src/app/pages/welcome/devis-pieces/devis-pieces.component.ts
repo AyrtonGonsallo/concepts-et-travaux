@@ -67,7 +67,39 @@ export class DevisPiecesComponent {
         console.error('Erreur lors de la récupération de l\'utilisateur:', error);
       }
     );
+    this.load_parametres();
   }
+
+  tva = 0
+  coefficient = 0
+  load_parametres(){
+    this.devis_pieceService.get_parametre_by_id_or_nom(6,"TVA")
+        .subscribe(
+          (data) => {
+            this.tva=(1+data.Valeur/100);
+            console.log("tva",data)
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+
+    this.devis_pieceService.get_parametre_by_id_or_nom(1,"coefficient")
+        .subscribe(
+          (data) => {
+            this.coefficient=data.Valeur;
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+  }
+
+  calculerPrixTTC(data: any): number {
+    if (!data?.Prix) return 0;
+    const total = data.Prix * this.coefficient * this.tva;
+    return Math.round(total * 100) / 100; // arrondi à 2 décimales
+  }
+
+
 uid=0;
   loadDevisPieces(): void {
     this.devis_pieceService.getAllDevisPieceswithProjects()

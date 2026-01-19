@@ -648,6 +648,9 @@ get_role(userId: number): Observable<any> {
   getParametreById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_parametre/${id}`);
   }
+  get_parametre_by_id_or_nom(id: number,nom:string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_parametre_by_id_or_nom/${id}/${nom}`);
+  }
   getParametres(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_parametres`);
   }

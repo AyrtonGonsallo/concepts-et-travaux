@@ -9,12 +9,16 @@ import { environment } from '../../../environments/environment';
 import { Travail } from '../../../Models/Travail';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 import { Title } from '@angular/platform-browser';
-
+interface TravailItem {
+  id: number;
+  texte: string;
+}
 @Component({
   selector: 'app-gamme',
   templateUrl: './gamme.component.html',
   styleUrl: './gamme.component.css'
 })
+
 export class GammeComponent {
   baseurl=environment.imagesUrl
   size: NzButtonSize = 'large';
@@ -74,7 +78,7 @@ export class GammeComponent {
         this.filteredSouscategorie = (savedfilteredSouscategorieListeGammes);
         console.log("Filtre récupéré : ", savedfilteredSouscategorieListeGammes);
       }
-      this.search2();
+      this.doubleSearch()
     });
   }
  getLabel(booleen:boolean){
@@ -267,6 +271,7 @@ cancel_supression(): void {
     });
   }
 
+  /*
 liste = [
     "Création de murs non porteurs - Création des portes",
     "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition complète de murs non porteurs",
@@ -294,6 +299,75 @@ liste = [
     "Rénovation électrique partielle - Appareillage à créer",
     "Rénovation électrique partielle - Appareillage à remplacer"
 ];
+*/
 
+
+listeComplete: TravailItem[] = [
+  // ID 2 - Trié alphabétiquement
+  { id: 2, texte: "Étape 1 - Dépose d'anciennes installations" },
+  { id: 2, texte: "Étape 3 - Choix des équipements de cuisine" },
+  
+  // ID 3 - Trié alphabétiquement
+  { id: 3, texte: "Étape 1 - Démolition complète de murs non porteurs" },
+  { id: 3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
+  
+  // ID 4
+  { id: 4, texte: "Étape 1 - Création des portes" },
+  
+  // ID 5 - Trié alphabétiquement
+  { id: 5, texte: "Étape 1 - Revêtements existants" },
+  { id: 5, texte: "Étape 2 - État des surfaces" },
+  { id: 5, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 8 - Trié alphabétiquement
+  { id: 8, texte: "Étape 1 - Revêtements existants" },
+  { id: 8, texte: "Étape 2 - État des surfaces" },
+  { id: 8, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 9 - Trié alphabétiquement
+  { id: 9, texte: "Étape 1 - Revêtements à retirer" },
+  { id: 9, texte: "Étape 2 - État des surfaces" },
+  { id: 9, texte: "Étape 3 - Choix du nouveau revêtement" },
+  
+  // ID 10 - Trié alphabétiquement
+  { id: 10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
+  { id: 10, texte: "Étape 3 - Porte double (de 100 à 140)" },
+  { id: 10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
+  
+  // ID 12 - Trié alphabétiquement
+  { id: 12, texte: "Étape 2 - Choix du type de radiateur" },
+  { id: 12, texte: "Étape 3 - Choix de la gamme de radiateur" },
+  
+  // ID 13 - Trié alphabétiquement
+  { id: 13, texte: "Étape 3 - Appareillage à créer" },
+  { id: 13, texte: "Étape 3 - Appareillage à remplacer" },
+  { id: 13, texte: "Étape 3 - Prix des appareils" },
+  
+  // ID 15 - Trié alphabétiquement
+  { id: 15, texte: "Étape 3 - Chauffage" },
+  { id: 15, texte: "Étape 3 - Mise aux normes" },
+  { id: 15, texte: "Étape 3 - Mise en sécurité" },
+  
+  // ID 16 - Trié alphabétiquement
+  { id: 16, texte: "Étape 1 - Dépose d'anciennes installations" },
+  { id: 16, texte: "Étape 3 - Pose de nouveaux équipements sanitaires" }
+];
+filteredList: string[] = [];
+doubleSearch(): void {
+  
+
+  // Filtrer selon l'ID
+  if (this.filteredTravailID === 1) {
+    // ID = 1 : afficher toute la liste
+    this.filteredList = this.listeComplete.map(item => item.texte);
+  } else {
+    // Filtrer par ID spécifique
+    this.filteredList = this.listeComplete
+      .filter(item => item.id === this.filteredTravailID)
+      .map(item => item.texte);
+  }
+
+  this.applyFilters();
+}
 
 }
