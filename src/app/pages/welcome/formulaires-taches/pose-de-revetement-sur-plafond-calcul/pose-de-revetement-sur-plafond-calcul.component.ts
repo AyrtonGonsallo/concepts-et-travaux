@@ -81,7 +81,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
   
   gammes_depose:any
   load_gammes_depose(){
-    this.userService.getGammesByTravailAndType(8,"depose-revetement-plafond").subscribe(
+    this.userService.getGammesByTravailAndType(8,"service-depose-revetement-plafond").subscribe(
       (response: any) => {
         console.log('recuperation des gammes gammes_depose:', response);
         this.gammes_depose=response
@@ -99,41 +99,41 @@ gammes_enduit:any
 gammes_papier:any
 gammes_carrelage:any
 load_gammes_pose(){
-  this.userService.getGammesByTravailAndType(8,"peinture").subscribe(
+  this.userService.getGammesByTravailAndType(8,"peinture-plafond").subscribe(
     (response: any) => {
-      console.log('recuperation des gammes peinture:', response);
+      console.log('recuperation des gammes peinture-plafond:', response);
       this.gammes_peinture=response
     },
     (error: any) => {
-      console.error('Erreur lors de la recuperation des gammes peinture :', error);
+      console.error('Erreur lors de la recuperation des gammes peinture-plafond :', error);
     }
   );
  
-  this.userService.getGammesByTravailAndType(8,"enduit-decoratif").subscribe(
+  this.userService.getGammesByTravailAndType(8,"	enduit-decoratif-plafond").subscribe(
     (response: any) => {
-      console.log('recuperation des gammes enduit-decoratif:', response);
+      console.log('recuperation des gammes 	enduit-decoratif-plafond:', response);
       this.gammes_enduit=response
     },
     (error: any) => {
-      console.error('Erreur lors de la recuperation des gammes enduit-decoratif :', error);
+      console.error('Erreur lors de la recuperation des gammes 	enduit-decoratif-plafond :', error);
     }
   );
-  this.userService.getGammesByTravailAndType(8,"papier-peint").subscribe(
+  this.userService.getGammesByTravailAndType(8,"papier-peint-plafond").subscribe(
     (response: any) => {
-      console.log('recuperation des gammes papier-peint:', response);
+      console.log('recuperation des gammes papier-peint-plafond:', response);
       this.gammes_papier=response
     },
     (error: any) => {
-      console.error('Erreur lors de la recuperation des gammes papier-peint :', error);
+      console.error('Erreur lors de la recuperation des gammes papier-peint-plafond :', error);
     }
   );
-  this.userService.getGammesByTravailAndType(8,"carrelage").subscribe(
+  this.userService.getGammesByTravailAndType(8,"carrelage-plafond").subscribe(
     (response: any) => {
-      console.log('recuperation des gammes carrelage:', response);
+      console.log('recuperation des gammes carrelage-plafond:', response);
       this.gammes_carrelage=response
     },
     (error: any) => {
-      console.error('Erreur lors de la recuperation des gammes carrelage :', error);
+      console.error('Erreur lors de la recuperation des gammes carrelage-plafond :', error);
     }
   );
 }

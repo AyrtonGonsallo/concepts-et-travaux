@@ -41,7 +41,6 @@ export class RenovationElectriqueCompleteCalculComponent {
         console.log('Tache ID récupéré:', this.tacheId);
       });
       this.getDetails(parseInt(this.tacheId, 10))
-      this.load_gammes()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -69,23 +68,7 @@ export class RenovationElectriqueCompleteCalculComponent {
     
   }
 
-  
-  gammes_materiaux:any
-  load_gammes(){
-
-    this.userService.getGammesByTravailAndType(15,"materiaux").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes materiaux:', response);
-        this.gammes_materiaux=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des  gammes_materiaux :', error);
-      }
-    );
-    
-  
-  }
-
+ 
 
 
 submit() {

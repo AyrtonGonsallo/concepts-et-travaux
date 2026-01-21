@@ -108,13 +108,13 @@ export class PoseDeRevetementsMurauxCalculComponent {
 
   type_de_depose:any
   load_types(){
-    this.userService.getGammesByTravailAndTypeOrdered(5,"depose-murs	").subscribe(
+    this.userService.getGammesByTravailAndTypeOrdered(5,"service-depose-murs").subscribe(
       (response: any) => {
-        console.log('recuperation des types depose-murs	:', response);
+        console.log('recuperation des types service-depose-murs	:', response);
         this.type_de_depose=response
       },
       (error: any) => {
-        console.error('Erreur lors de la recuperation des types depose-murs	 :', error);
+        console.error('Erreur lors de la recuperation des types service-depose-murs	 :', error);
       }
     );
   }
@@ -138,61 +138,61 @@ load_etats(){
   gammes_bois:any
   gammes_tissus:any
   load_gammes(){
-    this.userService.getGammesByTravailAndType(5,"peinture").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes peinture:', response);
-        this.gammes_peinture=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes peinture :', error);
-      }
-    );
-    this.userService.getGammesByTravailAndType(5,"bois").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes bois:', response);
-        this.gammes_bois=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes bois :', error);
-      }
-    );
-    this.userService.getGammesByTravailAndType(5,"tissus").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes tissus:', response);
-        this.gammes_tissus=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes tissus :', error);
-      }
-    );
-    this.userService.getGammesByTravailAndType(5,"enduit-decoratif").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes enduit-decoratif:', response);
-        this.gammes_enduit=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes enduit-decoratif :', error);
-      }
-    );
-    this.userService.getGammesByTravailAndType(5,"papier-peint").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes papier-peint:', response);
-        this.gammes_papier=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes papier-peint :', error);
-      }
-    );
-    this.userService.getGammesByTravailAndType(5,"carrelage").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes carrelage:', response);
-        this.gammes_carrelage=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes carrelage :', error);
-      }
-    );
-  }
+  this.userService.getGammesByTravailAndType(5,"peinture-mur").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes peinture-mur:', response);
+      this.gammes_peinture=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes peinture-mur :', error);
+    }
+  );
+  this.userService.getGammesByTravailAndType(5,"bois").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes bois:', response);
+      this.gammes_bois=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes bois :', error);
+    }
+  );
+  this.userService.getGammesByTravailAndType(5,"tissus-mur").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes tissus-mur:', response);
+      this.gammes_tissus=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes tissus-mur :', error);
+    }
+  );
+  this.userService.getGammesByTravailAndType(5,"enduit-decoratif-mur").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes enduit-decoratif-mur:', response);
+      this.gammes_enduit=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes enduit-decoratif-mur :', error);
+    }
+  );
+  this.userService.getGammesByTravailAndType(5,"	papier-peint-mur").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes 	papier-peint-mur:', response);
+      this.gammes_papier=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes 	papier-peint-mur :', error);
+    }
+  );
+  this.userService.getGammesByTravailAndType(5,"carrelage-mur").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes carrelage-mur:', response);
+      this.gammes_carrelage=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes carrelage-mur :', error);
+    }
+  );
+}
 
 
   submit(){

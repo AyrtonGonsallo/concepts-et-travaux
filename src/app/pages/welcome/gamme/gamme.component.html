@@ -31,7 +31,7 @@
         <div class="filter-container">
           <div class="filter-box">
             Travail
-            <nz-select [(ngModel)]="filteredTravailID" (ngModelChange)="doubleSearch()"  class="filter-select">
+            <nz-select [(ngModel)]="filteredTravailID" (ngModelChange)="doubleSearch(true)"  class="filter-select">
               <nz-option  nzLabel="Tous les travaux" [nzValue]="0"></nz-option>
               <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
             </nz-select>
@@ -40,7 +40,7 @@
             Tâche
             <nz-select [(ngModel)]="filteredEtape" (ngModelChange)="search2()" class="filter-select">
               <nz-option  nzLabel="Toutes les étapes" nzValue=""></nz-option>
-                <nz-option *ngFor="let element of filteredList"  [nzValue]="element" [nzLabel]="element"></nz-option>
+                <nz-option *ngFor="let element of filteredListEtapes"  [nzValue]="element" [nzLabel]="element"></nz-option>
             </nz-select>
           </div>
           <div class="filter-box">
@@ -51,66 +51,8 @@
               nzPlaceHolder="Toutes les sous-catégories"
               class="filter-select"
             >
-              <nz-option nzLabel="Toutes les sous-catégories" nzValue=""></nz-option>
-
-              <!-- C -->
-              <nz-option nzLabel="Carrelage mural" nzValue="carrelage"></nz-option>
-              <nz-option nzLabel="Carrelage (sol)" nzValue="carrelage-sol"></nz-option>
-              <nz-option nzLabel="Cloison" nzValue="cloison"></nz-option>
-
-              <!-- D -->
-              <nz-option nzLabel="Dépose" nzValue="depose"></nz-option>
-              <nz-option nzLabel="Dépose cuisine" nzValue="depose-cuisine"></nz-option>
-              <nz-option nzLabel="Dépose murs" nzValue="depose-murs"></nz-option>
-              <nz-option nzLabel="Dépose revêtements plafond" nzValue="depose-revetement-plafond"></nz-option>
-              <nz-option nzLabel="Dépose revêtements sol" nzValue="depose-revetement-sol"></nz-option>
-              <nz-option nzLabel="Dépose éléments salle de bain / eau" nzValue="depose-salle-de-bain-salle-d-eau"></nz-option>
-
-              <!-- E -->
-              <nz-option nzLabel="Enduit décoratif" nzValue="enduit-decoratif"></nz-option>
-              <nz-option nzLabel="État des surfaces (murs)" nzValue="etat-des-surfaces-murs"></nz-option>
-              <nz-option nzLabel="État des surfaces (sol)" nzValue="etat-des-surfaces-sol"></nz-option>
-              <nz-option nzLabel="État des surfaces (plafond)" nzValue="etat-des-surfaces-plafond"></nz-option>
-
-              <!-- G -->
-              <nz-option nzLabel="Gamme de porte" nzValue="gamme-de-porte"></nz-option>
-
-              <!-- M -->
-              <nz-option nzLabel="Matériaux" nzValue="materiaux"></nz-option>
-              <nz-option nzLabel="Moquette" nzValue="moquette-de-sol"></nz-option>
-
-              <!-- N -->
-              <nz-option nzLabel="Nature de la porte" nzValue="nature-porte"></nz-option>
-
-              <!-- P -->
-              <nz-option nzLabel="Papier peint" nzValue="papier-peint"></nz-option>
-              <nz-option nzLabel="Parquet flottant" nzValue="parquet-flottant-sol"></nz-option>
-              <nz-option nzLabel="Parquet massif" nzValue="papier-massif-sol"></nz-option>
-              <nz-option nzLabel="Peinture murale" nzValue="peinture"></nz-option>
-              <nz-option nzLabel="Peinture de sol" nzValue="peinture-de-sol"></nz-option>
-              <nz-option nzLabel="Plinthes bois" nzValue="plinthes-bois-sol"></nz-option>
-              <nz-option nzLabel="Plinthes carrelage" nzValue="plinthes-carrelage-sol"></nz-option>
-
-              <!-- R -->
-              <nz-option nzLabel="Radiateur" nzValue="radiateur"></nz-option>
-              <nz-option nzLabel="Résine décorative (sol)" nzValue="resine-decorative-de-sol"></nz-option>
-              <nz-option nzLabel="Rénovation électrique partielle" nzValue="renovation-electrique-partielle"></nz-option>
-              <nz-option nzLabel="Rénovation électrique complète" nzValue="renovation-electrique-complete"></nz-option>
-
-              <!-- S -->
-              <nz-option nzLabel="Sol souple" nzValue="sol-souple"></nz-option>
-
-              <!-- T -->
-              <nz-option nzLabel="Tissus muraux" nzValue="tissus"></nz-option>
-              <nz-option nzLabel="Type de cloison (mur non porteur)" nzValue="type-de-cloison-murs-non-porteurs"></nz-option>
-              <nz-option nzLabel="Type de porte coulissante" nzValue="type-de-porte-coulissante"></nz-option>
-              <nz-option nzLabel="Type de porte double" nzValue="type-de-porte-double"></nz-option>
-              <nz-option nzLabel="Type de porte simple" nzValue="type-de-porte-simple"></nz-option>
-              <nz-option nzLabel="Type de porte épaisseur 5 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_5"></nz-option>
-              <nz-option nzLabel="Type de porte épaisseur 7 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_7"></nz-option>
-              <nz-option nzLabel="Type de porte épaisseur 10 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_10"></nz-option>
-              <nz-option nzLabel="Type de porte épaisseur > 10 cm" nzValue="type-de-porte-creation-murs-non-porteurs_ep_10+"></nz-option>
-              <nz-option nzLabel="Type de radiateur" nzValue="type-de-radiateur"></nz-option>
+             <nz-option nzLabel="Toutes les sous-catégories" nzValue=""></nz-option>
+              <nz-option *ngFor="let sc of filteredListSousCategories" [nzLabel]="sc.label"  [nzValue]="sc.value"></nz-option>
             </nz-select>
           </div>
 

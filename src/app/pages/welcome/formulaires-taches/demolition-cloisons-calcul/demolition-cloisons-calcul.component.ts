@@ -99,18 +99,32 @@ export class DemolitionCloisonsCalculComponent {
     return this.formulaire.get('mursNonporteurs') as FormArray;
   }
 
-  gammes_cloison:any
-  load_gammes(){
-    this.userService.getGammesByTravailAndType(3,"cloison").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes cloison:', response);
-        this.gammes_cloison=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes cloison :', error);
-      }
-    );
-  }
+   gammes_cloison_partielle:any
+
+  gammes_cloison_complete:any
+
+load_gammes(){
+  this.userService.getGammesByTravailAndType(3,"cloison-demolition-complete").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes cloison:', response);
+      this.gammes_cloison_complete=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes cloison :', error);
+    }
+  );
+
+  this.userService.getGammesByTravailAndType(3,"cloison-ouverture-partielle").subscribe(
+    (response: any) => {
+      console.log('recuperation des gammes cloison:', response);
+      this.gammes_cloison_partielle=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des gammes cloison :', error);
+    }
+  );
+ 
+}
 
 
 submit(){

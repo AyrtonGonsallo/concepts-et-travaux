@@ -144,7 +144,7 @@ export class RenovationElectriquePartielleCalculComponent {
 
     gammes_appareillage:any
     load_gammes(){
-      this.userService.getGammesByTravailAndType(13,"renovation-electrique-partielle").subscribe(
+      this.userService.getGammesByTravailAndType(13,"gamme-appareils").subscribe(
         (response: any) => {
           console.log('recuperation des gammes appareillage:', response);
           this.gammes_appareillage=response

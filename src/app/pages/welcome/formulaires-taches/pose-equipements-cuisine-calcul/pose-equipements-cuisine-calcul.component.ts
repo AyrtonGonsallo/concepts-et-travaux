@@ -169,7 +169,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
     );
 
 
-    this.userService.getGammesByTravailAndTypeOrdered(16, 'depose-salle-de-bain-salle-d-eau').subscribe(
+    this.userService.getGammesByTravailAndTypeOrdered(2, 'service-depose-cuisine').subscribe(
       (response: any) => {
         this.gammes_depose = response
         console.log("réponse de la requette  get depose salle de bain",this.gammes_depose);

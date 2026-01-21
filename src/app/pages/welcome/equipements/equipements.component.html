@@ -2,7 +2,7 @@
     <h2>Liste des catégories d'équipements</h2>    
     <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'equipements', 'ajouter-equipement']">Ajouter une catégorie</button>
 
-    <nz-table #sortTable [nzData]="equipements"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+    <nz-table #sortTable [nzData]="equipements" [nzPageSize]="50"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
         <thead>
           <tr>
             <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortOrder]="column.order" [nzSortPriority]="column.priority">

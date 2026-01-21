@@ -535,6 +535,12 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any[]>(`${environment.apiUrl}/get_travaux`);
   }
 
+// Méthode pour récupérer tous les travaux actifs avec les détails de la pièce associée
+  getActiveTravaux(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_active_travaux`);
+  }
+
+
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getTravailById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_travail/${id}`);

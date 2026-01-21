@@ -31,7 +31,7 @@
                       <label class="">Type de cloison :</label> 
                       <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
                           <ng-container>
-                              <div *ngFor="let option of gammes_cloison" class="parquet-option  flex-see-gamme">
+                              <div *ngFor="let option of gammes_cloison_complete" class="parquet-option  flex-see-gamme">
                                   <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
                                       <span>
                                       {{ option.Label }}
@@ -81,7 +81,7 @@
                         <label class="">Type de cloison :</label>
                         <nz-radio-group formControlName="cloison" class="radio-flx-spc">
                             <ng-container >
-                              <div *ngFor="let option of gammes_cloison" class="parquet-option  flex-see-gamme">
+                              <div *ngFor="let option of gammes_cloison_partielle" class="parquet-option  flex-see-gamme">
                                 <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
                                   <span>
                                     {{ option.Label }}
