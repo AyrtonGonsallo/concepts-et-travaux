@@ -32,33 +32,42 @@
         </nz-form-item>
 
         -->
-       
-
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="Type de gamme" >
-                <span>Type de produit </span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-            
-                <nz-radio-group class="parent-container" id="Type"  formControlName="Type">
-
-                    <ng-container *ngFor="let groupName of groupedTypeKeys()">
-                        <div class="boxes">
-                            <div class="group-title">
-                                {{ groupName }}
-                            </div>
-
-                            <label nz-radio  *ngFor="let type of groupedTypes[groupName]" [nzValue]="type.slug">
-                            {{ type.label }}
-                            </label>
-                        </div>
-                        
-                    </ng-container>
-
-                </nz-radio-group>
+       <div nz-row>
+            <div nz-col nzSpan="6" nzOffset="4">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="current_group" class="a-start" nzRequired nzTooltipTitle="Catégorie" >
+                        <span>Catégorie </span>
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                        <nz-select formControlName="current_group" (ngModelChange)="onGroupChange($event)" nzPlaceHolder="Sélectionner un groupe">
+                            <nz-option 
+                                *ngFor="let groupName of groupedTypeKeys()" 
+                                [nzLabel]="groupName" 
+                                [nzValue]="groupName">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
                 
-            </nz-form-control>
-        </nz-form-item>
+            </div>
+            <div nz-col nzSpan="13" nzOffset="1">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="Type" class="a-start" nzRequired nzTooltipTitle="Type de gamme" >
+                        <span>Type de produit </span>
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                        <nz-radio-group formControlName="Type" style="display: flex; flex-direction: column;">
+                            <label nz-radio *ngFor="let type of filteredTypes()" [nzValue]="type.slug">
+                                {{ type.label }}
+                            </label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        
+
+        
 
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >

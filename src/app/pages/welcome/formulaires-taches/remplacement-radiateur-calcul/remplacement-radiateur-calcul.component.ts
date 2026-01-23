@@ -93,15 +93,15 @@ export class RemplacementRadiateurCalculComponent {
 
   gammes_radiateurs:any
   load_gammes(){
-    this.userService.getGammesByTravailAndType(12,"gamme-de-radiateur").subscribe(
-      (response: any) => {
-        console.log('recuperation des gammes gamme-de-radiateur:', response);
-        this.gammes_radiateurs=response
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des gammes gamme-de-radiateur :', error);
-      }
-    );
+    this.userService.getEquipementsByType("radiateur").subscribe(
+    (response: any) => {
+      console.log('recuperation des getEquipementsByType radiateur:', response[0].Modeles);
+      this.gammes_radiateurs=response[0].Modeles
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des getEquipementsByType radiateur :', error);
+    }
+  );
   }
 
   types:any

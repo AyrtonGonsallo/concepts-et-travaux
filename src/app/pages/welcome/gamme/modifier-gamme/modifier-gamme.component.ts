@@ -25,6 +25,7 @@ export class ModifierGammeComponent {
    apiUrl = environment.imagesUrl;
   gammeId:string =  this.route.snapshot.paramMap.get('id')??'0';
   validateForm: FormGroup<{
+    current_group: FormControl<string>;
     Type: FormControl<string>;
     Label: FormControl<string>;
     Image: FormControl<string>;
@@ -44,9 +45,9 @@ export class ModifierGammeComponent {
   
   types: Type[] = [
       // Divers
-      { group: 'Divers', slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
-      { group: 'Divers', slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
-      { group: 'Divers', slug: 'gamme-appareils', label: 'Gamme d\'appareils (rénovation partielle)' },
+      { group: 'Cloisons / Murs non porteurs', slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
+      { group: 'Cloisons / Murs non porteurs', slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
+      { group: 'Rénovations électriques', slug: 'gamme-appareils', label: 'Rénovation électrique partielle (gamme d\'appareils)' },
       
       // Murs
       { group: 'Murs', slug: 'bois', label: 'Bois' },
@@ -64,7 +65,6 @@ export class ModifierGammeComponent {
       { group: 'Plafond', slug: 'papier-peint-plafond', label: 'Papier peint plafond' },
       { group: 'Plafond', slug: 'peinture-plafond', label: 'Peinture plafond' },
       
-      
       // Porte
       { group: 'Porte', slug: 'gamme-de-porte', label: 'Gamme de porte' },
       { group: 'Porte', slug: 'nature-porte', label: 'Nature de la porte' },
@@ -78,20 +78,19 @@ export class ModifierGammeComponent {
       { group: 'Porte', slug: 'type-de-porte-simple', label: 'Type de porte simple' },
       
       // Radiateur
-      { group: 'Radiateur', slug: 'gamme-de-radiateur', label: 'Gamme de Radiateur' },
       { group: 'Radiateur', slug: 'type-de-radiateur', label: 'Type de radiateur' },
       
     
       // Services
-      { group: 'Services', slug: 'service-creation-mur-non-porteur', label: 'Service création de mur non porteur' },
-      { group: 'Services', slug: 'service-demolition-murs', label: 'Service de démolition de murs' },
-      { group: 'Services', slug: 'service-depose-cuisine', label: 'Service de dépose d\'element de cuisine' },
-      { group: 'Services', slug: 'service-depose-murs', label: 'Service de dépose murs' },
-      { group: 'Services', slug: 'service-depose-revetement-plafond', label: 'Service de dépose revêtements plafond' },
-      { group: 'Services', slug: 'service-depose-revetement-sol', label: 'Service de dépose revêtements sol' },
-      { group: 'Services', slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Service de dépose d\'éléments de salle de bain / eau' },
-      { group: 'Services', slug: 'service-ouverture-partielle', label: 'Service ouverture partielle' },
-      { group: 'Services', slug: 'service-renovation-electrique-complete', label: 'Service rénovation électrique complète' },
+      { group: 'Cloisons / Murs non porteurs', slug: 'service-creation-mur-non-porteur', label: 'Création de mur non porteur' },
+      { group: 'Cloisons / Murs non porteurs', slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
+      { group: 'Dépose d\'équipements', slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
+      { group: 'Murs', slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
+      { group: 'Plafond', slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
+      { group: 'Sol', slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
+      { group: 'Dépose d\'équipements', slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
+      { group: 'Cloisons / Murs non porteurs', slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
+      { group: 'Rénovations électriques', slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
       
       // Sols
       { group: 'Sols', slug: 'carrelage-sol', label: 'Carrelage' },
@@ -125,6 +124,20 @@ export class ModifierGammeComponent {
 groupedTypeKeys(): string[] {
   return Object.keys(this.groupedTypes);
 }
+current_group=""
+
+// Pour filtrer les types selon le groupe sélectionné
+filteredTypes(): Type[] {
+    if (!this.current_group) return this.types;
+    return this.types.filter(t => t.group === this.current_group);
+}
+
+onGroupChange(group: string) {
+    this.current_group = group; 
+    console.log(this.current_group)
+}
+
+
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
   submitForm(): void {
@@ -252,6 +265,7 @@ groupedTypeKeys(): string[] {
 
   constructor(private route:ActivatedRoute,private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
+      current_group: ['', []],
       Type: ['', [Validators.required]],
       Label: ['', [Validators.required]],
       Image: ['', []],
@@ -335,6 +349,20 @@ groupedTypeKeys(): string[] {
         console.log("pm: ",pm)
         response.PrixMultiples=null
         this.validateForm.patchValue(response);
+        const typeSlug = response.Type; // supposé contenir le slug du type
+        const typeObj = this.types.find(t => t.slug === typeSlug);
+
+        if (typeObj) {
+          
+          this.current_group = typeObj.group;
+          // si tu veux aussi pré-cocher le radio correspondant
+          this.validateForm.controls['current_group'].setValue(typeObj.group);
+
+          console.log("typeSlug",typeSlug)
+          console.log("typeObj",typeObj)
+          console.log("current_group",this.current_group)
+        }
+
 
         // Filtrer par ID spécifique
         this.filteredList = this.listeComplete

@@ -9,8 +9,9 @@ import { environment } from '../../../environments/environment';
 import { Travail } from '../../../Models/Travail';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 import { Title } from '@angular/platform-browser';
-interface TravailItem {
+interface EtapeItem {
   id: number;
+  travail_id: number;
   texte: string;
 }
 @Component({
@@ -78,7 +79,7 @@ export class GammeComponent {
         this.filteredSouscategorie = (savedfilteredSouscategorieListeGammes);
         console.log("Filtre récupéré : ", savedfilteredSouscategorieListeGammes);
       }
-      this.doubleSearch(false)
+      this.doubleSearch(false,false)
     });
   }
  getLabel(booleen:boolean){
@@ -303,71 +304,72 @@ liste = [
 
 listeCompleteSousCategories = [
   // travail_id: 2
-  { travail_id: 2, label: 'Service de dépose d\'element de cuisine', value: 'service-depose-cuisine' },
+  { travail_id: 2, etape_id: 1, label: 'Service de dépose d\'element de cuisine', value: 'service-depose-cuisine' },
   
   // travail_id: 3
-  { travail_id: 3, label: 'Service de démolition de murs', value: 'service-demolition-murs' },
-  { travail_id: 3, label: 'Service ouverture partielle', value: 'service-ouverture-partielle' },
-  { travail_id: 3, label: 'Type de cloison demolition complete', value: 'cloison-demolition-complete' },
-  { travail_id: 3, label: 'Type de cloison ouverture partielle', value: 'cloison-ouverture-partielle' },
+  { travail_id: 3 , etape_id: 1, label: 'Service de démolition de murs', value: 'service-demolition-murs' },
+  { travail_id: 3 , etape_id: 1, label: 'Service ouverture partielle', value: 'service-ouverture-partielle' },
+  { travail_id: 3 , etape_id: 1, label: 'Type de cloison demolition complete', value: 'cloison-demolition-complete' },
+  { travail_id: 3 , etape_id: 1, label: 'Type de cloison ouverture partielle', value: 'cloison-ouverture-partielle' },
   
   // travail_id: 4
-  { travail_id: 4, label: 'Service création de mur non porteur', value: 'service-creation-mur-non-porteur' },
-  { travail_id: 4, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
-  { travail_id: 4, label: 'Type de porte épaisseur 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10' },
-  { travail_id: 4, label: 'Type de porte épaisseur > 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10+' },
-  { travail_id: 4, label: 'Type de porte épaisseur 5 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_5' },
-  { travail_id: 4, label: 'Type de porte épaisseur 7 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_7' },
+  { travail_id: 4 , etape_id: 1, label: 'Service création de mur non porteur', value: 'service-creation-mur-non-porteur' },
+  { travail_id: 4 , etape_id: 1, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
+  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10' },
+  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur > 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10+' },
+  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 5 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_5' },
+  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 7 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_7' },
   
   // travail_id: 5
-  { travail_id: 5, label: 'Carrelage mural', value: 'carrelage-mur' },
-  { travail_id: 5, label: 'Service de dépose murs', value: 'service-depose-murs' },
-  { travail_id: 5, label: 'Enduit décoratif mur', value: 'enduit-decoratif-mur' },
-  { travail_id: 5, label: 'État des surfaces (murs)', value: 'etat-des-surfaces-murs' },
-  { travail_id: 5, label: 'Papier peint mur', value: 'papier-peint-mur' },
-  { travail_id: 5, label: 'Peinture murale', value: 'peinture-mur' },
-  { travail_id: 5, label: 'Tissus muraux', value: 'tissus-mur' },
+  { travail_id: 5 , etape_id: 3, label: 'Carrelage mural', value: 'carrelage-mur' },
+  { travail_id: 5 , etape_id: 1, label: 'Service de dépose murs', value: 'service-depose-murs' },
+  { travail_id: 5 , etape_id: 3, label: 'Enduit décoratif mur', value: 'enduit-decoratif-mur' },
+  { travail_id: 5 , etape_id: 2, label: 'État des surfaces (murs)', value: 'etat-des-surfaces-murs' },
+  { travail_id: 5 , etape_id: 3, label: 'Papier peint mur', value: 'papier-peint-mur' },
+  { travail_id: 5 , etape_id: 3, label: 'Peinture murale', value: 'peinture-mur' },
+  { travail_id: 5 , etape_id: 3, label: 'Tissus muraux', value: 'tissus-mur' },
+  { travail_id: 5 , etape_id: 3, label: 'Bois', value: 'bois' },
   
   // travail_id: 8
-  { travail_id: 8, label: 'Service de dépose revêtements plafond', value: 'service-depose-revetement-plafond' },
-  { travail_id: 8, label: 'Enduit décoratif plafond', value: 'enduit-decoratif-plafond' },
-  { travail_id: 8, label: 'État des surfaces (plafond)', value: 'etat-des-surfaces-plafond' },
-  { travail_id: 8, label: 'Papier peint plafond', value: 'papier-peint-plafond' },
-  { travail_id: 8, label: 'Peinture plafond', value: 'peinture-plafond' },
-  { travail_id: 8, label: 'Carrelage plafond', value: 'carrelage-plafond' },
+  { travail_id: 8 , etape_id: 1, label: 'Service de dépose revêtements plafond', value: 'service-depose-revetement-plafond' },
+  { travail_id: 8 , etape_id: 2, label: 'Enduit décoratif plafond', value: 'enduit-decoratif-plafond' },
+  { travail_id: 8 , etape_id: 2, label: 'État des surfaces (plafond)', value: 'etat-des-surfaces-plafond' },
+  { travail_id: 8 , etape_id: 3, label: 'Papier peint plafond', value: 'papier-peint-plafond' },
+  { travail_id: 8 , etape_id: 3, label: 'Peinture plafond', value: 'peinture-plafond' },
+  { travail_id: 8 , etape_id: 3, label: 'Carrelage plafond', value: 'carrelage-plafond' },
   
   // travail_id: 9
-  { travail_id: 9, label: 'Carrelage (sol)', value: 'carrelage-sol' },
-  { travail_id: 9, label: 'Service de dépose revêtements sol', value: 'service-depose-revetement-sol' },
-  { travail_id: 9, label: 'État des surfaces (sol)', value: 'etat-des-surfaces-sol' },
-  { travail_id: 9, label: 'Moquette', value: 'moquette-de-sol' },
-  { travail_id: 9, label: 'Parquet flottant', value: 'parquet-flottant-sol' },
-  { travail_id: 9, label: 'Parquet massif', value: 'papier-massif-sol' },
-  { travail_id: 9, label: 'Peinture de sol', value: 'peinture-de-sol' },
-  { travail_id: 9, label: 'Plinthes bois', value: 'plinthes-bois-sol' },
-  { travail_id: 9, label: 'Plinthes carrelage', value: 'plinthes-carrelage-sol' },
-  { travail_id: 9, label: 'Résine décorative (sol)', value: 'resine-decorative-de-sol' },
-  { travail_id: 9, label: 'Sol souple', value: 'sol-souple' },
+  { travail_id: 9 , etape_id: 3, label: 'Carrelage (sol)', value: 'carrelage-sol' },
+  { travail_id: 9 , etape_id: 1, label: 'Service de dépose revêtements sol', value: 'service-depose-revetement-sol' },
+  { travail_id: 9 , etape_id: 2, label: 'État des surfaces (sol)', value: 'etat-des-surfaces-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Moquette', value: 'moquette-de-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Parquet flottant', value: 'parquet-flottant-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Parquet massif', value: 'papier-massif-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Peinture de sol', value: 'peinture-de-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Plinthes bois', value: 'plinthes-bois-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Plinthes carrelage', value: 'plinthes-carrelage-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Résine décorative (sol)', value: 'resine-decorative-de-sol' },
+  { travail_id: 9 , etape_id: 3, label: 'Sol souple', value: 'sol-souple' },
   
   // travail_id: 10
-  { travail_id: 10, label: 'Gamme de porte', value: 'gamme-de-porte' },
-  { travail_id: 10, label: 'Nature de la porte', value: 'nature-porte' },
-  { travail_id: 10, label: 'Type de porte coulissante', value: 'type-de-porte-coulissante' },
-  { travail_id: 10, label: 'Type de porte double', value: 'type-de-porte-double' },
-  { travail_id: 10, label: 'Type de porte simple', value: 'type-de-porte-simple' },
+  { travail_id: 10 , etape_id: 3, label: 'Gamme de porte', value: 'gamme-de-porte' },
+  { travail_id: 10 , etape_id: 3, label: 'Nature de la porte', value: 'nature-porte' },
+  { travail_id: 10 , etape_id: 3, label: 'Type de porte coulissante', value: 'type-de-porte-coulissante' },
+  { travail_id: 10 , etape_id: 3, label: 'Type de porte double', value: 'type-de-porte-double' },
+  { travail_id: 10 , etape_id: 3, label: 'Type de porte simple', value: 'type-de-porte-simple' },
   
   // travail_id: 12
-  { travail_id: 12, label: 'Gamme de Radiateur', value: 'gamme-de-radiateur' },
-  { travail_id: 12, label: 'Type de radiateur', value: 'type-de-radiateur' },
+  { travail_id: 12 , etape_id: 3, label: 'Gamme de Radiateur', value: 'gamme-de-radiateur' },
+  { travail_id: 12 , etape_id: 2, label: 'Type de radiateur', value: 'type-de-radiateur' },
   
   // travail_id: 13
-  { travail_id: 13, label: 'Gamme d\'appareils (rénovation partielle)', value: 'gamme-appareils' },
+  { travail_id: 13 , etape_id: 3, label: 'Gamme d\'appareils (rénovation partielle)', value: 'gamme-appareils' },
   
   // travail_id: 15
-  { travail_id: 15, label: 'Service rénovation électrique complète', value: 'service-renovation-electrique-complete' },
+  { travail_id: 15 , etape_id: 3, label: 'Service rénovation électrique complète', value: 'service-renovation-electrique-complete' },
   
   // travail_id: 16
-  { travail_id: 16, label: 'Service de dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
+  { travail_id: 16 , etape_id: 3, label: 'Service de dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
 ].sort((a, b) => {
   // Trier d'abord par travail_id
   if (a.travail_id !== b.travail_id) {
@@ -378,83 +380,105 @@ listeCompleteSousCategories = [
 });
 
 
-listeComplete: TravailItem[] = [
+listeComplete: EtapeItem[] = [
   // ID 2 - Trié alphabétiquement
-  { id: 2, texte: "Étape 1 - Dépose d'anciennes installations" },
+  { id: 1, travail_id:2, texte: "Étape 1 - Dépose d'anciennes installations" },
   //{ id: 2, texte: "Étape 3 - Choix des équipements de cuisine" },
   
   // ID 3 - Trié alphabétiquement
-  { id: 3, texte: "Étape 1 - Démolition complète de murs non porteurs" },
-  { id: 3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
+  { id: 1, travail_id:3, texte: "Étape 1 - Démolition complète de murs non porteurs" },
+  { id: 1, travail_id:3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
   
   // ID 4
-  { id: 4, texte: "Étape 1 - Création des portes" },
-  { id: 4, texte: "Étape 1 - Création des murs" },
+  { id: 1, travail_id:4, texte: "Étape 1 - Création des portes" },
+  { id: 1, travail_id:4, texte: "Étape 1 - Création des murs" },
   
   // ID 5 - Trié alphabétiquement
-  { id: 5, texte: "Étape 1 - Revêtements existants" },
-  { id: 5, texte: "Étape 2 - État des surfaces" },
-  { id: 5, texte: "Étape 3 - Choix du nouveau revêtement" },
+  { id: 1, travail_id:5, texte: "Étape 1 - Revêtements existants" },
+  { id: 2, travail_id:5, texte: "Étape 2 - État des surfaces" },
+  { id: 3, travail_id:5, texte: "Étape 3 - Choix du nouveau revêtement" },
   
   // ID 8 - Trié alphabétiquement
-  { id: 8, texte: "Étape 1 - Revêtements existants" },
-  { id: 8, texte: "Étape 2 - État des surfaces" },
-  { id: 8, texte: "Étape 3 - Choix du nouveau revêtement" },
+  { id: 1, travail_id:8, texte: "Étape 1 - Revêtements existants" },
+  { id: 2, travail_id:8, texte: "Étape 2 - État des surfaces" },
+  { id: 3, travail_id:8, texte: "Étape 3 - Choix du nouveau revêtement" },
   
   // ID 9 - Trié alphabétiquement
-  { id: 9, texte: "Étape 1 - Revêtements à retirer" },
-  { id: 9, texte: "Étape 2 - État des surfaces" },
-  { id: 9, texte: "Étape 3 - Choix du nouveau revêtement" },
+  { id: 1, travail_id:9, texte: "Étape 1 - Revêtements à retirer" },
+  { id: 2, travail_id:9, texte: "Étape 2 - État des surfaces" },
+  { id: 3, travail_id:9, texte: "Étape 3 - Choix du nouveau revêtement" },
   
   // ID 10 - Trié alphabétiquement
-  { id: 10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
-  { id: 10, texte: "Étape 3 - Porte double (de 100 à 140)" },
-  { id: 10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
+  { id: 33, travail_id:10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
+  { id: 3, travail_id:10, texte: "Étape 3 - Porte double (de 100 à 140)" },
+  { id: 3, travail_id:10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
   
   // ID 12 - Trié alphabétiquement
-  { id: 12, texte: "Étape 2 - Choix du type de radiateur" },
-  { id: 12, texte: "Étape 3 - Choix de la gamme de radiateur" },
+  { id: 2, travail_id:11, texte: "Étape 2 - Choix du type de radiateur" },
+  { id: 3, travail_id:11, texte: "Étape 3 - Choix de la gamme de radiateur" },
   
   // ID 13 - Trié alphabétiquement
- // { id: 13, texte: "Étape 3 - Appareillage à créer" },
- // { id: 13, texte: "Étape 3 - Appareillage à remplacer" },
-  { id: 13, texte: "Étape 3 - Prix des appareils" },
+ // { id: 13, travail_id:2, texte: "Étape 3 - Appareillage à créer" },
+ // { id: 13, travail_id:2, texte: "Étape 3 - Appareillage à remplacer" },
+  { id: 3, travail_id:13, texte: "Étape 3 - Prix des appareils" },
   
   // ID 15 - Trié alphabétiquement
-  { id: 15, texte: "Étape 3 - Chauffage" },
-  { id: 15, texte: "Étape 3 - Mise aux normes" },
-  { id: 15, texte: "Étape 3 - Mise en sécurité" },
+  { id: 3, travail_id:15, texte: "Étape 3 - Chauffage" },
+  { id: 3, travail_id:15, texte: "Étape 3 - Mise aux normes" },
+  { id: 3, travail_id:15, texte: "Étape 3 - Mise en sécurité" },
   
   // ID 16 - Trié alphabétiquement
-  { id: 16, texte: "Étape 1 - Dépose d'anciennes installations" },
- // { id: 16, texte: "Étape 3 - Pose de nouveaux équipements sanitaires" }
+  { id: 1, travail_id:16, texte: "Étape 1 - Dépose d'anciennes installations" },
+ // { id: 16, travail_id:2, texte: "Étape 3 - Pose de nouveaux équipements sanitaires" }
 ];
 filteredListEtapes: string[] = [];
 filteredListSousCategories: any[] = [];
-doubleSearch(effacerAutres:boolean): void {
-  if(effacerAutres){
+doubleSearch(effacerEtape:boolean,effacerSouscat:boolean): void {
+  if(effacerEtape){
     this.filteredEtape=""
+  }
+  if(effacerSouscat){
     this.filteredSouscategorie=""
   }
   
   
 
   // Filtrer selon l'ID
-  if (this.filteredTravailID === 1) {
+  if (this.filteredTravailID === 0) {
     // ID = 1 : afficher toute la liste
     this.filteredListEtapes = this.listeComplete.map(item => item.texte);
     this.filteredListSousCategories = this.listeCompleteSousCategories;
   } else {
-    // Filtrer par ID spécifique
-    this.filteredListEtapes = this.listeComplete
-      .filter(item => item.id === this.filteredTravailID)
-      .map(item => item.texte);
-    this.filteredListSousCategories = this.listeCompleteSousCategories
-  .filter(item => item.travail_id === this.filteredTravailID)
-  .sort((a, b) => a.label.localeCompare(b.label));
+    if (this.filteredEtape) {
+      // Filtrer par ID spécifique
+      this.filteredListEtapes = this.listeComplete
+        .filter(item => item.travail_id === this.filteredTravailID )
+        .map(item => item.texte);
+      this.filteredListSousCategories = this.listeCompleteSousCategories
+        .filter(item => item.travail_id === this.filteredTravailID && item.etape_id === this.findIdByText(this.filteredEtape))
+        .sort((a, b) => a.label.localeCompare(b.label));
+    }else{
+      // Filtrer par ID spécifique
+      this.filteredListEtapes = this.listeComplete
+        .filter(item => item.travail_id === this.filteredTravailID )
+        .map(item => item.texte);
+      this.filteredListSousCategories = this.listeCompleteSousCategories
+        .filter(item => item.travail_id === this.filteredTravailID)
+        .sort((a, b) => a.label.localeCompare(b.label));
+
+    }
+
+
+    
   }
 
   this.applyFilters();
 }
+
+findIdByText(text: string): number | null {
+  const item = this.listeComplete.find(item => item.texte === text);
+  return item ? item.id : null;
+}
+
 
 }

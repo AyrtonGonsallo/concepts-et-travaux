@@ -41,9 +41,9 @@
                         <nz-radio-group formControlName="gamme" class="rd-grp-w">
                             <div class="flx-radio-row2-w">
                                 <div *ngFor="let option of gammes_radiateurs" class="parquet-option nt-col tooltip-srf flex-see-gamme" >
-                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label"   class="with-link">
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Titre"   class="with-link">
                                         <span>
-                                            {{ option.Label }}
+                                            {{ option.Titre }}
                                         </span>
                                     </label>
                                 </div>

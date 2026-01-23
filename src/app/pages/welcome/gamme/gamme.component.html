@@ -31,14 +31,14 @@
         <div class="filter-container">
           <div class="filter-box">
             Travail
-            <nz-select [(ngModel)]="filteredTravailID" (ngModelChange)="doubleSearch(true)"  class="filter-select">
+            <nz-select [(ngModel)]="filteredTravailID" (ngModelChange)="doubleSearch(true,true)"  class="filter-select">
               <nz-option  nzLabel="Tous les travaux" [nzValue]="0"></nz-option>
               <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
             </nz-select>
           </div>
           <div class="filter-box">
             Tâche
-            <nz-select [(ngModel)]="filteredEtape" (ngModelChange)="search2()" class="filter-select">
+            <nz-select [(ngModel)]="filteredEtape" (ngModelChange)="doubleSearch(false,true)" class="filter-select">
               <nz-option  nzLabel="Toutes les étapes" nzValue=""></nz-option>
                 <nz-option *ngFor="let element of filteredListEtapes"  [nzValue]="element" [nzLabel]="element"></nz-option>
             </nz-select>
