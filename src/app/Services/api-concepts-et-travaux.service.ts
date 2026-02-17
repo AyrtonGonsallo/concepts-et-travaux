@@ -57,6 +57,15 @@ get_projet(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/get_project/${userId}`;
   return this.http.get<any>(url);
 }
+get_lien_paiement_projet(projet_id: number,payer_visite:boolean,payer_acompte:boolean): Observable<any> {
+  const url = `${environment.apiUrl}/generate_paylink/${projet_id}/${payer_visite}/${payer_acompte}`;
+  return this.http.get<any>(url);
+}
+
+create_lien_demande_paiement_projet(projet_id: number,userData:any): Observable<any> {
+  const url = `${environment.apiUrl}/generate_paylink/${projet_id}`;
+  return this.http.post<any>(url,userData);
+}
 add_etape_projet(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/ajouter_etape_projet`, userData);
 }

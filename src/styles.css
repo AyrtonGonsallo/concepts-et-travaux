@@ -2,3 +2,12 @@
 .select-add nz-select-item{
     font-weight: bolder;
 }
+
+.not-editable .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+}
+.not-editable .ant-checkbox-disabled:not(.ant-checkbox-checked) .ant-checkbox-inner {
+    background-color: #fff !important;
+    border-color: #fff !important;
+}

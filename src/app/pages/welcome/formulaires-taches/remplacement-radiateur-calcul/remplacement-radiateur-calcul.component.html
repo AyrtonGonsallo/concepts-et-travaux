@@ -23,8 +23,8 @@
                         <nz-radio-group formControlName="type" class="">
                             <div class="flx-radio-row2">
                                 <div *ngFor="let option of types">
-                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                    <span>{{ option.Label }}</span> 
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Titre">
+                                    <span>{{ option.Titre }}</span> 
                                     </label>
                                 </div>
                             </div>

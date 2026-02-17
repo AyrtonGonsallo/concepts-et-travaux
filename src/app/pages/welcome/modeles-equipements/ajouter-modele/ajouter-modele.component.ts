@@ -218,9 +218,10 @@ loadFournisseurs(){
   }
 
 
-   liste = [
-      //"Étape 3 - Appareillage à créer",
+    liste = [
+     // "Étape 3 - Appareillage à créer",
      // "Étape 3 - Appareillage à remplacer",
+      "Étape 2 - type de radiateur",
       "Étape 3 - Choix des équipements de cuisine",
       "Étape 3 - Pose de nouveaux équipements sanitaires",
       "Étape 3 - Remplacement de radiateur",

@@ -304,25 +304,21 @@ liste = [
 
 listeCompleteSousCategories = [
   // travail_id: 2
-  { travail_id: 2, etape_id: 1, label: 'Service de dépose d\'element de cuisine', value: 'service-depose-cuisine' },
+  { travail_id: 2, etape_id: 1, label: 'Dépose d\'element de cuisine', value: 'service-depose-cuisine' },
   
   // travail_id: 3
-  { travail_id: 3 , etape_id: 1, label: 'Service de démolition de murs', value: 'service-demolition-murs' },
-  { travail_id: 3 , etape_id: 1, label: 'Service ouverture partielle', value: 'service-ouverture-partielle' },
+  { travail_id: 3 , etape_id: 1, label: 'Démolition de murs', value: 'service-demolition-murs' },
+  { travail_id: 3 , etape_id: 1, label: 'Ouverture partielle', value: 'service-ouverture-partielle' },
   { travail_id: 3 , etape_id: 1, label: 'Type de cloison demolition complete', value: 'cloison-demolition-complete' },
   { travail_id: 3 , etape_id: 1, label: 'Type de cloison ouverture partielle', value: 'cloison-ouverture-partielle' },
   
   // travail_id: 4
-  { travail_id: 4 , etape_id: 1, label: 'Service création de mur non porteur', value: 'service-creation-mur-non-porteur' },
+  { travail_id: 4 , etape_id: 1, label: 'Création de mur non porteur', value: 'service-creation-mur-non-porteur' },
   { travail_id: 4 , etape_id: 1, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
-  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10' },
-  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur > 10 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_10+' },
-  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 5 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_5' },
-  { travail_id: 4 , etape_id: 1, label: 'Type de porte épaisseur 7 cm', value: 'type-de-porte-creation-murs-non-porteurs_ep_7' },
-  
+
   // travail_id: 5
   { travail_id: 5 , etape_id: 3, label: 'Carrelage mural', value: 'carrelage-mur' },
-  { travail_id: 5 , etape_id: 1, label: 'Service de dépose murs', value: 'service-depose-murs' },
+  { travail_id: 5 , etape_id: 1, label: 'Dépose murs', value: 'service-depose-murs' },
   { travail_id: 5 , etape_id: 3, label: 'Enduit décoratif mur', value: 'enduit-decoratif-mur' },
   { travail_id: 5 , etape_id: 2, label: 'État des surfaces (murs)', value: 'etat-des-surfaces-murs' },
   { travail_id: 5 , etape_id: 3, label: 'Papier peint mur', value: 'papier-peint-mur' },
@@ -331,7 +327,7 @@ listeCompleteSousCategories = [
   { travail_id: 5 , etape_id: 3, label: 'Bois', value: 'bois' },
   
   // travail_id: 8
-  { travail_id: 8 , etape_id: 1, label: 'Service de dépose revêtements plafond', value: 'service-depose-revetement-plafond' },
+  { travail_id: 8 , etape_id: 1, label: 'Dépose revêtements plafond', value: 'service-depose-revetement-plafond' },
   { travail_id: 8 , etape_id: 2, label: 'Enduit décoratif plafond', value: 'enduit-decoratif-plafond' },
   { travail_id: 8 , etape_id: 2, label: 'État des surfaces (plafond)', value: 'etat-des-surfaces-plafond' },
   { travail_id: 8 , etape_id: 3, label: 'Papier peint plafond', value: 'papier-peint-plafond' },
@@ -340,7 +336,7 @@ listeCompleteSousCategories = [
   
   // travail_id: 9
   { travail_id: 9 , etape_id: 3, label: 'Carrelage (sol)', value: 'carrelage-sol' },
-  { travail_id: 9 , etape_id: 1, label: 'Service de dépose revêtements sol', value: 'service-depose-revetement-sol' },
+  { travail_id: 9 , etape_id: 1, label: 'Dépose revêtements sol', value: 'service-depose-revetement-sol' },
   { travail_id: 9 , etape_id: 2, label: 'État des surfaces (sol)', value: 'etat-des-surfaces-sol' },
   { travail_id: 9 , etape_id: 3, label: 'Moquette', value: 'moquette-de-sol' },
   { travail_id: 9 , etape_id: 3, label: 'Parquet flottant', value: 'parquet-flottant-sol' },
@@ -358,18 +354,15 @@ listeCompleteSousCategories = [
   { travail_id: 10 , etape_id: 3, label: 'Type de porte double', value: 'type-de-porte-double' },
   { travail_id: 10 , etape_id: 3, label: 'Type de porte simple', value: 'type-de-porte-simple' },
   
-  // travail_id: 12
-  { travail_id: 12 , etape_id: 3, label: 'Gamme de Radiateur', value: 'gamme-de-radiateur' },
-  { travail_id: 12 , etape_id: 2, label: 'Type de radiateur', value: 'type-de-radiateur' },
-  
+
   // travail_id: 13
   { travail_id: 13 , etape_id: 3, label: 'Gamme d\'appareils (rénovation partielle)', value: 'gamme-appareils' },
   
   // travail_id: 15
-  { travail_id: 15 , etape_id: 3, label: 'Service rénovation électrique complète', value: 'service-renovation-electrique-complete' },
+  { travail_id: 15 , etape_id: 3, label: 'Rénovation électrique complète', value: 'service-renovation-electrique-complete' },
   
   // travail_id: 16
-  { travail_id: 16 , etape_id: 3, label: 'Service de dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
+  { travail_id: 16 , etape_id: 3, label: 'Dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
 ].sort((a, b) => {
   // Trier d'abord par travail_id
   if (a.travail_id !== b.travail_id) {
@@ -390,7 +383,6 @@ listeComplete: EtapeItem[] = [
   { id: 1, travail_id:3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
   
   // ID 4
-  { id: 1, travail_id:4, texte: "Étape 1 - Création des portes" },
   { id: 1, travail_id:4, texte: "Étape 1 - Création des murs" },
   
   // ID 5 - Trié alphabétiquement
@@ -409,9 +401,11 @@ listeComplete: EtapeItem[] = [
   { id: 3, travail_id:9, texte: "Étape 3 - Choix du nouveau revêtement" },
   
   // ID 10 - Trié alphabétiquement
-  { id: 33, travail_id:10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
-  { id: 3, travail_id:10, texte: "Étape 3 - Porte double (de 100 à 140)" },
+  { id: 1, travail_id:10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
+  { id: 2, travail_id:10, texte: "Étape 3 - Porte double (de 100 à 140)" },
   { id: 3, travail_id:10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
+  { id: 4, travail_id:10, texte: "Étape 3 - Nature de la porte" },
+  { id: 5, travail_id:10, texte: "Étape 3 - Gamme de la porte" },
   
   // ID 12 - Trié alphabétiquement
   { id: 2, travail_id:11, texte: "Étape 2 - Choix du type de radiateur" },

@@ -10,10 +10,33 @@
             </nz-form-control>
         </nz-form-item>
 
+
+         <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >
+                <span>Travail associé</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
+                    <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape" nzRequired>
+                <span>Étape </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="Etape" formControlName="Etape">
+                    <nz-option *ngFor="let element of filteredList"  [nzValue]="element" [nzLabel]="element"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
      <div nz-row>
             <div nz-col nzSpan="6" nzOffset="4">
                 <nz-form-item>
-                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="current_group" class="a-start" nzRequired nzTooltipTitle="Catégorie" >
+                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="current_group" class="a-start" nzRequired nzTooltipTitle="choisir pour filtrer le type" >
                         <span>Catégorie </span>
                     </nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -30,7 +53,7 @@
             </div>
             <div nz-col nzSpan="13" nzOffset="1">
                 <nz-form-item>
-                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="Type" class="a-start" nzRequired nzTooltipTitle="Type de gamme" >
+                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="Type" class="a-start" nzRequired nzTooltipTitle="choisir le type" >
                         <span>Type de produit </span>
                     </nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -46,16 +69,7 @@
         
 
 
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="TravailID"  nzRequired >
-                <span>Travail associé</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
-                    <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+       
 
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PrixFournisseur" nzRequired >
@@ -111,16 +125,7 @@
 
        
 
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Etape" nzRequired>
-                <span>Étape </span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="Etape" formControlName="Etape">
-                    <nz-option *ngFor="let element of filteredList"  [nzValue]="element" [nzLabel]="element"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+      
         
        <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverPrixMultiples" >

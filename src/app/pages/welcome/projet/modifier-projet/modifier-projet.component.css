@@ -21,3 +21,11 @@
     right: 24px;
     bottom: 30px;
 }
+.pay-options{
+    display: flex;
+    flex-direction: column;
+}
+.grid-2-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

@@ -9,6 +9,7 @@ import { AuthService } from '../../../../Services/auth.service';
 import { Paiement } from '../../../../Models/Paiement';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { environment } from '../../../../environments/environment';
+import { firstValueFrom, forkJoin } from 'rxjs';
 // Définir le type des valeurs du formulaire avec la propriété Autorisations
 
 
@@ -19,6 +20,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class ModifierProjetComponent {
 
+  
   assetsUrl = environment.assetsUrl
   size: NzSelectSizeType = 'default';
   paiements:Paiement[] = [];
@@ -42,6 +44,8 @@ export class ModifierProjetComponent {
   travaux_livres=false
   gpa_termine=false
   notes_remarques=""
+
+  avancement=0
 
     onChange(result: Date): void {
       console.log('Date sélectionnée :', event);
@@ -76,6 +80,10 @@ export class ModifierProjetComponent {
     notes_remarques: this.notes_remarques,
     Date_de_fin_des_travaux:this.date_travaux_livres,
     Date_de_fin_gpa:this.date_fin_gpa,
+    Date_paiement_visite:this.date_paiement_visite,
+    Date_programmation_visite:this.date_programmation_visite,
+    Date_validation_projet:this.date_validation_projet,
+    Date_paiement_acompte:this.date_paiement_acompte,
     
 
   };
@@ -111,14 +119,11 @@ export class ModifierProjetComponent {
 
   projetId:string =  this.route.snapshot.paramMap.get('id')??'0';
 
-  ngOnInit(): void {
-   
+  async ngOnInit(): Promise<void> {
 
-         this.getProjetDetails(this.projetId);
-        
-       
-    
-
+    await this.load_parametres()
+    await this.getProjetDetails(this.projetId);
+    /*
     this.userService.getAllDevisPieces().subscribe(
       (response: any) => {
         console.log('liste des devis récupérée :', response);
@@ -128,10 +133,8 @@ export class ModifierProjetComponent {
         console.error('Erreur lors de la recuperation des devus :', error);
       }
     );
-
+    */
     this.get_all_projet_paiements(this.projetId);
-   
-
     this.paiementForm = this.fb.group({
       TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
       Commentaire: this.fb.control<string | null>(null, Validators.required),
@@ -146,28 +149,99 @@ export class ModifierProjetComponent {
 
   }
 
+  montant_total=0
+  deja_paye=0
+  reste_a_payer=0
+  en_attente_de_paiement=0
 
 
   get_all_projet_paiements(devisId: string): void {
-      this.userService.get_all_projet_paiements( parseInt(devisId, 10)).subscribe(
-        (response) => {
-          this.paiements=response
-          console.log("réponse de la requette get_paiments",response);
-          
-        },
-        (error) => {
-          console.error('Erreur lors de la recuperation des details paiments :', error);
-        }
-      );
-      
+    this.userService.get_all_projet_paiements( parseInt(devisId, 10)).subscribe(
+      (response) => {
+        this.paiements=response
+        console.log("réponse de la requette get_paiments",response);
+        console.log("montant total",this.montant_total);
+        
+        
+        this.deja_paye = this.paiements
+        .filter(p => p.Status === true)
+        .reduce((sum, p) => sum + p.Montant, 0);
+
+        this.en_attente_de_paiement = this.paiements
+        .filter(p => p.Status === false)
+        .reduce((sum, p) => sum + p.Montant, 0);
+
+        const total = this.paiements.reduce(
+          (sum, paiement) => sum + paiement.Montant,
+          0
+        );
+        this.reste_a_payer = Math.round(this.montant_total - total)
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details paiments :', error);
+      }
+    );
+    
+  }
+
+  
+  tva = 0
+  coefficient = 0
+  async load_parametres() {
+
+  forkJoin({
+    tva: this.userService.get_parametre_by_id_or_nom(6, "TVA"),
+    coefficient: this.userService.get_parametre_by_id_or_nom(1, "coefficient")
+  })
+  .subscribe({
+    next: (result) => {
+      this.tva = 1 + result.tva.Valeur / 100;
+      this.coefficient = result.coefficient.Valeur;
+
+      console.log("TVA:", result.tva);
+      console.log("Coefficient:", result.coefficient);
+    },
+    error: (error) => {
+      console.error('Erreur lors de la récupération des paramètres', error);
     }
+  });
+}
+
+  calculerPrixTTC(prix: any): number {
+    
+    if (!prix) return 0;
+    const total = prix * this.coefficient * this.tva;
+    return Math.round(total * 100) / 100; // arrondi à 2 décimales
+  }
+
+  updateAvancement() {
+    let total = 5; // nombre total de cases
+    let checked = 0;
+
+    if (this.travaux_demarres) checked++;
+    if (this.travaux_en_cours) checked++;
+    if (this.travaux_acheves) checked++;
+    if (this.travaux_livres) checked++;
+    if (this.gpa_termine) checked++;
+
+    this.avancement = Math.round((checked / total) * 100);
+  }
+  onCheckboxAvancementChange() {
+    this.updateAvancement();
+  }
 
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
-  getProjetDetails(userId: string): void {
-    this.userService.get_projet( parseInt(userId, 10)).subscribe(
-      (response) => {
-        this.project=response
-        console.log("this.project",this.project)
+  async getProjetDetails(userId: string): Promise<void> {
+
+ try {
+
+    const result = await firstValueFrom(
+      this.userService.get_projet(parseInt(userId, 10))
+    );
+
+    this.project = result;
+
+    console.log("this.project", this.project);
         this.paiement_visite=this.project.Visite?.Paye
         this.date_paiement_visite=this.project.Visite?.Date
         this.programmation_visite=(this.project.Visite?.DateDeProgrammation)?true:false
@@ -180,27 +254,36 @@ export class ModifierProjetComponent {
         this.date_paiement_acompte=this.project.Date_de_paiement_acompte
         this.date_de_programmation=(this.project.Visite)?this.project.Visite.DateDeProgrammation:null
         this.date_fin_gpa = this.project.Date_de_fin_gpa
+       
 
+        this.montant_total = this.calculerPrixTTC(this.project?.Devis.reduce(
+          (sum: any, devis: { Prix: any; }) => sum + devis.Prix,
+          0
+        ));
        
         
         switch (this.project.Status) {
           case "travaux démarrés":
             this.travaux_demarres=true
+            this.avancement=100/5*1
             break;
           case "travaux en cours":
             this.travaux_demarres=true
             this.travaux_en_cours=true
+            this.avancement=100/5*2
             break;
           case "travaux achevés":
             this.travaux_demarres=true
             this.travaux_en_cours=true
             this.travaux_acheves=true
+            this.avancement=100/5*3
             break;
           case "travaux livrés":
             this.travaux_demarres=true
             this.travaux_en_cours=true
             this.travaux_acheves=true
             this.travaux_livres=true
+            this.avancement=100/5*4
             break;
           case "gpa terminé":
             this.travaux_demarres=true
@@ -208,6 +291,7 @@ export class ModifierProjetComponent {
             this.travaux_acheves=true
             this.travaux_livres=true
             this.gpa_termine=true
+            this.avancement=100/5*5
             break;
         
           default:
@@ -215,15 +299,10 @@ export class ModifierProjetComponent {
         }
         
         console.log("réponse de la requette get_projet",this.project);
-
-      },
-      (error) => {
-        console.error('Erreur lors de la recuperation des details projet :', error);
-      }
-    );
-    
+    } catch (error) {
+    console.error('Erreur lors de la récupération du projet', error);
   }
-  
+}
 
 
 
@@ -256,28 +335,56 @@ export class ModifierProjetComponent {
   submitpaiementForm(): void {
     if (this.paiementForm.valid) {
       console.log('submit', this.paiementForm.value);
-      
-      this.userService.add_demande_paiement(this.paiementForm.value).subscribe(
+      //creer un objet avec les champs de formulaire
+       const data = {
+        Montant: this.paiementForm.value.Montant,
+        Type: this.paiementForm.value.Type,
+        TypeDePaiement: this.paiementForm.value.TypeDePaiement,
+        Titre: this.paiementForm.value.Titre,
+        Commentaire: this.paiementForm.value.Commentaire
+      };
+
+      this.userService.create_lien_demande_paiement_projet(parseInt(this.projetId),data).subscribe(
         (response) => {
-          console.log('paiement ajouté avec succès :', response);
-          this.message.create('success', `paiement ajouté avec succès`);
-          this.get_all_projet_paiements(this.projetId);
-          this.paiementForm = this.fb.group({
-            TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
-            Commentaire: this.fb.control<string | null>(null, Validators.required),
-            Titre: this.fb.control<string | null>(null, Validators.required),
-            Type: this.fb.control<string | null>(null, Validators.required),
-            Montant: this.fb.control<number | null>(null, Validators.required),
-            Requette: this.fb.control<string | null>("demande", Validators.required),
-            Status: this.fb.control<boolean | null>(false, Validators.required),
-            DateCreation: this.fb.control<string | null>(null, Validators.required), // Date du jour
-            ProjetID: this.fb.control<number | null>(null, Validators.required), // devispiece.ID sera assigné dynamiquement
-          });
+          const ref_virement = response.ref 
+          const lien_paiement = response.url //ajouter ca au premier parametre genre {lien:url,data:this.paiementForm.value}
+          const demandePaiement = {
+            ...this.paiementForm.value,
+            Lien: lien_paiement,
+            ReferenceVirement: ref_virement
+          };
+          console.log("demandePaiement",demandePaiement)
+          
+          this.userService.add_demande_paiement(demandePaiement).subscribe(
+            (response) => {
+              console.log('paiement ajouté avec succès :', response);
+              this.message.create('success', `paiement ajouté avec succès`);
+              this.get_all_projet_paiements(this.projetId);
+              this.paiementForm = this.fb.group({
+                TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+                Commentaire: this.fb.control<string | null>(null, Validators.required),
+                Titre: this.fb.control<string | null>(null, Validators.required),
+                Type: this.fb.control<string | null>(null, Validators.required),
+                Montant: this.fb.control<number | null>(null, Validators.required),
+                Requette: this.fb.control<string | null>("demande", Validators.required),
+                Status: this.fb.control<boolean | null>(false, Validators.required),
+                DateCreation: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
+                ProjetID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
+              });
+            },
+            (error) => {
+              console.error('Erreur lors de l\'ajout du paiement :', error);
+            }
+          );
+          
+
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du paiement :', error);
         }
       );
+      
+      
     } else {
       Object.values(this.paiementForm.controls).forEach(control => {
         if (control.invalid) {
@@ -299,6 +406,7 @@ export class ModifierProjetComponent {
     type: 'info-circle',
     theme: 'twotone'
   };
+
 
   
 

@@ -69,23 +69,16 @@ types: Type[] = [
     { group: 'Porte', slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
     { group: 'Porte', slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
     { group: 'Porte', slug: 'type-de-porte-double', label: 'Type de porte double' },
-    { group: 'Porte', slug: 'type-de-porte-creation-murs-non-porteurs_ep_10', label: 'Type de porte épaisseur 10 cm' },
-    { group: 'Porte', slug: 'type-de-porte-creation-murs-non-porteurs_ep_10+', label: 'Type de porte épaisseur > 10 cm' },
-    { group: 'Porte', slug: 'type-de-porte-creation-murs-non-porteurs_ep_5', label: 'Type de porte épaisseur 5 cm' },
-    { group: 'Porte', slug: 'type-de-porte-creation-murs-non-porteurs_ep_7', label: 'Type de porte épaisseur 7 cm' },
     { group: 'Porte', slug: 'type-de-porte-simple', label: 'Type de porte simple' },
     
-    // Radiateur
-    { group: 'Radiateur', slug: 'type-de-radiateur', label: 'Type de radiateur' },
-    
-  
+   
     // Services
     { group: 'Cloisons / Murs non porteurs', slug: 'service-creation-mur-non-porteur', label: 'Création de mur non porteur' },
     { group: 'Cloisons / Murs non porteurs', slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
     { group: 'Dépose d\'équipements', slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
     { group: 'Murs', slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
     { group: 'Plafond', slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
-    { group: 'Sol', slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
+    { group: 'Dépose d\'équipements', slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
     { group: 'Dépose d\'équipements', slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
     { group: 'Cloisons / Murs non porteurs', slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
     { group: 'Rénovations électriques', slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
@@ -350,7 +343,6 @@ listeComplete: TravailItem[] = [
   { id: 3, texte: "Étape 1 - Démolition partielle de murs non porteurs" },
   
   // ID 4
-  { id: 4, texte: "Étape 1 - Création des portes" },
   { id: 4, texte: "Étape 1 - Création des murs" },
   
   // ID 5 - Trié alphabétiquement
@@ -372,6 +364,8 @@ listeComplete: TravailItem[] = [
   { id: 10, texte: "Étape 3 - Porte coulissante (de 70 à 90)" },
   { id: 10, texte: "Étape 3 - Porte double (de 100 à 140)" },
   { id: 10, texte: "Étape 3 - Porte simple (dimensions de 70 à 90)" },
+  { id: 10, texte: "Étape 3 - Nature de la porte" },
+  { id: 10, texte: "Étape 3 - Gamme de la porte" },
   
   // ID 12 - Trié alphabétiquement
   { id: 12, texte: "Étape 2 - Choix du type de radiateur" },

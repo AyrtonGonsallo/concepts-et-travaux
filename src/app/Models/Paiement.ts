@@ -7,6 +7,7 @@ export interface Paiement {
     Type: string;
     Titre?: string;
     Commentaire?: string;
+    Lien?: string;
     Montant: number;
     Date: string;
     Status:Boolean;
