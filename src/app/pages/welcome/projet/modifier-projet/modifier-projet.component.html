@@ -3,13 +3,13 @@
     <div class="visite-box" >
       <h2>Avancement Projet</h2> 
 
-      <div nz-row [nzGutter]="16" style="margin-top: 10px;">
-        <div nz-col class="gutter-row" [nzSpan]="16">
+      <div nz-row [nzGutter]="24" style="margin-top: 10px;">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <nz-progress [nzPercent]="avancement"></nz-progress>
         </div>
       </div>
       
-      <div nz-row [nzGutter]="16" style="margin-top: 10px;">
+      <div nz-row [nzGutter]="20" style="margin-top: 10px;">
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux démarrés<br>
@@ -19,19 +19,19 @@
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux en cours<br>
-            <label nz-checkbox [(ngModel)]="travaux_en_cours" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_en_cours" [nzDisabled]="!travaux_demarres" (ngModelChange)="onCheckboxAvancementChange()"></label>
           </div>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux achevés<br>
-            <label nz-checkbox [(ngModel)]="travaux_acheves" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_acheves" [nzDisabled]="!travaux_en_cours" (ngModelChange)="onCheckboxAvancementChange()"></label>
           </div>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux livrés<br>
-            <label nz-checkbox [(ngModel)]="travaux_livres" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_livres" [nzDisabled]="!travaux_acheves" (ngModelChange)="onCheckboxAvancementChange()"></label>
                 <nz-date-picker *ngIf="travaux_livres"  [(ngModel)]="date_travaux_livres" [nzDisabledDate]="disabledDate" (ngModelChange)="onChange($event)"></nz-date-picker>
 
           </div>
@@ -52,8 +52,8 @@
     <div class="visite-box" *ngIf="project?.Visite">
       <h2>Visite du technicien</h2>
     
-      <div nz-row [nzGutter]="16">
-        <div nz-col class="gutter-row" [nzSpan]="16">
+      <div nz-row style="gap:10px" >
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             1. Visite réglée
             <label nz-checkbox [(ngModel)]="paiement_visite">le {{date_paiement_visite | date:'dd/MM/yyyy'}}</label>
@@ -61,7 +61,7 @@
 
           </div>
         </div>
-        <div nz-col class="gutter-row" [nzSpan]="16">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             <span style="margin-right: 10px;">2. Programmer une date de visite :</span>
             <nz-date-picker style="margin-right: 10px;margin-bottom: 10px;" nzShowTime [(ngModel)]="date_de_programmation" [nzDisabledDate]="disableBeforeToday"></nz-date-picker>
@@ -69,21 +69,21 @@
             <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
           </div>
         </div>
-        <div nz-col class="gutter-row" [nzSpan]="16">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             3. Visite programmée
             <label nz-checkbox [(ngModel)]="programmation_visite">le {{date_programmation_visite | date:'dd/MM/yyyy'}}</label>
             <nz-date-picker [(ngModel)]="date_programmation_visite" (ngModelChange)="onChange($event)"></nz-date-picker>
           </div>
         </div>
-        <div nz-col class="gutter-row" [nzSpan]="16">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             <span style="margin-right: 10px;">4. Envoyer le devis final au client :</span>
             <button nz-button nzType="primary" [nzLoading]="isLoadingvisit_ended" (click)="loadvisit_ended()">valider</button>
 
             <br><br>
             <div nz-row>
-              <nz-form-label [nzSpan]="5"  nzFor="Commentaire" [nzTooltipTitle]="commVisiteTooltipTemplate"
+              <nz-form-label [nzSpan]="4" style="text-align: left;" nzFor="Commentaire" [nzTooltipTitle]="commVisiteTooltipTemplate"
               [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label><br>
               <div nz-col  nzSpan="18">
                 <textarea  id="CommentaireVisite" rows="4" style="width:100%;margin-top: 10px;" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" ></textarea> 
@@ -101,14 +101,14 @@
             </ng-template>
           </div>
         </div>
-        <div nz-col class="gutter-row" [nzSpan]="16">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             5. Projet validé
             <label nz-checkbox [(ngModel)]="projet_valide">le {{date_validation_projet | date:'dd/MM/yyyy'}}</label>
             <nz-date-picker [(ngModel)]="date_validation_projet" (ngModelChange)="onChange($event)"></nz-date-picker>
           </div>
         </div>
-        <div nz-col class="gutter-row" [nzSpan]="16">
+        <div nz-col class="gutter-row" [nzSpan]="24">
           <div class="inner-box">
             6. Acompte payé
             <label nz-checkbox  [(ngModel)]="acompte_paye">le {{date_paiement_acompte | date:'dd/MM/yyyy'}}</label>

@@ -163,9 +163,9 @@ export class ModifierProjetComponent {
         console.log("montant total",this.montant_total);
         
         
-        this.deja_paye = this.paiements
+        this.deja_paye = Number((this.paiements
         .filter(p => p.Status === true)
-        .reduce((sum, p) => sum + p.Montant, 0);
+        .reduce((sum, p) => sum + p.Montant, 0)).toFixed(2))
 
         this.en_attente_de_paiement = this.paiements
         .filter(p => p.Status === false)
@@ -175,7 +175,7 @@ export class ModifierProjetComponent {
           (sum, paiement) => sum + paiement.Montant,
           0
         );
-        this.reste_a_payer = Math.round(this.montant_total - total)
+        this.reste_a_payer = Number((this.montant_total - total).toFixed(2))
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details paiments :', error);
@@ -335,56 +335,66 @@ export class ModifierProjetComponent {
   submitpaiementForm(): void {
     if (this.paiementForm.valid) {
       console.log('submit', this.paiementForm.value);
-      //creer un objet avec les champs de formulaire
-       const data = {
-        Montant: this.paiementForm.value.Montant,
-        Type: this.paiementForm.value.Type,
-        TypeDePaiement: this.paiementForm.value.TypeDePaiement,
-        Titre: this.paiementForm.value.Titre,
-        Commentaire: this.paiementForm.value.Commentaire
-      };
+      
 
-      this.userService.create_lien_demande_paiement_projet(parseInt(this.projetId),data).subscribe(
+      this.userService.add_demande_paiement(this.paiementForm.value).subscribe(
         (response) => {
-          const ref_virement = response.ref 
-          const lien_paiement = response.url //ajouter ca au premier parametre genre {lien:url,data:this.paiementForm.value}
-          const demandePaiement = {
-            ...this.paiementForm.value,
-            Lien: lien_paiement,
-            ReferenceVirement: ref_virement
+          let paiement=response.paiement
+          console.log('paiement créé avec succès :', paiement);
+
+          //creer un objet avec les champs de formulaire
+          const data = {
+            Montant: this.paiementForm.value.Montant,
+            Type: this.paiementForm.value.Type,
+            TypeDePaiement: this.paiementForm.value.TypeDePaiement,
+            Titre: this.paiementForm.value.Titre,
+            Commentaire: this.paiementForm.value.Commentaire,
+            id_paiement:paiement.ID
           };
-          console.log("demandePaiement",demandePaiement)
-          
-          this.userService.add_demande_paiement(demandePaiement).subscribe(
+
+          this.userService.create_lien_demande_paiement_projet(parseInt(this.projetId),data).subscribe(
             (response) => {
-              console.log('paiement ajouté avec succès :', response);
-              this.message.create('success', `paiement ajouté avec succès`);
-              this.get_all_projet_paiements(this.projetId);
-              this.paiementForm = this.fb.group({
-                TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
-                Commentaire: this.fb.control<string | null>(null, Validators.required),
-                Titre: this.fb.control<string | null>(null, Validators.required),
-                Type: this.fb.control<string | null>(null, Validators.required),
-                Montant: this.fb.control<number | null>(null, Validators.required),
-                Requette: this.fb.control<string | null>("demande", Validators.required),
-                Status: this.fb.control<boolean | null>(false, Validators.required),
-                DateCreation: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
-                ProjetID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
-              });
+              const ref_virement = response.ref 
+              const lien_paiement = response.url //ajouter ca au premier parametre genre {lien:url,data:this.paiementForm.value}
+              const updateDATA = {
+                Lien: lien_paiement,
+                ReferenceVirement: ref_virement
+              };
+              console.log("demandePaiement",updateDATA)
+
+              
+              this.userService.update_demande_paiement(parseInt(paiement.ID),updateDATA).subscribe(
+                (response) => {
+                  console.log("paiement mis a jour avec lien/reference :",response)
+                  this.get_all_projet_paiements(this.projetId);
+                  this.paiementForm = this.fb.group({
+                    TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
+                    Commentaire: this.fb.control<string | null>(null, Validators.required),
+                    Titre: this.fb.control<string | null>(null, Validators.required),
+                    Type: this.fb.control<string | null>(null, Validators.required),
+                    Montant: this.fb.control<number | null>(null, Validators.required),
+                    Requette: this.fb.control<string | null>("demande", Validators.required),
+                    Status: this.fb.control<boolean | null>(false, Validators.required),
+                    DateCreation: this.fb.control<string | null>(new Date().toISOString(), Validators.required), // Date du jour
+                    ProjetID: this.fb.control<number | null>(parseInt(this.projetId), Validators.required), // devispiece.ID sera assigné dynamiquement
+                  });
+                  this.message.create('success', `paiement mis à jour avec succès`);
+
+                },
+                (error) => {
+                  console.error('Erreur lors de la mise à jour du paiement :', error);
+                }
+              );
             },
             (error) => {
               console.error('Erreur lors de l\'ajout du paiement :', error);
             }
           );
-          
-
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du paiement :', error);
         }
       );
-      
-      
     } else {
       Object.values(this.paiementForm.controls).forEach(control => {
         if (control.invalid) {
@@ -392,8 +402,6 @@ export class ModifierProjetComponent {
           control.updateValueAndValidity({ onlySelf: true });
         }
       });
-
-      
     }
   }
 
