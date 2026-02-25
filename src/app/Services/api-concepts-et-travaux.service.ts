@@ -553,6 +553,16 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any[]>(`${environment.apiUrl}/get_active_travaux`);
   }
 
+  // Méthode pour récupérer tous les travaux actifs avec les détails de la pièce associée
+  getActiveTravauxAvecEquipements(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_active_travaux_avec_equipements`);
+  }
+
+  // Méthode pour récupérer tous les travaux actifs avec les détails de la pièce associée
+  getActiveTravauxSansEquipements(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_active_travaux_sans_equipements`);
+  }
+
 
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getTravailById(id: number): Observable<any> {
@@ -699,6 +709,14 @@ get_role(userId: number): Observable<any> {
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammes(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes`);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getEquipementGammes(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes`);
+  }
+  // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
+  getGammesSansEquipement(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements`);
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteGamme(gammeId: number): Observable<any> {

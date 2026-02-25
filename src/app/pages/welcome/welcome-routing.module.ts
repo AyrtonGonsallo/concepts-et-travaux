@@ -206,9 +206,9 @@ const routes: Routes = [
       { path: 'devis-pieces', component: DevisPiecesComponent },
       { path: 'devis-pieces/modifier-devis-piece/:id', component: ModifierDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'devis-pieces/ajouter-devis-piece', component: AjouterDevisPieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'gammes', component: GammeComponent },
-      { path: 'gammes/modifier-gamme/:id', component: ModifierGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'gammes/ajouter-gamme', component: AjouterGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'taches', component: GammeComponent },
+      { path: 'taches/modifier-tache/:id', component: ModifierGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'taches/ajouter-tache', component: AjouterGammeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'taches-generales', component: TachesGeneralesComponent },
       { path: 'taches-generales/modifier-tache-generale/:id', component: ModifierTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'taches-generales/ajouter-tache-generale', component: AjouterTacheGeneraleComponent }, // Nouvelle route pour ajouter un compte avec un ID

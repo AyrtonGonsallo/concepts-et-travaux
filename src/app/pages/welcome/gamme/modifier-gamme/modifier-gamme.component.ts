@@ -7,9 +7,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
 export interface Type {
-  slug: string;
+   slug: string;
   label: string;
-  group: string;
+   travail_id:number;
+   etape_id:number;
 }
 interface TravailItem {
   id: number;
@@ -42,94 +43,86 @@ export class ModifierGammeComponent {
     GammeDeReferenceID: FormControl<number>;
   }>;
   
-  
   types: Type[] = [
       // Divers
-      { group: 'Cloisons / Murs non porteurs', slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
-      { group: 'Cloisons / Murs non porteurs', slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
-      { group: 'Rénovations électriques', slug: 'gamme-appareils', label: 'Rénovation électrique partielle (gamme d\'appareils)' },
+      { etape_id:1, travail_id:3, slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
+      { etape_id:1, travail_id:3,  slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
+      //{ etape_id:3, travail_id:13,  slug: 'gamme-appareils', label: 'Rénovation électrique partielle (gamme d\'appareils)' },
       
       // Murs
-      { group: 'Murs', slug: 'bois', label: 'Bois' },
-      { group: 'Murs', slug: 'carrelage-mur', label: 'Carrelage mural' },
-      { group: 'Murs', slug: 'enduit-decoratif-mur', label: 'Enduit décoratif mur' },
-      { group: 'Murs', slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
-      { group: 'Murs', slug: 'papier-peint-mur', label: 'Papier peint mur' },
-      { group: 'Murs', slug: 'peinture-mur', label: 'Peinture murale' },
-      { group: 'Murs', slug: 'tissus-mur', label: 'Tissus muraux' },
+      { etape_id:3, travail_id:5, slug: 'bois', label: 'Bois' },
+      { etape_id:3, travail_id:5, slug: 'carrelage-mur', label: 'Carrelage mural' },
+      { etape_id:3, travail_id:5, slug: 'enduit-decoratif-mur', label: 'Enduit décoratif mur' },
+      { etape_id:2, travail_id:5, slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
+      { etape_id:3, travail_id:5, slug: 'papier-peint-mur', label: 'Papier peint mur' },
+      { etape_id:3, travail_id:5, slug: 'peinture-mur', label: 'Peinture murale' },
+      { etape_id:3, travail_id:5, slug: 'tissus-mur', label: 'Tissus muraux' },
       
       // Plafond
-      { group: 'Plafond', slug: 'carrelage-plafond', label: 'Carrelage plafond' },
-      { group: 'Plafond', slug: 'enduit-decoratif-plafond', label: 'Enduit décoratif plafond' },
-      { group: 'Plafond', slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
-      { group: 'Plafond', slug: 'papier-peint-plafond', label: 'Papier peint plafond' },
-      { group: 'Plafond', slug: 'peinture-plafond', label: 'Peinture plafond' },
+      { etape_id:3, travail_id:8, slug: 'carrelage-plafond', label: 'Carrelage plafond' },
+      { etape_id:3, travail_id:8, slug: 'enduit-decoratif-plafond', label: 'Enduit décoratif plafond' },
+      { etape_id:2, travail_id:8, slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
+      { etape_id:3, travail_id:8, slug: 'papier-peint-plafond', label: 'Papier peint plafond' },
+      { etape_id:3, travail_id:8, slug: 'peinture-plafond', label: 'Peinture plafond' },
       
       // Porte
-      { group: 'Porte', slug: 'gamme-de-porte', label: 'Gamme de porte' },
-      { group: 'Porte', slug: 'nature-porte', label: 'Nature de la porte' },
-      { group: 'Porte', slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
-      { group: 'Porte', slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
-      { group: 'Porte', slug: 'type-de-porte-double', label: 'Type de porte double' },
-      { group: 'Porte', slug: 'type-de-porte-simple', label: 'Type de porte simple' },
+      { etape_id:3, travail_id:10,  slug: 'gamme-de-porte', label: 'Gamme de porte' },
+      { etape_id:3, travail_id:10,  slug: 'nature-porte', label: 'Nature de la porte' },
+      { etape_id:1, travail_id:4,  slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
+      { etape_id:3, travail_id:10,  slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
+      { etape_id:3, travail_id:10,  slug: 'type-de-porte-double', label: 'Type de porte double' },
+      { etape_id:3, travail_id:10,  slug: 'type-de-porte-simple', label: 'Type de porte simple' },
       
-      // Radiateur
-    
+     
       // Services
-      { group: 'Cloisons / Murs non porteurs', slug: 'service-creation-mur-non-porteur', label: 'Création de mur non porteur' },
-      { group: 'Cloisons / Murs non porteurs', slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
-      { group: 'Dépose d\'équipements', slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
-      { group: 'Murs', slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
-      { group: 'Plafond', slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
-      { group: 'Dépose d\'équipements', slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
-      { group: 'Dépose d\'équipements', slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
-      { group: 'Cloisons / Murs non porteurs', slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
-      { group: 'Rénovations électriques', slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
+      { etape_id:1, travail_id:4,  slug: 'epaisseur-creation-mur-non-porteur', label: 'Épaisseur de mur non porteur' },
+      { etape_id:1, travail_id:4,  slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
+      //{ etape_id:1, travail_id:2, slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
+      { etape_id:1, travail_id:5,  slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
+      { etape_id:1, travail_id:8, slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
+      { etape_id:1, travail_id:9, slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
+      //{ etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
+      { etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
+      //{ etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
       
       // Sols
-      { group: 'Sols', slug: 'carrelage-sol', label: 'Carrelage' },
-      { group: 'Sols', slug: 'etat-des-surfaces-sol', label: 'État des surfaces' },
-      { group: 'Sols', slug: 'moquette-de-sol', label: 'Moquette' },
-      { group: 'Sols', slug: 'papier-massif-sol', label: 'Parquet Massif' },
-      { group: 'Sols', slug: 'parquet-flottant-sol', label: 'Parquet Flottant' },
-      { group: 'Sols', slug: 'peinture-de-sol', label: 'Peinture de sol' },
-      { group: 'Sols', slug: 'plinthes-bois-sol', label: 'Plinthes bois' },
-      { group: 'Sols', slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage' },
-      { group: 'Sols', slug: 'resine-decorative-de-sol', label: 'Résine décorative' },
-      { group: 'Sols', slug: 'sol-souple', label: 'Sol souple' },
+      { etape_id:3, travail_id:9, slug: 'carrelage-sol', label: 'Carrelage' },
+      { etape_id:2, travail_id:9, slug: 'etat-des-surfaces-sol', label: 'État des surfaces' },
+      { etape_id:3, travail_id:9, slug: 'moquette-de-sol', label: 'Moquette' },
+      { etape_id:3, travail_id:9, slug: 'papier-massif-sol', label: 'Parquet Massif' },
+      { etape_id:3, travail_id:9, slug: 'parquet-flottant-sol', label: 'Parquet Flottant' },
+      { etape_id:3, travail_id:9, slug: 'peinture-de-sol', label: 'Peinture de sol' },
+      { etape_id:3, travail_id:9, slug: 'plinthes-bois-sol', label: 'Plinthes bois' },
+      { etape_id:3, travail_id:9, slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage' },
+      { etape_id:3, travail_id:9, slug: 'resine-decorative-de-sol', label: 'Résine décorative' },
+      { etape_id:3, travail_id:9, slug: 'sol-souple', label: 'Sol souple' },
   ].sort((a, b) => {
-      // Trier d'abord par group
-      const groupCompare = a.group.localeCompare(b.group, 'fr', { sensitivity: 'base' });
-      if (groupCompare !== 0) {
-          return groupCompare;
-      }
       // Puis par label alphabétique
       return a.label.localeCompare(b.label, 'fr', { sensitivity: 'base' });
   });
-
-  groupedTypes = this.types.reduce((acc, type) => {
-    if (!acc[type.group]) {
-      acc[type.group] = [];
-    }
-    acc[type.group].push(type);
-    return acc;
-  }, {} as { [key: string]: Type[] });
-
-groupedTypeKeys(): string[] {
-  return Object.keys(this.groupedTypes);
-}
-current_group=""
-
-// Pour filtrer les types selon le groupe sélectionné
-filteredTypes(): Type[] {
-    if (!this.current_group) return this.types;
-    return this.types.filter(t => t.group === this.current_group);
-}
-
-onGroupChange(group: string) {
-    this.current_group = group; 
-    console.log(this.current_group)
-}
+  
+  
+  selectedTravail: number|undefined ;
+  selectedEtape: number |undefined ;
+  get_etape_id( etapelabel:string):number{
+    const match = etapelabel.match(/\d+/);
+    return match ? parseInt(match[0], 10):1;
+  }
+  filteredItems: any[] = [];
+  
+  onselectTravailorEtapeChange() {
+    this.selectedTravail = this.validateForm.get('TravailID')?.value;
+    this.selectedEtape = this.get_etape_id(this.validateForm.get('Etape')?.value??'');
+  
+    this.filteredItems = this.types.filter(item => {
+      return (
+        (!this.selectedTravail || item.travail_id === this.selectedTravail) &&
+        (!this.selectedEtape || item.etape_id === this.selectedEtape)
+      );
+    });
+  
+    console.log(this.filteredItems);
+  }
 
 
   travaux:Travail[]=[]
@@ -322,7 +315,7 @@ onGroupChange(group: string) {
 
 
   loadtravaux(){
-    this.userService.getActiveTravaux()
+    this.userService.getActiveTravauxSansEquipements()
         .subscribe((data: Travail[]) => {
           this.travaux = data;
           console.log("réponse de la requette get_travaux",this.travaux);
@@ -346,17 +339,7 @@ onGroupChange(group: string) {
         const typeSlug = response.Type; // supposé contenir le slug du type
         const typeObj = this.types.find(t => t.slug === typeSlug);
 
-        if (typeObj) {
-          
-          this.current_group = typeObj.group;
-          // si tu veux aussi pré-cocher le radio correspondant
-          this.validateForm.controls['current_group'].setValue(typeObj.group);
-
-          console.log("typeSlug",typeSlug)
-          console.log("typeObj",typeObj)
-          console.log("current_group",this.current_group)
-        }
-
+      this.onselectTravailorEtapeChange()
 
         // Filtrer par ID spécifique
         this.filteredList = this.listeComplete

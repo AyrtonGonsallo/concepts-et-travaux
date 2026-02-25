@@ -92,7 +92,7 @@ export class GammeComponent {
   travaux:Travail[] = [];
   loadTravaux(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.userService.getActiveTravaux().subscribe({
+      this.userService.getActiveTravauxSansEquipements().subscribe({
         next: (data: Travail[]) => {
           this.travaux = data;
           console.log("réponse de la requête getTravaux", this.travaux);
@@ -105,11 +105,11 @@ export class GammeComponent {
   
   loadGamme(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.userService.getGammes().subscribe({
+      this.userService.getGammesSansEquipement().subscribe({
         next: (data: Gamme[]) => {
           this.gamme = data;
           this.listOfDisplayData = [...this.gamme];
-          console.log("réponse de la requête getGammes", this.gamme);
+          console.log("réponse de la requête getGammesSansEquipement", this.gamme);
           resolve();
         },
         error: (err) => reject(err)
@@ -272,39 +272,10 @@ cancel_supression(): void {
     });
   }
 
-  /*
-liste = [
-    "Création de murs non porteurs - Création des portes",
-    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition complète de murs non porteurs",
-    "Démolition de cloisons ou ouverture partielle sur des murs non porteurs - Démolition partielle de murs non porteurs",
-    "Installation de nouveaux équipements sanitaires - Dépose d'anciennes installations",
-    "Installation de nouveaux équipements sanitaires - Pose de nouveaux équipements sanitaires",
-    "Pose de nouveaux équipements de cuisine - Dépose d'anciennes installations",
-    "Pose de nouveaux équipements de cuisine - Choix des équipements de cuisine",
-    "Pose de revêtement de sol - Choix du nouveau revêtement",
-    "Pose de revêtement de sol - État des surfaces",
-    "Pose de revêtement de sol - Revêtements à retirer",
-    "Pose de revêtement sur plafond - Choix du nouveau revêtement",
-    "Pose de revêtement sur plafond - État des surfaces",
-    "Pose de revêtement sur plafond - Revêtements existants",
-    "Pose de revêtements muraux - Choix du nouveau revêtement",
-    "Pose de revêtements muraux - État des surfaces",
-    "Pose de revêtements muraux - Revêtements existants",
-    "Remplacement de portes - Porte coulissante (de 70 à 90)",
-    "Remplacement de portes - Porte double (de 100 à 140)",
-    "Remplacement de portes - Porte simple (dimensions de 70 à 90)",
-    "Remplacement de radiateurs - Radiateur électrique",
-    "Remplacement de radiateurs - Radiateur à eau (sur chaudière)",
-    "Rénovation électrique complète - Mise aux normes",
-    "Rénovation électrique complète - Mise en sécurité",
-    "Rénovation électrique partielle - Appareillage à créer",
-    "Rénovation électrique partielle - Appareillage à remplacer"
-];
-*/
 
 listeCompleteSousCategories = [
   // travail_id: 2
-  { travail_id: 2, etape_id: 1, label: 'Dépose d\'element de cuisine', value: 'service-depose-cuisine' },
+  //{ travail_id: 2, etape_id: 1, label: 'Dépose d\'element de cuisine', value: 'service-depose-cuisine' },
   
   // travail_id: 3
   { travail_id: 3 , etape_id: 1, label: 'Démolition de murs', value: 'service-demolition-murs' },
@@ -313,7 +284,7 @@ listeCompleteSousCategories = [
   { travail_id: 3 , etape_id: 1, label: 'Type de cloison ouverture partielle', value: 'cloison-ouverture-partielle' },
   
   // travail_id: 4
-  { travail_id: 4 , etape_id: 1, label: 'Création de mur non porteur', value: 'service-creation-mur-non-porteur' },
+  { travail_id: 4 , etape_id: 1, label: 'Épaisseur de mur non porteur', value: 'epaisseur-creation-mur-non-porteur' },
   { travail_id: 4 , etape_id: 1, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
 
   // travail_id: 5
@@ -356,13 +327,13 @@ listeCompleteSousCategories = [
   
 
   // travail_id: 13
-  { travail_id: 13 , etape_id: 3, label: 'Gamme d\'appareils (rénovation partielle)', value: 'gamme-appareils' },
+  //{ travail_id: 13 , etape_id: 3, label: 'Gamme d\'appareils (rénovation partielle)', value: 'gamme-appareils' },
   
   // travail_id: 15
-  { travail_id: 15 , etape_id: 3, label: 'Rénovation électrique complète', value: 'service-renovation-electrique-complete' },
+  //{ travail_id: 15 , etape_id: 3, label: 'Rénovation électrique complète', value: 'service-renovation-electrique-complete' },
   
   // travail_id: 16
-  { travail_id: 16 , etape_id: 3, label: 'Dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
+  //{ travail_id: 16 , etape_id: 1, label: 'Dépose d\'éléments de salle de bain / eau', value: 'service-depose-salle-de-bain-salle-d-eau' }
 ].sort((a, b) => {
   // Trier d'abord par travail_id
   if (a.travail_id !== b.travail_id) {
@@ -375,7 +346,7 @@ listeCompleteSousCategories = [
 
 listeComplete: EtapeItem[] = [
   // ID 2 - Trié alphabétiquement
-  { id: 1, travail_id:2, texte: "Étape 1 - Dépose d'anciennes installations" },
+  //{ id: 1, travail_id:2, texte: "Étape 1 - Dépose d'anciennes installations" },
   //{ id: 2, texte: "Étape 3 - Choix des équipements de cuisine" },
   
   // ID 3 - Trié alphabétiquement
@@ -408,21 +379,21 @@ listeComplete: EtapeItem[] = [
   { id: 5, travail_id:10, texte: "Étape 3 - Gamme de la porte" },
   
   // ID 12 - Trié alphabétiquement
-  { id: 2, travail_id:11, texte: "Étape 2 - Choix du type de radiateur" },
-  { id: 3, travail_id:11, texte: "Étape 3 - Choix de la gamme de radiateur" },
+  //{ id: 2, travail_id:11, texte: "Étape 2 - Choix du type de radiateur" },
+ // { id: 3, travail_id:11, texte: "Étape 3 - Choix de la gamme de radiateur" },
   
   // ID 13 - Trié alphabétiquement
  // { id: 13, travail_id:2, texte: "Étape 3 - Appareillage à créer" },
  // { id: 13, travail_id:2, texte: "Étape 3 - Appareillage à remplacer" },
-  { id: 3, travail_id:13, texte: "Étape 3 - Prix des appareils" },
+ // { id: 3, travail_id:13, texte: "Étape 3 - Prix des appareils" },
   
   // ID 15 - Trié alphabétiquement
-  { id: 3, travail_id:15, texte: "Étape 3 - Chauffage" },
-  { id: 3, travail_id:15, texte: "Étape 3 - Mise aux normes" },
-  { id: 3, travail_id:15, texte: "Étape 3 - Mise en sécurité" },
+ // { id: 3, travail_id:15, texte: "Étape 3 - Chauffage" },
+  //{ id: 3, travail_id:15, texte: "Étape 3 - Mise aux normes" },
+  //{ id: 3, travail_id:15, texte: "Étape 3 - Mise en sécurité" },
   
   // ID 16 - Trié alphabétiquement
-  { id: 1, travail_id:16, texte: "Étape 1 - Dépose d'anciennes installations" },
+  //{ id: 1, travail_id:16, texte: "Étape 1 - Dépose d'anciennes installations" },
  // { id: 16, travail_id:2, texte: "Étape 3 - Pose de nouveaux équipements sanitaires" }
 ];
 filteredListEtapes: string[] = [];

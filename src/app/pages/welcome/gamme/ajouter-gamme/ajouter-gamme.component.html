@@ -1,5 +1,5 @@
 <div>
-    <h2>Produits</h2>  
+    <h2>Tâches</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Label"  nzRequired nzTooltipTitle="What do you want other to call you" >
@@ -15,7 +15,7 @@
                 <span>Travail associé</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" >
+                <nz-select id="TravailID" formControlName="TravailID"  nzPlaceHolder="Travail" (ngModelChange)="onselectTravailorEtapeChange()">
                     <nz-option *ngFor="let option of travaux" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
                 </nz-select>
             </nz-form-control>
@@ -26,67 +26,27 @@
                 <span>Étape </span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="Etape" formControlName="Etape">
+                <nz-select id="Etape" formControlName="Etape" (ngModelChange)="onselectTravailorEtapeChange()">
                     <nz-option *ngFor="let element of filteredList"  [nzValue]="element" [nzLabel]="element"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>
 
-        <!--
-        
-         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="Type de gamme" >
-                <span>Type de produit</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="Type" formControlName="Type"  nzPlaceHolder="Type" >
-                    <ng-container *ngFor="let groupName of groupedTypeKeys()">
-                        <nz-option-group [nzLabel]="groupName">
-                        <nz-option
-                            *ngFor="let type of groupedTypes[groupName]"
-                            [nzValue]="type.slug"
-                            [nzLabel]="type.label">
-                        </nz-option>
-                        </nz-option-group>
-                    </ng-container>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-
-        -->
-       <div nz-row>
-            <div nz-col nzSpan="6" nzOffset="4">
+       
+       
                 <nz-form-item>
-                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="current_group" class="a-start" nzRequired nzTooltipTitle="Choisir pour filtrer le type" >
-                        <span>Catégorie </span>
-                    </nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                        <nz-select formControlName="current_group" (ngModelChange)="onGroupChange($event)" nzPlaceHolder="Sélectionner un groupe">
-                            <nz-option 
-                                *ngFor="let groupName of groupedTypeKeys()" 
-                                [nzLabel]="groupName" 
-                                [nzValue]="groupName">
-                            </nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-                
-            </div>
-            <div nz-col nzSpan="13" nzOffset="1">
-                <nz-form-item>
-                    <nz-form-label [nzSm]="24" [nzXs]="24"  nzFor="Type" class="a-start" nzRequired nzTooltipTitle="Choisir le type" >
+                    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Type"  nzRequired nzTooltipTitle="Choisir le type" >
                         <span>Type de produit </span>
                     </nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                         <nz-radio-group formControlName="Type" style="display: flex; flex-direction: column;">
-                            <label nz-radio *ngFor="let type of filteredTypes()" [nzValue]="type.slug">
+                            <label nz-radio *ngFor="let type of filteredItems" [nzValue]="type.slug">
                                 {{ type.label }}
                             </label>
                         </nz-radio-group>
                     </nz-form-control>
                 </nz-form-item>
-            </div>
-        </div>
+            
         
 
         

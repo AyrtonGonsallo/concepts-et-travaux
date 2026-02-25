@@ -1,23 +1,23 @@
 <div>
-    <h2>Liste des fournitures et produits</h2>  
+    <h2>Liste des tâches</h2>  
     
     <div>
       <fieldset>
-        <legend>Produit</legend>
+        <legend>Tâches</legend>
             
           <div class="section-produit">
       
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'gammes', 'ajouter-gamme']">Ajouter un produit</button>
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter une tâche</button>
             <div class="section-import">
               <div class="input-link">
                 <input type="file" (change)="onFileSelected($event)" />
                 <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" >Télécharger le modèle</a>
               </div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des produits</button>
+              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
             </div> 
             
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les produits</button>
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
             
           </div> 
           
@@ -37,7 +37,7 @@
             </nz-select>
           </div>
           <div class="filter-box">
-            Tâche
+            Étape
             <nz-select [(ngModel)]="filteredEtape" (ngModelChange)="doubleSearch(false,true)" class="filter-select">
               <nz-option  nzLabel="Toutes les étapes" nzValue=""></nz-option>
                 <nz-option *ngFor="let element of filteredListEtapes"  [nzValue]="element" [nzLabel]="element"></nz-option>
@@ -101,9 +101,9 @@
            
             
             <td> 
-              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'gammes', 'modifier-gamme',data.ID]"><span nz-icon nzType="edit"></span></button>
+              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'taches', 'modifier-tache',data.ID]"><span nz-icon nzType="edit"></span></button>
               <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
-              nzPopconfirmTitle="Voulez-vous vraiment supprimer cette gamme ?"
+              nzPopconfirmTitle="Voulez-vous vraiment supprimer cette tache ?"
               nzPopconfirmPlacement="bottom"
               (nzOnConfirm)="deleteGamme(data.ID)"
                ><span nz-icon nzType="delete"></span></button>

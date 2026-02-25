@@ -41,6 +41,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       });
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
+      this.load_types()
     }
 
   getDetails(id: number): void {
@@ -90,7 +91,19 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
     return this.formulaire.get('portes') as FormArray;
   }
 
- 
+ type_epaisseur:any
+load_types(){
+  this.userService.getGammesByTravailAndTypeOrdered(4,"epaisseur-creation-mur-non-porteur").subscribe(
+    (response: any) => {
+      console.log('recuperation des types service-depose-murs	:', response);
+      this.type_epaisseur=response
+    },
+    (error: any) => {
+      console.error('Erreur lors de la recuperation des types service-depose-murs	 :', error);
+    }
+  );
+}
+
 gammes1:any[]=[]
 gammes2:any[]=[]
 gammes3:any[]=[]
