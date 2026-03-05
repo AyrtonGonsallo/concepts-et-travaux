@@ -84,6 +84,7 @@ export class ModifierProjetComponent {
     Date_programmation_visite:this.date_programmation_visite,
     Date_validation_projet:this.date_validation_projet,
     Date_paiement_acompte:this.date_paiement_acompte,
+    Avancement:this.avancement
     
 
   };
@@ -136,7 +137,6 @@ export class ModifierProjetComponent {
     */
     this.get_all_projet_paiements(this.projetId);
     this.paiementForm = this.fb.group({
-      TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
       Commentaire: this.fb.control<string | null>(null, Validators.required),
       Titre: this.fb.control<string | null>(null, Validators.required),
       Type: this.fb.control<string | null>(null, Validators.required),
@@ -207,29 +207,29 @@ export class ModifierProjetComponent {
   });
 }
 
-  calculerPrixTTC(prix: any): number {
+  calculerPrixTTC(prix: any,tva:number): number {
     
     if (!prix) return 0;
-    const total = prix * this.coefficient * this.tva;
+    const total = prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
   }
 
-  updateAvancement() {
-    let total = 5; // nombre total de cases
-    let checked = 0;
 
-    if (this.travaux_demarres) checked++;
-    if (this.travaux_en_cours) checked++;
-    if (this.travaux_acheves) checked++;
-    if (this.travaux_livres) checked++;
-    if (this.gpa_termine) checked++;
 
-    this.avancement = Math.round((checked / total) * 100);
-  }
-  onCheckboxAvancementChange() {
-    this.updateAvancement();
+  increase(): void {
+    this.avancement = this.avancement + 5;
+    if (this.avancement > 100) {
+      this.avancement = 100;
+    }
   }
 
+  decline(): void {
+    this.avancement = this.avancement - 5;
+    if (this.avancement < 0) {
+      this.avancement = 0;
+    }
+  }
+ 
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   async getProjetDetails(userId: string): Promise<void> {
 
@@ -254,36 +254,33 @@ export class ModifierProjetComponent {
         this.date_paiement_acompte=this.project.Date_de_paiement_acompte
         this.date_de_programmation=(this.project.Visite)?this.project.Visite.DateDeProgrammation:null
         this.date_fin_gpa = this.project.Date_de_fin_gpa
+        this.avancement = this.project.ProgressionTravaux
        
 
-        this.montant_total = this.calculerPrixTTC(this.project?.Devis.reduce(
-          (sum: any, devis: { Prix: any; }) => sum + devis.Prix,
+        this.montant_total = this.project?.Devis.reduce(
+          (sum: any, devis: { Prix: any;Tva:any }) => sum + this.calculerPrixTTC(devis.Prix,devis.Tva.Valeur),
           0
-        ));
+        );
        
         
         switch (this.project.Status) {
           case "travaux démarrés":
             this.travaux_demarres=true
-            this.avancement=100/5*1
             break;
           case "travaux en cours":
             this.travaux_demarres=true
             this.travaux_en_cours=true
-            this.avancement=100/5*2
             break;
           case "travaux achevés":
             this.travaux_demarres=true
             this.travaux_en_cours=true
             this.travaux_acheves=true
-            this.avancement=100/5*3
             break;
           case "travaux livrés":
             this.travaux_demarres=true
             this.travaux_en_cours=true
             this.travaux_acheves=true
             this.travaux_livres=true
-            this.avancement=100/5*4
             break;
           case "gpa terminé":
             this.travaux_demarres=true
@@ -291,7 +288,6 @@ export class ModifierProjetComponent {
             this.travaux_acheves=true
             this.travaux_livres=true
             this.gpa_termine=true
-            this.avancement=100/5*5
             break;
         
           default:
@@ -307,7 +303,6 @@ export class ModifierProjetComponent {
 
 
   paiementForm: FormGroup<{
-    TypeDePaiement: FormControl<string | null>;
     Commentaire: FormControl<string | null>;
     Titre: FormControl<string | null>;
     Type: FormControl<string | null>;
@@ -317,7 +312,6 @@ export class ModifierProjetComponent {
     DateCreation: FormControl<string | null>;
     ProjetID: FormControl<number | null>;
   }> = this.fb.group({
-    TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
     Commentaire: this.fb.control<string | null>(null, Validators.required),
     Titre: this.fb.control<string | null>(null, Validators.required),
     Type: this.fb.control<string | null>(null, Validators.required),
@@ -346,7 +340,6 @@ export class ModifierProjetComponent {
           const data = {
             Montant: this.paiementForm.value.Montant,
             Type: this.paiementForm.value.Type,
-            TypeDePaiement: this.paiementForm.value.TypeDePaiement,
             Titre: this.paiementForm.value.Titre,
             Commentaire: this.paiementForm.value.Commentaire,
             id_paiement:paiement.ID
@@ -368,7 +361,6 @@ export class ModifierProjetComponent {
                   console.log("paiement mis a jour avec lien/reference :",response)
                   this.get_all_projet_paiements(this.projetId);
                   this.paiementForm = this.fb.group({
-                    TypeDePaiement: this.fb.control<string | null>(null, Validators.required),
                     Commentaire: this.fb.control<string | null>(null, Validators.required),
                     Titre: this.fb.control<string | null>(null, Validators.required),
                     Type: this.fb.control<string | null>(null, Validators.required),

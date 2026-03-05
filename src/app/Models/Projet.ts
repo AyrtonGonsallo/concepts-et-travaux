@@ -10,6 +10,7 @@ export interface Projet {
     Description: string;
     User_id: number;
     Valider:boolean;
+    ProgressionTravaux?: number ;
     Utilisateur?:Utilisateur;
     Devis?:DevisPiece[]
     Visite?: Visite;

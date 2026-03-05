@@ -1,5 +1,5 @@
 <div>
-    <h2>Liste des équipements</h2>   
+    <h2>Équipements fournitures</h2>   
     
     
     <div>
@@ -75,82 +75,6 @@
         </tbody>
     </nz-table>
 
-    <br><br>
-    <h2>Liste des tâches</h2> 
-
-
-    <div>
-      <fieldset>
-        <legend>Filtres</legend>
-            
-        <div class="filter-container">
-          <div class="filter-box">
-            Travail
-            <nz-select [(ngModel)]="filteredTravailID" (ngModelChange)="doubleSearch(true,true)"  class="filter-select2">
-              <nz-option  nzLabel="Tous les travaux" [nzValue]="0"></nz-option>
-              <nz-option *ngFor="let option of travaux" [nzLabel]="option.Titre" [nzValue]="option.ID"></nz-option>
-            </nz-select>
-          </div>
-          <div class="filter-box">
-            Étape
-            <nz-select [(ngModel)]="filteredEtape2" (ngModelChange)="doubleSearch(false,true)" class="filter-select2">
-              <nz-option  nzLabel="Toutes les étapes" nzValue=""></nz-option>
-                <nz-option *ngFor="let element of filteredListEtapes"  [nzValue]="element" [nzLabel]="element"></nz-option>
-            </nz-select>
-          </div>
-          <div class="filter-box">
-            Sous-catégorie
-            <nz-select [(ngModel)]="filteredSouscategorie" (ngModelChange)="search22()" nzPlaceHolder="Toutes les sous-catégories" class="filter-select2">
-             <nz-option nzLabel="Toutes les sous-catégories" nzValue=""></nz-option>
-              <nz-option *ngFor="let sc of filteredListSousCategories" [nzLabel]="sc.label"  [nzValue]="sc.value"></nz-option>
-            </nz-select>
-          </div>
-
-        </div>
-       
-      
-
-
-      </fieldset>
-    </div>
-
-
-    <nz-table #sortTable2 [nzData]="listOfDisplayData22" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
-        <thead>
-          <tr>
-            <th *ngFor="let column of listOfColumn22" nzCustomFilter [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
-              {{ column.title }}
-              <nz-filter-trigger *ngIf="column.title=='Titre'" [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" >
-                <span nz-icon nzType="search"></span>
-              </nz-filter-trigger>
-            </th>
-            <th>
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of sortTable2.data" >
-            <td>{{ data.Label }}</td>
-            <td>{{ data.Type }}</td>
-            <td>{{ data.Etape }}</td>
-            <td>{{ get_travail_title(data.TravailID) }}</td>
-            <td>{{ data.Prix }} €</td>
-        
-            
-          
-           
-            
-            <td> 
-              <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'taches', 'modifier-tache',data.ID]"><span nz-icon nzType="edit"></span></button>
-              <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
-              nzPopconfirmTitle="Voulez-vous vraiment supprimer cette tache ?"
-              nzPopconfirmPlacement="bottom"
-              (nzOnConfirm)="deleteGamme(data.ID)"
-               ><span nz-icon nzType="delete"></span></button>
-            </td>
-          </tr>
-        </tbody>
-    </nz-table>
+   
     
 </div>

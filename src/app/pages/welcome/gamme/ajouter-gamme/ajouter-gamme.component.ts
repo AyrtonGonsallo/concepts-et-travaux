@@ -68,7 +68,7 @@ types: Type[] = [
     // Porte
     { etape_id:3, travail_id:10,  slug: 'gamme-de-porte', label: 'Gamme de porte' },
     { etape_id:3, travail_id:10,  slug: 'nature-porte', label: 'Nature de la porte' },
-    { etape_id:1, travail_id:4,  slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
+    //{ etape_id:1, travail_id:4,  slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
     { etape_id:3, travail_id:10,  slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
     { etape_id:3, travail_id:10,  slug: 'type-de-porte-double', label: 'Type de porte double' },
     { etape_id:3, travail_id:10,  slug: 'type-de-porte-simple', label: 'Type de porte simple' },
@@ -76,13 +76,13 @@ types: Type[] = [
    
     // Services
     { etape_id:1, travail_id:4,  slug: 'epaisseur-creation-mur-non-porteur', label: 'Épaisseur de mur non porteur' },
-    { etape_id:1, travail_id:4,  slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
+    //{ etape_id:1, travail_id:4,  slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
     //{ etape_id:1, travail_id:2, slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
     { etape_id:1, travail_id:5,  slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
     { etape_id:1, travail_id:8, slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
     { etape_id:1, travail_id:9, slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
     //{ etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
-    { etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
+    //{ etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
     //{ etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
     
     // Sols

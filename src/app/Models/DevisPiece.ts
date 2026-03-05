@@ -9,9 +9,11 @@ export interface DevisPiece {
     Date: Date;
     Commentaire?: string;
     PieceID: number;
+    TvaID?: number;
     Prix?: number ;
     UtilisateurID?: number;
     Utilisateur:Utilisateur;
     DevisTaches:DevisTache[];
     Projets?:any;
+    Tva?:any;
   }

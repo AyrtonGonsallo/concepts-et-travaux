@@ -78,10 +78,10 @@ export class ProjetComponent {
           });
   }
 
-  calculerPrixTTC(prix: any): number {
+  calculerPrixTTC(prix: any,tva:number): number {
     
     if (!prix) return 0;
-    const total = prix * this.coefficient * this.tva;
+    const total = prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
   }
 

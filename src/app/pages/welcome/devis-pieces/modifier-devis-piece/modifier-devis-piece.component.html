@@ -33,6 +33,26 @@
           </tbody>
         </nz-table>
         <br><br>
+
+        <form nz-form [formGroup]="tvaForm" (ngSubmit)="submitTvaForm()">
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="12" [nzXs]="24" nzRequired nzLabelAlign="right" >Tva  </nz-form-label>
+            <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip=" Tva" >
+              <nz-select formControlName="ID">
+                <nz-option *ngFor="let option of tvas" [nzLabel]="'Taux n°'+option.ID+' - '+option.Valeur+'%'" [nzValue]="option.ID"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item nz-row class="register-area">
+            <nz-form-control [nzSpan]="14" [nzOffset]="12">
+                <button nz-button nzType="primary" [disabled]="!tvaForm.valid">Enregistrer</button>
+            </nz-form-control>
+          </nz-form-item>
+      </form>
+      <br>
+
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
 
           <nz-form-item>

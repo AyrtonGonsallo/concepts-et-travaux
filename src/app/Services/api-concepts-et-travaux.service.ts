@@ -753,4 +753,37 @@ get_role(userId: number): Observable<any> {
   edit_devis_tache(id:number,json: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/edit_devis_tache/${id}`, json);
   }
+
+   getAllTva(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_all_tva`);
+  }
+
+  /*
+    ➜ GET TVA BY ID
+  */
+  getTva(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_tva/${id}`);
+  }
+
+  /*
+    ➜ AJOUTER TVA
+  */
+  ajouterTva(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/ajouter_tva`, data);
+  }
+
+  /*
+    ➜ UPDATE TVA
+  */
+  updateTva(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_tva/${id}`, data);
+  }
+
+  /*
+    ➜ DELETE TVA
+  */
+  deleteTva(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_tva/${id}`);
+  }
 }
+

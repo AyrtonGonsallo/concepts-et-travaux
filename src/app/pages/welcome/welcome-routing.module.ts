@@ -53,6 +53,8 @@ import { ModifierFrontPageComponent } from './front-page/modifier-front-page/mod
 import { AjouterFrontPageComponent } from './front-page/ajouter-front-page/ajouter-front-page.component';
 import { FrontPageComponent } from './front-page/front-page.component';
 import { EquipementsComponent } from './equipements/equipements.component';
+import { EquipementsTachesComponent } from './equipements-taches/equipements-taches.component';
+
 import { AjouterEquipementComponent } from './equipements/ajouter-equipement/ajouter-equipement.component';
 import { ModifierEquipementComponent } from './equipements/modifier-equipement/modifier-equipement.component';
 import { AjouterTravailComponent } from './travaux/ajouter-travail/ajouter-travail.component';
@@ -100,6 +102,8 @@ import { VoirDetailsClientComponent } from './clients/voir-details-client/voir-d
 import { ClientsComponent } from './clients/clients.component';
 import { FichiersComponent } from './fichiers/fichiers.component';
 import { VoirProjetsClientComponent } from './clients/voir-projets-client/voir-projets-client.component';
+import { AjouterTvaComponent } from './tva/ajouter-tva/ajouter-tva.component';
+import { ModifierTvaComponent } from './tva/modifier-tva/modifier-tva.component';
 
 const routes: Routes = [
  
@@ -145,7 +149,10 @@ const routes: Routes = [
       { path: 'parametres', component: ParametresComponent },
       { path: 'parametres/ajouter-parametre', component: AjouterParametreComponent },
       { path: 'parametres/modifier-parametre/:id', component: ModifierParametreComponent },
+      { path: 'parametres/ajouter-tva', component: AjouterTvaComponent },
+      { path: 'parametres/modifier-tva/:id', component: ModifierTvaComponent },
       { path: 'equipements', component: EquipementsComponent },
+      { path: 'equipements-taches', component: EquipementsTachesComponent },
       { path: 'formules-et-tests', component: TestsFormulesComponent },
       { path: 'formules-et-tests/tester-revetements-muraux/:id', component: PoseDeRevetementsMurauxCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/revetements-muraux', component: PoseDeRevetementsMurauxListeComponent }, // Nouvelle route pour ajouter un compte avec un ID

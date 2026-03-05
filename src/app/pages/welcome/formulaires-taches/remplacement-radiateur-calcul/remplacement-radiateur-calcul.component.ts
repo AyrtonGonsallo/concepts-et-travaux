@@ -106,13 +106,13 @@ export class RemplacementRadiateurCalculComponent {
 
   types:any
 load_types(){
-   this.userService.getEquipementsByType("type-de-radiateur").subscribe(
+   this.userService.getGammesByTravailAndType(12,"type-de-radiateur").subscribe(
     (response: any) => {
-      console.log('recuperation des getEquipementsByType radiateur:', response[0].Modeles);
-      this.types=response[0].Modeles
+      console.log('recuperation des gammes type-de-radiateur:', response);
+      this.types=response
     },
     (error: any) => {
-      console.error('Erreur lors de la recuperation des getEquipementsByType radiateur :', error);
+      console.error('Erreur lors de la recuperation des gammes type-de-radiateur :', error);
     }
   );
   

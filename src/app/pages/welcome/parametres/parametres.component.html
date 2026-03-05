@@ -1,8 +1,8 @@
 <div>
-<h2>Liste des paramètres</h2>    
-<button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'parametres', 'ajouter-parametre']">Ajouter un parametre</button>
+  <h2>Liste des paramètres</h2>    
+  <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'parametres', 'ajouter-parametre']">Ajouter un parametre</button>
 
-<nz-dropdown-menu #menu="nzDropdownMenu">
+  <nz-dropdown-menu #menu="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
       <div class="search-box">
         <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
@@ -39,6 +39,44 @@
             nzPopconfirmTitle="Supprimer ce parametre ?"
             nzPopconfirmPlacement="bottom"
             (nzOnConfirm)="deleteParametre( data.ID )"
+          (nzOnCancel)="cancel()"
+             ><span nz-icon nzType="delete"></span></button>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+
+
+
+   <h2>Liste des tva</h2> 
+  <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'parametres', 'ajouter-tva']">Ajouter une tva</button>
+  <nz-table #sortTable2 [nzData]="listOfDisplayData2" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+      <thead>
+        <tr>
+          <th *ngFor="let column of listOfColumn2" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            {{ column.title }}
+           
+          </th>
+          <th>
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of sortTable2.data" >
+          <td>{{ data.ID }}</td>
+          <td>{{ data.Valeur }}</td>
+          <td>{{ data.Commentaire }} </td>
+          <td>
+            <span *ngIf="data.Defaut" nz-icon nzType="check" nzTheme="outline" style="color:green"></span> 
+            <span *ngIf="!data.Defaut" nz-icon nzType="close" nzTheme="outline" style="color:red"></span> 
+          </td>
+          <td> 
+            <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'parametres', 'modifier-tva',data.ID]"><span nz-icon nzType="edit"></span></button>
+            <button nz-button nzType="primary" class="negative-action mb-5" [nzSize]="size" title="supprimer"  nz-popconfirm
+            nzPopconfirmTitle="Supprimer ce parametre ?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deleteTva( data.ID )"
           (nzOnCancel)="cancel()"
              ><span nz-icon nzType="delete"></span></button>
           </td>

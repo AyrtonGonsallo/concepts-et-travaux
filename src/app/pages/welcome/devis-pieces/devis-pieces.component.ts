@@ -93,9 +93,9 @@ export class DevisPiecesComponent {
           });
   }
 
-  calculerPrixTTC(data: any): number {
+  calculerPrixTTC(data: any,tva:number): number {
     if (!data?.Prix) return 0;
-    const total = data.Prix * this.coefficient * this.tva;
+    const total = data.Prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
   }
 

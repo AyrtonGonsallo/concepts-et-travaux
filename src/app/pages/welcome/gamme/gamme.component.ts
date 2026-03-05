@@ -278,14 +278,14 @@ listeCompleteSousCategories = [
   //{ travail_id: 2, etape_id: 1, label: 'Dépose d\'element de cuisine', value: 'service-depose-cuisine' },
   
   // travail_id: 3
-  { travail_id: 3 , etape_id: 1, label: 'Démolition de murs', value: 'service-demolition-murs' },
-  { travail_id: 3 , etape_id: 1, label: 'Ouverture partielle', value: 'service-ouverture-partielle' },
+  //{ travail_id: 3 , etape_id: 1, label: 'Démolition de murs', value: 'service-demolition-murs' },
+  //{ travail_id: 3 , etape_id: 1, label: 'Ouverture partielle', value: 'service-ouverture-partielle' },
   { travail_id: 3 , etape_id: 1, label: 'Type de cloison demolition complete', value: 'cloison-demolition-complete' },
   { travail_id: 3 , etape_id: 1, label: 'Type de cloison ouverture partielle', value: 'cloison-ouverture-partielle' },
   
   // travail_id: 4
   { travail_id: 4 , etape_id: 1, label: 'Épaisseur de mur non porteur', value: 'epaisseur-creation-mur-non-porteur' },
-  { travail_id: 4 , etape_id: 1, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
+  //{ travail_id: 4 , etape_id: 1, label: 'Type de cloison (mur non porteur)', value: 'type-de-cloison-murs-non-porteurs' },
 
   // travail_id: 5
   { travail_id: 5 , etape_id: 3, label: 'Carrelage mural', value: 'carrelage-mur' },
@@ -299,7 +299,7 @@ listeCompleteSousCategories = [
   
   // travail_id: 8
   { travail_id: 8 , etape_id: 1, label: 'Dépose revêtements plafond', value: 'service-depose-revetement-plafond' },
-  { travail_id: 8 , etape_id: 2, label: 'Enduit décoratif plafond', value: 'enduit-decoratif-plafond' },
+  { travail_id: 8 , etape_id: 3, label: 'Enduit décoratif plafond', value: 'enduit-decoratif-plafond' },
   { travail_id: 8 , etape_id: 2, label: 'État des surfaces (plafond)', value: 'etat-des-surfaces-plafond' },
   { travail_id: 8 , etape_id: 3, label: 'Papier peint plafond', value: 'papier-peint-plafond' },
   { travail_id: 8 , etape_id: 3, label: 'Peinture plafond', value: 'peinture-plafond' },

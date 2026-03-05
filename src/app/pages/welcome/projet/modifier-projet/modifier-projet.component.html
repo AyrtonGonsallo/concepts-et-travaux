@@ -8,30 +8,34 @@
           <nz-progress [nzPercent]="avancement"></nz-progress>
         </div>
       </div>
+      <nz-button-group>
+      <button nz-button (click)="decline()"><span nz-icon nzType="minus"></span></button>
+      <button nz-button (click)="increase()"><span nz-icon nzType="plus"></span></button>
+    </nz-button-group>
       
       <div nz-row [nzGutter]="20" style="margin-top: 10px;">
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux démarrés<br>
-            <label nz-checkbox [(ngModel)]="travaux_demarres" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_demarres"></label>
           </div>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux en cours<br>
-            <label nz-checkbox [(ngModel)]="travaux_en_cours" [nzDisabled]="!travaux_demarres" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_en_cours" [nzDisabled]="!travaux_demarres"></label>
           </div>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux achevés<br>
-            <label nz-checkbox [(ngModel)]="travaux_acheves" [nzDisabled]="!travaux_en_cours" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_acheves" [nzDisabled]="!travaux_en_cours"></label>
           </div>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
           <div class="inner-box">
             Travaux livrés<br>
-            <label nz-checkbox [(ngModel)]="travaux_livres" [nzDisabled]="!travaux_acheves" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="travaux_livres" [nzDisabled]="!travaux_acheves"></label>
                 <nz-date-picker *ngIf="travaux_livres"  [(ngModel)]="date_travaux_livres" [nzDisabledDate]="disabledDate" (ngModelChange)="onChange($event)"></nz-date-picker>
 
           </div>
@@ -39,7 +43,7 @@
         <div nz-col class="gutter-row" [nzSpan]="4" *ngIf="travaux_livres">
           <div class="inner-box">
             Fin de GPA<br>
-            <label nz-checkbox [(ngModel)]="gpa_termine" (ngModelChange)="onCheckboxAvancementChange()"></label>
+            <label nz-checkbox [(ngModel)]="gpa_termine"></label>
                 <nz-date-picker [(ngModel)]="date_fin_gpa" [nzDisabledDate]="disabledDate" (ngModelChange)="onChange($event)"></nz-date-picker>
 
           </div>
@@ -49,73 +53,79 @@
     </div>
     
 
-    <div class="visite-box" *ngIf="project?.Visite">
+    <div class="visite-box">
       <h2>Visite du technicien</h2>
-    
-      <div nz-row style="gap:10px" >
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            1. Visite réglée
-            <label nz-checkbox [(ngModel)]="paiement_visite">le {{date_paiement_visite | date:'dd/MM/yyyy'}}</label>
-            <nz-date-picker [(ngModel)]="date_paiement_visite" (ngModelChange)="onChange($event)"></nz-date-picker>
+      <div *ngIf="project?.Visite">
+        <div nz-row style="gap:10px" >
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              1. Visite réglée
+              <label nz-checkbox [(ngModel)]="paiement_visite">le {{date_paiement_visite | date:'dd/MM/yyyy'}}</label>
+              <nz-date-picker [(ngModel)]="date_paiement_visite" (ngModelChange)="onChange($event)"></nz-date-picker>
 
-          </div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            <span style="margin-right: 10px;">2. Programmer une date de visite :</span>
-            <nz-date-picker style="margin-right: 10px;margin-bottom: 10px;" nzShowTime [(ngModel)]="date_de_programmation" [nzDisabledDate]="disableBeforeToday"></nz-date-picker>
-            <label nz-checkbox [(ngModel)]="send_mail_visite">Envoyer le mail</label>
-            <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
-          </div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            3. Visite programmée
-            <label nz-checkbox [(ngModel)]="programmation_visite">le {{date_programmation_visite | date:'dd/MM/yyyy'}}</label>
-            <nz-date-picker [(ngModel)]="date_programmation_visite" (ngModelChange)="onChange($event)"></nz-date-picker>
-          </div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            <span style="margin-right: 10px;">4. Envoyer le devis final au client :</span>
-            <button nz-button nzType="primary" [nzLoading]="isLoadingvisit_ended" (click)="loadvisit_ended()">valider</button>
-
-            <br><br>
-            <div nz-row>
-              <nz-form-label [nzSpan]="4" style="text-align: left;" nzFor="Commentaire" [nzTooltipTitle]="commVisiteTooltipTemplate"
-              [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label><br>
-              <div nz-col  nzSpan="18">
-                <textarea  id="CommentaireVisite" rows="4" style="width:100%;margin-top: 10px;" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" ></textarea> 
-              </div>
             </div>
-            <ng-template #commVisiteTooltipTemplate>
-              <div class="tooltip">
-                Ce commentaire sera intégré aux mails envoyés au client
-                <br>
-                <a [href]="assetsUrl+'img/email_visite_technicien_programmee.png'" target="_blank">Aperçu du mail visite programmée</a>
-                <br>
-                <a [href]="assetsUrl+'img/email_devis_valide.png'" target="_blank">Aperçu du mail devis validé</a>
-                
+          </div>
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              <span style="margin-right: 10px;">2. Programmer une date de visite :</span>
+              <nz-date-picker style="margin-right: 10px;margin-bottom: 10px;" nzShowTime [(ngModel)]="date_de_programmation" [nzDisabledDate]="disableBeforeToday"></nz-date-picker>
+              <label nz-checkbox [(ngModel)]="send_mail_visite">Envoyer le mail</label>
+              <button nz-button nzType="primary" (click)="add_visite_date()">valider</button><br>
+            </div>
+          </div>
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              3. Visite programmée
+              <label nz-checkbox [(ngModel)]="programmation_visite">le {{date_programmation_visite | date:'dd/MM/yyyy'}}</label>
+              <nz-date-picker [(ngModel)]="date_programmation_visite" (ngModelChange)="onChange($event)"></nz-date-picker>
+            </div>
+          </div>
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              <span style="margin-right: 10px;">4. Envoyer le devis final au client :</span>
+              <button nz-button nzType="primary" [nzLoading]="isLoadingvisit_ended" (click)="loadvisit_ended()">valider</button>
+
+              <br><br>
+              <div nz-row>
+                <nz-form-label [nzSpan]="4" style="text-align: left;" nzFor="Commentaire" [nzTooltipTitle]="commVisiteTooltipTemplate"
+                [nzTooltipIcon]="visiteTooltipIcon">Commentaire</nz-form-label><br>
+                <div nz-col  nzSpan="18">
+                  <textarea  id="CommentaireVisite" rows="4" style="width:100%;margin-top: 10px;" nz-input [(ngModel)]="notes_remarques" placeholder="Notes / remarques" ></textarea> 
+                </div>
               </div>
-            </ng-template>
+              <ng-template #commVisiteTooltipTemplate>
+                <div class="tooltip">
+                  Ce commentaire sera intégré aux mails envoyés au client
+                  <br>
+                  <a [href]="assetsUrl+'img/email_visite_technicien_programmee.png'" target="_blank">Aperçu du mail visite programmée</a>
+                  <br>
+                  <a [href]="assetsUrl+'img/email_devis_valide.png'" target="_blank">Aperçu du mail devis validé</a>
+                  
+                </div>
+              </ng-template>
+            </div>
           </div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            5. Projet validé
-            <label nz-checkbox [(ngModel)]="projet_valide">le {{date_validation_projet | date:'dd/MM/yyyy'}}</label>
-            <nz-date-picker [(ngModel)]="date_validation_projet" (ngModelChange)="onChange($event)"></nz-date-picker>
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              5. Projet validé
+              <label nz-checkbox [(ngModel)]="projet_valide">le {{date_validation_projet | date:'dd/MM/yyyy'}}</label>
+              <nz-date-picker [(ngModel)]="date_validation_projet" (ngModelChange)="onChange($event)"></nz-date-picker>
+            </div>
           </div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24">
-          <div class="inner-box">
-            6. Acompte payé
-            <label nz-checkbox  [(ngModel)]="acompte_paye">le {{date_paiement_acompte | date:'dd/MM/yyyy'}}</label>
-            <nz-date-picker [(ngModel)]="date_paiement_acompte" (ngModelChange)="onChange($event)"></nz-date-picker>
+          <div nz-col class="gutter-row" [nzSpan]="24">
+            <div class="inner-box">
+              6. Acompte payé
+              <label nz-checkbox  [(ngModel)]="acompte_paye">le {{date_paiement_acompte | date:'dd/MM/yyyy'}}</label>
+              <nz-date-picker [(ngModel)]="date_paiement_acompte" (ngModelChange)="onChange($event)"></nz-date-picker>
+            </div>
           </div>
         </div>
       </div>
+
+      <div *ngIf="!project?.Visite">
+        Visite en attente de paiement 
+      </div>
+      
       
       
      
@@ -160,7 +170,6 @@
           <tr>
             
             <th>Titre</th>
-            <th>Type de paiement</th>
             <th>Type</th>
             <th>Montant</th>
             <th>Date</th>
@@ -172,7 +181,6 @@
           
             <tr *ngFor="let data of nzTable2.data">
               <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
-              <td>{{ data.TypeDePaiement }}  </td>
               <td>{{ data.Type }}</td>
               <td>{{ data.Montant }} € </td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
@@ -219,15 +227,7 @@
         </nz-form-control>
       </nz-form-item>
         <!-- Type de Paiement -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="5" nzRequired nzFor="TypeDePaiement">Type de Paiement</nz-form-label>
-          <nz-form-control [nzSpan]="12" nzErrorTip="Veuillez sélectionner un type de paiement!">
-            <nz-select id="TypeDePaiement" formControlName="TypeDePaiement" nzPlaceHolder="Sélectionner">
-              <nz-option nzValue="virement" nzLabel="Virement"></nz-option>
-              <nz-option nzValue="en ligne" nzLabel="En ligne"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
+        
       
         <!-- Type -->
         <nz-form-item>

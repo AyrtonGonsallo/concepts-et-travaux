@@ -8,6 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { DevisTache } from '../../../../Models/DevisTache';
 import { Remise } from '../../../../Models/Remise';
+import { Tva } from '../../../../Models/Tva';
 interface Artisan {
   Id: number;
   Nom: string;
@@ -96,6 +97,10 @@ export class ModifierDevisPieceComponent {
       
     });
 
+    this.tvaForm = this.fb.group({
+      ID: [0, [Validators.required]],
+    });
+
      this.remiseForm = this.fb.group({
         Titre: this.fb.control<string | null>(null, Validators.required),
         Type: this.fb.control<string | null>(null, Validators.required),
@@ -114,6 +119,7 @@ export class ModifierDevisPieceComponent {
     // Obtenez l'ID de l'devis à partir de l'URL
     this.devisId = (this.route.snapshot.paramMap.get('id')??'0');
     // Utilisez l'ID pour récupérer les détails de l'devis
+    this.loadTva();
     this.getDetails(this.devisId);
     this.getPieces();
      this.get_all_devis_remises(this.devisId);
@@ -154,15 +160,7 @@ export class ModifierDevisPieceComponent {
   tva = 0
   coefficient = 0
   load_parametres(){
-    this.devisService.get_parametre_by_id_or_nom(6,"TVA")
-        .subscribe(
-          (data) => {
-            this.tva=1+(data.Valeur/100);
-            console.log("tva",data)
-          },
-          (error) => {
-            console.error('Erreur lors de la recupération des parametres', error);
-          });
+    
 
     this.devisService.get_parametre_by_id_or_nom(1,"coefficient")
         .subscribe(
@@ -188,6 +186,11 @@ export class ModifierDevisPieceComponent {
     this.devisService.getDevisPieceById( parseInt(devisId, 10)).subscribe(
       (response) => {
         this.devispiece=response
+        this.tvaForm = this.fb.group({
+          ID: [this.devispiece.TvaID, [Validators.required]],
+        });
+        this.tva=1+(this.devispiece.Tva.Valeur/100);
+          console.log("tva",this.tva)
        this.listOfTaches=response.DevisTaches
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_devis",response);
@@ -441,6 +444,36 @@ export class ModifierDevisPieceComponent {
         console.error('Erreur lors de la recuperation des pieces :', error);
       }
     );
+  }
+
+
+  tvas:Tva[] = [];
+  loadTva(): void {
+    this.devisService.getAllTva()
+      .subscribe((data: Tva[]) => {
+        this.tvas = data;
+        console.log("réponse de la requette tvas",this.tvas);
+      });
+      console.log("envoi de la requette tvas",this.tvas);
+      
+  }
+
+  tvaForm: FormGroup<{
+    ID: FormControl<number>;
+  }>;
+
+  submitTvaForm(){
+    this.devispiece.TvaID=this.tvaForm.value.ID;
+    console.log('tva',this.devispiece)
+    this.devisService.updateDevisPiece(this.devispiece.ID,this.devispiece).subscribe((response) => {
+        console.log("réponse de la requette update devis",response);
+        this.message.success("tva mise à jour")
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des update devis :', error);
+      }
+    );
+
   }
 
 }

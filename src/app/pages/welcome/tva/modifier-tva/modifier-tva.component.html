@@ -1,0 +1,38 @@
+<div>
+    <h2>Tva</h2>  
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Valeur" nzRequired >
+                <span>Valeur</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-input-number id="Valeur" formControlName="Valeur"  ></nz-input-number> 
+            </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Commentaire" >Commentaire</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Veuillez entrer un Commentaire!">
+            <textarea rows="4" id="Commentaire" formControlName="Commentaire" style="width:100%"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            
+            <nz-form-control [nzOffset]="6" [nzSm]="14" [nzXs]="24">
+            <label nz-checkbox formControlName="Defaut">
+                Valeur par défaut
+            </label>
+            </nz-form-control>
+        </nz-form-item>
+
+      
+        <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Modifier</button>
+        </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
