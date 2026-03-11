@@ -16,7 +16,7 @@ export class DevisPiecesComponent {
   size: NzButtonSize = 'large';
   listOfColumn = [
     {
-      title: 'ID',
+      title: 'ID devis',
       compare: (a: DevisPiece, b: DevisPiece) => a.ID - b.ID,
       priority: 3,
       order:null, 

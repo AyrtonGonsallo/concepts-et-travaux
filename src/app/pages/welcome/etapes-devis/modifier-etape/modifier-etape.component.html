@@ -157,7 +157,38 @@
               </nz-form-control>
         </nz-form-item>
 
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_garage"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description garage</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_garage!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-garage"
+                  formControlName="Description_garage"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
 
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Description_buanderie"   nzTooltipTitle="What do you want other to call you" >
+                <span>Description buanderie</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="votre Description_buanderie!">
+                <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor-buanderie"
+                  formControlName="Description_buanderie"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+              </nz-form-control>
+        </nz-form-item>
    
         
        

@@ -9,6 +9,7 @@ export interface Gamme {
     Pdf?: string; // Optional field
     Etape: string;
     TravailID: number;
+    Ordre: number;
     ActiverPrixMultiples: boolean;
     ActiverFournisseur: boolean;
     FournisseurID: number

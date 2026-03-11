@@ -47,7 +47,7 @@ userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
       order:null, 
     },
     {
-      title: 'Prix',
+      title: 'Prix TTC',
       compare: (a: Projet, b: Projet) => {
         const totalA = a.Devis?.reduce((t, d) => t + Number(d.Prix), 0) ?? 0;
         const totalB = b.Devis?.reduce((t, d) => t + Number(d.Prix), 0) ?? 0;
@@ -66,6 +66,7 @@ userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
   ngOnInit(): void {
     this.loadProjets();
     this.getUserDetails(this.userId.toString());
+    this.load_parametres();
   }
   getUserDetails(userId: string): void {
     this.devis_pieceService.getUserById( parseInt(userId, 10)).subscribe(
@@ -93,13 +94,31 @@ userId:number =  parseInt(this.route.snapshot.paramMap.get('id')??'0');
       
   }
 
+  tva = 0
+  coefficient = 0
+  load_parametres(){
+    
+
+    this.devis_pieceService.get_parametre_by_id_or_nom(1,"coefficient")
+        .subscribe(
+          (data) => {
+            this.coefficient=data.Valeur;
+          },
+          (error) => {
+            console.error('Erreur lors de la recupération des parametres', error);
+          });
+  }
+
 getTotalHT(devis?: DevisPiece[]): number {
   if (!devis || devis.length === 0) {
     return 0;
   }
 
   return devis.reduce((total, d) => {
-    const prix = d.Prix ?? 0; // si undefined → 0
+    let tva = 1+(d.Tva.Valeur/100);
+    const prix = d.Prix ? ((d.Prix * this.coefficient)* tva) : 0; // si undefined → 0
+    console.log("tva",tva)
+    console.log("coefficient",this.coefficient)
     return total + prix;
   }, 0);
 }

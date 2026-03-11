@@ -33,6 +33,7 @@ export class AjouterGammeComponent {
     PrixFournisseur: FormControl<number>;
     PrixPose: FormControl<number>;
     Prix: FormControl<number>;
+    Ordre: FormControl<number>;
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
     ActiverFournisseur: FormControl<boolean>;
@@ -136,7 +137,7 @@ onselectTravailorEtapeChange() {
         (response: any) => {
           console.log('gamme ajoutée avec succès :', response);
           this.message.create('success', `gamme ajoutée avec succès`);
-          this.router.navigate(['/administration/gammes']);
+          this.router.navigate(['/administration/taches']);
         },
         (error: any) => {
           console.error('Erreur lors de l\'ajout de la gamme :', error);
@@ -264,6 +265,7 @@ onselectTravailorEtapeChange() {
       PrixPose: [0, [Validators.required]],
       PrixFournisseur: [0, [Validators.required]],
       Prix: [0, [Validators.required]],
+      Ordre: [0, []],
       TravailID: [0, [Validators.required]],
       ActiverFournisseur:  [false, []],
       ActiverPrixMultiples:  [false, []],

@@ -89,6 +89,13 @@ update_demande_paiement(id: number, data: any): Observable<any> {
   return this.http.put<any>(url, data);
 }
 
+update_demande_paiement_data(id: number, data: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_demande_paiement_data/${id}`;
+  return this.http.put<any>(url, data);
+}
+
+
+
 ressend_demande_paiement(id: number): Observable<any> {
   return this.http.get<any>(`${environment.apiUrl}/ressend_demande_paiement/${id}`);
 }

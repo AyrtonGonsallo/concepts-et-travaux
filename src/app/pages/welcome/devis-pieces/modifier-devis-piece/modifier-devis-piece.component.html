@@ -9,7 +9,6 @@
       <nz-table #nzTable [nzData]="listOfTaches" nzTableLayout="fixed" [nzShowPagination]="'false'">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Type de tâche</th>
               <th>Tâche</th>
               <th>Prix HT</th>
@@ -20,7 +19,6 @@
           <tbody>
             <ng-container *ngFor="let data of nzTable.data;let i=index">
               <tr>
-                <td>{{ data.ID }}</td>
                 <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
                 <td>{{ data.TravailSlug }}</td>
                 <td>{{ data.Prix  | number:'1.2-2' }} € </td>

@@ -35,6 +35,7 @@ export class ModifierGammeComponent {
     PrixFournisseur: FormControl<number>;
     PrixPose: FormControl<number>;
     Prix: FormControl<number>;
+    Ordre: FormControl<number>;
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
     ActiverFournisseur: FormControl<boolean>;
@@ -135,7 +136,7 @@ export class ModifierGammeComponent {
         (response: any) => {
           console.log('gamme modifiée avec succès :', response);
           this.message.create('success', `gamme modifiée avec succès`);
-          this.router.navigate(['/administration/gammes']);
+          this.router.navigate(['/administration/taches']);
         },
         (error: any) => {
           console.error('Erreur lors de l\'ajout de la gamme :', error);
@@ -261,6 +262,7 @@ export class ModifierGammeComponent {
       PrixPose: [0, [Validators.required]],
       PrixFournisseur: [0, [Validators.required]],
       Prix: [0, [Validators.required]],
+      Ordre: [0, []],
       PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],
       ActiverFournisseur:  [false, []],

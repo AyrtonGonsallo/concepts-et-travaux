@@ -5,6 +5,7 @@ export interface EtapeDevis {
     Titre: string;
     Sous_titre?: string;
     Travail:Travail
+    TravailID:number
     Description?: string;
     Description_chambre?: string;
     Description_sdb?: string;

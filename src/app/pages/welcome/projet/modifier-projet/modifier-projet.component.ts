@@ -124,6 +124,7 @@ export class ModifierProjetComponent {
 
     await this.load_parametres()
     await this.getProjetDetails(this.projetId);
+    
     /*
     this.userService.getAllDevisPieces().subscribe(
       (response: any) => {
@@ -190,15 +191,12 @@ export class ModifierProjetComponent {
   async load_parametres() {
 
   forkJoin({
-    tva: this.userService.get_parametre_by_id_or_nom(6, "TVA"),
     coefficient: this.userService.get_parametre_by_id_or_nom(1, "coefficient")
   })
   .subscribe({
     next: (result) => {
-      this.tva = 1 + result.tva.Valeur / 100;
       this.coefficient = result.coefficient.Valeur;
 
-      console.log("TVA:", result.tva);
       console.log("Coefficient:", result.coefficient);
     },
     error: (error) => {
@@ -208,7 +206,7 @@ export class ModifierProjetComponent {
 }
 
   calculerPrixTTC(prix: any,tva:number): number {
-    
+    console.log("tva",prix,"prix",tva,"coefficient",this.coefficient)
     if (!prix) return 0;
     const total = prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
@@ -258,6 +256,7 @@ export class ModifierProjetComponent {
        
 
         this.montant_total = this.project?.Devis.reduce(
+          
           (sum: any, devis: { Prix: any;Tva:any }) => sum + this.calculerPrixTTC(devis.Prix,devis.Tva.Valeur),
           0
         );
@@ -602,6 +601,45 @@ disableBeforeToday = (current: Date): boolean => {
   today.setHours(0, 0, 0, 0);
   return current < today;
 };
+
+
+isEditPaymentVisible = false;
+titrePaiement = ""
+typePaiementEdited = ""
+idPaiementtEdited = 0
+
+  showEditPaymentModal(idPaiement:number,titrePaiement:string|undefined,currentTypeDePaiement:string|undefined): void {
+    this.isEditPaymentVisible = true;
+    this.idPaiementtEdited=idPaiement
+    this.titrePaiement = titrePaiement??'';
+    this.typePaiementEdited=currentTypeDePaiement??'';
+  }
+
+  handleEditPaymentOk(): void {
+    let updateDATA={TypeDePaiement:this.typePaiementEdited,idPaiementtEdited:this.idPaiementtEdited}
+    console.log('updateDATA',updateDATA);
+
+    this.userService.update_demande_paiement_data(this.idPaiementtEdited,updateDATA).subscribe(
+      (response) => {
+        console.log("paiement mis a jour avec lien/reference :",response)
+        this.get_all_projet_paiements(this.projetId);
+         this.isEditPaymentVisible = false;
+        this.message.create('success', `paiement mis à jour avec succès`);
+
+      },
+      (error) => {
+        console.error('Erreur lors de la mise à jour du paiement :', error);
+      }
+    );
+
+   
+
+  }
+
+  handleEditPaymentCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isEditPaymentVisible = false;
+  }
   
 
 }

@@ -52,6 +52,12 @@ export class GammeComponent {
       priority: 1,
       order:null
     },
+    {
+      title: 'Ordre',
+      compare: (a: Gamme, b: Gamme) => a.Ordre-(b.Ordre),
+      priority: 3,
+      order:"ascend"
+    },
     
   ];
   gamme:Gamme[] = [];

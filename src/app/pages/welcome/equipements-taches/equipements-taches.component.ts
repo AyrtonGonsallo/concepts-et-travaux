@@ -107,14 +107,17 @@ visible = false;
         priority: 1,
         order:null
       },
-      
-      
-      
       {
         title: 'Prix',
         compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
         priority: 1,
         order:null
+      },
+      {
+        title: 'Ordre',
+        compare: (a: Gamme, b: Gamme) => a.Ordre-(b.Ordre),
+        priority: 3,
+        order:"ascend"
       },
       
     ];

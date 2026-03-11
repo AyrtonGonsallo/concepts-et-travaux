@@ -21,6 +21,8 @@ export class ModifierEtapeDevisComponent {
     Description_wc: FormControl<string>;
     Description_cuisine: FormControl<string>;
     Description_salon: FormControl<string>;
+    Description_garage: FormControl<string>;
+    Description_buanderie: FormControl<string>;
     TravailID: FormControl<number>;
     Etape: FormControl<string>;
   }>;
@@ -75,6 +77,8 @@ export class ModifierEtapeDevisComponent {
       Description_wc: ['', []],
       Description_cuisine: ['', []],
       Description_salon: ['', []],
+      Description_garage: ['', []],
+      Description_buanderie: ['', []],
       TravailID: [0, []],
       Etape: ['', [Validators.required]],
     });

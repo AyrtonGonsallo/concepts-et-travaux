@@ -6,13 +6,22 @@ import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { Title } from '@angular/platform-browser';
+import { Travail } from '../../../Models/Travail';
+import { forkJoin } from 'rxjs';
 
+interface EtapeItem {
+  id: number;
+  travail_id: number;
+  texte: string;
+}
 @Component({
   selector: 'app-etapes-devis',
   templateUrl: './etapes-devis.component.html',
   styleUrl: './etapes-devis.component.css'
 })
 export class EtapesDevisComponent {
+  filteredNBTravailID=0
+  filteredNBEtape=""
   size: NzButtonSize = 'large';
   listOfColumn = [
     {
@@ -40,43 +49,62 @@ export class EtapesDevisComponent {
       priority: 2,
       order:null
     },
-    {
-      title: 'Wc',
-      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_wc??'').localeCompare(b.Description_wc??''),
-      priority: 1,
-      order:null
-    },
-    {
-      title: 'Cuisine',
-      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_cuisine??'').localeCompare(b.Description_cuisine??''),
-      priority: 1,
-      order:null
-    },
-    {
-      title: 'Salon',
-      compare: (a: EtapeDevis, b: EtapeDevis) => (a.Description_salon??'').localeCompare(b.Description_salon??''),
-      priority: 1,
-      order:null
-    },
     
   ];
   etapes:EtapeDevis[] = [];
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.titleService.setTitle('Liste des Nota Bene');
-    this.loadEtapeDevis();
+    await this.loadEtapeDevis();
+    this.loadTravaux();
+    const savedfilteredNBTravailIDListeGammes = localStorage.getItem('filteredNBTravailIDListeGammes');
+    if (savedfilteredNBTravailIDListeGammes) {
+      this.filteredNBTravailID = parseInt(savedfilteredNBTravailIDListeGammes);
+      console.log("Filtre récupéré travail: ", savedfilteredNBTravailIDListeGammes);
+    }
+    const savedfilteredNBEtapeListeGammes = localStorage.getItem('filteredNBEtapeListeGammes');
+    if (savedfilteredNBEtapeListeGammes) {
+      this.filteredNBEtape = (savedfilteredNBEtapeListeGammes);
+      console.log("Filtre récupéré étape: ", savedfilteredNBEtapeListeGammes);
+    }
+    
+    
   }
 
-  loadEtapeDevis(): void {
-    this.userService.getEtapesDevis()
-      .subscribe((data: EtapeDevis[]) => {
-        this.etapes = data;
-        console.log("réponse de la requette get_etapes_devis",this.etapes);
+  travaux:Travail[] = [];
+    loadTravaux(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.getActiveTravaux().subscribe({
+          next: (data: Travail[]) => {
+            this.travaux = data;
+            console.log("réponse de la requête getTravaux", this.travaux);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
       });
-      console.log("envoi de la requette get_etapes_devis",this.etapes);
-      
+    }
+
+ 
+
+  async loadEtapeDevis() {
+  
+    forkJoin({
+      etapes: this.userService.getEtapesDevis()
+    })
+    .subscribe({
+      next: (result) => {
+        this.etapes = result.etapes;
+        this.listOfDisplayData = [...this.etapes];
+        console.log("réponse de la requette get_etapes_devis",this.etapes);
+        this.doubleSearch()
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des get_etapes_devis', error);
+      }
+    });
   }
   isAdminOrHim(id:number){
 
@@ -109,4 +137,47 @@ export class EtapesDevisComponent {
     }
     
   }
+
+
+
+listeComplete: EtapeItem[] = [
+  { id: 1, travail_id:3, texte: "Travaux" },
+  { id: 1, travail_id:3, texte: "Étape 1 (Dimensions)" },
+  { id: 1, travail_id:4, texte: "Étape 3 (Gamme de produits)" },
+  { id: 1, travail_id:5, texte: "Étape 2 (Etat de surfaces)" },
+  { id: 2, travail_id:5, texte: "Recapitulatif" },
+  { id: 3, travail_id:5, texte: "Finalisation" },
+  
+];
+
+
+
+filteredNBListEtapes: string[] = [];
+doubleSearch(): void {
+  // Filtrer selon l'ID
+  
+    this.filteredNBListEtapes = this.listeComplete.map(item => item.texte);
+  
+
+  this.applyFilters();
+}
+
+listOfDisplayData :any;
+applyFilters(): void {
+  localStorage.setItem('filteredNBTravailIDListeGammes', this.filteredNBTravailID.toString());
+  localStorage.setItem('filteredNBEtapeListeGammes', this.filteredNBEtape);
+    this.listOfDisplayData = this.etapes.filter((item: EtapeDevis) => {
+      const matchTravail = !this.filteredNBTravailID || (item.TravailID) === this.filteredNBTravailID;
+      const matchEtape = !this.filteredNBEtape || item.Etape === this.filteredNBEtape;
+      return matchTravail && matchEtape;
+    });
+  }
+
+
+findIdByText(text: string): number | null {
+  const item = this.listeComplete.find(item => item.texte === text);
+  return item ? item.id : null;
+}
+
+
 }

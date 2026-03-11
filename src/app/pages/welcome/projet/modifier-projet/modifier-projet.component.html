@@ -171,6 +171,7 @@
             
             <th>Titre</th>
             <th>Type</th>
+            <th>Type de paiement</th>
             <th>Montant</th>
             <th>Date</th>
             <th>Status</th>
@@ -182,6 +183,7 @@
             <tr *ngFor="let data of nzTable2.data">
               <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
               <td>{{ data.Type }}</td>
+              <td>{{ data.TypeDePaiement ? data.TypeDePaiement  : ''  }}</td>
               <td>{{ data.Montant }} € </td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
               <td> 
@@ -190,6 +192,10 @@
            
               </td>
               <td> 
+                <button (click)="showEditPaymentModal(data.ID,data.Titre,data.TypeDePaiement)" nz-button nzType="primary" class=" mb-5"  title="changertype">
+                  <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </button>
+                
 
                 <button *ngIf="data.Requette == 'demande' && !data.Status" nz-button nzType="primary" class=" mb-5"  title="renvoyer"  nz-popconfirm
                 nzPopconfirmTitle="Voulez-vous vraiment renvoyer cette demande de paiement ?"
@@ -291,9 +297,15 @@
 
 
 
-
-
-
-        <button nz-button nzType="primary" (click)="loadSave()" [nzLoading]="isLoadingSave" class="fixed_saving">Enregistrer</button>
+    <button nz-button nzType="primary" (click)="loadSave()" [nzLoading]="isLoadingSave" class="fixed_saving">Enregistrer</button>
 
 </div>
+
+<nz-modal [(nzVisible)]="isEditPaymentVisible" [nzTitle]="'Modifier le paiement '+titrePaiement" (nzOnCancel)="handleEditPaymentCancel()" (nzOnOk)="handleEditPaymentOk()">
+  <ng-container *nzModalContent>
+     <nz-select  [(ngModel)]="typePaiementEdited" nzPlaceHolder="Sélectionner">
+        <nz-option nzValue="virement" nzLabel="Virement"></nz-option>
+        <nz-option nzValue="en ligne" nzLabel="En ligne"></nz-option>
+      </nz-select>
+  </ng-container>
+</nz-modal>
