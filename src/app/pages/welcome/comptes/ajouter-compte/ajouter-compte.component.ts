@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
+import { CategorieArtisan } from '../../../../Models/Categorie-Artisan';
 
 @Component({
   selector: 'app-ajouter-compte',
@@ -283,6 +284,7 @@ export class AjouterCompteComponent {
 
   ngOnInit(): void {
     this.loadRoles();
+     this.loadCategorieArtisans();
   }
 
   loadRoles(): void {
@@ -296,4 +298,15 @@ export class AjouterCompteComponent {
       }
     );
   }
+
+   categories_de_artisans:CategorieArtisan[] = [];
+    loadCategorieArtisans(): void {
+      this.userService.getCategoriesArtisan()
+        .subscribe((data: CategorieArtisan[]) => {
+          this.categories_de_artisans = data;
+          console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
+        });
+        console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
+        
+    }
 }

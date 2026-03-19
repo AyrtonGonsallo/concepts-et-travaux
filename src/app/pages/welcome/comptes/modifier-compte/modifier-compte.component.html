@@ -234,9 +234,11 @@
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                 <nz-select id="CategorieArtisan" formControlName="CategorieArtisan">
-                    <nz-option nzLabel="peintre" nzValue="peintre"></nz-option>
-                    <nz-option nzLabel="électricien" nzValue="électricien"></nz-option>
-                    <nz-option nzLabel="maçon" nzValue="maçon"></nz-option>
+                    <nz-option
+                    *ngFor="let cat of categories_de_artisans"
+                    [nzLabel]="cat.Titre"
+                    [nzValue]="cat.Titre"
+                    ></nz-option>
                 </nz-select>       
             </nz-form-control>
         </nz-form-item>

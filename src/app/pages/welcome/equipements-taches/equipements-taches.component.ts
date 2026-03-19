@@ -108,7 +108,7 @@ visible = false;
         order:null
       },
       {
-        title: 'Prix',
+        title: 'Prix HT',
         compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
         priority: 1,
         order:null

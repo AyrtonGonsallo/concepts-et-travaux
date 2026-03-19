@@ -6,6 +6,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { Galerie } from '../../../../Models/Galerie';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 import { CategoriePiece } from '../../../../Models/Categorie-Piece';
+import { environment } from '../../../../environments/environment';
 interface FormValues {
   Titre?: string;    
   Présentation?: string;
@@ -21,6 +22,8 @@ interface FormValues {
   styleUrl: './modifier-piece.component.css'
 })
 export class ModifierPieceComponent {
+
+  baseUrl = environment.imagesUrl;
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     Présentation: FormControl<string>;
@@ -208,4 +211,21 @@ export class ModifierPieceComponent {
     );
     
   }
+
+    isLoadingRemoveImage = false;
+
+    removeImage(typeImage:string,table:string): void {
+      this.isLoadingRemoveImage = true;
+      this.userService.retirerImage(parseInt(this.pieceId),typeImage,table).subscribe(
+        (response) => {
+          console.log("réponse de la supression d'image ",response);
+          this.isLoadingRemoveImage = false;
+          this.getPieceDetails(this.pieceId)
+        },
+        (error) => {
+          console.error('Erreur lors de la supression d\'image :', error);
+        }
+      );
+    }
+
 }

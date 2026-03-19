@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../../Services/auth.service';
+import { CategorieArtisan } from '../../../../Models/Categorie-Artisan';
 
 @Component({
   selector: 'app-modifier-compte',
@@ -95,7 +96,16 @@ export class ModifierCompteComponent {
     return {};
   };
 
-
+ categories_de_artisans:CategorieArtisan[] = [];
+    loadCategorieArtisans(): void {
+      this.userService.getCategoriesArtisan()
+        .subscribe((data: CategorieArtisan[]) => {
+          this.categories_de_artisans = data;
+          console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
+        });
+        console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
+        
+    }
 
   constructor(private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
@@ -264,6 +274,7 @@ export class ModifierCompteComponent {
     this.getUserDetails(userId);
     // Chargez les rôles
     this.loadRoles();
+     this.loadCategorieArtisans();
   }
   apiBaseUrl: string = `${environment.apiUrl}/open-file/`;
  assuranceRCDecennale=this.apiBaseUrl

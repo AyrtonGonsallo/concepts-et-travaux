@@ -255,11 +255,11 @@ export class ModifierProjetComponent {
         this.avancement = this.project.ProgressionTravaux
        
 
-        this.montant_total = this.project?.Devis.reduce(
+        this.montant_total = (this.project?.Devis.reduce(
           
           (sum: any, devis: { Prix: any;Tva:any }) => sum + this.calculerPrixTTC(devis.Prix,devis.Tva.Valeur),
           0
-        );
+        )).toFixed(2);
        
         
         switch (this.project.Status) {

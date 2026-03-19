@@ -31,7 +31,7 @@ interface FormValues {
   styleUrl: './modifier-realisation.component.css'
 })
 export class ModifierRealisationComponent {
-  url_images=environment.imagesUrl
+    baseUrl = environment.imagesUrl;
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     SousTitre: FormControl<string>;
@@ -251,4 +251,21 @@ export class ModifierRealisationComponent {
     );
     
   }
+
+
+    isLoadingRemoveImage = false;
+
+    removeImage(typeImage:string,table:string): void {
+      this.isLoadingRemoveImage = true;
+      this.userService.retirerImage(parseInt(this.realisationId),typeImage,table).subscribe(
+        (response) => {
+          console.log("réponse de la supression d'image ",response);
+          this.isLoadingRemoveImage = false;
+          this.getRealisationDetails(this.realisationId)
+        },
+        (error) => {
+          console.error('Erreur lors de la supression d\'image :', error);
+        }
+      );
+    }
 }

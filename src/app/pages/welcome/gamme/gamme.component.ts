@@ -47,7 +47,7 @@ export class GammeComponent {
     
     
     {
-      title: 'Prix',
+      title: 'Prix HT',
       compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
       priority: 1,
       order:null
@@ -219,7 +219,7 @@ export class GammeComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'gammes_export.csv';  // Nom du fichier
+      a.download = 'gammes_export.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();

@@ -189,9 +189,9 @@
             [nzAllowClear]="true"
           >
             <nz-option
-              *ngFor="let cat of categories"
-              [nzLabel]="cat.nom"
-              [nzValue]="cat.nom"
+              *ngFor="let cat of categories_de_artisans"
+              [nzLabel]="cat.Titre"
+              [nzValue]="cat.Titre"
             ></nz-option>
           </nz-select>
         </nz-form-control>
@@ -208,7 +208,7 @@
           >
             <nz-option
               *ngFor="let art of filteredArtisans"
-              [nzLabel]="art.Nom + ' ' + art.Prenom"
+              [nzLabel]="art.Nom + ' ' + art.Prenom + ' - ' + art.CategorieArtisan"
               [nzValue]="art.Id"
             ></nz-option>
           </nz-select>

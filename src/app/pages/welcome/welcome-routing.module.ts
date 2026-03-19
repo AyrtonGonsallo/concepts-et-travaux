@@ -35,8 +35,8 @@ import { ModifierEtapeComponent } from './etapes-projet/modifier-etape/modifier-
 import { EtapesDevisComponent } from './etapes-devis/etapes-devis.component';
 import { AjouterEtapeDevisComponent } from './etapes-devis/ajouter-etape/ajouter-etape.component';
 import { ModifierEtapeDevisComponent } from './etapes-devis/modifier-etape/modifier-etape.component';
-import { AjouterCategorieComponent } from './categorie-piece/ajouter-categorie/ajouter-categorie.component';
-import { ModifierCategorieComponent } from './categorie-piece/modifier-categorie/modifier-categorie.component';
+import {  AjouterCategoriePieceComponent } from './categorie-piece/ajouter-categorie/ajouter-categorie.component';
+import { ModifierCategoriePieceComponent } from './categorie-piece/modifier-categorie/modifier-categorie.component';
 import { QuestionComponent } from './question/question.component';
 import { AjouterQuestionComponent } from './question/ajouter-question/ajouter-question.component';
 import { ModifierQuestionComponent } from './question/modifier-question/modifier-question.component';
@@ -104,6 +104,9 @@ import { FichiersComponent } from './fichiers/fichiers.component';
 import { VoirProjetsClientComponent } from './clients/voir-projets-client/voir-projets-client.component';
 import { AjouterTvaComponent } from './tva/ajouter-tva/ajouter-tva.component';
 import { ModifierTvaComponent } from './tva/modifier-tva/modifier-tva.component';
+import { CategorieArtisanComponent } from './categorie-artisan/categorie-artisan.component';
+import { ModifierCategorieArtisanComponent } from './categorie-artisan/modifier-categorie/modifier-categorie.component';
+import { AjouterCategorieArtisanComponent } from './categorie-artisan/ajouter-categorie/ajouter-categorie.component';
 
 const routes: Routes = [
  
@@ -123,8 +126,8 @@ const routes: Routes = [
       { path: 'categories-piece', component: CategoriePieceComponent },
       { path: 'besoins-projet/modifier-besoin/:id', component: ModifierBesoinComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'besoins-projet/ajouter-besoin', component: AjouterBesoinComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'categories-piece/modifier-besoin/:id', component: ModifierCategorieComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'categories-piece/ajouter-besoin', component: AjouterCategorieComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-piece/modifier-categorie/:id', component: ModifierCategoriePieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-piece/ajouter-categorie', component: AjouterCategoriePieceComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'etapes-projet/modifier-etape/:id', component: ModifierEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'etapes-projet/ajouter-etape', component: AjouterEtapeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'nota-bene', component: EtapesDevisComponent },
@@ -164,6 +167,9 @@ const routes: Routes = [
       { path: 'formules-et-tests/remplacement-portes', component: RemplacementDePortesListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/tester-renovation-electrique/:id', component: RenovationElectriquePartielleCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/renovation-electrique', component: RenovationElectriquePartielleListeComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-artisan', component: CategorieArtisanComponent },
+      { path: 'categories-artisan/modifier-categorie/:id', component: ModifierCategorieArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-artisan/ajouter-categorie', component: AjouterCategorieArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'formules-et-tests/tester-demolition-cloisons/:id', component: DemolitionCloisonsCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/demolition-cloisons', component: DemolitionCloisonsListeComponent }, // Nouvelle route pour ajouter un compte avec un ID

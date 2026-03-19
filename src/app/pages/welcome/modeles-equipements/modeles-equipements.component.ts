@@ -42,7 +42,7 @@ export class ModelesEquipementsComponent {
       order:'ascend'
     },
     {
-      title: 'Prix',
+      title: 'Prix HT',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
       order:null
@@ -142,7 +142,7 @@ export class ModelesEquipementsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'modeles_export.csv';  // Nom du fichier
+      a.download = 'modeles_export.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();

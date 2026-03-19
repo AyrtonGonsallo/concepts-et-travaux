@@ -9,6 +9,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { DevisTache } from '../../../../Models/DevisTache';
 import { Remise } from '../../../../Models/Remise';
 import { Tva } from '../../../../Models/Tva';
+import { CategorieArtisan } from '../../../../Models/Categorie-Artisan';
 interface Artisan {
   Id: number;
   Nom: string;
@@ -150,12 +151,21 @@ export class ModifierDevisPieceComponent {
         console.error('Erreur lors de la récupération des artisans :', error);
       }
     );
-    this.load_parametres()
+    this.load_parametres();
+    this.loadCategorieArtisans();
    
   }
 
-
-
+  categories_de_artisans:CategorieArtisan[] = [];
+  loadCategorieArtisans(): void {
+    this.devisService.getCategoriesArtisan()
+      .subscribe((data: CategorieArtisan[]) => {
+        this.categories_de_artisans = data;
+        console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
+      });
+      console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
+      
+  }
   
   tva = 0
   coefficient = 0

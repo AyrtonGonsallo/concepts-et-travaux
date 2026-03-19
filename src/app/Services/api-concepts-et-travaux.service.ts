@@ -62,6 +62,11 @@ get_lien_paiement_projet(projet_id: number,payer_visite:boolean,payer_acompte:bo
   return this.http.get<any>(url);
 }
 
+retirerImage(object_id: number,typeImage:string,table:string): Observable<any> {
+  const url = `${environment.apiUrl}/retirer_image/${object_id}/${typeImage}/${table}`;
+  return this.http.get<any>(url);
+}
+
 create_lien_demande_paiement_projet(projet_id: number,userData:any): Observable<any> {
   const url = `${environment.apiUrl}/generate_paylink/${projet_id}`;
   return this.http.post<any>(url,userData);
@@ -136,6 +141,47 @@ add_besoin_projet(userData: any): Observable<any> {
 add_categorie_piece(userData: any): Observable<any> {
   return this.http.post<any>(`${environment.apiUrl}/ajouter_categorie_piece`, userData);
 }
+getCategoriesPiece(): Observable<any> {
+  const url = `${environment.apiUrl}/get_categories_piece`;
+  return this.http.get<any>(url);
+}
+
+getCategoriePieceById(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_categorie_piece/${id}`;
+  return this.http.get<any>(url);
+}
+
+updateCategoriePiece(id: number, categorie: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_categorie_piece/${id}`;
+  return this.http.put<any>(url, categorie);
+}
+
+deleteCategoriePiece(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_categorie_piece/${id}`;
+  return this.http.delete<any>(url);
+}
+add_categorie_artisan(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_categorie_artisan`, userData);
+}
+getCategoriesArtisan(): Observable<any> {
+  const url = `${environment.apiUrl}/get_categories_artisan`;
+  return this.http.get<any>(url);
+}
+
+getCategorieArtisanById(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_categorie_artisan/${id}`;
+  return this.http.get<any>(url);
+}
+
+updateCategorieArtisan(id: number, categorie: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_categorie_artisan/${id}`;
+  return this.http.put<any>(url, categorie);
+}
+
+deleteCategorieArtisan(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_categorie_artisan/${id}`;
+  return this.http.delete<any>(url);
+}
 getEtapesProjet(): Observable<any> {
   const url = `${environment.apiUrl}/get_etapes_projet`;
   return this.http.get<any>(url);
@@ -203,25 +249,7 @@ deleteBesoinProjet(id: number): Observable<any> {
   const url = `${environment.apiUrl}/delete_besoin_projet/${id}`;
   return this.http.delete<any>(url);
 }
-getCategoriesPiece(): Observable<any> {
-  const url = `${environment.apiUrl}/get_categories_piece`;
-  return this.http.get<any>(url);
-}
 
-getCategoriePieceById(id: number): Observable<any> {
-  const url = `${environment.apiUrl}/get_categorie_piece/${id}`;
-  return this.http.get<any>(url);
-}
-
-updateCategoriePiece(id: number, categorie: any): Observable<any> {
-  const url = `${environment.apiUrl}/update_categorie_piece/${id}`;
-  return this.http.put<any>(url, categorie);
-}
-
-deleteCategoriePiece(id: number): Observable<any> {
-  const url = `${environment.apiUrl}/delete_categorie_piece/${id}`;
-  return this.http.delete<any>(url);
-}
 
 getProjets(): Observable<any> {
   const url = `${environment.apiUrl}/get_all_projects`;

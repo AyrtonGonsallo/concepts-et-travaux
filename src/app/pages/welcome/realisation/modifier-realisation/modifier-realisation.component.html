@@ -30,7 +30,9 @@
                 Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
             </nz-form-control>
             <div nz-col nzSpan="12" *ngIf="validateForm.get('Image_principale')?.value">
-              <img width="100px"  [src]="url_images + validateForm.get('Image_principale')?.value ">  
+              <img width="100px"  [src]="baseUrl + validateForm.get('Image_principale')?.value ">  
+              <button type="button" class="btn-delete" nz-button nzType="default" (click)="removeImage('principale','realisation')" [nzLoading]="isLoadingRemoveImage">Retirer</button>
+
             </div>
             
         </nz-form-item>

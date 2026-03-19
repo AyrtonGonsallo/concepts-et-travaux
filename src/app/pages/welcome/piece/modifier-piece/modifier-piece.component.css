@@ -1,0 +1,9 @@
+.img-preview{
+    max-width: 100px;
+    height: auto;
+}
+.btn-delete{
+    margin: 0px 10px;
+    background-color: #FFC736;
+    color: black;
+}

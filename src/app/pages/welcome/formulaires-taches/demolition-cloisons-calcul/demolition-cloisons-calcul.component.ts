@@ -54,7 +54,6 @@ export class DemolitionCloisonsCalculComponent {
               return this.fb.group({
                 longueur: [mur.longueur],
                 hauteur: [mur.hauteur],
-                epaisseur: [mur.epaisseur],
                 ndp: [mur.ndp],
                 cloison: [mur.cloison],
               });
@@ -65,7 +64,6 @@ export class DemolitionCloisonsCalculComponent {
               return this.fb.group({
                 longueur: [ouverture.longueur],
                 hauteur: [ouverture.hauteur],
-                epaisseur: [ouverture.epaisseur],
                 longueur_ouverture: [ouverture.longueur_ouverture],
                 hauteur_ouverture: [ouverture.hauteur_ouverture],
                 hauteur_depuis_le_sol: [ouverture.hauteur_depuis_le_sol],
