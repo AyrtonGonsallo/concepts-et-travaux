@@ -323,7 +323,7 @@ loadtravaux(){
       });
 }
 loadFournisseurs(){
-    this.userService.getUsersByRole(14)
+    this.userService.getUsersByRole(17)
         .subscribe((data: Utilisateur[]) => {
           this.fournisseurs = data;
           console.log("réponse de la requette loadFournisseurs",this.fournisseurs);

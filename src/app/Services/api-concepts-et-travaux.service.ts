@@ -41,8 +41,8 @@ clear_kbis(userId: number): Observable<any> {
   const url = `${environment.apiUrl}/clear_kbis/${userId}`;
   return this.http.get<any>(url);
 }
-getUsersByRole(userId: number): Observable<any> {
-  const url = `${environment.apiUrl}/get_utilisateurs_by_role/${userId}`;
+getUsersByRole(roleId: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_utilisateurs_by_role/${roleId}`;
   return this.http.get<any>(url);
 }
 getUserById(userId: number): Observable<any> {
@@ -436,6 +436,10 @@ get_role(userId: number): Observable<any> {
     const url = `${environment.apiUrl}/update_particulier/${userId}`;
     return this.http.post<any>(url, userData);
   }
+  updateFournisseur(userId: number, userData: any): Observable<any> {
+    const url = `${environment.apiUrl}/update_fournisseur/${userId}`;
+    return this.http.post<any>(url, userData);
+  }
   updateProjet(userId: number, userData: any): Observable<any> {
     const url = `${environment.apiUrl}/update_project/${userId}`;
     return this.http.put<any>(url, userData);
@@ -637,11 +641,36 @@ get_role(userId: number): Observable<any> {
     });
   }
 
+  getExportArtisanGammes(artisan_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_gammes_artisan/${artisan_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+  downloadModeleGammesArtisan(artisan_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/download_modele_gammes_artisan/${artisan_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+  getExportModeleEquipementsFournisseur(fournisseur_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_modeles_equipement_fournisseur/${fournisseur_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
   getExportModelesEquipements(): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/export_modeles_equipement`, {
       responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
     });
   }
+
+   downloadModelesFournisseurEquipements(fournisseur_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/download_modele_gammes_fournisseur/${fournisseur_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
 
 
   // Récupérer un modèle d'équipement par son ID
@@ -662,6 +691,12 @@ get_role(userId: number): Observable<any> {
   // Récupérer tous les modèles d'équipement
   getModelesEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement`);
+  }
+
+  
+  // Récupérer tous les modèles d'équipement
+  getFournisseurModelesEquipement(fournisseur_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_fournisseur_modeles_equipement/${fournisseur_id}`);
   }
 
   getDevisPieceById(id: number): Observable<any> {
@@ -752,6 +787,9 @@ get_role(userId: number): Observable<any> {
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammesSansEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements`);
+  }
+  getArtisanGammesSansEquipement(artisantId:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisan_gammes_sans_equipements/${artisantId}`);
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteGamme(gammeId: number): Observable<any> {

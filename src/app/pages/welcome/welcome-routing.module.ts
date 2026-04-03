@@ -107,6 +107,10 @@ import { ModifierTvaComponent } from './tva/modifier-tva/modifier-tva.component'
 import { CategorieArtisanComponent } from './categorie-artisan/categorie-artisan.component';
 import { ModifierCategorieArtisanComponent } from './categorie-artisan/modifier-categorie/modifier-categorie.component';
 import { AjouterCategorieArtisanComponent } from './categorie-artisan/ajouter-categorie/ajouter-categorie.component';
+import { FournisseursComponent } from './fournisseurs/fournisseurs.component';
+import { FournisseurDetailsComponent } from './fournisseurs/fournisseur-details/fournisseur-details.component';
+import { ArtisansComponent } from './artisans/artisans.component';
+import { ArtisanDetailsComponent } from './artisans/artisan-details/artisan-details.component';
 
 const routes: Routes = [
  
@@ -231,8 +235,15 @@ const routes: Routes = [
       { path: 'autorisations/modifier-autorisation/:id', component: ModifierAutorisationComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'autorisations/ajouter-autorisation', component: AjouterAutorisationComponent,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'roles/modifier-role/:id', component: ModifierRoleComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
-      { path: 'roles/ajouter-role', component: AjouterRoleComponent ,canActivate: [IsAdminGuard]} // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'roles/ajouter-role', component: AjouterRoleComponent ,canActivate: [IsAdminGuard]}, // Nouvelle route pour ajouter un compte avec un ID
 
+      { path: 'fournisseurs', component: FournisseursComponent },
+      { path: 'fournisseurs/details/:id', component: FournisseurDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      
+
+      { path: 'artisans', component: ArtisansComponent },
+      { path: 'artisans/details/:id', component: ArtisanDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      
       // Autres routes de la page d'accueil
     ]
   }
