@@ -38,11 +38,9 @@ export class AuthGuard {
     const user = this.authService.getCurrentUser();
 
     if (!user || !Object.keys(user).length) {
-      console.log('not logged')
       this.router.navigate(['/blank']);
       return false;
     }else{
-      console.log('logged',user)
     }
 
     return true;

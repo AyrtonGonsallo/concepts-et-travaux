@@ -24,7 +24,7 @@
     </div>
 
 
-    <nz-collapse nzAccordion>
+    <nz-collapse nzAccordion class="mt-5">
 
         <nz-collapse-panel nzHeader="Les tâches de {{userData?.Prenom}} {{userData?.Nom}}" nzActive="true">
             <nz-table #sortTable [nzData]="listOfDisplayData" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">

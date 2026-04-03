@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoaderService } from '../Services/loader.service';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './blank.component.html',
   styleUrl: './blank.component.css'
 })
-export class BlankComponent {
+export class BlankComponent implements OnInit {
 
     loading = true;
     
@@ -16,15 +16,20 @@ export class BlankComponent {
       public loader: LoaderService
     ) {
   
-      this.loader.show();
-       setTimeout(() => {
-        this.loading = false;
-        this.loader.hide();
-        this.router.navigate(['login']);
-      }, 800);
+
   
       
   
+    }
+
+
+    ngOnInit() {
+      this.loader.show();
+
+      setTimeout(() => {
+        this.loading = false;
+        this.loader.hide();
+      }, 1800);
     }
   
 }

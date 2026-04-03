@@ -5,7 +5,7 @@
     <div nz-row>
       <div nz-col nzSpan="8" style="margin: 20px 0px 10px 0px; ">
         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input type="text" [(ngModel)]="search_term" nz-input placeholder="input search text" (ngModelChange)="onSearch()" />
+            <input type="text" [(ngModel)]="search_term" nz-input placeholder="rechercher dans une colonne" (ngModelChange)="onSearch()" />
         </nz-input-group>
         <ng-template #suffixIconButton>
             <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
