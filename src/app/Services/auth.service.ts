@@ -90,6 +90,10 @@ export class AuthService {
     return this.user$;
   }
 
+  getCurrentUser(): any {
+  return this.userSubject.value;
+}
+
   // Supprimer les données du localStorage
   clearDataFromLocal(nom: string): void {
     if (typeof window !== 'undefined' && window.localStorage) {

@@ -13,6 +13,7 @@ import fr from '@angular/common/locales/fr';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 
 registerLocaleData(fr);
@@ -26,6 +27,7 @@ registerLocaleData(fr);
     AppRoutingModule,
     IconsProviderModule,
     NzLayoutModule,
+    NzSpinModule,
     NzMenuModule,
     FormsModule,
   ],
@@ -37,4 +39,5 @@ registerLocaleData(fr);
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

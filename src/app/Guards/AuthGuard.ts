@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AuthService } from '../Services/auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,23 @@ export class AuthGuard {
     }
 
     // ✅ autorisé
+    return true;
+  }
+
+   canActivate(
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot,
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    const user = this.authService.getCurrentUser();
+
+    if (!user || !Object.keys(user).length) {
+      console.log('not logged')
+      this.router.navigate(['/blank']);
+      return false;
+    }else{
+      console.log('logged',user)
+    }
+
     return true;
   }
 }

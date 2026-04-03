@@ -3,9 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './Guards/AuthGuard';
 
 const routes: Routes = [
+  
+  { path: 'administration', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule),  canActivate: [AuthGuard] },
+  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+  
+  { path: 'blank', loadChildren: () => import('./blank/blank.module').then(m => m.BlankModule) },
   { path: '', pathMatch: 'full', redirectTo: 'login' },
-  { path: 'administration', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule),  canMatch: [AuthGuard] },
-  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) }
 ];
 
 @NgModule({
