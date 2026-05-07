@@ -111,6 +111,9 @@ import { FournisseursComponent } from './fournisseurs/fournisseurs.component';
 import { FournisseurDetailsComponent } from './fournisseurs/fournisseur-details/fournisseur-details.component';
 import { ArtisansComponent } from './artisans/artisans.component';
 import { ArtisanDetailsComponent } from './artisans/artisan-details/artisan-details.component';
+import { CategorieFournisseurComponent } from './categorie-fournisseur/categorie-fournisseur.component';
+import { AjouterCategorieFournisseurComponent } from './categorie-fournisseur/ajouter-categorie/ajouter-categorie.component';
+import { ModifierCategorieFournisseurComponent } from './categorie-fournisseur/modifier-categorie/modifier-categorie.component';
 
 const routes: Routes = [
  
@@ -174,6 +177,9 @@ const routes: Routes = [
       { path: 'categories-artisan', component: CategorieArtisanComponent },
       { path: 'categories-artisan/modifier-categorie/:id', component: ModifierCategorieArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'categories-artisan/ajouter-categorie', component: AjouterCategorieArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
+       { path: 'categories-fournisseur', component: CategorieFournisseurComponent },
+      { path: 'categories-fournisseur/modifier-categorie/:id', component: ModifierCategorieFournisseurComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'categories-fournisseur/ajouter-categorie', component: AjouterCategorieFournisseurComponent }, // Nouvelle route pour ajouter un compte avec un ID
       
       { path: 'formules-et-tests/tester-demolition-cloisons/:id', component: DemolitionCloisonsCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/demolition-cloisons', component: DemolitionCloisonsListeComponent }, // Nouvelle route pour ajouter un compte avec un ID

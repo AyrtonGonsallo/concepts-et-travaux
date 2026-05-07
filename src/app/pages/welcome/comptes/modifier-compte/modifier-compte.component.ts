@@ -8,6 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../../Services/auth.service';
 import { CategorieArtisan } from '../../../../Models/Categorie-Artisan';
+import { CategorieFournisseur } from '../../../../Models/Categorie-Fournisseur';
 
 @Component({
   selector: 'app-modifier-compte',
@@ -40,13 +41,17 @@ export class ModifierCompteComponent {
     AssuranceRCDecennale: FormControl<string>;
     KBis: FormControl<string>;
     CategorieArtisan: FormControl<string>;
+    CategorieFournisseur: FormControl<string>;
     RoleId: FormControl<number>;
   }>;
  isSousTraitant(){
     return this.validateForm.value.RoleId==14
   }
   isArtisanOrSousTraitant(){
-    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14
+    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14 || this.validateForm.value.RoleId==17
+  }
+  isfournisseur(){
+     return this.validateForm.value.RoleId==15
   }
   isArtisan(){
     return this.validateForm.value.RoleId==2
@@ -107,6 +112,17 @@ export class ModifierCompteComponent {
         
     }
 
+  categories_de_fournisseurs:CategorieFournisseur[] = [];
+    loadCategorieFournisseurs(): void {
+      this.userService.getCategoriesFournisseur()
+        .subscribe((data: CategorieFournisseur[]) => {
+          this.categories_de_fournisseurs = data;
+          console.log("réponse de la requette get_categories_artisan",this.categories_de_fournisseurs);
+        });
+        console.log("envoi de la requette get_categories_artisan",this.categories_de_fournisseurs);
+        
+    }
+
   constructor(private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Email: ['', [Validators.email, Validators.required]],
@@ -132,6 +148,7 @@ export class ModifierCompteComponent {
       AssuranceRCDecennale: ['', []],
       KBis: ['', []],
       CategorieArtisan: ['', []],
+      CategorieFournisseur: ['', []],
       RoleId: [0, []],
     });
 
@@ -274,7 +291,8 @@ export class ModifierCompteComponent {
     this.getUserDetails(userId);
     // Chargez les rôles
     this.loadRoles();
-     this.loadCategorieArtisans();
+    this.loadCategorieArtisans();
+    this.loadCategorieFournisseurs();
   }
   apiBaseUrl: string = `${environment.apiUrl}/open-file/`;
  assuranceRCDecennale=this.apiBaseUrl

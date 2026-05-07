@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,8 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../../Services/auth.service';
 import { ModeleEquipement } from '../../../../Models/ModeleEquipement';
 import { NzButtonSize } from 'ng-zorro-antd/button';
+import { Gamme } from '../../../../Models/Gamme';
+import { Travail } from '../../../../Models/Travail';
 
 @Component({
   selector: 'app-fournisseur-details',
@@ -17,92 +19,11 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
 export class FournisseurDetailsComponent {
 
   baseurl=environment.imagesUrl
-  validateForm: FormGroup<{
-    RaisonSociale: FormControl<string>;
-    NumeroSIRET: FormControl<string>;
-    Nom: FormControl<string>;
-    Prenom: FormControl<string>;
-    Email: FormControl<string>;
-    Password: FormControl<string>;
-    Telephone: FormControl<string>;
-    AdressePostale: FormControl<string>;
-    CodePostal: FormControl<string>;
-    CommunePostale: FormControl<string>;
-    Activite:  FormControl<string>;
-    CA: FormControl<number>;
-    checkPassword: FormControl<string>;
-    Effectif: FormControl<number>;
-    References: FormControl<string>;
-    Adresse: FormControl<string>;
-    NomDirigeant: FormControl<string>;
-    ZoneGeographiqueDactivite: FormControl<string>;
-    Qualifications: FormControl<string>;
-  }>;
- 
-  submitForm(): void {
-    
-    if (this.validateForm.valid) {
-
-      console.log('submit', this.validateForm.value);
-      this.userService.updateFournisseur(this.userId,this.validateForm.value).subscribe(
-        (response) => {
-          console.log('Utilisateur modifié avec succès :', response);
-          this.message.create('success', `Utilisateur modifié avec succès`);
-          this.router.navigate(['/administration/fournisseurs']);
-        },
-        (error) => {
-          console.error('Erreur lors de la modification de l\'utilisateur :', error);
-        }
-      );
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
-  }
-
-  updateConfirmValidator(): void {
-    /** wait for refresh value */
-    Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
-  }
-
-  confirmationValidator: ValidatorFn = (control: AbstractControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true };
-    } else if (control.value !== this.validateForm.controls.Password.value) {
-      return { confirm: true, error: true };
-    }
-    return {};
-  };
-
+  
  
 
   constructor(private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private userService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
-    this.validateForm = this.fb.group({
-      Email: ['', [Validators.email, Validators.required]],
-      Password: ['000', []],
-      checkPassword: ['', [ this.confirmationValidator]],
-      Nom: ['', [Validators.required]],
-      Prenom: ['', [Validators.required]],
-      Telephone: ['', [Validators.required]],
-      RaisonSociale: ['', []],
-      NumeroSIRET: ['', [Validators.pattern(/^[0-9]{4,15}$/)]],
-      CodePostal:  ['', [Validators.pattern(/^[0-9]{4,6}$/)]],
-      CommunePostale:  ['', []],
-      AdressePostale: ['', []],
-      Activite:  ['', []],
-      CA: [0, []],
-      Effectif: [0, []],
-      References: ['', []],
-      Adresse: ['', []],
-      NomDirigeant: ['', []],
-      ZoneGeographiqueDactivite: ['', []],
-      Qualifications: ['', []],
-     
-    });
+   
 
   
   }
@@ -115,6 +36,8 @@ export class FournisseurDetailsComponent {
     // Utilisez l'ID pour récupérer les détails de l'utilisateur
     this.getUserDetails(userId);
     this.loadModeleEquipements()
+    this.loadTravaux()
+    this.loadGamme()
   }
 
   userData:any
@@ -124,9 +47,7 @@ export class FournisseurDetailsComponent {
     this.userService.getUserById( parseInt(userId, 10)).subscribe(
       (response) => {
         this.userData = response
-        response.checkPassword="000"
-        response.Password="000"
-        this.validateForm.patchValue(response);
+      
         console.log("réponse de la requette get_user",response);
       },
       (error) => {
@@ -207,7 +128,7 @@ export class FournisseurDetailsComponent {
         next: (data: ModeleEquipement[]) => {
           this.modele = data;
           this.listOfDisplayData = [...this.modele];
-          console.log("réponse de la requête getFournisseurModelesEquipement", this.modele);
+          console.log("réponse de la requête getFournisseurGammesSansEquipement", this.modele);
           resolve();
         },
         error: (err) => reject(err)
@@ -247,7 +168,7 @@ export class FournisseurDetailsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = `modele_import_du_fournisseur_${this.userId}.xlsx`;  // Nom du fichier
+      a.download = `modele_import_equipements_fournisseur_${this.userId}.xlsx`;  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -263,7 +184,7 @@ export class FournisseurDetailsComponent {
 
 
 selectedFile: File | null = null;
-
+@ViewChild('fileInput') fileInput!: ElementRef;
 onFileSelected(event: any) {
   this.selectedFile = event.target.files[0];
 }
@@ -279,6 +200,190 @@ onFileSelected(event: any) {
         console.log('Fichier uploadé avec succès', res);
         this.message.success(res.message)
         this.loadModeleEquipements()
+        this.selectedFile = null;
+        this.fileInput.nativeElement.value = '';
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'upload', err);
+        this.message.error("Erreur lors de l\'upload/import")
+      }
+    });
+  } else {
+    alert('Veuillez sélectionner un fichier.');
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+deleteTache(id: number) {
+    if (this.authService.isAdminorSuperAdmin()) {
+      this.userService.deleteGamme(id).subscribe(
+        () => {
+          //console.log('Gamme supprimé avec succès');
+          this.message.success( 'Gamme supprimé avec succès');
+          this.loadGamme()
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+        }
+      );
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      return false;
+    }
+    
+  }
+  sizeTaches: NzButtonSize = 'large';
+  listOfColumnTaches = [
+    {
+      title: 'Titre',
+      compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
+      priority: 2,
+      order:"ascend"
+    },
+    {
+      title: 'Sous-catégorie',
+      compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
+      priority: 1,
+      order:null
+    },
+    {
+      title: 'Travail',
+      compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
+      priority: 1,
+      order:null
+    },
+    
+    
+    
+    {
+      title: 'Prix HT',
+      compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
+      priority: 1,
+      order:null
+    },
+    {
+      title: 'Ordre',
+      compare: (a: Gamme, b: Gamme) => a.Ordre-(b.Ordre),
+      priority: 3,
+      order:"ascend"
+    },
+    
+  ];
+
+  gamme:Gamme[] = [];
+  listOfDisplayDataTaches :any;
+ loadGamme(): Promise<void> {
+     return new Promise((resolve, reject) => {
+       this.userService.getFournisseurGammesSansEquipement(this.userId).subscribe({
+         next: (data: Gamme[]) => {
+           this.gamme = data;
+           this.listOfDisplayDataTaches = [...this.gamme];
+           console.log("réponse de la requête getFournisseurGammesSansEquipement", this.gamme);
+           resolve();
+         },
+         error: (err) => reject(err)
+       });
+     });
+   }
+    get_travail_title(id: number): string {
+    const travail = this.travaux.find(travail => travail.ID === id);
+    return travail ? travail.Titre : '';
+  }
+
+  travaux:Travail[] = [];
+    loadTravaux(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.getActiveTravauxSansEquipements().subscribe({
+          next: (data: Travail[]) => {
+            this.travaux = data;
+            console.log("réponse de la requête getTravaux", this.travaux);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
+
+  exporterTaches() {
+    this.userService.getExportFournisseurGammes(this.userId).subscribe((blob: Blob) => {
+      // Créer une URL temporaire pour le fichier
+      const url = window.URL.createObjectURL(blob);
+
+      // Créer un lien HTML temporaire
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gammes_export.xlsx';  // Nom du fichier
+
+      // Déclencher le téléchargement
+      a.click();
+
+      // Libérer l’URL blob après téléchargement
+      window.URL.revokeObjectURL(url);
+
+      console.log("Fichier exporté avec succès.");
+    }, (error) => {
+      console.error('Erreur lors de l\'export', error);
+    });
+  }
+
+  telecharger_modeleTaches() {
+    this.userService.downloadModeleGammesFournisseur(this.userId).subscribe((blob: Blob) => {
+      // Créer une URL temporaire pour le fichier
+      const url = window.URL.createObjectURL(blob);
+
+      // Créer un lien HTML temporaire
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `modele_import_taches_fournisseur_${this.userId}.xlsx`;  // Nom du fichier
+
+      // Déclencher le téléchargement
+      a.click();
+
+      // Libérer l’URL blob après téléchargement
+      window.URL.revokeObjectURL(url);
+
+      console.log("Fichier exporté avec succès.");
+    }, (error) => {
+      console.error('Erreur lors de l\'export', error);
+    });
+  }
+
+
+selectedFileTaches: File | null = null;
+@ViewChild('fileInputTaches') fileInputTaches!: ElementRef;
+onFileSelectedTaches(event: any) {
+  this.selectedFileTaches = event.target.files[0];
+}
+
+
+  importerTaches() {
+  if (this.selectedFileTaches) {
+    const formData = new FormData();
+    formData.append('file', this.selectedFileTaches);
+
+    this.userService.upload_import_gammes_file(formData).subscribe({
+      next: (res) => {
+        console.log('Fichier uploadé avec succès', res);
+        this.message.success(res.message)
+        this.loadGamme()
+        this.selectedFile = null;
+        this.fileInputTaches.nativeElement.value = '';
       },
       error: (err) => {
         console.error('Erreur lors de l\'upload', err);

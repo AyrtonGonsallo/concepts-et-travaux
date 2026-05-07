@@ -647,14 +647,21 @@ get_role(userId: number): Observable<any> {
     });
   }
 
-  downloadModeleGammesArtisan(artisan_id:number): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/download_modele_gammes_artisan/${artisan_id}`, {
+  getExportFournisseurGammes(fournisseur_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_gammes_fournisseur/${fournisseur_id}`, {
       responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
     });
   }
 
+  
+
   getExportModeleEquipementsFournisseur(fournisseur_id:number): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/export_modeles_equipement_fournisseur/${fournisseur_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+  getExportModeleEquipementsArtisan(artisan_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/export_modeles_equipement_artisan/${artisan_id}`, {
       responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
     });
   }
@@ -665,11 +672,30 @@ get_role(userId: number): Observable<any> {
     });
   }
 
-   downloadModelesFournisseurEquipements(fournisseur_id:number): Observable<Blob> {
+   downloadModeleGammesFournisseur(fournisseur_id:number): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/download_modele_gammes_fournisseur/${fournisseur_id}`, {
       responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
     });
   }
+
+   downloadModelesFournisseurEquipements(fournisseur_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/download_modele_equipements_fournisseur/${fournisseur_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+  downloadModelesArtisansEquipements(artisan_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/download_modele_equipements_artisan/${artisan_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+  downloadModeleGammesArtisan(artisan_id:number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/download_modele_gammes_artisan/${artisan_id}`, {
+      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
+    });
+  }
+
+ 
 
 
 
@@ -697,6 +723,9 @@ get_role(userId: number): Observable<any> {
   // Récupérer tous les modèles d'équipement
   getFournisseurModelesEquipement(fournisseur_id:number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_fournisseur_modeles_equipement/${fournisseur_id}`);
+  }
+  getArtisanModelesEquipement(artisan_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisans_modeles_equipement/${artisan_id}`);
   }
 
   getDevisPieceById(id: number): Observable<any> {
@@ -788,8 +817,11 @@ get_role(userId: number): Observable<any> {
   getGammesSansEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements`);
   }
-  getArtisanGammesSansEquipement(artisantId:number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/get_artisan_gammes_sans_equipements/${artisantId}`);
+  getArtisanGammesSansEquipement(artisan_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisan_gammes_sans_equipements/${artisan_id}`);
+  }
+  getFournisseurGammesSansEquipement(fournisseur_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_fournisseur_gammes_sans_equipements/${fournisseur_id}`);
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteGamme(gammeId: number): Observable<any> {
@@ -858,5 +890,29 @@ get_role(userId: number): Observable<any> {
   deleteTva(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_tva/${id}`);
   }
+
+  
+add_categorie_fournisseur(userData: any): Observable<any> {
+  return this.http.post<any>(`${environment.apiUrl}/ajouter_categorie_fournisseur`, userData);
+}
+getCategoriesFournisseur(): Observable<any> {
+  const url = `${environment.apiUrl}/get_categories_fournisseur`;
+  return this.http.get<any>(url);
+}
+
+getCategorieFournisseurById(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/get_categorie_fournisseur/${id}`;
+  return this.http.get<any>(url);
+}
+
+updateCategorieFournisseur(id: number, categorie: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_categorie_fournisseur/${id}`;
+  return this.http.put<any>(url, categorie);
+}
+
+deleteCategorieFournisseur(id: number): Observable<any> {
+  const url = `${environment.apiUrl}/delete_categorie_fournisseur/${id}`;
+  return this.http.delete<any>(url);
+}
 }
 

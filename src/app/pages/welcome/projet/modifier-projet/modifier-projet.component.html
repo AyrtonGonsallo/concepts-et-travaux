@@ -174,7 +174,9 @@
             <th>Type de paiement</th>
             <th>Montant</th>
             <th>Date</th>
-            <th>Status</th>
+            <th>Date de paiement</th>
+            <th>Statut</th>
+            <th>Envoi</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -186,10 +188,15 @@
               <td>{{ data.TypeDePaiement ? data.TypeDePaiement  : ''  }}</td>
               <td>{{ data.Montant }} € </td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
+              <td>{{ data.DatedePaiement | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
               <td> 
                 <span *ngIf="data.Status" nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
                 <span *ngIf="!data.Status" nz-icon nzType="close" style="font-size: 16px; color: rgb(242, 38, 23)" nzTheme="outline"></span>
            
+              </td>
+              <td> 
+                <span  nz-icon nzType="check" style="font-size: 16px; color: rgb(0, 204, 34);" nzTheme="outline"></span>
+                
               </td>
               <td> 
                 <button (click)="showEditPaymentModal(data.ID,data.Titre,data.TypeDePaiement)" nz-button nzType="primary" class=" mb-5"  title="changertype">

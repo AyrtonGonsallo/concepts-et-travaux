@@ -211,7 +211,7 @@ export class AjouterCompteComponent {
     return this.validateForm.value.RoleId==14
   }
   isArtisanOrSousTraitant(){
-    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14
+    return this.validateForm.value.RoleId==2 || this.validateForm.value.RoleId==14 || this.validateForm.value.RoleId==17
   }
 
   isArtisan(){

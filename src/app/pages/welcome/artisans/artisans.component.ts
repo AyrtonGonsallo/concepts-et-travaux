@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
+import { CategorieArtisan } from '../../../Models/Categorie-Artisan';
 
 @Component({
   selector: 'app-artisans',
@@ -20,6 +21,11 @@ size: NzButtonSize = 'large';
       title: 'Id',
       compare: (a: Utilisateur, b: Utilisateur) => a.Id - b.Id,
       priority: 3
+    },
+    {
+      title: 'Catégorie d\'artisan',
+      compare: (a: Utilisateur, b: Utilisateur) => (a.CategorieArtisan??'').localeCompare(b.CategorieArtisan??''),
+      priority: 2
     },
     
     {
@@ -57,6 +63,7 @@ size: NzButtonSize = 'large';
   ngOnInit(): void {
     this.titleService.setTitle('Liste des comptes');
     this.loadUtilisateurs();
+    this.loadCategorieArtisans();
     this.authService.getUser().subscribe(
       (user) => {
         console.log('Utilisateur récupéré:', user);
@@ -84,6 +91,27 @@ uid=0
       });
       console.log("envoi de la requette get_utilisateurs",this.utilisateurs);
       
+  }
+
+  selectedCategorie: string | null = null;
+  categories_de_artisans:CategorieArtisan[] = [];
+  loadCategorieArtisans(): void {
+    this.userService.getCategoriesArtisan()
+      .subscribe((data: CategorieArtisan[]) => {
+        this.categories_de_artisans = data;
+        console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
+      });
+    console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
+  }
+
+  onCategorieChange() {
+    if (this.selectedCategorie != null) {
+      this.utilisateursFiltres = this.utilisateurs.filter(
+        a => a.CategorieArtisan === this.selectedCategorie
+      );
+    } else {
+      this.utilisateursFiltres = [...this.utilisateurs]; // tous les artisans
+    }
   }
 
  

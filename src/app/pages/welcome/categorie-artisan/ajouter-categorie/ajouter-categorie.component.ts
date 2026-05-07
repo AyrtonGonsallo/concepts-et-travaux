@@ -10,6 +10,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrl: './ajouter-categorie.component.css'
 })
 export class AjouterCategorieArtisanComponent {
+  
 validateForm: FormGroup<{
     Titre: FormControl<string>;
   }>;

@@ -10,6 +10,7 @@ export interface Paiement {
     Lien?: string;
     Montant: number;
     Date: string;
+    DatedePaiement?: string;
     Status:Boolean;
     ProjetID?: number; // Le point d'interrogation indique que la propriété est facultative
   }

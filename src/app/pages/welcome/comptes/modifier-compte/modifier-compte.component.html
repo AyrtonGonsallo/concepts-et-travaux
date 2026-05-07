@@ -243,6 +243,21 @@
             </nz-form-control>
         </nz-form-item>
 
+        <nz-form-item *ngIf="isfournisseur()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CategorieFournisseur"  >
+                <span>Catégorie de fournisseurs</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="CategorieFournisseur" formControlName="CategorieFournisseur">
+                    <nz-option
+                    *ngFor="let cat of categories_de_fournisseurs"
+                    [nzLabel]="cat.Titre"
+                    [nzValue]="cat.Titre"
+                    ></nz-option>
+                </nz-select>       
+            </nz-form-control>
+        </nz-form-item>
+
         
         
        

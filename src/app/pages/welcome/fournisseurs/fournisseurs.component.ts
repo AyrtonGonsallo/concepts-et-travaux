@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
+import { CategorieFournisseur } from '../../../Models/Categorie-Fournisseur';
 
 @Component({
   selector: 'app-fournisseurs',
@@ -22,6 +23,11 @@ export class FournisseursComponent {
       title: 'Id',
       compare: (a: Utilisateur, b: Utilisateur) => a.Id - b.Id,
       priority: 3
+    },
+      {
+      title: 'Catégorie de fournisseur',
+      compare: (a: Utilisateur, b: Utilisateur) => (a.CategorieFournisseur??'').localeCompare(b.CategorieFournisseur??''),
+      priority: 2
     },
     
     {
@@ -58,6 +64,7 @@ export class FournisseursComponent {
   ngOnInit(): void {
     this.titleService.setTitle('Liste des comptes');
     this.loadUtilisateurs();
+    this.loadCategorieFournisseurs();
     this.authService.getUser().subscribe(
       (user) => {
         console.log('Utilisateur récupéré:', user);
@@ -121,6 +128,28 @@ uid=0
     }
     
   }
+
+
+  selectedCategorie: string | null = null;
+    categories_de_fournisseurs:CategorieFournisseur[] = [];
+    loadCategorieFournisseurs(): void {
+      this.userService.getCategoriesFournisseur()
+        .subscribe((data: CategorieFournisseur[]) => {
+          this.categories_de_fournisseurs = data;
+          console.log("réponse de la requette get_categories_fournisseur",this.categories_de_fournisseurs);
+        });
+      console.log("envoi de la requette get_categories_fournisseur",this.categories_de_fournisseurs);
+    }
+  
+    onCategorieChange() {
+      if (this.selectedCategorie != null) {
+        this.utilisateursFiltres = this.utilisateurs.filter(
+          a => a.CategorieFournisseur === this.selectedCategorie
+        );
+      } else {
+        this.utilisateursFiltres = [...this.utilisateurs]; // tous les artisans
+      }
+    }
 
   onSearch(): void {
     const term = this.search_term.toLowerCase();

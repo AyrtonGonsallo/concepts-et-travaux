@@ -12,6 +12,8 @@ export interface Utilisateur {
     Telephone: string;
     AdressePostale: string;
     Activite?: string;
+    CategorieArtisan?: string;
+    CategorieFournisseur?: string;
     CA?: number;
     Effectif?: number;
     References?: string;
