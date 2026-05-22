@@ -478,6 +478,9 @@ export class ModifierDevisPieceComponent {
     this.devisService.updateDevisPiece(this.devispiece.ID,this.devispiece).subscribe((response) => {
         console.log("réponse de la requette update devis",response);
         this.message.success("tva mise à jour")
+        this.loadTva();
+        this.getDetails(this.devisId);
+
       },
       (error) => {
         console.error('Erreur lors de la recuperation des update devis :', error);

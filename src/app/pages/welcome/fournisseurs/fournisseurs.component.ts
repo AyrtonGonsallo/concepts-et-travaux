@@ -3,7 +3,6 @@ import { Utilisateur } from '../../../Models/Utilisateurs';
 import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
-import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
@@ -62,7 +61,7 @@ export class FournisseursComponent {
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Liste des comptes');
+    this.titleService.setTitle('Liste des fournisseurs');
     this.loadUtilisateurs();
     this.loadCategorieFournisseurs();
     this.authService.getUser().subscribe(
@@ -112,13 +111,13 @@ uid=0
       this.userService.deleteUser(userId).subscribe(
         () => {
           //console.log('Utilisateur supprimé avec succès');
-          this.message.success( 'Utilisateur supprimé avec succès');
+          this.message.success( 'Fournisseur supprimé avec succès');
           // Mettez ici le code pour actualiser la liste des utilisateurs si nécessaire
           this.loadUtilisateurs();
         },
         (error) => {
-          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+          console.error('Erreur lors de la suppression du fournisseur :', error);
+          this.message.error( 'Erreur lors de la suppression du fournisseur');
         }
       );
       return true
@@ -161,6 +160,16 @@ uid=0
       user.Telephone?.toLowerCase().includes(term) ||
       user.Role?.Titre?.toLowerCase().includes(term)
     );
+  }
+
+
+  capitalize(value: string): string {
+
+    if (!value) {
+      return '';
+    }
+
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 
   

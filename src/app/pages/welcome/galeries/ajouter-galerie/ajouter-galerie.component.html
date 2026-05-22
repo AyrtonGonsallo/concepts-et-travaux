@@ -7,7 +7,75 @@
             <input nz-input formControlName="titre" id="titre" />
         </nz-form-control>
         </nz-form-item>
-        
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="description">Description</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
+              
+              <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor"
+                  formControlName="description"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
+            </nz-form-control>
+          </nz-form-item>
+
+         <nz-form-item >
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="cover_image"  >
+              <span>Image de couverture</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+              <input type="text" id="cover_image" formControlName="cover_image" hidden />
+              <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
+              Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pieces"  >
+                <span>pieces</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="add_piece($event)">
+                    <div nz-row>
+                        <div nz-col nzSpan="8" *ngFor="let piece of pieces">
+                            <label nz-checkbox [nzValue]="piece.ID" >{{piece.Titre}}</label>
+                        </div>
+                    </div>
+                </nz-checkbox-wrapper>
+            </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="styles"  >
+                <span>styles</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                 <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="add_style($event)">
+                    <div nz-row>
+                        <div nz-col nzSpan="8" *ngFor="let style of styles">
+                            <label nz-checkbox [nzValue]="style.ID" >{{style.Titre}}</label>
+                        </div>
+                    </div>
+                </nz-checkbox-wrapper>
+            </nz-form-control>
+        </nz-form-item>
+
+
+         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
+                <span>Type</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-radio-group formControlName="type">
+                    <label nz-radio nzValue="Réalisation">Réalisation</label>
+                    <label nz-radio nzValue="Proposition">Proposition</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
      
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Images de la galerie</nz-form-label>

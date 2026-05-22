@@ -69,12 +69,12 @@ export class ModifierFournisseurComponent {
       console.log('submit', this.validateForm.value);
       this.userService.updateParticulier(this.userId,this.validateForm.value).subscribe(
         (response) => {
-          console.log('Utilisateur modifié avec succès :', response);
-          this.message.create('success', `Utilisateur modifié avec succès`);
+          console.log('Fournisseur modifié avec succès :', response);
+          this.message.create('success', `Fournisseur modifié avec succès`);
           this.router.navigate(['/administration/fournisseurs']);
         },
         (error) => {
-          console.error('Erreur lors de la modification de l\'utilisateur :', error);
+          console.error('Erreur lors de la modification du Fournisseur :', error);
         }
       );
     } else {
@@ -381,5 +381,14 @@ export class ModifierFournisseurComponent {
         console.error('Erreur lors de la recuperation des roles :', error);
       }
     );
+  }
+
+   capitalize(value: string): string {
+
+    if (!value) {
+      return '';
+    }
+
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 }

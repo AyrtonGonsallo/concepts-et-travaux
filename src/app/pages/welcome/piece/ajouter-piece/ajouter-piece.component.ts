@@ -137,13 +137,13 @@ export class AjouterPieceComponent {
       const formData = new FormData();
       const renamedFile = new File([file], uniqueFileName, { type: file.type });
       formData.append('file', renamedFile);
-    // Envoyer le fichier au serveur
-    this.userService.upload_file(formData).subscribe(response => {
-      console.log('Fichier téléchargé avec succès:', response);
-      // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
-    });
-      console.log(file);
-  }
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
   }
   ngOnInit(): void {
     this.loadGaleries();

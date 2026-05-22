@@ -146,7 +146,7 @@ export class ArtisanDetailsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'gammes_export.xlsx';  // Nom du fichier
+      a.download = 'taches_export.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -328,7 +328,7 @@ deleteTache(id: number) {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'gammes_export.xlsx';  // Nom du fichier
+      a.download = 'taches_export.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();

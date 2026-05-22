@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -7,22 +7,47 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { Galerie } from '../../../../Models/Galerie';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { environment } from '../../../../environments/environment';
+import { Style } from '../../../../Models/Style';
+import { Piece } from '../../../../Models/Piece';
 
 @Component({
   selector: 'app-modifier-galerie',
   templateUrl: './modifier-galerie.component.html',
   styleUrl: './modifier-galerie.component.css'
 })
-export class ModifierGalerieComponent {
+export class ModifierGalerieComponent implements OnInit{
   validateForm: FormGroup;
   url_images=environment.imagesUrl
   file_list: NzUploadFile[] = []; // Tableau pour stocker les fichiers sélectionnés
   size: NzButtonSize = 'large';
   constructor(private fb: FormBuilder,private route: ActivatedRoute,private msg:NzMessageService, private router: Router,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
-      Titre: ['', [Validators.required]],
-      images: [null, Validators.required] // Contrôle pour les fichiers, requis
+     titre: ['', [Validators.required]],
+      type: [null, [Validators.required]],
+      description: ['', []],
+      cover_image: ['', [Validators.required]],
+      pieces: [[], []],
+      styles: [[], []],
+      images: [null, Validators.required] 
     });
+  }
+
+
+  
+selectedPieces: number[] = [];
+selectedStyles: number[] = [];
+  add_piece(values: number[]) {
+    this.selectedPieces = values;
+    this.validateForm.get('pieces')?.setValue(values);
+    this.validateForm.get('pieces')?.markAsDirty();
+    this.validateForm.get('pieces')?.updateValueAndValidity();
+  }
+
+  add_style(values: number[]) {
+    this.selectedStyles = values;
+    this.validateForm.get('styles')?.setValue(values);
+    this.validateForm.get('styles')?.markAsDirty();
+    this.validateForm.get('styles')?.updateValueAndValidity();
   }
 
   slugify(text: string) {
@@ -56,7 +81,15 @@ export class ModifierGalerieComponent {
   submitForm(): void {
     console.log(this.file_list)
 
-    const titre = this.validateForm.controls['Titre'].value;
+    const titre = this.validateForm.controls['titre'].value;
+     const type = this.validateForm.controls['type'].value;
+    const description = this.validateForm.controls['description'].value;
+    const cover_image = this.validateForm.controls['cover_image'].value;
+    const pieces = this.validateForm.controls['pieces'].value;
+    const styles = this.validateForm.controls['styles'].value;
+
+
+
     const images = this.file_list.map(file => {
         const timestamp = Date.now();
         const uniqueFileName = this.slugify(`${timestamp}_${file.name}`) ;
@@ -87,18 +120,23 @@ export class ModifierGalerieComponent {
     // Construction de l'objet JSON final
     const galerieJson = {
       Titre: titre,
+      Type: type,
+      Description: description,
+      cover_image: cover_image,
+      pieces,
+      styles,
       Images: images
     };
 
     console.log('JSON à envoyer au serveur :', galerieJson);
-    this.userService.add_images_to_galerie(this.galerie.ID,galerieJson).subscribe(
+    this.userService.updateGalerie(this.galerie.ID,galerieJson).subscribe(
       (response) => {
-        console.log('galerie ajoutée avec succès :', response);
-        this.msg.create('success', `images ajoutées avec succès`);
+        console.log('galerie modifiée avec succès :', response);
+        this.msg.create('success', `galerie modifiée avec succès`);
         this.getGalerieDetails(this.galerieId);
       },
       (error) => {
-        console.error('Erreur lors de l\'ajout de la galerie :', error);
+        console.error('Erreur lors de la modification de la galerie :', error);
       }
     );
   }
@@ -129,17 +167,53 @@ export class ModifierGalerieComponent {
    
   }
 
-  // Méthode pour marquer tous les contrôles du formulaire comme dirty
-  private markFormControlsAsDirty(): void {
-    Object.values(this.validateForm.controls).forEach(control => {
-      control.markAsDirty();
-      control.updateValueAndValidity({ onlySelf: true });
-    });
+
+  
+  fileSizeError = false;
+  maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
+   file_cover_image: string="";
+   file_cover_preview: string="";
+  handleFileInput2(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+      
+    }else{
+      const timestamp = Date.now();
+      const uniqueFileName = this.slugify(`${timestamp}_${file.name}`);
+      if(uniqueFileName){
+        this.file_cover_image =  uniqueFileName;
+       this.file_cover_preview = this.url_images+uniqueFileName
+      }
+      
+    
+      // Mettre à jour la valeur de l'input
+      this.validateForm.patchValue({
+        cover_image: uniqueFileName
+      });
+      const formData = new FormData();
+      const renamedFile = new File([file], uniqueFileName, { type: file.type });
+      formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+        console.log(file);
+    }
   }
+
+  
   galerie:any
   galerieId:string =  this.route.snapshot.paramMap.get('id')??'0';
   ngOnInit(): void {
     this.getGalerieDetails(this.galerieId);
+    this.loadStyle()
+    this.loadPieces()
+    
   }
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getGalerieDetails(userId: string): void {
@@ -148,7 +222,21 @@ export class ModifierGalerieComponent {
         
         this.validateForm.patchValue(response);
         this.galerie=response
-        console.log("réponse de la requette get_galerie",this.galerie);
+        console.log("réponse de la requette get_galerie",response);
+        const pieceIds = response.Pieces.map((p:any) => p.id || p.ID);
+        const styleIds = response.Styles.map((s:any) => s.id || s.ID);
+        console.log("styleIds",styleIds)
+
+        this.file_cover_preview = this.url_images+this.galerie.cover_image
+
+        this.validateForm.patchValue({
+          titre: this.galerie.Titre,
+          type: this.galerie.Type,
+          description: this.galerie.Description,
+          pieces: pieceIds,
+          styles: styleIds
+        });
+
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details get_galerie :', error);
@@ -168,4 +256,26 @@ export class ModifierGalerieComponent {
       }
     );
   }
+
+
+
+    styles:Style[] = [];
+    loadStyle(): void {
+      this.userService.getStyles()
+        .subscribe((data: Style[]) => {
+          this.styles = data;
+          console.log("réponse de la requette get_styles",this.styles);
+        });
+    }
+  
+  
+    pieces:Piece[] = [];
+    loadPieces(): void {
+      this.userService.getPieces()
+        .subscribe((data: Piece[]) => {
+          this.pieces = data;
+          console.log("réponse de la requette get_categories_piece",this.pieces);
+        });
+        
+    }
 }

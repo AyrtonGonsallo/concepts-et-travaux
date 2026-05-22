@@ -82,11 +82,17 @@
         </li>
         <li nz-submenu [nzOpen]="false" nzTitle="Réalisations" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
           <ul>
+            <!--
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/realisations">Liste des realisations</a>
             </li>
+            -->
+            
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/galeries">Liste des galeries</a>
+            </li>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/styles">Liste des styles</a>
             </li>
           </ul>
         </li>

@@ -70,8 +70,8 @@ export class ModifierArtisanComponent {
       console.log('submit', this.validateForm.value);
       this.userService.updateParticulier(this.userId,this.validateForm.value).subscribe(
         (response) => {
-          console.log('Utilisateur modifié avec succès :', response);
-          this.message.create('success', `Utilisateur modifié avec succès`);
+          console.log('Artisan modifié avec succès :', response);
+          this.message.create('success', `Artisan modifié avec succès`);
           this.router.navigate(['/administration/artisans']);
         },
         (error) => {
@@ -382,5 +382,14 @@ export class ModifierArtisanComponent {
         console.error('Erreur lors de la recuperation des roles :', error);
       }
     );
+  }
+
+  capitalize(value: string): string {
+
+    if (!value) {
+      return '';
+    }
+
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 }

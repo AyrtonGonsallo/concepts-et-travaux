@@ -373,6 +373,11 @@ get_role(userId: number): Observable<any> {
   add_images_to_galerie(id:number,userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_images_to_galerie/${id}`, userData);
   }
+  
+  updateGalerie(id: number, data: any): Observable<any> {
+    const url = `${environment.apiUrl}/update_galerie/${id}`;
+    return this.http.put<any>(url, data);
+  }
 
   upload_file(userData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/upload`, userData);
@@ -914,5 +919,34 @@ deleteCategorieFournisseur(id: number): Observable<any> {
   const url = `${environment.apiUrl}/delete_categorie_fournisseur/${id}`;
   return this.http.delete<any>(url);
 }
+
+
+  // Create
+  addStyle(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/ajouter_style`, data);
+  }
+
+  // Read all
+  getStyles(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/get_all_styles`);
+  }
+
+  // Read one
+  getStyleById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_style/${id}`);
+  }
+
+  // Update
+  updateStyle(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/update_style/${id}`, data);
+  }
+
+   deleteStyle(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/delete_style/${id}`);
+  }
+
+
+
+
 }
 

@@ -227,7 +227,7 @@
                 <nz-select id="CategorieArtisan" formControlName="CategorieArtisan">
                     <nz-option
                     *ngFor="let cat of categories_de_artisans"
-                    [nzLabel]="cat.Titre"
+                     [nzLabel]="capitalize(cat.Titre)"
                     [nzValue]="cat.Titre"
                     ></nz-option>
                 </nz-select>       

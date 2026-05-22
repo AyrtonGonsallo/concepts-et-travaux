@@ -15,14 +15,86 @@
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
        
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Titre">Titre de la galerie</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
-                <input nz-input formControlName="Titre" id="Titre" />
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
+            <input nz-input formControlName="titre" id="titre" />
+        </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="description">Description</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
+              
+              <editor apiKey="8td5ul2wc26xra2v25z7of2e63hg8gg3cf1f7egl0nj288h8"
+                  id="tiny-editor"
+                  formControlName="description"
+                  [init]="{
+                    plugins: 'link image code',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                  }"
+                ></editor>
             </nz-form-control>
-            </nz-form-item>
+          </nz-form-item>
+
+         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="6" nzRequired nzFor="cover_image"  >
+                <span>Image de couverture</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="12" [nzXs]="12" nzErrorTip="remplissez ce champ">
+                <input type="text" id="cover_image" formControlName="cover_image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB    
+                <br> 
+                <a [href]="file_cover_preview" target="_blank">Voir l'image actuelle</a>
+            </nz-form-control>
+            
+        </nz-form-item>
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pieces"  >
+                <span>pieces</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="add_piece($event)">
+                    <div nz-row>
+                        <div nz-col nzSpan="8" *ngFor="let piece of pieces">
+                            <label nz-checkbox [nzChecked]="validateForm.value.pieces?.includes(piece.ID)" [nzValue]="piece.ID" >{{piece.Titre}}</label>
+                        </div>
+                    </div>
+                </nz-checkbox-wrapper>
+            </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="styles"  >
+                <span>styles</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                 <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="add_style($event)">
+                    <div nz-row>
+                        <div nz-col nzSpan="8" *ngFor="let style of styles">
+                            <label nz-checkbox [nzChecked]="validateForm.value.styles?.includes(style.ID)" [nzValue]="style.ID" >{{style.Titre}}</label>
+                        </div>
+                    </div>
+                </nz-checkbox-wrapper>
+            </nz-form-control>
+        </nz-form-item>
+
+
+         <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
+                <span>Type</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-radio-group formControlName="type">
+                    <label nz-radio nzValue="Réalisation">Réalisation</label>
+                    <label nz-radio nzValue="Proposition">Proposition</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
      
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Ajouter des images</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="images">Images de la galerie</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
                 <nz-upload
                     nzType="drag"
@@ -42,7 +114,7 @@
         
         <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button nz-button nzType="primary">Ajouter</button>
+            <button nz-button nzType="primary">Modifier</button>
         </nz-form-control>
         </nz-form-item>
     </form>

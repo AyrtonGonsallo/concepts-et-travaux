@@ -1,6 +1,6 @@
 <div>
     <h2>Liste des artisans</h2>    
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'comptes', 'ajouter-compte']">Ajouter un artisan</button>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'artisans', 'ajouter-artisan']">Ajouter un artisan</button>
 
     <div nz-row>
       
@@ -21,7 +21,7 @@
               ></nz-option>
               <nz-option
                 *ngFor="let cat of categories_de_artisans"
-                [nzLabel]="cat.Titre"
+                [nzLabel]="capitalize(cat.Titre)"
                 [nzValue]="cat.Titre"
               ></nz-option>
             </nz-select>
@@ -61,9 +61,9 @@
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Telephone }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Role?.Titre }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)"> 
-               <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'artisans', 'modifier-artisan',data.Id]"><span nz-icon nzType="edit"></span></button>
+               <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier les infos" [routerLink]="['/administration', 'artisans', 'modifier-artisan',data.Id]"><span nz-icon nzType="edit"></span></button>
 
-              <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier" [routerLink]="['/administration', 'artisans', 'details',data.Id]"><span nz-icon nzType="eye"></span></button>
+              <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="ajouter des tarifs" [routerLink]="['/administration', 'artisans', 'details',data.Id]"><span nz-icon nzType="euro"></span></button>
               <button nz-button nzType="primary" class="negative-action mlr-5" [nzSize]="size" title="supprimer"  nz-popconfirm
               nzPopconfirmTitle="Are you sure delete this account?"
               nzPopconfirmPlacement="bottom"

@@ -3,7 +3,6 @@ import { Utilisateur } from '../../../Models/Utilisateurs';
 import { HttpClient } from '@angular/common/http';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
-import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
@@ -61,7 +60,7 @@ size: NzButtonSize = 'large';
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Liste des comptes');
+    this.titleService.setTitle('Liste des artisans');
     this.loadUtilisateurs();
     this.loadCategorieArtisans();
     this.authService.getUser().subscribe(
@@ -161,6 +160,16 @@ search_term=''
       user.Telephone?.toLowerCase().includes(term) ||
       user.Role?.Titre?.toLowerCase().includes(term)
     );
+  }
+
+
+  capitalize(value: string): string {
+
+    if (!value) {
+      return '';
+    }
+
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
   
 }
