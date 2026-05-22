@@ -28,7 +28,8 @@ size: NzButtonSize = 'large';
       priority: 2
     }
   ];
-  categories_de_artisans:CategorieFournisseur[] = [];
+  filtered:CategorieFournisseur[] = [];
+  categories_de_fournisseurs:CategorieFournisseur[] = [];
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
@@ -40,10 +41,11 @@ size: NzButtonSize = 'large';
   loadCategorieFournisseurs(): void {
     this.userService.getCategoriesFournisseur()
       .subscribe((data: CategorieFournisseur[]) => {
-        this.categories_de_artisans = data;
-        console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
+        this.categories_de_fournisseurs = data;
+         this.filtered = data;
+        console.log("réponse de la requette get_categories_artisan",this.categories_de_fournisseurs);
       });
-      console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
+      console.log("envoi de la requette get_categories_artisan",this.categories_de_fournisseurs);
       
   }
   isAdminOrHim(id:number){
@@ -76,5 +78,14 @@ size: NzButtonSize = 'large';
       return false;
     }
     
+  }
+
+  search_term=''
+  onSearch(): void {
+    const term = this.search_term.toLowerCase();
+
+    this.filtered = this.categories_de_fournisseurs.filter(cat =>
+      cat.Titre.toLowerCase().includes(term) 
+    );
   }
 }

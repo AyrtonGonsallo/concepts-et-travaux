@@ -114,6 +114,8 @@ import { ArtisanDetailsComponent } from './artisans/artisan-details/artisan-deta
 import { CategorieFournisseurComponent } from './categorie-fournisseur/categorie-fournisseur.component';
 import { AjouterCategorieFournisseurComponent } from './categorie-fournisseur/ajouter-categorie/ajouter-categorie.component';
 import { ModifierCategorieFournisseurComponent } from './categorie-fournisseur/modifier-categorie/modifier-categorie.component';
+import { ModifierArtisanComponent } from './artisans/modifier-artisan/modifier-artisan.component';
+import { ModifierFournisseurComponent } from './fournisseurs/modifier-fournisseur/modifier-fournisseur.component';
 
 const routes: Routes = [
  
@@ -245,11 +247,13 @@ const routes: Routes = [
 
       { path: 'fournisseurs', component: FournisseursComponent },
       { path: 'fournisseurs/details/:id', component: FournisseurDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      
+      { path: 'fournisseurs/modifier-fournisseur/:id', component: ModifierFournisseurComponent }, // Nouvelle route pour ajouter un compte avec un ID
+
 
       { path: 'artisans', component: ArtisansComponent },
       { path: 'artisans/details/:id', component: ArtisanDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
-      
+      { path: 'artisans/modifier-artisan/:id', component: ModifierArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
+
       // Autres routes de la page d'accueil
     ]
   }

@@ -28,6 +28,7 @@ export class CategorieArtisanComponent {
     }
   ];
   categories_de_artisans:CategorieArtisan[] = [];
+  filtered:CategorieArtisan[] = [];
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
@@ -40,6 +41,7 @@ export class CategorieArtisanComponent {
     this.userService.getCategoriesArtisan()
       .subscribe((data: CategorieArtisan[]) => {
         this.categories_de_artisans = data;
+        this.filtered = data;
         console.log("réponse de la requette get_categories_artisan",this.categories_de_artisans);
       });
       console.log("envoi de la requette get_categories_artisan",this.categories_de_artisans);
@@ -75,5 +77,15 @@ export class CategorieArtisanComponent {
       return false;
     }
     
+  }
+
+  
+search_term=''
+  onSearch(): void {
+    const term = this.search_term.toLowerCase();
+
+    this.filtered = this.categories_de_artisans.filter(cat =>
+      cat.Titre.toLowerCase().includes(term) 
+    );
   }
 }
