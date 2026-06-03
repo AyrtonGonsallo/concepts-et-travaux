@@ -71,7 +71,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="RaisonSociale"  >
                     <span>Raison sociale</span>
                 </nz-form-label>
@@ -80,7 +80,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()"> 
+            <nz-form-item > 
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NumeroSIRET"  >
                     <span>Numero SIRET</span>
                 </nz-form-label>
@@ -89,7 +89,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanorParticulier()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="AdressePostale"  nzRequired>
                     <span>Adresse</span>
                 </nz-form-label>
@@ -116,7 +116,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Activite"  >
                     <span>Activite</span>
                 </nz-form-label>
@@ -125,7 +125,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CA"  >
                     <span>CA</span>
                 </nz-form-label>
@@ -134,7 +134,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Effectif"  >
                     <span>Effectif</span>
                 </nz-form-label>
@@ -144,7 +144,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="References"  >
                     <span>References</span>
                 </nz-form-label>
@@ -202,7 +202,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
+            <nz-form-item >
                 <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="KBis"  >
                     <span>KBis</span>
                 </nz-form-label>
@@ -213,20 +213,7 @@
                 </nz-form-control>
             </nz-form-item>
     
-            <nz-form-item *ngIf="isArtisanOrSousTraitant()">
-                <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="CategorieArtisan"  >
-                    <span>Catégorie d'artisan</span>
-                </nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                    <nz-select id="CategorieArtisan" formControlName="CategorieArtisan">
-                        <nz-option
-                        *ngFor="let cat of categories_de_artisans"
-                         [nzLabel]="capitalize(cat.Titre)"
-                        [nzValue]="cat.Titre"
-                        ></nz-option>
-                    </nz-select>       
-                </nz-form-control>
-            </nz-form-item>
+            
             
            
     

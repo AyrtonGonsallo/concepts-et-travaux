@@ -49,11 +49,6 @@ export class FournisseursComponent {
       compare: (a: Utilisateur, b: Utilisateur) => a.Telephone.localeCompare(b.Telephone),
       priority: 1
     },
-    {
-      title: 'Rôle',
-      compare: (a: Utilisateur, b: Utilisateur) => (a.Role?.Titre  ?? '' ).localeCompare(b.Role?.Titre  ?? '' ),
-      priority: 1
-    }
   ];
   utilisateurs:Utilisateur[] = [];
   utilisateursFiltres: Utilisateur[] = [];

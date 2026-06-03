@@ -56,7 +56,6 @@
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Prenom }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Email }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Telephone }}</td>
-            <td *ngIf="isHimOrSuperAdmin(data.Id)">{{ data.Role?.Titre }}</td>
             <td *ngIf="isHimOrSuperAdmin(data.Id)"> 
               <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.Id)" [nzSize]="size" title="modifier les infos" [routerLink]="['/administration', 'fournisseurs', 'modifier-fournisseur',data.Id]"><span nz-icon nzType="edit"></span></button>
 
