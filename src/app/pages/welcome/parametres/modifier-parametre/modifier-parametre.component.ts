@@ -15,6 +15,7 @@ export class ModifierParametreComponent {
   validateForm: FormGroup<{
     Nom: FormControl<string>;
   Valeur: FormControl<number>;
+  ValeurTexte: FormControl<string>;
   Type: FormControl<string>;
   }>;
  
@@ -50,9 +51,37 @@ export class ModifierParametreComponent {
   constructor(private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       Nom: ['', [Validators.required]],
-      Valeur: [0, [Validators.required]],
+      Valeur: [0, []],
+      ValeurTexte: ['', []],
        Type: ['', [Validators.required]],
     });
+
+    this.validateForm.get('Type')?.valueChanges.subscribe(type => {
+
+          const valeur = this.validateForm.get('Valeur');
+          const valeurTexte = this.validateForm.get('ValeurTexte');
+
+          if (type === 'email_alerte') {
+
+            valeur?.clearValidators();
+
+            valeurTexte?.setValidators([
+              Validators.required,
+              Validators.email
+            ]);
+
+          } else {
+
+            valeur?.setValidators([
+              Validators.required
+            ]);
+
+            valeurTexte?.clearValidators();
+          }
+
+          valeur?.updateValueAndValidity();
+          valeurTexte?.updateValueAndValidity();
+        });
   }
 
   parametre:any
@@ -66,6 +95,34 @@ export class ModifierParametreComponent {
         
         this.validateForm.patchValue(response);
         console.log("réponse de la requette getdetails",response);
+
+       
+
+          const valeur = this.validateForm.get('Valeur');
+          const valeurTexte = this.validateForm.get('ValeurTexte');
+
+          if (response.type === 'email_alerte') {
+
+            valeur?.clearValidators();
+
+            valeurTexte?.setValidators([
+              Validators.required,
+              Validators.email
+            ]);
+
+          } else {
+
+            valeur?.setValidators([
+              Validators.required
+            ]);
+
+            valeurTexte?.clearValidators();
+          }
+
+          valeur?.updateValueAndValidity();
+          valeurTexte?.updateValueAndValidity();
+      
+        
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);

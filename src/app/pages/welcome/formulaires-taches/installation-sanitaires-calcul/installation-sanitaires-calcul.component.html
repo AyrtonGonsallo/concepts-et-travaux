@@ -8,8 +8,16 @@
             <div formArrayName="appareils_salle_de_bain_form" class="">
                 <div *ngFor="let appareilGroup of appareils_salle_de_bain; let i = index" [formGroupName]="i">
                   
-                   <div class="div-chauf-gm"><h3 class="ttl-type jaune">{{appareils_salle_de_bain && appareils_salle_de_bain[i] ? appareils_salle_de_bain[i].Titre : ""}}</h3></div> 
-                        <div class="flex-2">
+
+                    <div class="mur-btn-div tooltip-srf" *ngIf="appareils_salle_de_bain_form.value[i].active">
+                        <span  class="mur-ttl">
+                            {{appareils_salle_de_bain && appareils_salle_de_bain[i] ? appareils_salle_de_bain[i].Titre : ""}}
+                        </span>
+                    </div>
+
+
+                        <div class="flex-2" *ngIf="appareils_salle_de_bain_form.value[i].active">
+                            
                             <div>
                                 <div *ngIf="appareils_salle_de_bain[i].AfficherLongueur" class="flx-radio-row2">
                                     <label for="longueur">Longueur (cm) :</label>
@@ -38,14 +46,82 @@
                                 </div>
                                 <nz-radio-group formControlName="modele" class="">
                                     <div nz-col nzJustify="start" *ngFor="let modele of appareilGroup.Modeles">
-                                        <div nz-col class="">
+                                        <div>
                                             <label nz-radio [nzValue]="modele.ID + ':' + modele.Titre + ':' + modele.Prix">
                                             <span>
                                                 {{modele.Titre}}
                                             </span>
                                             </label>
                                         </div>
-                                        
+                                    </div>
+                                    <div nz-col nzJustify="start">
+                                        <div>
+                                            <label nz-radio nzValue="">
+                                            <span>
+                                                Aucun
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </nz-radio-group>
+                            </div>
+
+
+
+
+                            <!--prix coûtant-->
+                            <span  class="mur-ttl">
+                                Prix coûtant {{appareils_salle_de_bain && appareils_salle_de_bain[i] ? appareils_salle_de_bain[i].Titre : ""}}
+                            </span>
+                            
+                            <div class="flx-radio-row2">
+                                <div class="">
+                                    <label class=""> Artisan :</label>  
+                                </div>
+                                <nz-radio-group formControlName="artisan_pose" class="">
+                                    <div nz-col nzJustify="start" *ngFor="let option of artisans_pose[i]">
+                                        <div>
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
+                                            <span>
+                                                {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div nz-col nzJustify="start">
+                                        <div>
+                                            <label nz-radio nzValue="">
+                                            <span>
+                                                Aucun
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </nz-radio-group>
+                            </div>
+
+                            <div class="flx-radio-row2">
+                                <div class="">
+                                    <label class=""> Fournisseur :</label>  
+                                </div>
+                                <nz-radio-group formControlName="fournisseur_pose" class="">
+                                    <div nz-col nzJustify="start" *ngFor="let option of fournisseurs_pose[i]">
+                                        <div>
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
+                                            <span>
+                                                {{option.Titre}} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div nz-col nzJustify="start">
+                                        <div>
+                                            <label nz-radio nzValue="">
+                                            <span>
+                                                Aucun
+                                            </span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </nz-radio-group>
                             </div>
@@ -63,21 +139,49 @@
                 </span>
             </div>
 
-              <div formArrayName="gammes_depose_form">
-                <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i" class="flx-radio-row2">
-                    <div >
-                        <strong>
-                          {{ gamme.get('titre')?.value }}
-                        </strong>
-                      </div>
-                      <input type="number" formControlName="quantite" placeholder="Quantité" />
-                        
+            <div formArrayName="gammes_depose_form">
+                <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i" >
+               
+                    <div *ngIf="gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
+                        <div>
+                            <strong>
+                                {{ gamme.get('titre')?.value }}
+                            </strong>
+                        </div>
+                        <input type="number" formControlName="quantite" placeholder="Quantité"/>
+                    </div>
+
+                    <div *ngIf="gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
+                        <div class="">
+                            <label class=""> Artisan :</label>  
+                        </div>
+                        <nz-radio-group formControlName="artisan_depose" class="">
+                            <div nz-col nzJustify="start" *ngFor="let option of artisans_depose[i]">
+                                <div>
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                    <span>
+                                        {{option.Label}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                    </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div nz-col nzJustify="start">
+                                <div>
+                                    <label nz-radio nzValue="">
+                                    <span>
+                                        Aucun
+                                    </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </nz-radio-group>
+                    </div>
                      
                   
                   
                   
                 </div>
-              </div>
+            </div>
               
            
               
@@ -94,12 +198,26 @@
             </div>
               
               <ng-container *ngIf="detailsCalcul">
-                  <div>
-                    <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-                    <span>Formule: </span><br>
-                    <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
-                  </div>
-              </ng-container>
+               <div>
+                 <div class="mur-btn-div tooltip-srf">
+                    <span  class="mur-ttl">
+                        Prix facturé
+                    </span>
+                </div>
+                 <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                 <span>Formule: </span><br>
+                 <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+                  <div class="mur-btn-div tooltip-srf">
+                    <span  class="mur-ttl">
+                        Prix coûtant
+                    </span>
+                </div>
+                <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+                <span>Formule: </span><br>
+                <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+               </div>
+           </ng-container>
               
             </form>
             

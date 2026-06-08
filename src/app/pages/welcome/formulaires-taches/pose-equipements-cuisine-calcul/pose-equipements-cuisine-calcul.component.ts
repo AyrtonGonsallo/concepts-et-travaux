@@ -60,12 +60,16 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
                 quantite: [gamme.quantite],
                 titre: [gamme.titre],
                 prix: [gamme.prix],
+                id: [gamme.id],
+                artisan_depose:[gamme.artisan_depose??'']
               });
             })
           )
         });
         
         
+
+        this.load_artisans_fournisseurs()
         
         
        // this.validateForm.patchValue(response);
@@ -112,6 +116,8 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           let active=false
           let longueur=0
           let largeur=0
+           let artisan_pose=""
+          let fournisseur_pose=""
           let nombre_de_vasque=0
           let encastre_ou_apparente=false
           if(this.donnees["gammes-produits-pose-elementcuisines"]){
@@ -122,6 +128,8 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
             largeur=form?.appareils_cuisine[i]?.largeur
             nombre_de_vasque=form?.appareils_cuisine[i]?.nombre_de_vasque
             encastre_ou_apparente=form?.appareils_cuisine[i]?.encastre_ou_apparente
+            artisan_pose=form?.appareils_cuisine[i]?.artisan_pose
+            fournisseur_pose=form?.appareils_cuisine[i]?.fournisseur_pose
             
           }
         
@@ -134,6 +142,8 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           appareilGroup.addControl("encastre_ou_apparente", this.fb.control(encastre_ou_apparente, ));
           appareilGroup.addControl("active", this.fb.control(active, ));
           appareilGroup.addControl("modele", this.fb.control(modele, ));
+          appareilGroup.addControl("artisan_pose", this.fb.control(artisan_pose, ));
+          appareilGroup.addControl("fournisseur_pose", this.fb.control(fournisseur_pose, ));
          
 
           // Obtenez les contrôles pour pouvoir les manipuler
@@ -184,6 +194,82 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
 
 
   }
+
+
+
+
+  
+
+artisans_depose:any[] = []
+artisans_pose:any[] = []
+fournisseurs_pose:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form.map((gamme:any, i:number) => {
+    let ref_id=(gamme.id);
+    let qte=gamme.quantite;
+    if(1==1){
+
+       this.userService.getArtisansFournisseursElementsByGammeReference(ref_id,'artisan').subscribe(
+        (response: any) => {
+          //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
+          this.artisans_depose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des artisans_depose :', error);
+        }
+      );
+    }
+  });
+
+   this.donnees["gammes-produits-pose-elementcuisines"].appareils_cuisine.map((appareil:any, i:number) => {
+
+   
+    let ref_id=(appareil.modele)?parseInt(appareil.modele.split(":")[0]):0;
+    let active=appareil.active;
+    if(1==1){
+
+      this.userService.getArtisansFournisseursModelesByReference(ref_id,'artisan').subscribe(
+        (response: any) => {
+         // console.log('recuperation des artisans_pose:',ref_id,'artisan', response);
+          this.artisans_pose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des artisans_pose :', error);
+        }
+      );
+
+      this.userService.getArtisansFournisseursModelesByReference(ref_id,'fournisseur').subscribe(
+        (response: any) => {
+        //  console.log('recuperation des fournisseurs_pose:',ref_id,'fournisseur', response);
+          this.fournisseurs_pose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+        }
+      );
+    }
+  });
+
+  setTimeout(() => {
+    console.log('total artisans_depose:', this.artisans_depose);
+    console.log('total artisans_pose:', this.artisans_pose);
+    console.log('total fournisseurs_pose:', this.fournisseurs_pose);
+  }, 4000);
+  
+}
+
+
+
+
+
+
+
+
+
   modifier(){
     const gammes_depose_form = this.formulaire.value.gammes_depose_form;
     const appareils_cuisine_form = this.formulaire.value.appareils_cuisine_form;
@@ -216,6 +302,16 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
         this.detailsCalcul.resultats[this.element.TravailSlug] = {
           ...this.detailsCalcul.resultats[this.element.TravailSlug],
           formule: formule
+        };
+      }
+      let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
         };
       }
       const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
@@ -285,6 +381,16 @@ submit() {
         formule: formule
       };
     }
+    let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
 
     console.log("Prix reçu :", this.detailsCalcul);
 

@@ -43,3 +43,8 @@ legend{
 .filter-select{
     width: 350px;
 }
+@media (max-width:1450px) {
+    .filter-container {
+        flex-direction: column;
+    }
+}

@@ -121,6 +121,8 @@ import { AjouterFournisseurComponent } from './fournisseurs/ajouter-fournisseur/
 import { StylesComponent } from './styles/styles.component';
 import { ModifierStyleComponent } from './styles/modifier-style/modifier-style.component';
 import { AjouterStyleComponent } from './styles/ajouter-style/ajouter-style.component';
+import { ModifierEquipementsTacheComponent } from './gamme/modifier-equipements-tache/modifier-equipements-tache.component';
+import { AjouterEquipementsTacheComponent } from './gamme/ajouter-equipements-tache/ajouter-equipements-tache.component';
 
 const routes: Routes = [
  
@@ -170,6 +172,9 @@ const routes: Routes = [
       { path: 'parametres/modifier-tva/:id', component: ModifierTvaComponent },
       { path: 'equipements', component: EquipementsComponent },
       { path: 'equipements-taches', component: EquipementsTachesComponent },
+      { path: 'equipements-taches/modifier-equipements-tache/:id', component: ModifierEquipementsTacheComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'equipements-taches/ajouter-equipements-tache', component: AjouterEquipementsTacheComponent }, // Nouvelle route pour ajouter un compte avec un ID
+    
       { path: 'formules-et-tests', component: TestsFormulesComponent },
       { path: 'formules-et-tests/tester-revetements-muraux/:id', component: PoseDeRevetementsMurauxCalculComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'formules-et-tests/revetements-muraux', component: PoseDeRevetementsMurauxListeComponent }, // Nouvelle route pour ajouter un compte avec un ID

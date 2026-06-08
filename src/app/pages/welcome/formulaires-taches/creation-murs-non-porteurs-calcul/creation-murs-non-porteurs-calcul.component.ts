@@ -57,6 +57,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
                 longueur: [mur.longueur],
                 hauteur: [mur.hauteur],
                 epaisseur: [mur.epaisseur],
+                artisan_pose:[mur.artisan_pose],
               });
             })
           ),
@@ -71,6 +72,8 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
           has_portes: [this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].has_portes || false]
         });
         
+
+        this.load_artisans_fournisseurs()
         
         
        // this.validateForm.patchValue(response);
@@ -151,6 +154,33 @@ load_gammes(){
 }
 
 
+
+
+
+artisans_pose:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs.map((mur:any, i:number) => {
+    let rev_a_poser_id=parseInt(mur.epaisseur.split(":")[0]);
+    
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
+        this.artisans_pose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_pose :', error);
+      }
+    );
+
+  });
+}
+
+
 submit(){
   console.log(this.formulaire.value);
 
@@ -173,6 +203,7 @@ submit(){
   this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
     this.detailsCalcul = result
     let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+    let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
 
     // Si formule existe, on remplace les \n par des <br>
     if (formule) {
@@ -184,6 +215,15 @@ submit(){
         formule: formule
       };
     }
+    if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
     console.log("Prix reçu :", this.detailsCalcul);
     
   }).catch((error) => {
@@ -219,6 +259,16 @@ modifier(){
       this.detailsCalcul.resultats[this.element.TravailSlug] = {
         ...this.detailsCalcul.resultats[this.element.TravailSlug],
         formule: formule
+      };
+    }
+    let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+    if (formule_marge) {
+      formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+      // On réinjecte la formule_marge modifiée dans l'objet
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule_marge: formule_marge
       };
     }
     const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);

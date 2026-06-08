@@ -46,6 +46,7 @@ export class PoseDeRevetementsMurauxCalculComponent {
     this.load_gammes()
     this.load_etats()
     this.load_historiques()
+    
   }
 
   getDetails(id: number): void {
@@ -62,11 +63,18 @@ export class PoseDeRevetementsMurauxCalculComponent {
               depose: mur.depose,
               etat: this.donnees["etat-surfaces-pose-murs"].murs[i].etat,
               gamme: this.donnees["gammes-produits-pose-murs"].murs[i].gamme,
+              artisan_depose:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_depose)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_depose:"",
+              artisan_surfaces:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_surfaces)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_surfaces:"",
+              artisan_pose:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_pose)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_pose:"",
+              fournisseur_pose:(this.donnees["gammes-produits-pose-murs"].murs[i].fournisseur_pose)?this.donnees["gammes-produits-pose-murs"].murs[i].fournisseur_pose:"",
+              
             });
           }))
         });
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
+
+        this.load_artisans_fournisseurs()
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);
@@ -195,11 +203,69 @@ load_etats(){
 }
 
 
+artisans_depose:any[] = []
+artisans_surfaces:any[] = []
+artisans_pose:any[] = []
+fournisseurs_pose:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["dimensions-pose-murs"].murs.map((mur:any, i:number) => {
+    let rev_a_poser_id=parseInt(this.donnees["gammes-produits-pose-murs"].murs[i].gamme.split(":")[0]);
+    let etat_id=parseInt(this.donnees["etat-surfaces-pose-murs"].murs[i].etat.split("-")[0]);
+    let rev_a_deposer_id=parseInt(mur.depose.split(":")[0]);
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_deposer_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_depose:', response);
+        this.artisans_depose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_depose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(etat_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_surfaces:', response);
+        this.artisans_surfaces[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_surfaces :', error);
+      }
+    );
+
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
+        this.artisans_pose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_pose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_pose:', response);
+        this.fournisseurs_pose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+      }
+    );
+  });
+}
+
+
   submit(){
     console.log(this.formulaire.value)
     const mursFormArray = this.formulaire.value.murs;
     this.devisTache.Donnees = {
-       "nomtache":this.devisTache.TravailSlug,
+      "nomtache":this.devisTache.TravailSlug,
       "idtache":this.devisTache.TravailID,
       "dimensions-pose-murs": {
         murs: mursFormArray.map((mur: any) => ({
@@ -220,7 +286,11 @@ load_etats(){
           carrelage: 0,
           papier: 0,
           enduit: 0,
-          peinture: 0
+          peinture: 0,
+          artisan_depose:mur.artisan_depose,
+          artisan_surfaces:mur.artisan_surfaces,
+          artisan_pose:mur.artisan_pose,
+          fournisseur_pose:mur.fournisseur_pose,
         }))
       }
     };
@@ -228,6 +298,7 @@ load_etats(){
     this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
       this.detailsCalcul = result
       let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+      let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
 
       // Si formule existe, on remplace les \n par des <br>
       if (formule) {
@@ -237,6 +308,15 @@ load_etats(){
         this.detailsCalcul.resultats[this.element.TravailSlug] = {
           ...this.detailsCalcul.resultats[this.element.TravailSlug],
           formule: formule
+        };
+      }
+      if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
         };
       }
       console.log("Prix reçu :", this.detailsCalcul);
@@ -269,6 +349,10 @@ load_etats(){
       "gammes-produits-pose-murs": {
         murs: mursFormArray.map((mur: any) => ({
           gamme: mur.gamme,
+          artisan_depose:mur.artisan_depose,
+          artisan_surfaces:mur.artisan_surfaces,
+          artisan_pose:mur.artisan_pose,
+          fournisseur_pose:mur.fournisseur_pose,
           carrelage: 0,
           papier: 0,
           enduit: 0,
@@ -282,11 +366,21 @@ load_etats(){
     this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
       this.detailsCalcul = result;
       let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+      let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
       if (formule) {
         formule = formule.replace(/\n/g, '<br>');
         this.detailsCalcul.resultats[this.element.TravailSlug] = {
           ...this.detailsCalcul.resultats[this.element.TravailSlug],
           formule: formule
+        };
+      }
+      if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
         };
       }
       const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);

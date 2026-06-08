@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../../Models/Travail';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
-import e from 'cors';
 export interface Type {
   slug: string;
   label: string;

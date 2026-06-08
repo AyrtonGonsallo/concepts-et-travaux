@@ -14,6 +14,7 @@ export class AjouterParametreComponent {
 validateForm: FormGroup<{
   Nom: FormControl<string>;
   Valeur: FormControl<number>;
+  ValeurTexte: FormControl<string>;
   Type: FormControl<string>;
 }>;
 
@@ -48,9 +49,37 @@ constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsE
   this.validateForm = this.fb.group({
    
     Nom: ['', [Validators.required]],
-    Valeur: [0, [Validators.required]],
+    Valeur: [0, []],
+    ValeurTexte: ['', []],
     Type: ['', [Validators.required]],
     
+  });
+
+  this.validateForm.get('Type')?.valueChanges.subscribe(type => {
+
+    const valeur = this.validateForm.get('Valeur');
+    const valeurTexte = this.validateForm.get('ValeurTexte');
+
+    if (type === 'email_alerte') {
+
+      valeur?.clearValidators();
+
+      valeurTexte?.setValidators([
+        Validators.required,
+        Validators.email
+      ]);
+
+    } else {
+
+      valeur?.setValidators([
+        Validators.required
+      ]);
+
+      valeurTexte?.clearValidators();
+    }
+
+    valeur?.updateValueAndValidity();
+    valeurTexte?.updateValueAndValidity();
   });
 }
 

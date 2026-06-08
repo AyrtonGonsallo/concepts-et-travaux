@@ -105,6 +105,104 @@
                         </div>
                         
                       </div>
+
+
+
+
+                      <!--prix coûtant-->
+                
+                      <div class="mur-btn-div tooltip-srf">
+                          <span  class="mur-ttl">
+                              Prix coûtant
+                          </span>
+                      </div>
+                      
+
+                      <nz-radio-group formControlName="artisan_pose">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Artisan porte :</label>
+                          <div>
+                              <div *ngFor="let option of artisans_pose[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+
+                      <nz-radio-group formControlName="fournisseur_pose">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Fournisseur porte:</label>
+                          <div>
+                              <div *ngFor="let option of fournisseurs_pose[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+
+
+                      <nz-radio-group formControlName="artisan_nature">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Artisan nature porte :</label>
+                          <div>
+                              <div *ngFor="let option of artisans_nature[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+
+                      <nz-radio-group formControlName="fournisseur_nature">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Fournisseur nature porte:</label>
+                          <div>
+                              <div *ngFor="let option of fournisseurs_nature[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+
+
+                      <nz-radio-group formControlName="artisan_type">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Artisan type porte :</label>
+                          <div>
+                              <div *ngFor="let option of artisans_type[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+
+                      <nz-radio-group formControlName="fournisseur_type">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Fournisseur type porte:</label>
+                          <div>
+                              <div *ngFor="let option of fournisseurs_type[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
                 
             
                     
@@ -119,11 +217,25 @@
 </div>
   
   <ng-container *ngIf="detailsCalcul">
-      <div>
-        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-        <span>Formule: </span><br>
-        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
-      </div>
+    <div>
+      <div class="mur-btn-div tooltip-srf">
+        <span  class="mur-ttl">
+            Prix facturé
+        </span>
+    </div>
+      <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+      <span>Formule: </span><br>
+      <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+      <div class="mur-btn-div tooltip-srf">
+        <span  class="mur-ttl">
+            Prix coûtant
+        </span>
+    </div>
+    <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+    <span>Formule: </span><br>
+    <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+    </div>
   </ng-container>
   
 </form>

@@ -59,12 +59,15 @@ export class InstallationSanitairesCalculComponent {
                 quantite: [gamme.quantite],
                 titre: [gamme.titre],
                 prix: [gamme.prix],
+                id: [gamme.id],
+                artisan_depose:[gamme.artisan_depose??'']
               });
             })
           )
         });
         
         
+        this.load_artisans_fournisseurs();
         
         
        // this.validateForm.patchValue(response);
@@ -110,24 +113,31 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           let modele=""
           let active=false
           let longueur=0
+          let id=0
           let titre=""
+          let artisan_pose=""
+          let fournisseur_pose=""
           let largeur=0
           let nombre_de_vasque=0
           let encastre_ou_apparente=false
           if(this.donnees["gammes-produits-pose-app-san"]){
             let form=this.donnees["gammes-produits-pose-app-san"]
             modele=form?.appareils_salle_de_bain[i]?.modele
+            id=form?.appareils_salle_de_bain[i]?.id
             active=form?.appareils_salle_de_bain[i]?.active
             longueur=form?.appareils_salle_de_bain[i]?.longueur
             largeur=form?.appareils_salle_de_bain[i]?.largeur
             nombre_de_vasque=form?.appareils_salle_de_bain[i]?.nombre_de_vasque
             encastre_ou_apparente=form?.appareils_salle_de_bain[i]?.encastre_ou_apparente
             titre=form?.appareils_salle_de_bain[i]?.titre
+            artisan_pose=form?.appareils_salle_de_bain[i]?.artisan_pose
+            fournisseur_pose=form?.appareils_salle_de_bain[i]?.fournisseur_pose
           }
         
              // Créer un FormGroup pour chaque appareil
           const appareilGroup = this.fb.group({});
               
+          appareilGroup.addControl("id", this.fb.control(id, ));
           appareilGroup.addControl("longueur", this.fb.control(longueur, ));
           appareilGroup.addControl("largeur", this.fb.control(largeur, ));
           appareilGroup.addControl("nombre_de_vasque", this.fb.control(nombre_de_vasque, ));
@@ -135,6 +145,9 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           appareilGroup.addControl("active", this.fb.control(active, ));
           appareilGroup.addControl("modele", this.fb.control(modele, ));
           appareilGroup.addControl("titre", this.fb.control(titre, ));
+          appareilGroup.addControl("artisan_pose", this.fb.control(artisan_pose, ));
+          appareilGroup.addControl("fournisseur_pose", this.fb.control(fournisseur_pose, ));
+            
          
 
           // Obtenez les contrôles pour pouvoir les manipuler
@@ -187,6 +200,82 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
   }
 
 
+
+
+artisans_depose:any[] = []
+artisans_pose:any[] = []
+fournisseurs_pose:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["dimensions-pose-app-san"].gammes_depose_form.map((gamme:any, i:number) => {
+    let ref_id=(gamme.id);
+    let qte=gamme.quantite;
+    if(1==1){
+
+       this.userService.getArtisansFournisseursElementsByGammeReference(ref_id,'artisan').subscribe(
+        (response: any) => {
+          //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
+          this.artisans_depose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des artisans_depose :', error);
+        }
+      );
+    }
+  });
+
+   this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain.map((appareil:any, i:number) => {
+
+   
+    let ref_id=(appareil.modele)?parseInt(appareil.modele.split(":")[0]):0;
+    let active=appareil.active;
+    if(1==1){
+
+      this.userService.getArtisansFournisseursModelesByReference(ref_id,'artisan').subscribe(
+        (response: any) => {
+         // console.log('recuperation des artisans_pose:',ref_id,'artisan', response);
+          this.artisans_pose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des artisans_pose :', error);
+        }
+      );
+
+      this.userService.getArtisansFournisseursModelesByReference(ref_id,'fournisseur').subscribe(
+        (response: any) => {
+        //  console.log('recuperation des fournisseurs_pose:',ref_id,'fournisseur', response);
+          this.fournisseurs_pose[i] = response;
+        },
+        (error: any) => {
+          console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+        }
+      );
+    }
+  });
+
+  setTimeout(() => {
+    console.log('total artisans_depose:', this.artisans_depose);
+    console.log('total artisans_pose:', this.artisans_pose);
+    console.log('total fournisseurs_pose:', this.fournisseurs_pose);
+  }, 4000);
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 submit() {
   console.log(this.formulaire.value);
 
@@ -224,6 +313,16 @@ submit() {
         formule: formule
       };
     }
+     let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
 
     console.log("Prix reçu :", this.detailsCalcul);
 
@@ -270,6 +369,16 @@ modifier(){
         formule: formule
       };
     }
+     let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
     const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
     console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
 

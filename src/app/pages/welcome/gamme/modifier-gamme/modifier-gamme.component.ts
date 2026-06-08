@@ -45,62 +45,62 @@ export class ModifierGammeComponent {
   }>;
   
   types: Type[] = [
-      // Divers
-      { etape_id:1, travail_id:3, slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
-      { etape_id:1, travail_id:3,  slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
-      //{ etape_id:3, travail_id:13,  slug: 'gamme-appareils', label: 'Rénovation électrique partielle (gamme d\'appareils)' },
-      
-      // Murs
-      { etape_id:3, travail_id:5, slug: 'bois', label: 'Bois' },
-      { etape_id:3, travail_id:5, slug: 'carrelage-mur', label: 'Carrelage mural' },
-      { etape_id:3, travail_id:5, slug: 'enduit-decoratif-mur', label: 'Enduit décoratif mur' },
-      { etape_id:2, travail_id:5, slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
-      { etape_id:3, travail_id:5, slug: 'papier-peint-mur', label: 'Papier peint mur' },
-      { etape_id:3, travail_id:5, slug: 'peinture-mur', label: 'Peinture murale' },
-      { etape_id:3, travail_id:5, slug: 'tissus-mur', label: 'Tissus muraux' },
-      
-      // Plafond
-      { etape_id:3, travail_id:8, slug: 'carrelage-plafond', label: 'Carrelage plafond' },
-      { etape_id:3, travail_id:8, slug: 'enduit-decoratif-plafond', label: 'Enduit décoratif plafond' },
-      { etape_id:2, travail_id:8, slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
-      { etape_id:3, travail_id:8, slug: 'papier-peint-plafond', label: 'Papier peint plafond' },
-      { etape_id:3, travail_id:8, slug: 'peinture-plafond', label: 'Peinture plafond' },
-      
-      // Porte
-      { etape_id:3, travail_id:10,  slug: 'gamme-de-porte', label: 'Gamme de porte' },
-      { etape_id:3, travail_id:10,  slug: 'nature-porte', label: 'Nature de la porte' },
-      //{ etape_id:1, travail_id:4,  slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
-      { etape_id:3, travail_id:10,  slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
-      { etape_id:3, travail_id:10,  slug: 'type-de-porte-double', label: 'Type de porte double' },
-      { etape_id:3, travail_id:10,  slug: 'type-de-porte-simple', label: 'Type de porte simple' },
-      
-     
-      // Services
-      { etape_id:1, travail_id:4,  slug: 'epaisseur-creation-mur-non-porteur', label: 'Épaisseur de mur non porteur' },
-     // { etape_id:1, travail_id:4,  slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
-      //{ etape_id:1, travail_id:2, slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
-      { etape_id:1, travail_id:5,  slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
-      { etape_id:1, travail_id:8, slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
-      { etape_id:1, travail_id:9, slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
-      //{ etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
-      //{ etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
-      //{ etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
-      
-      // Sols
-      { etape_id:3, travail_id:9, slug: 'carrelage-sol', label: 'Carrelage' },
-      { etape_id:2, travail_id:9, slug: 'etat-des-surfaces-sol', label: 'État des surfaces' },
-      { etape_id:3, travail_id:9, slug: 'moquette-de-sol', label: 'Moquette' },
-      { etape_id:3, travail_id:9, slug: 'papier-massif-sol', label: 'Parquet Massif' },
-      { etape_id:3, travail_id:9, slug: 'parquet-flottant-sol', label: 'Parquet Flottant' },
-      { etape_id:3, travail_id:9, slug: 'peinture-de-sol', label: 'Peinture de sol' },
-      { etape_id:3, travail_id:9, slug: 'plinthes-bois-sol', label: 'Plinthes bois' },
-      { etape_id:3, travail_id:9, slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage' },
-      { etape_id:3, travail_id:9, slug: 'resine-decorative-de-sol', label: 'Résine décorative' },
-      { etape_id:3, travail_id:9, slug: 'sol-souple', label: 'Sol souple' },
-  ].sort((a, b) => {
-      // Puis par label alphabétique
-      return a.label.localeCompare(b.label, 'fr', { sensitivity: 'base' });
-  });
+    // Divers
+    { etape_id:1, travail_id:3, slug: 'cloison-demolition-complete', label: 'Type de cloison demolition complete' },
+    { etape_id:1, travail_id:3,  slug: 'cloison-ouverture-partielle', label: 'Type de cloison ouverture partielle' },
+    //{ etape_id:3, travail_id:13,  slug: 'gamme-appareils', label: 'Rénovation électrique partielle (gamme d\'appareils)' },
+    
+    // Murs
+    { etape_id:3, travail_id:5, slug: 'bois', label: 'Bois' },
+    { etape_id:3, travail_id:5, slug: 'carrelage-mur', label: 'Carrelage mural' },
+    { etape_id:3, travail_id:5, slug: 'enduit-decoratif-mur', label: 'Enduit décoratif mur' },
+    { etape_id:2, travail_id:5, slug: 'etat-des-surfaces-murs', label: 'État des surfaces (murs)' },
+    { etape_id:3, travail_id:5, slug: 'papier-peint-mur', label: 'Papier peint mur' },
+    { etape_id:3, travail_id:5, slug: 'peinture-mur', label: 'Peinture murale' },
+    { etape_id:3, travail_id:5, slug: 'tissus-mur', label: 'Tissus muraux' },
+    
+    // Plafond
+    { etape_id:3, travail_id:8, slug: 'carrelage-plafond', label: 'Carrelage plafond' },
+    { etape_id:3, travail_id:8, slug: 'enduit-decoratif-plafond', label: 'Enduit décoratif plafond' },
+    { etape_id:2, travail_id:8, slug: 'etat-des-surfaces-plafond', label: 'État des surfaces (plafond)' },
+    { etape_id:3, travail_id:8, slug: 'papier-peint-plafond', label: 'Papier peint plafond' },
+    { etape_id:3, travail_id:8, slug: 'peinture-plafond', label: 'Peinture plafond' },
+    
+    // Porte
+    { etape_id:3, travail_id:10,  slug: 'gamme-de-porte', label: 'Gamme de porte' },
+    { etape_id:3, travail_id:10,  slug: 'nature-porte', label: 'Nature de la porte' },
+    //{ etape_id:1, travail_id:4,  slug: 'type-de-cloison-murs-non-porteurs', label: 'Type de cloison (mur non porteur)' },
+    { etape_id:3, travail_id:10,  slug: 'type-de-porte-coulissante', label: 'Type de porte coulissante' },
+    { etape_id:3, travail_id:10,  slug: 'type-de-porte-double', label: 'Type de porte double' },
+    { etape_id:3, travail_id:10,  slug: 'type-de-porte-simple', label: 'Type de porte simple' },
+    
+   
+    // Services
+    { etape_id:1, travail_id:4,  slug: 'epaisseur-creation-mur-non-porteur', label: 'Épaisseur de mur non porteur' },
+    //{ etape_id:1, travail_id:4,  slug: 'service-demolition-murs', label: 'Démolition de murs non porteurs' },
+    //{ etape_id:1, travail_id:2, slug: 'service-depose-cuisine', label: 'Dépose d\'element de cuisine' },
+    { etape_id:1, travail_id:5,  slug: 'service-depose-murs', label: 'Dépose de revêtements muraux' },
+    { etape_id:1, travail_id:8, slug: 'service-depose-revetement-plafond', label: 'Dépose revêtements plafond' },
+    { etape_id:1, travail_id:9, slug: 'service-depose-revetement-sol', label: 'Dépose revêtements sol' },
+    //{ etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
+    //{ etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
+    //{ etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
+    
+    // Sols
+    { etape_id:3, travail_id:9, slug: 'carrelage-sol', label: 'Carrelage' },
+    { etape_id:2, travail_id:9, slug: 'etat-des-surfaces-sol', label: 'État des surfaces' },
+    { etape_id:3, travail_id:9, slug: 'moquette-de-sol', label: 'Moquette' },
+    { etape_id:3, travail_id:9, slug: 'papier-massif-sol', label: 'Parquet Massif' },
+    { etape_id:3, travail_id:9, slug: 'parquet-flottant-sol', label: 'Parquet Flottant' },
+    { etape_id:3, travail_id:9, slug: 'peinture-de-sol', label: 'Peinture de sol' },
+    { etape_id:3, travail_id:9, slug: 'plinthes-bois-sol', label: 'Plinthes bois' },
+    { etape_id:3, travail_id:9, slug: 'plinthes-carrelage-sol', label: 'Plinthes carrelage' },
+    { etape_id:3, travail_id:9, slug: 'resine-decorative-de-sol', label: 'Résine décorative' },
+    { etape_id:3, travail_id:9, slug: 'sol-souple', label: 'Sol souple' },
+].sort((a, b) => {
+    // Puis par label alphabétique
+    return a.label.localeCompare(b.label, 'fr', { sensitivity: 'base' });
+});
   
   
   selectedTravail: number|undefined ;

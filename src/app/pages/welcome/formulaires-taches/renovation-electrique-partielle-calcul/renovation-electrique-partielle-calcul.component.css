@@ -9,7 +9,7 @@
     width: 100px;
 }
 .width-800{
-    max-width: 500px;
+    max-width: 800px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -95,4 +95,8 @@
     width: 177px;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.memory{
+    color: #FFC736;
 }

@@ -807,9 +807,14 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_by_type_and_travailID/${travailID}/${type}`);
   }
 
-  getFournisseursGammesByGammeReference(refID:number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/get_Fournisseurs_gammes_by_refID/${refID}`);
+  getArtisansFournisseursElementsByGammeReference(refID:number,type:string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisans_fournisseurs_by_refID/${refID}/${type}`);
   }
+
+   getArtisansFournisseursModelesByReference(refID:number,type:string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisans_fournisseurs_modeles_by_refID/${refID}/${type}`);
+  }
+
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammes(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes`);

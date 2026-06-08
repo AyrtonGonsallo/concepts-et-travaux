@@ -56,6 +56,9 @@ export class RemplacementRadiateurCalculComponent {
               return this.fb.group({
                 gamme: [radiateur.gamme],
                 visible: [radiateur.visible],
+                artisan_pose:[radiateur.artisan_pose],
+                fournisseur_pose:[radiateur.fournisseur_pose],
+              
               });
             })
           ),
@@ -63,7 +66,9 @@ export class RemplacementRadiateurCalculComponent {
             this.donnees["etat-surfaces-pose-chauffage"].radiateurs.map((radiateur: any) => {
               return this.fb.group({
                 type: [radiateur.type],
-                
+                artisan_type:[radiateur.artisan_type],
+                fournisseur_type:[radiateur.fournisseur_type],
+              
               });
             })
           ),
@@ -72,6 +77,8 @@ export class RemplacementRadiateurCalculComponent {
         });
         
         
+
+        this.load_artisans_fournisseurs()
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -105,18 +112,93 @@ export class RemplacementRadiateurCalculComponent {
   }
 
   types:any
-load_types(){
-   this.userService.getGammesByTravailAndType(12,"type-de-radiateur").subscribe(
-    (response: any) => {
-      console.log('recuperation des gammes type-de-radiateur:', response);
-      this.types=response
-    },
-    (error: any) => {
-      console.error('Erreur lors de la recuperation des gammes type-de-radiateur :', error);
-    }
-  );
-  
+  load_types(){
+    this.userService.getGammesByTravailAndType(12,"type-de-radiateur").subscribe(
+      (response: any) => {
+        console.log('recuperation des gammes type-de-radiateur:', response);
+        this.types=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des gammes type-de-radiateur :', error);
+      }
+    );
+    
+  }
+
+
+
+artisans_pose:any[] = []
+fournisseurs_pose:any[] = []
+
+artisans_type:any[] = []
+fournisseurs_type:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["gammes-produits-pose-chauffage"].radiateurs.map((radiateur:any, i:number) => {
+    let gamme_id=parseInt(radiateur.gamme.split(":")[0]);
+
+
+    this.userService.getArtisansFournisseursModelesByReference(gamme_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_pose:',gamme_id,'artisan', response);
+        this.artisans_pose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_pose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursModelesByReference(gamme_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_pose:', response);
+        this.fournisseurs_pose[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+      }
+    );
+
+
+  });
+
+
+  this.donnees["etat-surfaces-pose-chauffage"].radiateurs.map((radiateur:any, i:number) => {
+    let type_id=parseInt(radiateur.type.split(":")[0]);
+
+   
+
+   
+    this.userService.getArtisansFournisseursElementsByGammeReference(type_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_type:',type_id,'artisan', response);
+        this.artisans_type[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_type :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(type_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_type:', response);
+        this.fournisseurs_type[i] = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_type :', error);
+      }
+    );
+
+
+
+  });
 }
+
+
+
+
 
 
 submit() {
@@ -153,6 +235,16 @@ submit() {
       this.detailsCalcul.resultats[this.element.TravailSlug] = {
         ...this.detailsCalcul.resultats[this.element.TravailSlug],
         formule: formule
+      };
+    }
+    let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+    if (formule_marge) {
+      formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+      // On réinjecte la formule_marge modifiée dans l'objet
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule_marge: formule_marge
       };
     }
 
@@ -196,6 +288,16 @@ modifier(){
       this.detailsCalcul.resultats[this.element.TravailSlug] = {
         ...this.detailsCalcul.resultats[this.element.TravailSlug],
         formule: formule
+      };
+    }
+    let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+    if (formule_marge) {
+      formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+      // On réinjecte la formule_marge modifiée dans l'objet
+      this.detailsCalcul.resultats[this.element.TravailSlug] = {
+        ...this.detailsCalcul.resultats[this.element.TravailSlug],
+        formule_marge: formule_marge
       };
     }
     const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);

@@ -12,7 +12,16 @@
 
        
 
-        <nz-form-item >
+        <nz-form-item *ngIf="validateForm.get('Type')?.value === 'email_alerte'">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ValeurTexte" nzRequired >
+                <span>Valeur</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <input nz-input id="ValeurTexte" formControlName="ValeurTexte" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.get('Type')?.value !== 'email_alerte'">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Valeur" nzRequired >
                 <span>Valeur</span>
             </nz-form-label>
@@ -30,7 +39,8 @@
                     <nz-option nzValue="nombre" nzLabel="nombre"></nz-option>
                     <nz-option nzValue="coût fixe" nzLabel="coût fixe"></nz-option>
                     <nz-option nzValue="coefficient" nzLabel="coefficient"></nz-option>
-                    <nz-option nzValue="pourcentage" nzLabel=" pourcentage"></nz-option>
+                    <nz-option nzValue="pourcentage" nzLabel="pourcentage"></nz-option>
+                    <nz-option nzValue="email_alerte" nzLabel="email d'alerte"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>

@@ -88,6 +88,7 @@
             </nz-form-control>
         </nz-form-item>
 
+         <!--
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Image"  >
                 <span>Image</span>
@@ -100,6 +101,9 @@
                 Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB          
             </nz-form-control>
         </nz-form-item>
+
+    -->
+
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Pdf"  >
                 <span>Pdf</span>
@@ -127,7 +131,7 @@
         </nz-form-item>
 
         <div class="center" *ngIf="activerPrixMultiples()"><u>Ajouter des prix pour plusieurs appareils</u></div>
-        <!-- ⚡ CHAMPS DYNAMIQUES (Appareils et Prix) -->
+        <!--  CHAMPS DYNAMIQUES (Appareils et Prix) -->
         <div formArrayName="PrixMultiples" *ngIf="activerPrixMultiples()">
              <nz-form-item *ngFor="let appareil of appareils.controls; let i = index"  [formGroupName]="i" class="appareils-layout" >
                  <nz-form-label  nzFor="appareilNom-{{i}}" nzRequired>
@@ -157,6 +161,7 @@
              </nz-form-item>
         </div>
 
+        <!--
          <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverFournisseur" >
                 <span>Cet article est-il lié à un fournisseur ? </span>
@@ -185,6 +190,7 @@
                 <nz-input-number id="GammeDeReferenceID" formControlName="GammeDeReferenceID"  ></nz-input-number> 
             </nz-form-control>
         </nz-form-item>
+-->
 
       
         <nz-form-item nz-row class="register-area">

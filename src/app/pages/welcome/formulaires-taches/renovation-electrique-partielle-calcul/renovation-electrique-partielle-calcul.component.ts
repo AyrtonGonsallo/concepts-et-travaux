@@ -55,6 +55,9 @@ export class RenovationElectriquePartielleCalculComponent {
           this.donnees = JSON.parse(response.Donnees) 
         
           this.formulaire = this.fb.group({
+            artisan_gamme:(this.donnees["gammes-produits-pose-electricite"].artisan_gamme)?this.donnees["gammes-produits-pose-electricite"].artisan_gamme:"",
+            fournisseur_gamme:(this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme)?this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme:"",
+            
             gamme: [this.donnees["gammes-produits-pose-electricite"].gamme],
             appareils: this.fb.array(
               this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer
@@ -70,6 +73,8 @@ export class RenovationElectriquePartielleCalculComponent {
                 )
             )
           });
+
+          this.load_artisans_fournisseurs()
           
           
          // this.validateForm.patchValue(response);
@@ -155,6 +160,38 @@ export class RenovationElectriquePartielleCalculComponent {
       );
     }
 
+
+      
+
+  artisans_gammes:any
+  fournisseurs_gammes:any
+
+  load_artisans_fournisseurs(){
+    let rev_a_poser_id=parseInt(this.donnees["gammes-produits-pose-electricite"].gamme.split(":")[0]);
+
+   
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
+        this.artisans_gammes=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_pose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_pose:', response);
+        this.fournisseurs_gammes=response
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+      }
+    );
+  }
+
+
     get appareils(): FormArray {
       return this.formulaire.get('appareils') as FormArray;
     }
@@ -172,6 +209,8 @@ export class RenovationElectriquePartielleCalculComponent {
       "idtache":this.devisTache.TravailID,
         "gammes-produits-pose-electricite": {
           gamme: gamme,
+          fournisseur_gamme:this.formulaire.value.fournisseur_gamme,
+          artisan_gamme:this.formulaire.value.artisan_gamme,
           appareils_electrique_a_remplacer: appareils
         }
       };
@@ -182,6 +221,7 @@ export class RenovationElectriquePartielleCalculComponent {
         .then((result) => {
           this.detailsCalcul = result;
           let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
+          let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
     
           if (formule) {
             formule = formule.replace(/\n/g, '<br>');
@@ -189,6 +229,15 @@ export class RenovationElectriquePartielleCalculComponent {
             this.detailsCalcul.resultats[this.element.TravailSlug] = {
               ...this.detailsCalcul.resultats[this.element.TravailSlug],
               formule: formule
+            };
+          }
+          if (formule_marge) {
+            formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+            // On réinjecte la formule_marge modifiée dans l'objet
+            this.detailsCalcul.resultats[this.element.TravailSlug] = {
+              ...this.detailsCalcul.resultats[this.element.TravailSlug],
+              formule_marge: formule_marge
             };
           }
     
@@ -210,6 +259,8 @@ export class RenovationElectriquePartielleCalculComponent {
       "idtache":this.devisTache.TravailID,
         "gammes-produits-pose-electricite": {
           gamme: gamme,
+          fournisseur_gamme:this.formulaire.value.fournisseur_gamme,
+          artisan_gamme:this.formulaire.value.artisan_gamme,
           appareils_electrique_a_remplacer: appareils
         }
       };
@@ -250,6 +301,21 @@ export class RenovationElectriquePartielleCalculComponent {
       }).catch(error => {
         console.error('Erreur lors du calcul du prix:', error);
       });
+    }
+
+
+    getprixMultiples(prixMultiples: string): string {
+
+      try {
+
+        return JSON.parse(prixMultiples || '[]')
+          .map((item: any) => `${item.nom} : ${item.prix} €`)
+          .join('\n');
+
+      } catch {
+        return '';
+      }
+
     }
 
 }

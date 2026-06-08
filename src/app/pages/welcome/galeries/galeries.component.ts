@@ -28,7 +28,7 @@ export class GaleriesComponent {
     },
     {
       title: 'Total d\'images',
-      compare: (a: Galerie, b: Galerie) => a.images.length -b.images.length,
+      compare: (a: Galerie, b: Galerie) => a.Images.length -b.Images.length,
       priority: 1
     }
   ];

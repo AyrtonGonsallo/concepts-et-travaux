@@ -31,7 +31,7 @@
         <tr *ngFor="let data of sortTable.data" >
           <td>{{ data.ID }}</td>
           <td>{{ data.Nom }}</td>
-          <td>{{ data.Valeur }} </td>
+          <td>{{ (data.Type==='email_alerte')?data.ValeurTexte:data.Valeur }} </td>
           <td>{{ data.Type }} </td>
           <td> 
             <button nz-button nzType="primary" class="positive-action mb-5"  [nzSize]="size" title="modifier" [routerLink]="['/administration', 'parametres', 'modifier-parametre',data.ID]"><span nz-icon nzType="edit"></span></button>

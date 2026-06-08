@@ -57,10 +57,22 @@ export class RemplacementDePortesCalculComponent {
                   gamme: this.donnees["gammes-produits-pose-portes"].portes[i].gamme,
                   nature_porte: this.donnees["gammes-produits-pose-portes"].portes[i].nature_porte,
                   type_porte: this.donnees["gammes-produits-pose-portes"].portes[i].type_porte,
+                  artisan_pose:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_pose)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_pose:"",
+                  fournisseur_pose:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_pose)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_pose:"",
+              
+                  artisan_nature:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_nature)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_nature:"",
+                  fournisseur_nature:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_nature)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_nature:"",
+              
+                  artisan_type:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_type)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_type:"",
+                  fournisseur_type:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_type)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_type:"",
+              
                 });
               })
             )
           });
+
+
+          this.load_artisans_fournisseurs()
          // this.validateForm.patchValue(response);
           console.log("donnees ",this.donnees);
         },
@@ -135,6 +147,91 @@ load_gammes(){
 
 
 
+artisans_pose:any[] = []
+fournisseurs_pose:any[] = []
+
+artisans_nature:any[] = []
+fournisseurs_nature:any[] = []
+
+artisans_type:any[] = []
+fournisseurs_type:any[] = []
+
+
+
+load_artisans_fournisseurs(){
+
+  this.donnees["gammes-produits-pose-portes"].portes.map((porte:any, i:number) => {
+    let porte_choisie_id=parseInt(porte.gamme.split(":")[0]);
+    let nature_choisie_id=parseInt(porte.nature_porte.split(":")[0]);
+    let type_choisie_id=parseInt(porte.type_porte.split(":")[0]);
+
+   
+
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(porte_choisie_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_pose:',porte_choisie_id,'artisan', response);
+        this.artisans_pose.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_pose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(porte_choisie_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_pose:', response);
+        this.fournisseurs_pose.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(nature_choisie_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_nature:',nature_choisie_id,'artisan', response);
+        this.artisans_nature.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_nature :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(nature_choisie_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_nature:', response);
+        this.fournisseurs_nature.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_nature :', error);
+      }
+    );
+
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(type_choisie_id,'artisan').subscribe(
+      (response: any) => {
+        console.log('recuperation des artisans_type:',type_choisie_id,'artisan', response);
+        this.artisans_type.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_type :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(type_choisie_id,'fournisseur').subscribe(
+      (response: any) => {
+        console.log('recuperation des fournisseurs_type:', response);
+        this.fournisseurs_type.push(response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des fournisseurs_type :', error);
+      }
+    );
+
+
+  });
+}
 
 
 
@@ -151,6 +248,12 @@ load_gammes(){
           nature_porte: porte.nature_porte,
           type_porte: porte.type_porte,
           etat: porte.etat,
+          artisan_pose:porte.artisan_pose,
+          fournisseur_pose:porte.fournisseur_pose,
+          artisan_nature:porte.artisan_nature,
+          fournisseur_nature:porte.fournisseur_nature,
+          artisan_type:porte.artisan_type,
+          fournisseur_type:porte.fournisseur_type,
         }))
       }
     };
@@ -169,6 +272,17 @@ load_gammes(){
           formule: formule
         };
       }
+
+      let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+      if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
       console.log("Prix reçu :", this.detailsCalcul);
       
     }).catch((error) => {
@@ -181,7 +295,7 @@ load_gammes(){
   modifier(){
     const portesFormArray = this.formulaire.value.portes;
     this.devisTache.Donnees = {
-       "nomtache":this.devisTache.TravailSlug,
+      "nomtache":this.devisTache.TravailSlug,
       "idtache":this.devisTache.TravailID,
       "gammes-produits-pose-portes": {
         portes: portesFormArray.map((porte: any) => ({
@@ -189,6 +303,13 @@ load_gammes(){
           nature_porte: porte.nature_porte,
           type_porte: porte.type_porte,
           etat: porte.etat,
+          artisan_pose:porte.artisan_pose,
+          fournisseur_pose:porte.fournisseur_pose,
+           artisan_nature:porte.artisan_nature,
+          fournisseur_nature:porte.fournisseur_nature,
+          artisan_type:porte.artisan_type,
+          fournisseur_type:porte.fournisseur_type,
+              
         }))
       }
     };
@@ -203,6 +324,16 @@ load_gammes(){
         this.detailsCalcul.resultats[this.element.TravailSlug] = {
           ...this.detailsCalcul.resultats[this.element.TravailSlug],
           formule: formule
+        };
+      }
+      let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+      if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
         };
       }
       const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
