@@ -6,7 +6,7 @@
                 <div *ngFor="let porte of portes.controls; let i = index" [formGroupName]="i" class="mur-bloc bg-light-gray">
                     <h4>Porte {{ i + 1 }}</h4>
                     
-                    <div class="form-group" nz-col nzJustify="start" class="">
+                    <div class="form-group" nz-col nzJustify="start" class="" *ngIf="!prix_coutant_mode">
                         <!-- Type de porte -->
                         
                         <div  nz-col class="row-w-grid5" style="padding: 4px 0px !important;">
@@ -109,100 +109,105 @@
 
 
 
-                      <!--prix coûtant-->
+                      <div *ngIf="prix_coutant_mode">
+
+                        <!--prix coûtant-->
                 
-                      <div class="mur-btn-div tooltip-srf">
-                          <span  class="mur-ttl">
-                              Prix coûtant
-                          </span>
+                        <div class="mur-btn-div tooltip-srf">
+                            <span  class="mur-ttl">
+                                Prix coûtant
+                            </span>
+                        </div>
+                        
+
+                        <nz-radio-group formControlName="artisan_pose">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Artisan porte :</label>
+                            <div>
+                                <div *ngFor="let option of artisans_pose[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+                        <nz-radio-group formControlName="fournisseur_pose">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Fournisseur porte:</label>
+                            <div>
+                                <div *ngFor="let option of fournisseurs_pose[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+
+                        <nz-radio-group formControlName="artisan_nature">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Artisan nature porte :</label>
+                            <div>
+                                <div *ngFor="let option of artisans_nature[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+                        <nz-radio-group formControlName="fournisseur_nature">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Fournisseur nature porte:</label>
+                            <div>
+                                <div *ngFor="let option of fournisseurs_nature[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+
+                        <nz-radio-group formControlName="artisan_type">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Artisan type porte :</label>
+                            <div>
+                                <div *ngFor="let option of artisans_type[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+                        <nz-radio-group formControlName="fournisseur_type">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Fournisseur type porte:</label>
+                            <div>
+                                <div *ngFor="let option of fournisseurs_type[i]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+                        
                       </div>
                       
-
-                      <nz-radio-group formControlName="artisan_pose">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Artisan porte :</label>
-                          <div>
-                              <div *ngFor="let option of artisans_pose[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-
-                      <nz-radio-group formControlName="fournisseur_pose">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Fournisseur porte:</label>
-                          <div>
-                              <div *ngFor="let option of fournisseurs_pose[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-
-
-                      <nz-radio-group formControlName="artisan_nature">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Artisan nature porte :</label>
-                          <div>
-                              <div *ngFor="let option of artisans_nature[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-
-                      <nz-radio-group formControlName="fournisseur_nature">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Fournisseur nature porte:</label>
-                          <div>
-                              <div *ngFor="let option of fournisseurs_nature[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-
-
-                      <nz-radio-group formControlName="artisan_type">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Artisan type porte :</label>
-                          <div>
-                              <div *ngFor="let option of artisans_type[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-
-                      <nz-radio-group formControlName="fournisseur_type">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Fournisseur type porte:</label>
-                          <div>
-                              <div *ngFor="let option of fournisseurs_type[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
                 
             
                     
@@ -213,6 +218,8 @@
   <div class="grid-btn-action">
     <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
     <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+    <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+
 
 </div>
   

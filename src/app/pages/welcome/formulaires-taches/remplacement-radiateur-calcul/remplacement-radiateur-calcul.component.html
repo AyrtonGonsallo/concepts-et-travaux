@@ -4,19 +4,19 @@
         
         <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
-            <div>
-                <div class="flx-radio-row2 ">
+            <div *ngIf="!prix_coutant_mode">
+                <div class="flx-radio-row2">
                   <label for="surface">Surface de la pièce (m²)</label>
                   <input  type="number" id="surface" formControlName="surface"  min="1">
                 </div>
-                <div class="flx-radio-row2 ">
+                <div class="flx-radio-row2">
                   <label for="hauteur">Hauteur de la pièce (cm)<span class="error-message">*</span> :</label>
                   <input  type="number" id="hauteur" formControlName="hauteur" max="700" min="1">
                 </div>
             </div>
-            <div formArrayName="type_radiateurs_form">
+            <div formArrayName="type_radiateurs_form" >
                 <div *ngFor="let radiateur of type_radiateurs_form.controls; let j = index" [formGroupName]="j">
-                    <div class="flx-radio-row2 ">
+                    <div class="flx-radio-row2" *ngIf="!prix_coutant_mode">
                         <div class="">
                             <label class="">Type radiateur {{j+1}}:</label>
                         </div>
@@ -32,44 +32,51 @@
                     </div>
 
                     
-                        <span  class="mur-ttl">
-                            Prix coûtant
+
+                    <div *ngIf="prix_coutant_mode">
+
+                        <span class="mur-ttl">
+                            Prix coûtant radiateur {{j+1}}:
                         </span>
+                        
+                        
+
+                        <nz-radio-group formControlName="artisan_type">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Artisan type :</label>
+                            <div>
+                                <div *ngFor="let option of artisans_type[j]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+                        <nz-radio-group formControlName="fournisseur_type">
+                            <!-- Plinthes bois -->
+                            <div class="flx-radio-row2">
+                            <label>Fournisseur type :</label>
+                            <div>
+                                <div *ngFor="let option of fournisseurs_type[j]">
+                                <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                    {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                </label>
+                                </div>
+                            </div>
+                            </div>
+                        </nz-radio-group>
+
+                    </div>
                     
                     
-
-                    <nz-radio-group formControlName="artisan_type">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Artisan type :</label>
-                        <div>
-                            <div *ngFor="let option of artisans_type[j]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
-
-                    <nz-radio-group formControlName="fournisseur_type">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Fournisseur type :</label>
-                        <div>
-                            <div *ngFor="let option of fournisseurs_type[j]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
-                                {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
                 </div>
             </div>
             <div formArrayName="gamme_radiateurs_form">
                 <div *ngFor="let radiateur of gamme_radiateurs_form.controls; let i = index" [formGroupName]="i">
-                    <div class="flx-radio-row2 ">
+                    <div class="flx-radio-row2 " *ngIf="!prix_coutant_mode">
                         <div class="">
                             <label class="">Gamme radiateur {{i+1}}:</label>
                         </div>
@@ -86,14 +93,12 @@
                         </nz-radio-group>
                     </div>
 
-                    <div nz-row>
+                    <div nz-row *ngIf="prix_coutant_mode">
                         <div nz-col nzSpan="20">
 
                             <span  class="mur-ttl">
-                                Prix coûtant
+                                Prix coûtant radiateur {{i+1}}
                             </span>
-                        
-                        
 
                             <nz-radio-group formControlName="artisan_pose">
                                 <!-- Plinthes bois -->
@@ -132,6 +137,7 @@
             <div class="grid-btn-action">
                 <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
                 <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+                <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
 
            </div>
               

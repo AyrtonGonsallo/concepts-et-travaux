@@ -10,6 +10,9 @@ import { DevisTache } from '../../../../Models/DevisTache';
 import { Remise } from '../../../../Models/Remise';
 import { Tva } from '../../../../Models/Tva';
 import { CategorieArtisan } from '../../../../Models/Categorie-Artisan';
+import { DecimalPipe } from '@angular/common';
+
+
 interface Artisan {
   Id: number;
   Nom: string;
@@ -25,7 +28,8 @@ interface Categorie {
 @Component({
   selector: 'app-modifier-devis-piece',
   templateUrl: './modifier-devis-piece.component.html',
-  styleUrl: './modifier-devis-piece.component.css'
+  styleUrl: './modifier-devis-piece.component.css',
+  providers: [DecimalPipe]
 })
 export class ModifierDevisPieceComponent {
 
@@ -90,7 +94,7 @@ export class ModifierDevisPieceComponent {
       
     }
 
-  constructor(private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private devisService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
+  constructor(private decimalPipe: DecimalPipe,private authService: AuthService,private fb: NonNullableFormBuilder,private http: HttpClient,private devisService: ApiConceptsEtTravauxService, private route: ActivatedRoute,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       
     Commentaire: ['', []],
@@ -366,6 +370,60 @@ export class ModifierDevisPieceComponent {
       state: { mode: 'modification' } // optionnel
     });
   }
+
+
+  calculer_prix_coutant_tache(type_de_travail_id: number|undefined, tacheID: number) {
+    let url = '';
+  
+    switch (type_de_travail_id) {
+      case 4: // Création de murs non porteurs
+        url = `/administration/formules-et-tests/modifier-creation-murs-non-porteur/${tacheID}?mode=prix_coutant`;
+        break;
+      case 3: // Démolition de cloisons ou ouverture partielle
+        url = `/administration/formules-et-tests/modifier-demolition-cloisons/${tacheID}?mode=prix_coutant`;
+        break;
+      case 7: // Dépose des anciennes installations de salle de bain
+        url = `/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=prix_coutant`;
+        break;
+      case 13: // Rénovation électrique partielle
+        url = `/administration/formules-et-tests/modifier-renovation-electrique/${tacheID}?mode=prix_coutant`;
+        break;
+      case 15: // Rénovation électrique complète
+        url = `/administration/formules-et-tests/modifier-renovation-electrique-complete/${tacheID}?mode=prix_coutant`;
+        break;
+      case 12: // Remplacement de radiateur
+        url = `/administration/formules-et-tests/modifier-remplacement-radiateur/${tacheID}?mode=prix_coutant`;
+        break;
+      case 16: // Installation de nouveaux équipements sanitaires
+        url = `/administration/formules-et-tests/modifier-installation-sanitaires/${tacheID}?mode=prix_coutant`;
+        break;
+      case 2: // Pose de nouveaux équipements de cuisine
+        url = `/administration/formules-et-tests/modifier-pose-equipements-cuisine/${tacheID}?mode=prix_coutant`;
+        break;
+      case 5: // Pose de revêtements muraux
+        url = `/administration/formules-et-tests/modifier-revetements-muraux/${tacheID}?mode=prix_coutant`;
+        break;
+      case 8: // Pose de revêtements muraux
+        url = `/administration/formules-et-tests/modifier-revetements-plafond/${tacheID}?mode=prix_coutant`;
+        break;
+      case 9: // Pose de revêtements muraux
+        url = `/administration/formules-et-tests/modifier-revetements-sol/${tacheID}?mode=prix_coutant`;
+        break;
+      case 10: // Remplacement de portes
+        url = `/administration/formules-et-tests/modifier-remplacement-portes/${tacheID}?mode=prix_coutant`;
+        break;
+      default:
+        console.error('Type de travail inconnu :', type_de_travail_id);
+        return;
+    }
+  
+    // Redirection
+    // window.location.href = url;
+
+    this.router.navigateByUrl(url, {
+      state: { mode: 'prix_coutant' } // optionnel
+    });
+  }
   
 
 
@@ -487,6 +545,12 @@ export class ModifierDevisPieceComponent {
       }
     );
 
+  }
+
+  get_prix_coutant(prix: number | undefined) {
+    return prix !== null
+      ? `${this.decimalPipe.transform(prix, '1.2-2')} €`
+      : '';
   }
 
 }

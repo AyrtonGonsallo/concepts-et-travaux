@@ -20,6 +20,7 @@ export class RemplacementRadiateurCalculComponent {
   devisTache!:DevisTache;
   detailsCalcul:any
   edit_mode=false
+  prix_coutant_mode=false
 
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
@@ -31,7 +32,12 @@ export class RemplacementRadiateurCalculComponent {
           // Mode modification activé
           console.log('On est en mode modification');
           this.edit_mode=true
-        } else {
+        } else if (mode === 'prix_coutant') {
+          // Mode prix_coutant activé
+          console.log('On est en mode prix_coutant');
+          this.prix_coutant_mode=true
+        }
+        else {
           // Mode création/test
           console.log('On est en mode test');
         }

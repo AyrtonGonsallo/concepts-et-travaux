@@ -20,6 +20,7 @@ export class RenovationElectriqueCompleteCalculComponent {
   devisTache!:DevisTache;
   detailsCalcul:any
   edit_mode=false
+  prix_coutant_mode=false
 
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
@@ -31,7 +32,12 @@ export class RenovationElectriqueCompleteCalculComponent {
           // Mode modification activé
           console.log('On est en mode modification');
           this.edit_mode=true
-        } else {
+        } else if (mode === 'prix_coutant') {
+          // Mode prix_coutant activé
+          console.log('On est en mode prix_coutant');
+          this.prix_coutant_mode=true
+        }
+        else {
           // Mode création/test
           console.log('On est en mode test');
         }
@@ -53,11 +59,14 @@ export class RenovationElectriqueCompleteCalculComponent {
           mise_en_securite: [this.donnees["gammes-produits-renovation-electrique"].mise_en_securite || false],
           renovation_conforme: [this.donnees["gammes-produits-renovation-electrique"].renovation_conforme || false],
           quantite_chauffage: [this.donnees["gammes-produits-renovation-electrique"].quantite_chauffage || 0],
-          surface: [this.donnees["gammes-produits-renovation-electrique"].surface || 0]
+          surface: [this.donnees["gammes-produits-renovation-electrique"].surface || 0],
+          artisan_mise_en_securite:[this.donnees["gammes-produits-renovation-electrique"].artisan_mise_en_securite??''],
+          artisan_mise_aux_normes:[this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes??''],
+          artisan_chauffage:[this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage??''],
         });
         
         
-        
+        this.load_artisans_fournisseurs()
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
       },
@@ -70,6 +79,57 @@ export class RenovationElectriqueCompleteCalculComponent {
 
  
 
+  
+artisans_mise_en_securite:any = []
+artisans_mise_aux_normes:any = []
+artisans_chauffage:any = []
+
+
+
+load_artisans_fournisseurs(){
+
+ 
+    this.userService.getArtisansFournisseursElementsByGammeReference(222,'artisan').subscribe(
+      (response: any) => {
+        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
+        this.artisans_mise_en_securite = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_depose :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(223,'artisan').subscribe(
+      (response: any) => {
+        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
+        this.artisans_mise_aux_normes = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_mise_aux_normes :', error);
+      }
+    );
+
+    this.userService.getArtisansFournisseursElementsByGammeReference(224,'artisan').subscribe(
+      (response: any) => {
+        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
+        this.artisans_chauffage = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
+      }
+    );
+   
+
+
+
+  setTimeout(() => {
+    console.log('total artisans_mise_en_securite:', this.artisans_mise_en_securite);
+    console.log('total artisans_mise_aux_normes:', this.artisans_mise_aux_normes);
+    console.log('total artisans_chauffage:', this.artisans_chauffage);
+  }, 4000);
+  
+}
+
 
 submit() {
   console.log(this.formulaire.value);
@@ -79,6 +139,9 @@ submit() {
   const renovation_conforme = this.formulaire.value.renovation_conforme;
   const surface = this.formulaire.value.surface;
   const quantite_chauffage = this.formulaire.value.quantite_chauffage;
+   const artisan_chauffage = this.formulaire.value.artisan_chauffage;
+  const artisan_mise_aux_normes = this.formulaire.value.artisan_mise_aux_normes;
+  const artisan_mise_en_securite = this.formulaire.value.artisan_mise_en_securite;
 
 
 
@@ -90,7 +153,10 @@ submit() {
         mise_en_securite: mise_en_securite,
         renovation_conforme: renovation_conforme,
         quantite_chauffage: quantite_chauffage,
-        surface: surface
+        surface: surface,
+        artisan_chauffage:artisan_chauffage,
+        artisan_mise_aux_normes:artisan_mise_aux_normes,
+        artisan_mise_en_securite:artisan_mise_en_securite
     },
     "etat-surfaces-renovation-electrique": {
       chauffage_exist: chauffage_exist,
@@ -122,6 +188,17 @@ submit() {
       };
     }
 
+     let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
+
     console.log("Prix reçu :", this.detailsCalcul);
 
   }).catch((error) => {
@@ -139,6 +216,9 @@ modifier(){
   const renovation_conforme = this.formulaire.value.renovation_conforme;
   const surface = this.formulaire.value.surface;
   const quantite_chauffage = this.formulaire.value.quantite_chauffage;
+  const artisan_chauffage = this.formulaire.value.artisan_chauffage;
+  const artisan_mise_aux_normes = this.formulaire.value.artisan_mise_aux_normes;
+  const artisan_mise_en_securite = this.formulaire.value.artisan_mise_en_securite;
 
 
 
@@ -150,7 +230,10 @@ modifier(){
         mise_en_securite: mise_en_securite,
         renovation_conforme: renovation_conforme,
         quantite_chauffage: quantite_chauffage,
-        surface: surface
+        surface: surface,
+        artisan_chauffage:artisan_chauffage,
+        artisan_mise_aux_normes:artisan_mise_aux_normes,
+        artisan_mise_en_securite:artisan_mise_en_securite
     },
     "etat-surfaces-renovation-electrique": {
       chauffage_exist: chauffage_exist,
@@ -181,6 +264,17 @@ modifier(){
         formule: formule
       };
     }
+
+     let formule_marge = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule_marge;
+     if (formule_marge) {
+        formule_marge = formule_marge.replace(/\n/g, '<br>');
+
+        // On réinjecte la formule_marge modifiée dans l'objet
+        this.detailsCalcul.resultats[this.element.TravailSlug] = {
+          ...this.detailsCalcul.resultats[this.element.TravailSlug],
+          formule_marge: formule_marge
+        };
+      }
     const prixCalcule = (this.detailsCalcul?.resultats?.[this.element.TravailSlug]?.prix/1.25);
     console.log("Prix calculé", this.element.TravailSlug, prixCalcule);
 

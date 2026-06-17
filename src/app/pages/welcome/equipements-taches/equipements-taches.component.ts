@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ModeleEquipement } from '../../../Models/ModeleEquipement';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../Services/auth.service';
@@ -87,37 +86,44 @@ visible = false;
         title: 'Titre',
         compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
         priority: 2,
-        order:"ascend"
+        order:"ascend",
+        width:'250px'
       },
       {
         title: 'Sous-catégorie',
         compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
         priority: 1,
-        order:null
+        order:null,
+        width:'250px'
       },
       {
         title: 'Étape',
         compare: (a: Gamme, b: Gamme) => (a.Etape??"").localeCompare(b.Etape??""),
         priority: 2,
-        order:'ascend'
+        order:'ascend',
+        width:'250px'
+        
       },
       {
         title: 'Travail',
         compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
         priority: 1,
-        order:null
+        order:null,
+        width:'150px'
       },
       {
         title: 'Prix HT',
         compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
         priority: 1,
-        order:null
+        order:null,
+        width:'100px'
       },
       {
         title: 'Ordre',
         compare: (a: Gamme, b: Gamme) => a.Ordre-(b.Ordre),
         priority: 3,
-        order:"ascend"
+        order:"ascend",
+        width:'100px'
       },
       
     ];

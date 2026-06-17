@@ -6,72 +6,88 @@
             <div formArrayName="mursNonporteurs">
                 <div *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
                     <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques du mur {{i+1}}</span></div>
-                    <div class="flx-radio-row11">
+                    
+            
+                    <div *ngIf="!prix_coutant_mode">
+
                       <div class="flx-radio-row11">
-                        <label class="">Longueur :</label> 
-                        <input formControlName="longueur" placeholder="Longueur du mur">
+                        <div class="flx-radio-row11">
+                          <label class="">Longueur :</label> 
+                          <input formControlName="longueur" placeholder="Longueur du mur">
+                        </div>
+                        <div class="flx-radio-row11">
+                          <label class="">Hauteur :</label> 
+                          <input formControlName="hauteur" placeholder="Hauteur du mur">
+                        </div>
                       </div>
                       <div class="flx-radio-row11">
-                        <label class="">Hauteur :</label> 
-                        <input formControlName="hauteur" placeholder="Hauteur du mur">
+                        <div class="flx-radio-row11">
+                          <label class="">Nombre de portes :</label> 
+                          <input formControlName="ndp" placeholder="Nombre de portes">
+                        </div>
                       </div>
-                    </div>
-                    <div class="flx-radio-row11">
+                      
                       <div class="flx-radio-row11">
-                        <label class="">Nombre de portes :</label> 
-                        <input formControlName="ndp" placeholder="Nombre de portes">
+                        <label class="">Type de cloison :</label> 
+                        <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
+                            <ng-container>
+                                <div *ngFor="let option of gammes_cloison_complete" class="parquet-option  flex-see-gamme">
+                                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
+                                        <span>
+                                        {{ option.Label }}
+                                        </span>
+                                    </label>
+                                </div>
+                            </ng-container>
+                        </nz-radio-group>
                       </div>
+
+
                     </div>
                     
-                    <div class="flx-radio-row11">
-                      <label class="">Type de cloison :</label> 
-                      <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
-                          <ng-container>
-                              <div *ngFor="let option of gammes_cloison_complete" class="parquet-option  flex-see-gamme">
-                                  <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
-                                      <span>
-                                      {{ option.Label }}
-                                      </span>
-                                  </label>
+
+
+                  
+                    <div *ngIf="prix_coutant_mode">
+
+                      <div class="mur-btn-div tooltip-srf">
+                          <span  class="mur-ttl">
+                              Prix coûtant
+                          </span>
+                      </div>
+                      
+
+                      <nz-radio-group formControlName="artisan_pose">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Artisan cloison :</label>
+                          <div>
+                              <div *ngFor="let option of artisans_pose_mur[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                              </label>
                               </div>
-                          </ng-container>
+                          </div>
+                          </div>
                       </nz-radio-group>
-                    </div>
-
-                    <div class="mur-btn-div tooltip-srf">
-                        <span  class="mur-ttl">
-                            Prix coûtant
-                        </span>
+<!--
+                      <nz-radio-group formControlName="fournisseur_pose">
+                         
+                          <div class="flx-radio-row2">
+                          <label>Fournisseur cloison :</label>
+                          <div>
+                              <div *ngFor="let option of fournisseurs_pose_mur[i]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+-->
                     </div>
                     
-
-                    <nz-radio-group formControlName="artisan_pose">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Artisan cloison :</label>
-                        <div>
-                            <div *ngFor="let option of artisans_pose_mur[i]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
-
-                    <nz-radio-group formControlName="fournisseur_pose">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Fournisseur cloison :</label>
-                        <div>
-                            <div *ngFor="let option of fournisseurs_pose_mur[i]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
+                    
 
 
                   <!-- etc. -->
@@ -81,6 +97,9 @@
               <div formArrayName="ouverturePartielle">
                 <div *ngFor="let ouverture of ouverturePartielle.controls; let j = index" [formGroupName]="j">
                     <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques de la cloison {{j+1}}</span></div>
+
+                    <div *ngIf="!prix_coutant_mode">
+
                       <div class="flx-radio-row2">
                         <label class="">Longueur :</label> 
                         <input formControlName="longueur" placeholder="Longueur">
@@ -91,7 +110,7 @@
                       </div>
                       <div class="flx-radio-row2">
                         <label class="">longueur_ouverture :</label> 
-                    <input formControlName="longueur_ouverture" placeholder="longueur_ouverture">
+                        <input formControlName="longueur_ouverture" placeholder="longueur_ouverture">
                       </div>
                       <div class="flx-radio-row2">
                         <label class="">Hauteur de l'ouverture :</label> 
@@ -121,41 +140,50 @@
                         </nz-radio-group>
                       </div>
 
+                    </div>
+                      
+
+                    <div *ngIf="prix_coutant_mode">
 
                       <div class="mur-btn-div tooltip-srf">
                         <span  class="mur-ttl">
                             Prix coûtant
                         </span>
-                    </div>
+                      </div>
                     
 
-                    <nz-radio-group formControlName="artisan_pose">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Artisan cloison :</label>
-                        <div>
-                            <div *ngFor="let option of artisans_pose_ouverture[j]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
+                      <nz-radio-group formControlName="artisan_pose">
+                          <!-- Plinthes bois -->
+                          <div class="flx-radio-row2">
+                          <label>Artisan cloison :</label>
+                          <div>
+                              <div *ngFor="let option of artisans_pose_ouverture[j]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+                      <!--
 
-                    <nz-radio-group formControlName="fournisseur_pose">
-                        <!-- Plinthes bois -->
-                        <div class="flx-radio-row2">
-                        <label>Fournisseur cloison :</label>
-                        <div>
-                            <div *ngFor="let option of fournisseurs_pose_ouverture[j]">
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                            </label>
-                            </div>
-                        </div>
-                        </div>
-                    </nz-radio-group>
+                      <nz-radio-group formControlName="fournisseur_pose">
+                         
+                          <div class="flx-radio-row2">
+                          <label>Fournisseur cloison :</label>
+                          <div>
+                              <div *ngFor="let option of fournisseurs_pose_ouverture[j]">
+                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                              </label>
+                              </div>
+                          </div>
+                          </div>
+                      </nz-radio-group>
+                      -->
+                    </div>
+
+                      
                 </div>
               </div>
             
@@ -165,6 +193,7 @@
               <div class="grid-btn-action">
                 <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
                 <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+                <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
 
             </div>
               

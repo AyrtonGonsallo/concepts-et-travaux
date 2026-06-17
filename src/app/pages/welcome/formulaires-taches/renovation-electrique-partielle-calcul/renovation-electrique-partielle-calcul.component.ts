@@ -22,6 +22,9 @@ export class RenovationElectriquePartielleCalculComponent {
   appareils_electrique_a_remplacer:Equipement[]=[]
   appareils_a_remplacer_form:Equipement[]=[]
   edit_mode=false
+  prix_coutant_mode=false
+
+
 
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
       }
@@ -31,13 +34,18 @@ export class RenovationElectriquePartielleCalculComponent {
         this.route.queryParams.subscribe(params => {
           const mode = params['mode'];
           if (mode === 'modification') {
-            // Mode modification activé
-            console.log('On est en mode modification');
-            this.edit_mode=true
-          } else {
-            // Mode création/test
-            console.log('On est en mode test');
-          }
+          // Mode modification activé
+          console.log('On est en mode modification');
+          this.edit_mode=true
+        } else if (mode === 'prix_coutant') {
+          // Mode prix_coutant activé
+          console.log('On est en mode prix_coutant');
+          this.prix_coutant_mode=true
+        }
+        else {
+          // Mode création/test
+          console.log('On est en mode test');
+        }
         });
         this.route.params.subscribe(params => {
           this.tacheId = params['id'] ?? '0';

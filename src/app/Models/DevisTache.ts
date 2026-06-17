@@ -10,6 +10,7 @@ export interface DevisTache {
     TravailSlug: string;
     Commentaires?: string;
     Prix:number;
+    PrixCoutant?:number;
     Donnees: any; // Utilisez un type spécifique pour Donnees selon la structure de votre JSON
   }
   

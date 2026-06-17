@@ -128,7 +128,7 @@ export class FournisseurDetailsComponent {
         next: (data: ModeleEquipement[]) => {
           this.modele = data;
           this.listOfDisplayData = [...this.modele];
-          console.log("réponse de la requête getFournisseurGammesSansEquipement", this.modele);
+          console.log("réponse de la requête getFournisseurModelesEquipement", this.modele);
           resolve();
         },
         error: (err) => reject(err)
@@ -146,7 +146,7 @@ export class FournisseurDetailsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'fournitures_export.xlsx';  // Nom du fichier
+      a.download = 'equipements_export.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -265,6 +265,12 @@ deleteTache(id: number) {
     {
       title: 'Travail',
       compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
+      priority: 1,
+      order:null
+    },
+    {
+      title: 'Étape',
+      compare: (a: Gamme, b: Gamme) => (a.Etape??"").localeCompare(b.Etape??""),
       priority: 1,
       order:null
     },

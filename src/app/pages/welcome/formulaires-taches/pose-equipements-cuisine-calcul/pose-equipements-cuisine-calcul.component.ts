@@ -21,6 +21,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
   devisTache!:DevisTache;
   detailsCalcul:any
   edit_mode=false
+  prix_coutant_mode=false
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
 
@@ -31,7 +32,12 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
           // Mode modification activé
           console.log('On est en mode modification');
           this.edit_mode=true
-        } else {
+        } else if (mode === 'prix_coutant') {
+          // Mode prix_coutant activé
+          console.log('On est en mode prix_coutant');
+          this.prix_coutant_mode=true
+        }
+        else {
           // Mode création/test
           console.log('On est en mode test');
         }
@@ -276,7 +282,7 @@ load_artisans_fournisseurs(){
    
   
     this.devisTache.Donnees = {
-       "nomtache":this.devisTache.TravailSlug,
+      "nomtache":this.devisTache.TravailSlug,
       "idtache":this.devisTache.TravailID,
       "gammes-produits-pose-elementcuisines": {
         gammes_depose_form: gammes_depose_form,

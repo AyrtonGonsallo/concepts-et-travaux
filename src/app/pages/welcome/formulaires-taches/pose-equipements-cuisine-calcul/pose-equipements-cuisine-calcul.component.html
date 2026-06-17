@@ -17,7 +17,7 @@
 
             
                         <div class="flex-2" *ngIf="appareils_cuisine_form.value[i].active">
-                            <div>
+                            <div *ngIf="!prix_coutant_mode">
                                 <div *ngIf="appareils_cuisine[i].AfficherLongueur" class="flx-radio-row2">
                                     <label for="longueur">Longueur (cm) :</label>
                                     <input   id="longueur" type="number" formControlName="longueur" min="0"/>     
@@ -39,7 +39,7 @@
                                     </nz-radio-group>
                                 </div> 
                             </div>
-                            <div class="flx-radio-row2">
+                            <div *ngIf="!prix_coutant_mode" class="flx-radio-row2">
                                 <div class="">
                                     <label class=""> Gamme :</label>  
                                 </div>
@@ -58,62 +58,51 @@
                             </div>
 
 
-                             <!--prix coûtant-->
-                            <span  class="mur-ttl">
-                                Prix coûtant {{appareils_cuisine && appareils_cuisine[i] ? appareils_cuisine[i].Titre : ""}}
-                            </span>
-                            
-                            <div class="flx-radio-row2">
-                                <div class="">
-                                    <label class=""> Artisan :</label>  
-                                </div>
-                                <nz-radio-group formControlName="artisan_pose" class="">
-                                    <div nz-col nzJustify="start" *ngFor="let option of artisans_pose[i]">
-                                        <div>
-                                            <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
-                                            <span>
-                                                {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                                            </span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div nz-col nzJustify="start">
-                                        <div>
-                                            <label nz-radio nzValue="">
-                                            <span>
-                                                Aucun
-                                            </span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </nz-radio-group>
-                            </div>
+                            <div *ngIf="prix_coutant_mode">
 
-                            <div class="flx-radio-row2">
-                                <div class="">
-                                    <label class=""> Fournisseur :</label>  
+                                <!--prix coûtant-->
+                                <span  class="mur-ttl" >
+                                    Prix coûtant {{appareils_cuisine && appareils_cuisine[i] ? appareils_cuisine[i].Titre : ""}}
+                                </span>
+                                
+                                <div class="flx-radio-row2">
+                                    <div class="">
+                                        <label class=""> Artisan :</label>  
+                                    </div>
+                                    <nz-radio-group formControlName="artisan_pose" class="">
+                                        <div nz-col nzJustify="start" *ngFor="let option of artisans_pose[i]">
+                                            <div>
+                                                <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
+                                                <span>
+                                                    {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                                </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                    </nz-radio-group>
                                 </div>
-                                <nz-radio-group formControlName="fournisseur_pose" class="">
-                                    <div nz-col nzJustify="start" *ngFor="let option of fournisseurs_pose[i]">
-                                        <div>
-                                            <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
-                                            <span>
-                                                {{option.Titre}} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                                            </span>
-                                            </label>
-                                        </div>
+
+                                <div class="flx-radio-row2">
+                                    <div class="">
+                                        <label class=""> Fournisseur :</label>  
                                     </div>
-                                    <div nz-col nzJustify="start">
-                                        <div>
-                                            <label nz-radio nzValue="">
-                                            <span>
-                                                Aucun
-                                            </span>
-                                            </label>
+                                    <nz-radio-group formControlName="fournisseur_pose" class="">
+                                        <div nz-col nzJustify="start" *ngFor="let option of fournisseurs_pose[i]">
+                                            <div>
+                                                <label nz-radio [nzValue]="option.ID + ':' + option.Titre + ':' + option.Prix">
+                                                <span>
+                                                    {{option.Titre}} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
+                                                </span>
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                </nz-radio-group>
+                                        
+                                    </nz-radio-group>
+                                </div>
+
                             </div>
+                             
                           
                           
                       </div>
@@ -132,7 +121,7 @@
               <div formArrayName="gammes_depose_form">
                 <div *ngFor="let gamme of gammes_depose_form.controls; let i = index" [formGroupName]="i" >
                
-                    <div *ngIf="gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
+                    <div *ngIf="!prix_coutant_mode && gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
                         <div>
                             <strong>
                                 {{ gamme.get('titre')?.value }}
@@ -141,7 +130,7 @@
                         <input type="number" formControlName="quantite" placeholder="Quantité"/>
                     </div>
 
-                    <div *ngIf="gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
+                    <div  *ngIf="prix_coutant_mode && gammes_depose_form.value[i].quantite>0" class="flx-radio-row2">
                         <div class="">
                             <label class=""> Artisan :</label>  
                         </div>
@@ -155,15 +144,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div nz-col nzJustify="start">
-                                <div>
-                                    <label nz-radio nzValue="">
-                                    <span>
-                                        Aucun
-                                    </span>
-                                    </label>
-                                </div>
-                            </div>
+                            
                         </nz-radio-group>
                     </div>
                      
@@ -182,8 +163,10 @@
 
 
         <div class="grid-btn-action">
-             <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+             <button  nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
              <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+             <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+
 
         </div>
            
