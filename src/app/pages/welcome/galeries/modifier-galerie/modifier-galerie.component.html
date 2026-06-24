@@ -1,24 +1,28 @@
 <div>
     <h2>{{galerie?.Titre}}</h2>
-    <span>{{ galerie?.Images?.length }} Images</span>
-    <div class="galerie-images-grid">
-        <div  class="galerie-image-link"*ngFor="let image of galerie?.Images" >
-        <div  class="galerie-image" [style.backgroundImage]="'url('+url_images + image.Url + ')'">
-            <button nz-button nzType="primary" [nzSize]="size" (click)="delete_image_from_gallery(image.ID)" nzShape="circle"><span nz-icon nzType="close"></span></button>
-            <a target="_blank" [href]="url_images + image.Url" nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="fullscreen"></span></a>
-
-        </div>
-    </div>
-    </div>
+    
+   
 
     
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
+                <span>Type</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-radio-group formControlName="type">
+                    <label nz-radio nzValue="Réalisation">Réalisation</label>
+                    <label nz-radio nzValue="Proposition">Proposition</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
        
         <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
-            <input nz-input formControlName="titre" id="titre" />
-        </nz-form-control>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
+                <input nz-input formControlName="titre" id="titre" />
+            </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
@@ -34,21 +38,9 @@
                   }"
                 ></editor>
             </nz-form-control>
-          </nz-form-item>
-
-         <nz-form-item >
-            <nz-form-label [nzSm]="6" [nzXs]="6" nzRequired nzFor="cover_image"  >
-                <span>Image de couverture</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="12" [nzXs]="12" nzErrorTip="remplissez ce champ">
-                <input type="text" id="cover_image" formControlName="cover_image" hidden />
-                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
-                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB    
-                <br> 
-                <a [href]="file_cover_preview" target="_blank">Voir l'image actuelle</a>
-            </nz-form-control>
-            
         </nz-form-item>
+
+         
 
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pieces"  >
@@ -81,16 +73,20 @@
         </nz-form-item>
 
 
-         <nz-form-item >
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
-                <span>Type</span>
+         
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="6" nzRequired nzFor="cover_image"  >
+                <span>Image de couverture</span>
             </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-radio-group formControlName="type">
-                    <label nz-radio nzValue="Réalisation">Réalisation</label>
-                    <label nz-radio nzValue="Proposition">Proposition</label>
-                </nz-radio-group>
+            <nz-form-control [nzSm]="12" [nzXs]="12" nzErrorTip="remplissez ce champ">
+                <input type="text" id="cover_image" formControlName="cover_image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB    
+                <br> 
+                <a [href]="file_cover_preview" target="_blank">Voir l'image actuelle</a>
             </nz-form-control>
+            
         </nz-form-item>
      
         <nz-form-item>
@@ -111,6 +107,26 @@
                     </nz-upload>
             </nz-form-control>
         </nz-form-item>
+
+        <div nz-row>
+            <div nz-col nzSpan="12" nzOffset="6">
+                
+                <span>{{ galerie?.Images?.length }} Images</span>
+
+                <div class="galerie-images-grid">
+                    <div  class="galerie-image-link"*ngFor="let image of galerie?.Images" >
+                        <div  class="galerie-image" [style.backgroundImage]="'url('+url_images + image.Url + ')'">
+                            <button nz-button nzType="primary" [nzSize]="size" (click)="delete_image_from_gallery(image.ID)" nzShape="circle"><span nz-icon nzType="close"></span></button>
+                            <a target="_blank" [href]="url_images + image.Url" nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="fullscreen"></span></a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
         
         <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">

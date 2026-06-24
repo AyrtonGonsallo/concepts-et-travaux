@@ -24,11 +24,14 @@
               <a
                 [routerLink]="['/administration', 'projets', 'modifier-projet', data.Projets[0]?.Id]"
                 style="color:black;text-decoration: underline;"
+                *ngIf="data.Projets.length>0"
               >
                 Projet {{ data.Projets[0]?.Id }}
               </a>
             </td>
 
+            <td>{{ calculerPCHT(data.DevisTaches) | number:'1.2-2' }} €</td>
+            <td>{{ calculerPrixHT(data) | number:'1.2-2' }} €</td>
             <td>{{ calculerPrixTTC(data,data.Tva.Valeur) | number:'1.2-2' }} €</td>
 
            

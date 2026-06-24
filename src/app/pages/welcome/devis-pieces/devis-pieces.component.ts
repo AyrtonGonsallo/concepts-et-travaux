@@ -44,6 +44,19 @@ export class DevisPiecesComponent {
       priority: 1,
       order:null, 
     },
+     {
+      title: 'Prix coûtant HT',
+      compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
+      priority: 1,
+      order:null, 
+    },
+     {
+      title: 'Prix HT',
+      compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
+      priority: 1,
+      order:null, 
+    },
+    
     {
       title: 'Prix TTC',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
@@ -97,6 +110,20 @@ export class DevisPiecesComponent {
     if (!data?.Prix) return 0;
     const total = data.Prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
+  }
+
+  calculerPrixHT(data: any): number {
+    if (!data?.Prix) return 0;
+    const total = data.Prix * this.coefficient;
+    return Math.round(total * 100) / 100; // arrondi à 2 décimales
+  }
+
+  calculerPCHT(devistaches: any,): number {
+    let prix_coutant = 0
+    devistaches.forEach((tache:any) => {
+      prix_coutant+=tache?.PrixCoutant
+    });
+    return Math.round(prix_coutant * 100) / 100; // arrondi à 2 décimales
   }
 
 

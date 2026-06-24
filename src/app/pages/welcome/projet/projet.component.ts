@@ -6,6 +6,7 @@ import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { Title } from '@angular/platform-browser';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-projet',
@@ -46,7 +47,13 @@ export class ProjetComponent {
     
   ];
 
-  constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
+  constructor(private fb: NonNullableFormBuilder,private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { 
+    this.projet_devis_Form = this.fb.group({
+      devis_id: [0, [Validators.required]],
+      projet_id: [0, [Validators.required]],
+      action: ['add', [Validators.required]],
+    });
+  }
 
   ngOnInit(): void {
     this.titleService.setTitle('Liste des projets');
@@ -55,27 +62,28 @@ export class ProjetComponent {
   }
 
   
+  
   tva = 0
   coefficient = 0
   load_parametres(){
     this.userService.get_parametre_by_id_or_nom(6,"TVA")
-        .subscribe(
-          (data) => {
-            this.tva=(1+data.Valeur/100);
-            console.log("tva",data)
-          },
-          (error) => {
-            console.error('Erreur lors de la recupération des parametres', error);
-          });
+    .subscribe(
+      (data) => {
+        this.tva=(1+data.Valeur/100);
+        console.log("tva",data)
+      },
+      (error) => {
+        console.error('Erreur lors de la recupération des parametres', error);
+      });
 
     this.userService.get_parametre_by_id_or_nom(1,"coefficient")
-        .subscribe(
-          (data) => {
-            this.coefficient=data.Valeur;
-          },
-          (error) => {
-            console.error('Erreur lors de la recupération des parametres', error);
-          });
+    .subscribe(
+      (data) => {
+        this.coefficient=data.Valeur;
+      },
+      (error) => {
+        console.error('Erreur lors de la recupération des parametres', error);
+      });
   }
 
   calculerPrixTTC(prix: any,tva:number): number {
@@ -135,8 +143,39 @@ export class ProjetComponent {
       console.error('Erreur lors de la suppression de l\'utilisateur :', error);
     })
 
-    
+  }
 
-    
+
+  projet_devis_Form: FormGroup<{
+      projet_id: FormControl<number>;
+      devis_id: FormControl<number>;
+      action: FormControl<string>;
+  }>;
+
+  _display_edit_relation = false
+  _swith_display_edit_relation(){
+    this._display_edit_relation = !this._display_edit_relation
+  }
+
+  _editProjetDevis() {
+    let projet_id = this.projet_devis_Form.controls['projet_id'].value;
+    let devis_id = this.projet_devis_Form.controls['devis_id'].value;
+    let action = this.projet_devis_Form.controls['action'].value;
+
+    this.userService.edit_projet_devis(projet_id, devis_id, action).subscribe((succ) => {
+      if (this.authService.isAdminorSuperAdmin()) {
+        this.message.success( `Relation projet devis modifiée`);
+        this.loadProjets();
+        return true
+      } else {
+        this.message.error( `Vous n'avez pas assez de privilèges pour faire cette action`);
+        return false;
+      }
+    },
+    (error) => {
+      console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+      this.message.error( `Relation projet devis modifiée`);
+    })
+
   }
 }

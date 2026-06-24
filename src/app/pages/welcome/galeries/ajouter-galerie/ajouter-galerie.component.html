@@ -1,11 +1,25 @@
 <div>
     <h2>Ajouter une galerie</h2>  
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
+                <span>Type</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-radio-group formControlName="type">
+                    <label nz-radio nzValue="Réalisation">Réalisation</label>
+                    <label nz-radio nzValue="Proposition">Proposition</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+
         <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
-            <input nz-input formControlName="titre" id="titre" />
-        </nz-form-control>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="titre">Titre de la galerie</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="entrez une valeur">
+                <input nz-input formControlName="titre" id="titre" />
+            </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
@@ -23,16 +37,7 @@
             </nz-form-control>
           </nz-form-item>
 
-         <nz-form-item >
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="cover_image"  >
-              <span>Image de couverture</span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-              <input type="text" id="cover_image" formControlName="cover_image" hidden />
-              <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
-              Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
-          </nz-form-control>
-        </nz-form-item>
+       
 
         <nz-form-item >
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="pieces"  >
@@ -65,15 +70,16 @@
         </nz-form-item>
 
 
-         <nz-form-item >
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type"  >
-                <span>Type</span>
+         
+
+        <nz-form-item >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="cover_image"  >
+                <span>Image de couverture</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-radio-group formControlName="type">
-                    <label nz-radio nzValue="Réalisation">Réalisation</label>
-                    <label nz-radio nzValue="Proposition">Proposition</label>
-                </nz-radio-group>
+                <input type="text" id="cover_image" formControlName="cover_image" hidden />
+                <input type="file" accept=".png,.jpeg,.jpg,.svg,.webp"  [attr.maxFileSize]="10 * 1024 * 1024" nz-upload  (change)="handleFileInput2($event)" />                
+                Formats autorisés: .png, .jpeg, .jpg et taille < 10 MB     
             </nz-form-control>
         </nz-form-item>
      

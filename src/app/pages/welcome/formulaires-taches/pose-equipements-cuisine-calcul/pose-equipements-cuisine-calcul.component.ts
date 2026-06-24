@@ -210,13 +210,14 @@ artisans_depose:any[] = []
 artisans_pose:any[] = []
 fournisseurs_pose:any[] = []
 
+artisansDistincts:any
+fournisseursDistincts:any
 
 
 load_artisans_fournisseurs(){
 
   this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form.map((gamme:any, i:number) => {
     let ref_id=(gamme.id);
-    let qte=gamme.quantite;
     if(1==1){
 
        this.userService.getArtisansFournisseursElementsByGammeReference(ref_id,'artisan').subscribe(
@@ -235,7 +236,6 @@ load_artisans_fournisseurs(){
 
    
     let ref_id=(appareil.modele)?parseInt(appareil.modele.split(":")[0]):0;
-    let active=appareil.active;
     if(1==1){
 
       this.userService.getArtisansFournisseursModelesByReference(ref_id,'artisan').subscribe(
@@ -264,6 +264,25 @@ load_artisans_fournisseurs(){
     console.log('total artisans_depose:', this.artisans_depose);
     console.log('total artisans_pose:', this.artisans_pose);
     console.log('total fournisseurs_pose:', this.fournisseurs_pose);
+
+   this.artisansDistincts = [
+      ...new Map(
+        [...this.artisans_depose.flat(), ...this.artisans_pose.flat()]
+          .map((a: any) => [a.ArtisanID, a.Artisan])
+      ).values()
+    ];
+
+
+
+    this.fournisseursDistincts = [
+      ...new Map(
+        this.fournisseurs_pose
+          .flat()
+          .map((f: any) => [f.FournisseurID, f.Fournisseur])
+      ).values()
+    ];
+
+
   }, 4000);
   
 }
