@@ -146,7 +146,7 @@ export class ArtisanDetailsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'equipements_export.xlsx';  // Nom du fichier
+      a.download = `exports-equipements-${this.userData.Nom}-${this.userData.Prenom}.xlsx`;  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -168,7 +168,7 @@ export class ArtisanDetailsComponent {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = `modele_import_equipements_artisan_${this.userId}.xlsx`;  // Nom du fichier
+      a.download = `modele-tarifs-equipements-artisans.xlsx`;  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -334,7 +334,7 @@ deleteTache(id: number) {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'taches_export.xlsx';  // Nom du fichier
+      a.download = `exports-taches-${this.userData.Nom}-${this.userData.Prenom}.xlsx`;  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
@@ -356,7 +356,7 @@ deleteTache(id: number) {
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = `modele_import_taches_artisan_${this.userId}.xlsx`;  // Nom du fichier
+      a.download = `modele-tarifs-taches-artisans.xlsx`;  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();
