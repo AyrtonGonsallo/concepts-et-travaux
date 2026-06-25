@@ -30,21 +30,21 @@ export class GammeComponent {
       compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
       priority: 2,
       order:"ascend",
-      width:'250px'
+      width:'150px'
     },
     {
       title: 'Sous-catégorie',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
       priority: 1,
       order:null,
-      width:'250px'
+      width:'150px'
     },
     {
       title: 'Travail',
       compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
       priority: 1,
       order:null,
-      width:'250px'
+      width:'150px'
     },
     
     
@@ -54,14 +54,14 @@ export class GammeComponent {
       compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
       priority: 1,
       order:null,
-      width:'100px'
+      width:'70px'
     },
     {
       title: 'Ordre',
       compare: (a: Gamme, b: Gamme) => a.Ordre-(b.Ordre),
       priority: 3,
       order:"ascend",
-      width:'100px'
+      width:'70px'
     },
     
   ];

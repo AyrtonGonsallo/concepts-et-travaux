@@ -89,3 +89,9 @@
     flex-direction: row;
     justify-content: space-between;
 }
+.prix-coutant-table tr,.prix-coutant-table th,.prix-coutant-table td{
+    border:solid black 1px;
+}
+.prix-final-table{
+    float: right;
+}

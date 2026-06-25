@@ -1,30 +1,30 @@
 <div>
     <h2>Liste des tâches</h2>  
     
-    <div>
+    <div class="box-filters">
       <fieldset>
         <legend>Tâches</legend>
             
           <div class="section-produit">
       
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter une tâche</button>
+            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter une tâche</button>
             <div class="section-import">
               <div class="input-link">
                 <input type="file" (change)="onFileSelected($event)" />
                 <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" >Télécharger le modèle</a>
               </div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
+              <button nz-button nzType="primary" class=" w-fit positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
             </div> 
             
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
+            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
             
           </div> 
           
       </fieldset>
     </div>
 
-    <div>
+    <div class="box-filters">
       <fieldset>
         <legend>Filtres</legend>
             
@@ -91,11 +91,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of sortTable.data" >
-            <td>{{ data.Label }}</td>
-            <td>{{ data.Type }}</td>
-            <td>{{ get_travail_title(data.TravailID) }}</td>
-            <td>{{ data.Prix }} €</td>
-            <td>{{ data.Ordre }} </td>
+            <td nzEllipsis>{{ data.Label }}</td>
+            <td nzEllipsis>{{ data.Type }}</td>
+            <td nzEllipsis>{{ get_travail_title(data.TravailID) }}</td>
+            <td nzEllipsis>{{ data.Prix }} €</td>
+            <td nzEllipsis>{{ data.Ordre }} </td>
             
           
            

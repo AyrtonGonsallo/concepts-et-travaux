@@ -375,5 +375,47 @@ load_artisans_fournisseurs(){
     });
   }
 
+
+  get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].gamme.split(':')[1]);
+        break;
+      case 'nature_porte':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].nature_porte.split(':')[1]);
+        break;
+      case 'type_porte':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].type_porte.split(':')[1]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_pose?.split(':')[1] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_pose?.split(':')[1] || '0')
+        break;
+      case 'nature_porte':
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_nature?.split(':')[1] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_nature?.split(':')[1] || '0')
+        break;
+      case 'type_porte':
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_type?.split(':')[1] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_type?.split(':')[1] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
 }
   

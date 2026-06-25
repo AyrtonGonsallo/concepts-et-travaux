@@ -47,3 +47,18 @@ legend{
 .filter-select2{
     width: 350px;
 }
+.box-filters{
+    max-width: 457px;
+}
+.w-fit{
+    width: fit-content;
+}
+
+@media (max-width:1450px) {
+    .filter-container {
+        flex-direction: column;
+    }
+}
+.mr-5{
+    margin-right: 5px;
+}

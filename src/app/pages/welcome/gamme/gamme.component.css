@@ -47,4 +47,13 @@ legend{
     .filter-container {
         flex-direction: column;
     }
+    .section-produit {
+        flex-direction: column;
+    }
+}
+.box-filters{
+    max-width: 457px;
+}
+.w-fit{
+    width: fit-content;
 }
