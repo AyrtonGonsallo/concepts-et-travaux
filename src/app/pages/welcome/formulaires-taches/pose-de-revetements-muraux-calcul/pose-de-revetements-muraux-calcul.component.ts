@@ -402,9 +402,12 @@ load_artisans_fournisseurs(){
         (response) => {
           console.log('Tache modifiée avec succès :', response);
           this.message.create('success', `Tache modifié avec succès`);
-          setTimeout(() => {
-          this.reloadCurrentRoute()
-          }, 2000);
+          if(!this.prix_coutant_mode){
+             setTimeout(() => {
+            this.reloadCurrentRoute()
+            }, 2000);
+          }
+         
         },
         (error) => {
           console.error('Erreur lors de la modification de la tache :', error);
@@ -430,6 +433,75 @@ load_artisans_fournisseurs(){
 }
 
 
+
+
+  get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].gamme.split(':')[2]);
+        break;
+      case 'etat':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-murs"].murs[i].etat.split('-')[2]);
+        break;
+      case 'depose':
+        prix = parseFloat(this.donnees["dimensions-pose-murs"].murs[i].depose.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix += parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].fournisseur_pose?.split(':')[2] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_pose?.split(':')[2] || '0')
+        break;
+      case 'etat':
+        prix += parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_surfaces?.split('-')[2] || '0')
+        break;
+      case 'depose':
+        prix += parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_depose?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_client_choice_label(i:number,type:string){
+    let label = ''
+    switch (type) {
+      case 'depose':
+        label = this.donnees["dimensions-pose-murs"].murs[i].depose?.split(':')[1] 
+        break;
+      case 'etat':
+        label = this.donnees["etat-surfaces-pose-murs"].murs[i].etat?.split('-')[1] 
+        break;
+      case 'gamme':
+        label = this.donnees["gammes-produits-pose-murs"].murs[i].gamme?.split(':')[1]
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
+  }
+
+  get_dimensions(i:number){
+    let label = '1 \n'
+   
+    label += `longueur : ${this.donnees["dimensions-pose-murs"].murs[i].longueur} cm\n` 
+    label += `hauteur : ${this.donnees["dimensions-pose-murs"].murs[i].hauteur } cm\n`
+       
+    
+    return label
+  }
 
 }
 

@@ -146,26 +146,26 @@ fournisseurs_pose_mur:any[] = []
 
 load_artisans_fournisseurs(){
 
-  this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.map((mur:any, i:number) => {
-    let rev_a_poser_id=parseInt(mur.cloison.split(":")[0]);
+  this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.map((ouverture:any, i:number) => {
+    let rev_a_poser_id=parseInt(ouverture.cloison.split(":")[0]);
 
     this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
       (response: any) => {
-        console.log('recuperation des artisans_depose:', response);
+        console.log('recuperation des artisans_pose_ouverture:', response);
         this.artisans_pose_ouverture[i] = response;
       },
       (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_depose :', error);
+        console.error('Erreur lors de la recuperation des artisans_pose_ouverture :', error);
       }
     );
 
     this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
       (response: any) => {
-        console.log('recuperation des artisans_surfaces:', response);
+        console.log('recuperation des fournisseurs_pose_ouverture:', response);
         this.fournisseurs_pose_ouverture[i] = response;
       },
       (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_surfaces :', error);
+        console.error('Erreur lors de la recuperation des fournisseurs_pose_ouverture :', error);
       }
     );
 
@@ -174,26 +174,26 @@ load_artisans_fournisseurs(){
 
 
 
-   this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.map((ouverture: any, i:number) => {
+   this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.map((ouverture: any, i:number) => {
     let rev_a_poser_id=parseInt(ouverture.cloison.split(":")[0]);
 
     this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
       (response: any) => {
-        console.log('recuperation des artisans_depose:', response);
+        console.log('recuperation des artisans_pose_mur:',rev_a_poser_id, response);
         this.artisans_pose_mur[i] = response;
       },
       (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_depose :', error);
+        console.error('Erreur lors de la recuperation des artisans_pose_mur :', error);
       }
     );
 
     this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
       (response: any) => {
-        console.log('recuperation des artisans_surfaces:', response);
+        console.log('recuperation des fournisseurs_pose_mur:', response);
         this.fournisseurs_pose_mur[i] = response;
       },
       (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_surfaces :', error);
+        console.error('Erreur lors de la recuperation des fournisseurs_pose_mur :', error);
       }
     );
 
@@ -311,9 +311,12 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+          setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+        }
+       
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -323,4 +326,85 @@ modifier(){
     console.error('Erreur lors du calcul du prix:', error);
   });
 }
+
+
+
+
+  get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'murs':
+        prix = parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].cloison.split(':')[2]);
+        break;
+      case 'ouverture':
+        prix = parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].cloison.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'murs':
+        prix += parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].fournisseur_pose?.split(':')[2] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].artisan_pose?.split(':')[2] || '0')
+        break;
+      case 'ouverture':
+        prix += parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].artisan_pose?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_client_choice_label(i:number,type:string){
+    let label = ''
+    switch (type) {
+      case 'murs':
+        label = this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].cloison?.split(':')[1] 
+        break;
+      case 'ouverture':
+        label = this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].cloison?.split(':')[1] 
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
+  }
+
+  get_dimensions(i:number,type:string){
+    let label = 'quantité : 1 \n'
+   
+    
+       
+    switch (type) {
+      case 'murs':
+        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].longueur} cm\n` 
+        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].hauteur } cm\n`
+        break;
+      case 'ouverture':
+        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur} cm\n` 
+        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur } cm\n`
+        label += `longueur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur_ouverture } cm\n`
+        label += `hauteur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_ouverture } cm\n`
+        label += `hauteur depuis le sol : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_sol } cm\n`
+        label += `hauteur depuis le plafond : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_plafond } cm\n`
+        break;
+    
+      default:
+        break;
+    }
+    
+    return label
+  }
+
+
+
 }

@@ -216,6 +216,7 @@ submit(){
     "dimensions-pose-plafond": {
       longueur: this.formulaire.value.longueur,
       largeur: this.formulaire.value.largeur,
+      hauteur: this.formulaire.value.hauteur,
       depose: this.formulaire.value.depose
     },
     "etat-surfaces-pose-plafond": {
@@ -224,9 +225,6 @@ submit(){
     "gammes-produits-pose-plafond": {
       gamme: this.formulaire.value.gamme,
       autre_gamme: this.formulaire.value.autre_gamme,
-      lineaire: this.formulaire.value.lineaire,
-      plinthes: this.formulaire.value.plinthes,
-      has_plinthes: this.formulaire.value.has_plinthes,
       artisan_depose:this.formulaire.value.artisan_depose,
       artisan_surfaces:this.formulaire.value.artisan_surfaces,
       artisan_pose:this.formulaire.value.artisan_pose,
@@ -288,6 +286,7 @@ modifier(){
     "dimensions-pose-plafond": {
       longueur: this.formulaire.value.longueur,
       largeur: this.formulaire.value.largeur,
+      hauteur: this.formulaire.value.hauteur,
       depose: this.formulaire.value.depose
     },
     "etat-surfaces-pose-plafond": {
@@ -296,8 +295,6 @@ modifier(){
     "gammes-produits-pose-plafond": {
       gamme: this.formulaire.value.gamme,
       autre_gamme: this.formulaire.value.autre_gamme,
-      lineaire: this.formulaire.value.lineaire,
-      plinthes: this.formulaire.value.plinthes,
       has_plinthes: this.formulaire.value.has_plinthes,
       artisan_depose:this.formulaire.value.artisan_depose,
       artisan_surfaces:this.formulaire.value.artisan_surfaces,
@@ -341,9 +338,12 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+          setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+        }
+        
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -353,6 +353,82 @@ modifier(){
     console.error('Erreur lors du calcul du prix:', error);
   });
 }
+
+
+
+
+
+
+  get_prix_vente(type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-plafond"].gamme.split(':')[2]);
+        break;
+      case 'etat':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-plafond"].etat.split('-')[2]);
+        break;
+      case 'depose':
+        prix = parseFloat(this.donnees["dimensions-pose-plafond"].depose.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix += parseFloat(this.donnees["gammes-produits-pose-plafond"].fournisseur_pose?.split(':')[2] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-plafond"].artisan_pose?.split(':')[2] || '0')
+        break;
+      case 'etat':
+        prix += parseFloat(this.donnees["gammes-produits-pose-plafond"].artisan_surfaces?.split('-')[2] || '0')
+        break;
+      case 'depose':
+        prix += parseFloat(this.donnees["gammes-produits-pose-plafond"].artisan_depose?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_client_choice_label(type:string){
+    let label = ''
+    switch (type) {
+      case 'depose':
+        label = this.donnees["dimensions-pose-plafond"].depose?.split(':')[1] 
+        break;
+      case 'etat':
+        label = this.donnees["etat-surfaces-pose-plafond"].etat?.split('-')[1] 
+        break;
+      case 'gamme':
+        label = this.donnees["gammes-produits-pose-plafond"].gamme?.split(':')[1]
+        break;
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
+  }
+
+  get_dimensions(){
+    let label = '1 \n'
+   
+    label += `longueur : ${this.donnees["dimensions-pose-plafond"].longueur} cm\n` 
+    label += `largeur : ${this.donnees["dimensions-pose-plafond"].largeur } cm\n`
+    label += `hauteur : ${this.donnees["dimensions-pose-plafond"].hauteur } cm\n`  
+    
+    return label
+  }
+
+
 
 }
 

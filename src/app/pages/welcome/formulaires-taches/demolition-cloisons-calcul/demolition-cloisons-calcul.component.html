@@ -1,227 +1,267 @@
 <div class="width-800">
-    <h1 class="ttl-recap">Démolition de cloisons ou ouverture partielle sur des murs non porteurs</h1>
+  <h1 class="ttl-recap">Démolition de cloisons ou ouverture partielle sur des murs non porteurs</h1>
         
-        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
+  <form *ngIf="formulaire && !prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
             
-            <div formArrayName="mursNonporteurs">
-                <div *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
-                    <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques du mur {{i+1}}</span></div>
-                    
-            
-                    <div *ngIf="!prix_coutant_mode">
+    <div formArrayName="mursNonporteurs">
+      <div *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
+        <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques du mur {{i+1}}</span></div>
+        
 
-                      <div class="flx-radio-row11">
-                        <div class="flx-radio-row11">
-                          <label class="">Longueur :</label> 
-                          <input formControlName="longueur" placeholder="Longueur du mur">
-                        </div>
-                        <div class="flx-radio-row11">
-                          <label class="">Hauteur :</label> 
-                          <input formControlName="hauteur" placeholder="Hauteur du mur">
-                        </div>
-                      </div>
-                      <div class="flx-radio-row11">
-                        <div class="flx-radio-row11">
-                          <label class="">Nombre de portes :</label> 
-                          <input formControlName="ndp" placeholder="Nombre de portes">
-                        </div>
-                      </div>
-                      
-                      <div class="flx-radio-row11">
-                        <label class="">Type de cloison :</label> 
-                        <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
-                            <ng-container>
-                                <div *ngFor="let option of gammes_cloison_complete" class="parquet-option  flex-see-gamme">
-                                    <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
-                                        <span>
-                                        {{ option.Label }}
-                                        </span>
-                                    </label>
-                                </div>
-                            </ng-container>
-                        </nz-radio-group>
-                      </div>
+        <div>
 
-
+          <div class="flx-radio-row11">
+            <div class="flx-radio-row11">
+              <label class="">Longueur :</label> 
+              <input formControlName="longueur" placeholder="Longueur du mur">
+            </div>
+            <div class="flx-radio-row11">
+              <label class="">Hauteur :</label> 
+              <input formControlName="hauteur" placeholder="Hauteur du mur">
+            </div>
+          </div>
+          <div class="flx-radio-row11">
+            <div class="flx-radio-row11">
+              <label class="">Nombre de portes :</label> 
+              <input formControlName="ndp" placeholder="Nombre de portes">
+            </div>
+          </div>
+          
+          <div class="flx-radio-row11">
+            <label class="">Type de cloison :</label> 
+            <nz-radio-group formControlName="cloison" class="radio-flx-spc flx-radio-row2">
+                <ng-container>
+                    <div *ngFor="let option of gammes_cloison_complete" class="parquet-option  flex-see-gamme">
+                        <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
+                            <span>
+                            {{ option.Label }}
+                            </span>
+                        </label>
                     </div>
-                    
+                </ng-container>
+            </nz-radio-group>
+          </div>
 
 
-                  
-                    <div *ngIf="prix_coutant_mode">
-
-                      <div class="mur-btn-div tooltip-srf">
-                          <span  class="mur-ttl">
-                              Prix coûtant
-                          </span>
-                      </div>
-                      
-
-                      <nz-radio-group formControlName="artisan_pose">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Artisan cloison :</label>
-                          <div>
-                              <div *ngFor="let option of artisans_pose_mur[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-<!--
-                      <nz-radio-group formControlName="fournisseur_pose">
-                         
-                          <div class="flx-radio-row2">
-                          <label>Fournisseur cloison :</label>
-                          <div>
-                              <div *ngFor="let option of fournisseurs_pose_mur[i]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
--->
-                    </div>
-                    
-                    
+        </div>
+        
 
 
-                  <!-- etc. -->
-                </div>
-              </div>
-            
-              <div formArrayName="ouverturePartielle">
-                <div *ngFor="let ouverture of ouverturePartielle.controls; let j = index" [formGroupName]="j">
-                    <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques de la cloison {{j+1}}</span></div>
+      
+      </div>
+    </div>
+          
+    <div formArrayName="ouverturePartielle">
+      <div *ngFor="let ouverture of ouverturePartielle.controls; let j = index" [formGroupName]="j">
+          <div class="div-mur-gm"><span class="mur-ttl">Caractéristiques de la cloison {{j+1}}</span></div>
 
-                    <div *ngIf="!prix_coutant_mode">
+          <div >
 
-                      <div class="flx-radio-row2">
-                        <label class="">Longueur :</label> 
-                        <input formControlName="longueur" placeholder="Longueur">
-                      </div>
-                      <div class="flx-radio-row2">
-                        <label class="">hauteur :</label> 
-                        <input formControlName="hauteur" placeholder="hauteur">
-                      </div>
-                      <div class="flx-radio-row2">
-                        <label class="">longueur_ouverture :</label> 
-                        <input formControlName="longueur_ouverture" placeholder="longueur_ouverture">
-                      </div>
-                      <div class="flx-radio-row2">
-                        <label class="">Hauteur de l'ouverture :</label> 
-                        <input formControlName="hauteur_ouverture" placeholder="Hauteur ouverture">
-                      </div>
-                      <div class="flx-radio-row2">
-                        <label class="">hauteur_depuis_le_plafond :</label> 
-                        <input formControlName="hauteur_depuis_le_plafond" placeholder="hauteur_depuis_le_plafond">
-                      </div>
-                      <div class="flx-radio-row2">
-                        <label class="">hauteur_depuis_le_sol :</label> 
-                        <input formControlName="hauteur_depuis_le_sol" placeholder="hauteur_depuis_le_sol">
-                      </div>
-                    
-                      <div class="flx-radio-row2">
-                        <label class="">Type de cloison :</label>
-                        <nz-radio-group formControlName="cloison" class="radio-flx-spc">
-                            <ng-container >
-                              <div *ngFor="let option of gammes_cloison_partielle" class="parquet-option  flex-see-gamme">
-                                <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
-                                  <span>
-                                    {{ option.Label }}
-                                  </span>
-                                </label>
-                              </div>
-                            </ng-container>
-                        </nz-radio-group>
-                      </div>
-
-                    </div>
-                      
-
-                    <div *ngIf="prix_coutant_mode">
-
-                      <div class="mur-btn-div tooltip-srf">
-                        <span  class="mur-ttl">
-                            Prix coûtant
+            <div class="flx-radio-row2">
+              <label class="">Longueur :</label> 
+              <input formControlName="longueur" placeholder="Longueur">
+            </div>
+            <div class="flx-radio-row2">
+              <label class="">hauteur :</label> 
+              <input formControlName="hauteur" placeholder="hauteur">
+            </div>
+            <div class="flx-radio-row2">
+              <label class="">longueur_ouverture :</label> 
+              <input formControlName="longueur_ouverture" placeholder="longueur_ouverture">
+            </div>
+            <div class="flx-radio-row2">
+              <label class="">Hauteur de l'ouverture :</label> 
+              <input formControlName="hauteur_ouverture" placeholder="Hauteur ouverture">
+            </div>
+            <div class="flx-radio-row2">
+              <label class="">hauteur_depuis_le_plafond :</label> 
+              <input formControlName="hauteur_depuis_le_plafond" placeholder="hauteur_depuis_le_plafond">
+            </div>
+            <div class="flx-radio-row2">
+              <label class="">hauteur_depuis_le_sol :</label> 
+              <input formControlName="hauteur_depuis_le_sol" placeholder="hauteur_depuis_le_sol">
+            </div>
+          
+            <div class="flx-radio-row2">
+              <label class="">Type de cloison :</label>
+              <nz-radio-group formControlName="cloison" class="radio-flx-spc">
+                  <ng-container >
+                    <div *ngFor="let option of gammes_cloison_partielle" class="parquet-option  flex-see-gamme">
+                      <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix"  class="with-link">
+                        <span>
+                          {{ option.Label }}
                         </span>
-                      </div>
-                    
-
-                      <nz-radio-group formControlName="artisan_pose">
-                          <!-- Plinthes bois -->
-                          <div class="flx-radio-row2">
-                          <label>Artisan cloison :</label>
-                          <div>
-                              <div *ngFor="let option of artisans_pose_ouverture[j]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                  {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-                      <!--
-
-                      <nz-radio-group formControlName="fournisseur_pose">
-                         
-                          <div class="flx-radio-row2">
-                          <label>Fournisseur cloison :</label>
-                          <div>
-                              <div *ngFor="let option of fournisseurs_pose_ouverture[j]">
-                              <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                  {{ option.Label }} - {{ option.Fournisseur?.Nom }} {{ option.Fournisseur?.Prenom }} ({{ option.Fournisseur?.CategorieFournisseur }}) - {{option.Prix}} €
-                              </label>
-                              </div>
-                          </div>
-                          </div>
-                      </nz-radio-group>
-                      -->
+                      </label>
                     </div>
+                  </ng-container>
+              </nz-radio-group>
+            </div>
 
-                      
-                </div>
-              </div>
+          </div>
             
+      </div>
+    </div>
+    
+      
+
+
+    <div class="grid-btn-action">
+        <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+        <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
+    </div>
+      
+    <ng-container *ngIf="detailsCalcul">
+        <div>
+          <div class="mur-btn-div tooltip-srf">
+              <span  class="mur-ttl">
+                  Prix facturé
+              </span>
+          </div>
+          <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+          <span>Formule: </span><br>
+          <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+        </div>
+    </ng-container>
+              
+  </form>
+
+
+
+
+
+
+
+  <form *ngIf="formulaire && prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
+
+
+    <div>
+      <!--prix coûtant-->
+
+      <div class="mur-btn-div tooltip-srf">
+          <span  class="mur-ttl">
+              Prix coûtant
+          </span>
+      </div>
+
+
+      <table class="prix-coutant-table">
+        <thead>
+          <tr>
+              
+              <th>Tâche</th>
+              <th>Artisan</th>
+              <th>Fournisseur </th>
+              <th>Quantité</th>
+              <th>Prix coûtant</th>
+              <th>Prix vente</th>
+          </tr>
+        </thead>
+        <tbody >
+          <ng-container formArrayName="mursNonporteurs">
+            <ng-container *ngFor="let mur of mursNonporteurs.controls; let i = index" [formGroupName]="i">
+              <tr>
+                <td>Cloison mur {{ i + 1 }} {{get_client_choice_label(i,'murs')}}</td>
+                <td>
+                    <nz-radio-group formControlName="artisan_pose">
+                      <!-- Plinthes bois -->
+                      <div >
+                     
+                        <div>
+                            <div *ngFor="let option of artisans_pose_mur[i]">
+                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                            </label>
+                            </div>
+                        </div>
+                      </div>
+                  </nz-radio-group>
+                </td>
+                <td>
+                    
+                </td>
+                <td [innerHTML]="get_dimensions(i,'murs')"> </td>
+                <td> {{get_prix_coutant(i,'murs')}}</td>
+                <td>{{get_prix_vente(i,'murs')}} </td>
+              </tr>
+
              
+            </ng-container>
+          </ng-container>
+
+          <ng-container formArrayName="ouverturePartielle">
+            <ng-container *ngFor="let ouverture of ouverturePartielle.controls; let j = index" [formGroupName]="j">
+              <tr>
+                <td>Cloison ouverture {{ j + 1 }} {{get_client_choice_label(j,'ouverture')}}</td>
+                <td>
+                    <nz-radio-group formControlName="artisan_pose">
+                      <!-- Plinthes bois -->
+                      <div>
+                        <div>
+                            <div *ngFor="let option of artisans_pose_ouverture[j]">
+                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                            </label>
+                            </div>
+                        </div>
+                      </div>
+                  </nz-radio-group>
+                </td>
+                <td>
+                    
+                </td>
+                <td [innerHTML]="get_dimensions(j,'ouverture')"> </td>
+                <td> {{get_prix_coutant(j,'ouverture')}}</td>
+                <td>{{get_prix_vente(j,'ouverture')}} </td>
+              </tr>
+
+             
+            </ng-container>
+          </ng-container>
+        
+
+
+        </tbody>
+        <tfoot *ngIf="detailsCalcul">
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
+            <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
+        </tr>
+        </tfoot>
+      </table>
+        
+    
+    </div>
+        
 
         
-              <div class="grid-btn-action">
-                <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
-                <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
-                <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
 
+    
+    <div class="grid-btn-action">
+        <button  nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+    </div>
+      
+    <ng-container *ngIf="detailsCalcul">
+        <div>
+            <div class="mur-btn-div tooltip-srf">
+                <span  class="mur-ttl">
+                    Prix coûtant
+                </span>
             </div>
-              
-              <ng-container *ngIf="detailsCalcul">
-               <div>
-                 <div class="mur-btn-div tooltip-srf">
-                    <span  class="mur-ttl">
-                        Prix facturé
-                    </span>
-                </div>
-                 <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-                 <span>Formule: </span><br>
-                 <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+            <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+            <span>Formule: </span><br>
+            <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+        </div>
+    </ng-container>
 
-                  <div class="mur-btn-div tooltip-srf">
-                    <span  class="mur-ttl">
-                        Prix coûtant
-                    </span>
-                </div>
-                <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
-                <span>Formule: </span><br>
-                <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
-               </div>
-           </ng-container>
+
+
               
-            </form>
+  </form>
             
             
-            </div>
+</div>
     
       

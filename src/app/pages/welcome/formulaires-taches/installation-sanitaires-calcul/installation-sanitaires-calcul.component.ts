@@ -398,9 +398,13 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+           setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+
+        }
+       
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -410,5 +414,84 @@ modifier(){
     console.error('Erreur lors du calcul du prix:', error);
   });
 }
+
+
+
+
+  get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'pose':
+        if(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].active){
+          prix = parseFloat(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].modele.split(':')[2]);
+
+        }
+        break;
+      case 'depose':
+        if(this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].quantite>0){
+          prix = parseFloat(this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].prix);
+        }
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'pose':
+        prix += parseFloat(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].fournisseur_pose?.split(':')[2] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].artisan_pose?.split(':')[2] || '0')
+        break;
+      case 'depose':
+        prix += parseFloat(this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].artisan_depose?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_client_choice_label(i:number,type:string){
+    let label = ''
+    switch (type) {
+      case 'depose':
+        label = this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].titre 
+        break;
+      case 'pose':
+        label = `${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].titre} ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].modele?.split(':')[1]}` 
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
+  }
+
+  get_dimensions(i:number,type:string){
+    let label = '\n'
+
+    switch (type) {
+      case 'depose':
+        label += `quantité : ${this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].quantite} \n` 
+        break;
+      case 'pose':
+        label += `longueur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].longueur} cm\n` 
+        label += `largeur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].largeur } cm\n`
+        label += `quantité : 1\n`
+        break;
+    
+      default:
+        break;
+    }
+   
+
+    return label
+  }
+
 
 }

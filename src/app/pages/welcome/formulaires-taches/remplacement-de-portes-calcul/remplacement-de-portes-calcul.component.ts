@@ -362,9 +362,12 @@ load_artisans_fournisseurs(){
         (response) => {
           console.log('Tache modifiée avec succès :', response);
           this.message.create('success', `Tache modifiée avec succès`);
-          setTimeout(() => {
+          if(!this.prix_coutant_mode){
+              setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+          }
+        
         },
         (error) => {
           console.error('Erreur lors de la modification de la tache :', error);
@@ -415,6 +418,25 @@ load_artisans_fournisseurs(){
         break;
     }
     return `${prix} €`
+  }
+
+  get_client_choice_label(i:number,type:string){
+    let label = ''
+    switch (type) {
+      case 'gamme':
+        label = this.donnees["gammes-produits-pose-portes"].portes[i].gamme?.split(':')[2] 
+        break;
+      case 'nature_porte':
+        label = this.donnees["gammes-produits-pose-portes"].portes[i].nature_porte?.split(':')[2] 
+        break;
+      case 'type_porte':
+        label = this.donnees["gammes-produits-pose-portes"].portes[i].type_porte?.split(':')[2]
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
   }
 
 }
