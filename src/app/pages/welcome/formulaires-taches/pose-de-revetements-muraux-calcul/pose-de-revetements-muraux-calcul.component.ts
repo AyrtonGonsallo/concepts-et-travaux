@@ -494,10 +494,10 @@ load_artisans_fournisseurs(){
   }
 
   get_dimensions(i:number){
-    let label = '1 \n'
+    let label = '1  <br>'
    
-    label += `longueur : ${this.donnees["dimensions-pose-murs"].murs[i].longueur} cm\n` 
-    label += `hauteur : ${this.donnees["dimensions-pose-murs"].murs[i].hauteur } cm\n`
+    label += `longueur : ${this.donnees["dimensions-pose-murs"].murs[i].longueur} cm <br>` 
+    label += `hauteur : ${this.donnees["dimensions-pose-murs"].murs[i].hauteur } cm <br>`
        
     
     return label

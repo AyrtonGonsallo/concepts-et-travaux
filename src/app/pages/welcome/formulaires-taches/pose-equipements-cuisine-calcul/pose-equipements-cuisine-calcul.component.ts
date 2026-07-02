@@ -122,6 +122,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           let active=false
           let longueur=0
           let largeur=0
+          let titre = ""
            let artisan_pose=""
           let fournisseur_pose=""
           let nombre_de_vasque=0
@@ -130,6 +131,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
             let form=this.donnees["gammes-produits-pose-elementcuisines"]
             modele=form?.appareils_cuisine[i]?.modele
             active=form?.appareils_cuisine[i]?.active
+            titre=form?.appareils_cuisine[i]?.titre
             longueur=form?.appareils_cuisine[i]?.longueur
             largeur=form?.appareils_cuisine[i]?.largeur
             nombre_de_vasque=form?.appareils_cuisine[i]?.nombre_de_vasque
@@ -142,6 +144,7 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
              // Créer un FormGroup pour chaque appareil
           const appareilGroup = this.fb.group({});
               
+          appareilGroup.addControl("titre", this.fb.control(titre, ));
           appareilGroup.addControl("longueur", this.fb.control(longueur, ));
           appareilGroup.addControl("largeur", this.fb.control(largeur, ));
           appareilGroup.addControl("nombre_de_vasque", this.fb.control(nombre_de_vasque, ));
@@ -319,6 +322,9 @@ load_artisans_fournisseurs(){
   
     console.log("Données avant modification", this.devisTache);
 
+
+   
+
     this.calculDevisService.calculer_prix_tache(this.devisTache).then((result) => {
       this.detailsCalcul = result;
       let formule = this.detailsCalcul.resultats[this.element.TravailSlug]?.formule;
@@ -486,15 +492,15 @@ submit() {
   }
 
   get_dimensions(i:number,type:string){
-    let label = '\n'
+    let label = '<br>'
 
     switch (type) {
       case 'depose':
-        label += `quantité : ${this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form[i].quantite} \n` 
+        label += `quantité : ${this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form[i].quantite}  <br>` 
         break;
       case 'pose':
-        label += `longueur : ${this.donnees["gammes-produits-pose-elementcuisines"].appareils_cuisine[i].longueur} cm\n` 
-        label += `quantité : 1\n`
+        label += `longueur : ${this.donnees["gammes-produits-pose-elementcuisines"].appareils_cuisine[i].longueur} cm <br>` 
+        label += `quantité : 1 <br>`
         break;
     
       default:

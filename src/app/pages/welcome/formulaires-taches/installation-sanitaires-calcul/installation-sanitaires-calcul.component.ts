@@ -473,16 +473,16 @@ modifier(){
   }
 
   get_dimensions(i:number,type:string){
-    let label = '\n'
+    let label = '<br>'
 
     switch (type) {
       case 'depose':
-        label += `quantité : ${this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].quantite} \n` 
+        label += `quantité : ${this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].quantite}  <br>` 
         break;
       case 'pose':
-        label += `longueur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].longueur} cm\n` 
-        label += `largeur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].largeur } cm\n`
-        label += `quantité : 1\n`
+        label += `longueur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].longueur} cm <br>` 
+        label += `largeur : ${this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].largeur } cm <br>`
+        label += `quantité : 1 <br>`
         break;
     
       default:

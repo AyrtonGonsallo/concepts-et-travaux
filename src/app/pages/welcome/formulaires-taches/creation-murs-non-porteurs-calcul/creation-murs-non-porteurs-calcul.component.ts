@@ -289,9 +289,12 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+          setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+        }
+       
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -301,5 +304,46 @@ modifier(){
     console.error('Erreur lors du calcul du prix:', error);
   });
 }
+
+
+
+
+
+
+
+
+
+  get_prix_vente(i:number){
+    let prix = 0
+    prix = parseFloat(this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].epaisseur.split(':')[1]);
+        
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number){
+    let prix = 0
+    prix += parseFloat(this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].artisan_pose?.split(':')[1] || '0')
+       
+    return `${prix} €`
+  }
+
+  get_client_choice_label(i:number){
+    let label = ''
+   
+      
+    label = this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].epaisseur?.split(':')[2] 
+       
+    return `"${label}"`
+  }
+
+  get_dimensions(i:number){
+    let label = 'quantité : 1 <br>'
+    label += `longueur : ${this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].longueur} cm <br>` 
+    label += `hauteur : ${this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].hauteur } cm <br>`
+     
+    return label
+  }
+
+
 }
 

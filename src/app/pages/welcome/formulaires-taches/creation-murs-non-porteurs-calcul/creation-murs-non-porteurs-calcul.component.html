@@ -1,86 +1,163 @@
 <div class="width-800">
-    <h1 class="ttl-recap">Création de murs non porteurs
-    </h1>
+    <h1 class="ttl-recap">Création de murs non porteurs</h1>
         
-        <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
-            
-            <div formArrayName="murs_non_porteurs">
-                <div *ngFor="let mur of murs_non_porteurs.controls; let i = index" [formGroupName]="i">
+    <form *ngIf="formulaire && !prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
+        
+        <div formArrayName="murs_non_porteurs">
+            <div *ngFor="let mur of murs_non_porteurs.controls; let i = index" [formGroupName]="i">
 
 
-                    <div *ngIf="!prix_coutant_mode">
-                        <div class="mur-btn-div">
-                            <span class="mur-ttl">Dimensions du mur {{i + 1}}</span>
+                <div >
+                    <div class="mur-btn-div">
+                        <span class="mur-ttl">Dimensions du mur {{i + 1}}</span>
+                    </div>
+                    <div >
+                        <div class="flx-radio-row2">
+                            <label for="hauteur">Hauteur (cm) :</label>
+                            <input type="number" id="hauteur" formControlName="hauteur" min="1" max="4000" />
                         </div>
-                        <div >
-                            <div class="flx-radio-row2">
-                                <label for="hauteur">Hauteur (cm) :</label>
-                                <input type="number" id="hauteur" formControlName="hauteur" min="1" max="4000" />
-                            </div>
-                            <div class="flx-radio-row2">
-                                <label for="longueur">Longueur (cm) :</label>
-                                <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  />
-                            </div>
-                        </div>
-                        <div nz-col>
-                            <div nz-col class="row-w-grid flx-radio-row2" >
-                                <label for="epaisseur">Epaisseur (cm) :</label>
-                                <nz-radio-group formControlName="epaisseur" class="flx-radio-row">
-                                    <div *ngFor="let type of type_epaisseur">
-                                    <label nz-radio [nzValue]="type.ID + ':' + type.Prix + ':' + type.Label"> {{ type.Label }}</label>
-                                    </div>
-                                </nz-radio-group>  
-                            </div>
+                        <div class="flx-radio-row2">
+                            <label for="longueur">Longueur (cm) :</label>
+                            <input type="number" id="longueur" formControlName="longueur" min="1" max="10000"  />
                         </div>
                     </div>
-                    
-
-                    <div *ngIf="prix_coutant_mode">
-                        <!--prix coûtant-->
-                        <div class="mur-btn-div tooltip-srf">
-                            <span  class="mur-ttl">
-                                Prix coûtant
-                            </span>
+                    <div nz-col>
+                        <div nz-col class="row-w-grid flx-radio-row2" >
+                            <label for="epaisseur">Epaisseur (cm) :</label>
+                            <nz-radio-group formControlName="epaisseur" class="flx-radio-row">
+                                <div *ngFor="let type of type_epaisseur">
+                                <label nz-radio [nzValue]="type.ID + ':' + type.Prix + ':' + type.Label"> {{ type.Label }}</label>
+                                </div>
+                            </nz-radio-group>  
                         </div>
-                        <nz-radio-group formControlName="artisan_pose">
-                            <!-- Plinthes bois -->
-                            <div class="flx-radio-row2">
-                                <label>Artisan cloison :</label>
+                    </div>
+                </div>
+                
+
+                
+
+            </div>
+        </div>
+        
+                
+            
+        <div class="grid-btn-action">
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
+
+        </div>
+            
+            <ng-container *ngIf="detailsCalcul">
+            <div>
+                <div class="mur-btn-div tooltip-srf">
+                <span  class="mur-ttl">
+                    Prix facturé
+                </span>
+            </div>
+                <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                <span>Formule: </span><br>
+                <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+                <div class="mur-btn-div tooltip-srf">
+                <span  class="mur-ttl">
+                    Prix coûtant
+                </span>
+            </div>
+            <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+            <span>Formule: </span><br>
+            <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+            </div>
+        </ng-container>
+            
+    </form>
+
+
+
+    <form *ngIf="formulaire && prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
+
+
+        <div>
+            <!--prix coûtant-->
+
+            <div class="mur-btn-div tooltip-srf">
+                <span  class="mur-ttl">
+                    Prix coûtant
+                </span>
+            </div>
+
+
+            <table class="prix-coutant-table">
+                <thead>
+                <tr>
+                    
+                    <th>Tâche</th>
+                    <th>Artisan</th>
+                    <th>Fournisseur </th>
+                    <th>Quantité</th>
+                    <th>Prix coûtant</th>
+                    <th>Prix vente</th>
+                </tr>
+                </thead>
+                <tbody >
+                <ng-container formArrayName="murs_non_porteurs">
+                    <ng-container *ngFor="let mur of murs_non_porteurs.controls; let i = index" [formGroupName]="i">
+                    <tr>
+                        <td>Mur {{ i + 1 }} {{get_client_choice_label(i)}}</td>
+                        <td>
+                            <nz-radio-group formControlName="artisan_pose">
+                                <!-- Plinthes bois -->
                                 <div>
-                                    <div *ngFor="let option of artisans_pose[i]">
-                                        <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                                            {{ option.Label }} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                                        </label>
+                                    
+                                    <div>
+                                        <div *ngFor="let option of artisans_pose[i]">
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Prix + ':' + option.Label">
+                                                <!-- {{ option.Label }} - -->{{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </nz-radio-group>
-                    </div>
+                            </nz-radio-group>
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td [innerHTML]="get_dimensions(i)"> </td>
+                        <td> {{get_prix_coutant(i)}}</td>
+                        <td>{{get_prix_vente(i)}} </td>
+                    </tr>
 
-                </div>
-            </div>
-           
-                 
-               
-            <div class="grid-btn-action">
-                <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
-                <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
-                <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+                    
+                    </ng-container>
+                </ng-container>
 
-            </div>
-              
-              <ng-container *ngIf="detailsCalcul">
-               <div>
-                 <div class="mur-btn-div tooltip-srf">
-                    <span  class="mur-ttl">
-                        Prix facturé
-                    </span>
-                </div>
-                 <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-                 <span>Formule: </span><br>
-                 <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                
+                
 
-                  <div class="mur-btn-div tooltip-srf">
+
+                </tbody>
+                <tfoot *ngIf="detailsCalcul">
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
+                    <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
+                </tr>
+                </tfoot>
+            </table>
+                
+            
+        </div>
+            
+
+            
+
+        
+        <div class="grid-btn-action">
+            <button  nz-button nzType="primary" class="positive-action mt-5 mb-5" (click)="modifier()">Enregistrer</button>
+        </div>
+        
+        <ng-container *ngIf="detailsCalcul">
+            <div>
+                <div class="mur-btn-div tooltip-srf">
                     <span  class="mur-ttl">
                         Prix coûtant
                     </span>
@@ -88,13 +165,17 @@
                 <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
                 <span>Formule: </span><br>
                 <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
-               </div>
-           </ng-container>
-              
-            </form>
-            
-            
             </div>
+        </ng-container>
+
+
+        
+        
+            
+    </form>
+        
+        
+</div>
                 
     
       

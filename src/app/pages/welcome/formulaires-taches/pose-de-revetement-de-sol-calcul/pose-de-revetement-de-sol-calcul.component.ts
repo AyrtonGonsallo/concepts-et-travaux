@@ -509,10 +509,10 @@ fournisseurs_pose_plinthes:any
   }
 
   get_dimensions(){
-    let label = '1 \n'
+    let label = '1  <br>'
    
-    label += `longueur : ${this.donnees["dimensions-pose-sol"].longueur} cm\n` 
-    label += `largeur : ${this.donnees["dimensions-pose-sol"].largeur } cm\n`
+    label += `longueur : ${this.donnees["dimensions-pose-sol"].longueur} cm <br>` 
+    label += `largeur : ${this.donnees["dimensions-pose-sol"].largeur } cm <br>`
        
     
     return label

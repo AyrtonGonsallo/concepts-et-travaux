@@ -319,9 +319,12 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+          setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+        }
+        
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -330,9 +333,70 @@ modifier(){
   }).catch(error => {
     console.error('Erreur lors du calcul du prix:', error);
   });
-
-
- 
 }
+
+
+
+
+
+  get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-chauffage"].radiateurs[i].gamme.split(':')[1]);
+        break;
+      case 'type':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-chauffage"].radiateurs[i].type.split(':')[1]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix += parseFloat(this.donnees["gammes-produits-pose-chauffage"].radiateurs[i].fournisseur_pose?.split(':')[1] || '0')
+        prix += parseFloat(this.donnees["gammes-produits-pose-chauffage"].radiateurs[i].artisan_pose?.split(':')[1] || '0')
+        break;
+      case 'type':
+        prix += parseFloat(this.donnees["etat-surfaces-pose-chauffage"].radiateurs[i].fournisseur_type?.split(':')[1] || '0')
+        prix += parseFloat(this.donnees["etat-surfaces-pose-chauffage"].radiateurs[i].artisan_type?.split(':')[1] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_client_choice_label(i:number,type:string){
+    let label = ''
+    switch (type) {
+      case 'type':
+        label = this.donnees["etat-surfaces-pose-chauffage"].radiateurs[i].type?.split(':')[2] 
+        break;
+      case 'gamme':
+        label = this.donnees["gammes-produits-pose-chauffage"].radiateurs[i].gamme?.split(':')[2]
+        break;
+    
+      default:
+        break;
+    }
+    return `"${label}"`
+  }
+
+  get_dimensions(){
+    let label = '1  <br>'
+   
+    label += `hauteur : ${this.donnees["dimensions-pose-chauffage"].hauteur} cm <br>` 
+    label += `surface : ${this.donnees["dimensions-pose-chauffage"].surface } m² <br>`
+       
+    
+    return label
+  }
 
 }

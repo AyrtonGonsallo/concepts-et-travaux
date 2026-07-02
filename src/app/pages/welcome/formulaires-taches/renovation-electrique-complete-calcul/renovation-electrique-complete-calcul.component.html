@@ -1,9 +1,8 @@
 <div class="width-800">
-    <h1 class="ttl-recap">Rénovation électrique complète
-    </h1>
+    <h1 class="ttl-recap">Rénovation électrique complète</h1>
         
-    <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="submit()" >
-        <div class="w-80" *ngIf="!prix_coutant_mode">
+    <form *ngIf="formulaire && !prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
+        <div class="w-80" >
             
             <div  class="flx-radio-row2">
                 <label for="surface">Surface de la pièce (m²)<span class="error-message">*</span> : </label>
@@ -56,103 +55,186 @@
         </div>  
 
 
-        <div *ngIf="prix_coutant_mode">
-
-         
-            
-            
-            <div class="flx-radio-row2">
-                <div class="">
-                    <label class=""> Artisan mise en sécurité:</label>  
-                </div>
-                <nz-radio-group formControlName="artisan_mise_en_securite" class="">
-                    <div nz-col nzJustify="start" *ngFor="let option of artisans_mise_en_securite">
-                        <div>
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                            <span>
-                                {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                </nz-radio-group>
-            </div>
-
-            <div class="flx-radio-row2">
-                <div class="">
-                    <label class=""> Artisan mises aux normes :</label>  
-                </div>
-                <nz-radio-group formControlName="artisan_mise_aux_normes" class="">
-                    <div nz-col nzJustify="start" *ngFor="let option of artisans_mise_aux_normes">
-                        <div>
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                            <span>
-                                {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                </nz-radio-group>
-            </div>
-
-
-            <div class="flx-radio-row2">
-                <div class="">
-                    <label class=""> Artisan chauffage :</label>  
-                </div>
-                <nz-radio-group formControlName="artisan_chauffage" class="">
-                    <div nz-col nzJustify="start" *ngFor="let option of artisans_chauffage">
-                        <div>
-                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
-                            <span>
-                                {{option.Titre}} - {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
-                            </span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                </nz-radio-group>
-            </div>
-
-            
-
-        </div>
+        
 
 
         
                
-  <div class="grid-btn-action">
-    <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
-    <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
-    <button *ngIf="prix_coutant_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Enregistrer</button>
+        <div class="grid-btn-action">
+            <button nz-button nzType="primary" class="positive-action mb-5" type="submit">Tester</button>
+            <button *ngIf="edit_mode" nz-button nzType="primary" class="positive-action mb-5" (click)="modifier()">Modifier</button>
 
-</div>
-  
-    <ng-container *ngIf="detailsCalcul">
+        </div>
+    
+        <ng-container *ngIf="detailsCalcul">
+            <div>
+                <div class="mur-btn-div tooltip-srf">
+                    <span  class="mur-ttl">
+                        Prix facturé
+                    </span>
+                </div>
+                <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                <span>Formule: </span><br>
+                <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+                
+            </div>
+        </ng-container>
+    
+    </form>
+
+
+    <form *ngIf="formulaire && prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
+
+
         <div>
-            <div class="mur-btn-div tooltip-srf">
-            <span  class="mur-ttl">
-                Prix facturé
-            </span>
-        </div>
-            <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-            <span>Formule: </span><br>
-            <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+            <!--prix coûtant-->
 
             <div class="mur-btn-div tooltip-srf">
-            <span  class="mur-ttl">
-                Prix coûtant
-            </span>
+                <span  class="mur-ttl">
+                    Prix coûtant
+                </span>
+            </div>
+
+
+            <table class="prix-coutant-table">
+                <thead>
+                <tr>
+                    
+                    <th>Tâche</th>
+                    <th>Artisan</th>
+                    <th>Fournisseur </th>
+                    <th>Quantité</th>
+                    <th>Prix coûtant</th>
+                    <th>Prix vente</th>
+                </tr>
+                </thead>
+                <tbody >
+                
+                    <tr>
+                        <td>Mise en sécurité</td>
+                        <td>
+                            <div>
+                                
+                                <nz-radio-group formControlName="artisan_mise_en_securite" class="">
+                                    <div nz-col nzJustify="start" *ngFor="let option of artisans_mise_en_securite">
+                                        <div>
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                            <span>
+                                                <!--{{option.Label}} - --> {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                </nz-radio-group>
+                            </div>
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td [innerHTML]="get_dimensions()"> </td>
+                        <td> {{get_prix_coutant('mise_en_securite')}}</td>
+                        <td>{{get_prix_vente('mise_en_securite')}} </td>
+                    </tr>
+
+                    <tr >
+                        <td>Mise aux normes</td>
+                        <td>
+                            <div >
+                               
+                                <nz-radio-group formControlName="artisan_mise_aux_normes" class="">
+                                    <div nz-col nzJustify="start" *ngFor="let option of artisans_mise_aux_normes">
+                                        <div>
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                            <span>
+                                                <!--{{option.Label}} - --> {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                </nz-radio-group>
+                            </div>
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td [innerHTML]="get_dimensions()"></td>
+                        <td> {{get_prix_coutant('mise_aux_normes')}}</td>
+                        <td> {{get_prix_vente('mise_aux_normes')}} </td>
+                    </tr>
+
+                    <tr >
+                        <td>Chauffage</td>
+                        <td>
+                            <div>
+                               
+                                <nz-radio-group formControlName="artisan_chauffage" class="">
+                                    <div nz-col nzJustify="start" *ngFor="let option of artisans_chauffage">
+                                        <div>
+                                            <label nz-radio [nzValue]="option.ID + ':' + option.Label + ':' + option.Prix">
+                                            <span>
+                                                <!--{{option.Label}} - --> {{ option.Artisan?.Nom }} {{ option.Artisan?.Prenom }} ({{ option.Artisan?.CategorieArtisan }}) - {{option.Prix}} €
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                </nz-radio-group>
+                            </div>
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td [innerHTML]="get_dimensions()"></td>
+                        <td> {{get_prix_coutant('chauffage')}}</td>
+                        <td>{{get_prix_vente('chauffage')}}  </td>
+                    </tr>
+
+                    
+            
+
+
+                </tbody>
+                <tfoot *ngIf="detailsCalcul">
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
+                    <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
+                </tr>
+                </tfoot>
+            </table>
         </div>
-        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
-        <span>Formule: </span><br>
-        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+        
+        
+        <div class="grid-btn-action">
+            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Enregistrer</button>
         </div>
-    </ng-container>
-  
-</form>
+        
+        <ng-container *ngIf="detailsCalcul">
+            <div>
+                <div class="mur-btn-div tooltip-srf">
+                    <span  class="mur-ttl">
+                        Prix coûtant
+                    </span>
+                </div>
+                <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+                <span>Formule: </span><br>
+                <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+            </div>
+        </ng-container>
+
+
+
+
+
+
+
+
+        
+    
+    </form>
 
 
 </div>

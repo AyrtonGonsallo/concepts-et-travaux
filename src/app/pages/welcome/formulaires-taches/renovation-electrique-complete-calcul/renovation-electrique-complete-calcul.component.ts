@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { TacheGenerale } from '../../../../Models/TacheGenerale';
 
 
 @Component({
@@ -67,6 +68,7 @@ export class RenovationElectriqueCompleteCalculComponent {
         
         
         this.load_artisans_fournisseurs()
+        this.load_taches_generales()
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
       },
@@ -128,6 +130,44 @@ load_artisans_fournisseurs(){
     console.log('total artisans_chauffage:', this.artisans_chauffage);
   }, 4000);
   
+}
+
+tache_mise_en_securite:TacheGenerale | undefined
+tache_mise_aux_normes:TacheGenerale| undefined
+tache_chauffage:TacheGenerale| undefined
+
+
+load_taches_generales(){
+
+  this.userService.getTacheGeneraleById(27).subscribe(
+      (response: any) => {
+        console.log('recuperation des tache_mise_en_securite',response);
+        this.tache_mise_en_securite = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
+      }
+    );
+
+    this.userService.getTacheGeneraleById(30).subscribe(
+      (response: any) => {
+        console.log('recuperation des tache_mise_aux_normes',response);
+        this.tache_mise_aux_normes = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
+      }
+    );
+
+    this.userService.getTacheGeneraleById(26).subscribe(
+      (response: any) => {
+        console.log('recuperation des tache_chauffage',response);
+        this.tache_chauffage = response;
+      },
+      (error: any) => {
+        console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
+      }
+    );
 }
 
 
@@ -300,5 +340,58 @@ modifier(){
     console.error('Erreur lors du calcul du prix:', error);
   });
 }
+
+
+
+
+
+  get_prix_vente(type:string){
+    let prix = 0
+    switch (type) {
+      case 'mise_en_securite':
+        prix = (this.tache_mise_en_securite?this.tache_mise_en_securite.Prix:0);
+        break;
+      case 'mise_aux_normes':
+        prix = (this.tache_mise_aux_normes?this.tache_mise_aux_normes.Prix:0);
+        break;
+      case 'chauffage':
+        prix = (this.tache_chauffage?this.tache_chauffage.Prix:0);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  get_prix_coutant(type:string){
+    let prix = 0
+    switch (type) {
+      case 'mise_en_securite':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_en_securite?.split(':')[2] || '0')
+        break;
+      case 'mise_aux_normes':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes?.split(':')[2] || '0')
+        break;
+      case 'chauffage':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+  
+
+  get_dimensions(){
+    let label = '1  <br>'
+   
+    label += `surface : ${this.donnees["dimensions-renovation-electrique"].surface} m² <br>` 
+       
+    
+    return label
+  }
 
 }

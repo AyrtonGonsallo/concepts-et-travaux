@@ -298,9 +298,12 @@ export class RenovationElectriquePartielleCalculComponent {
           (response) => {
             console.log('Tache modifiée avec succès :', response);
             this.message.create('success', `Tache modifiée avec succès`);
-            setTimeout(() => {
-              this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-            }, 2000);
+            if(!this.prix_coutant_mode){
+              setTimeout(() => {
+                this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+              }, 2000);
+            }
+            
           },
           (error) => {
             console.error('Erreur lors de la modification de la tache :', error);
@@ -325,6 +328,95 @@ export class RenovationElectriquePartielleCalculComponent {
       }
 
     }
+
+
+
+    
+  get_prix_coutant(){
+
+
+    let res = ""
+
+    if(this.donnees["gammes-produits-pose-electricite"].artisan_gamme && this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme){
+
+      this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer.forEach((appareil:any) => {
+        if(appareil.active){
+          let nom_appareil = appareil.titre
+          
+          const json_datas_artisan_prix = JSON.parse(
+            this.donnees["gammes-produits-pose-electricite"].artisan_gamme.split('-')[1]
+          );//tableau d'objets nomappareil,prix
+
+          const json_datas_fournisseur_prix = JSON.parse(
+            this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme.split('-')[1]
+          );//tableau d'objets nomappareil,prix
+          
+
+          const appareil_prix_artisan = json_datas_artisan_prix.find((x: any) => x.nom === nom_appareil);
+          const appareil_prix_fournisseur = json_datas_fournisseur_prix.find((x: any) => x.nom === nom_appareil);
+
+          let prix = appareil_prix_artisan ? appareil_prix_artisan.prix : 0;
+
+          prix += appareil_prix_fournisseur ? appareil_prix_fournisseur.prix : 0;
+
+          res += `${nom_appareil} : ${prix}€ <br>`
+        }
+      })
+
+
+    }
+
+    
+
+
+    return res
+  }
+
+
+  get_prix_vente() {
+
+    let res = ""
+
+    this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer.forEach((appareil:any) => {
+      if(appareil.active){
+        let nom_appareil = appareil.titre
+        
+        const json_datas_prix = JSON.parse(
+          this.donnees["gammes-produits-pose-electricite"].gamme.split('-')[1]
+        );//tableau d'objets nomappareil,prix
+          
+        const appareil_prix = json_datas_prix.find((x: any) => x.nom === nom_appareil);
+
+        const prix = appareil_prix ? appareil_prix.prix : 0;
+
+        res += `${nom_appareil} : ${prix}€ <br>`
+      }
+    })
+
+  
+
+  return res
+}
+
+
+  get_client_choice_label(){
+    return `"${this.donnees["gammes-produits-pose-electricite"].gamme.split('-')[2]}"`
+  }
+  
+
+  get_dimensions(){
+    let label = ''
+
+    this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer.forEach((appareil:any) => {
+      if(appareil.active){
+        label += `Titre : ${appareil.titre} <br>` 
+        label += `à créer : ${appareil.nombre_a_creer}  <br>` 
+        label += `à remplacer : ${appareil.nombre_a_remplacer} <br>--------<br>` 
+      }
+    })
+    
+    return label
+  }
 
 }
     

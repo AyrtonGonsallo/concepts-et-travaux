@@ -100,3 +100,13 @@
 .memory{
     color: #FFC736;
 }
+.prix-coutant-table tr,.prix-coutant-table th,.prix-coutant-table td{
+    border:solid black 1px;
+}
+.prix-final-table{
+    float: right;
+}
+.prix-coutant-table td,
+.prix-coutant-table th {
+    vertical-align: top;
+}

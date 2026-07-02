@@ -380,22 +380,22 @@ modifier(){
   }
 
   get_dimensions(i:number,type:string){
-    let label = 'quantité : 1 \n'
+    let label = 'quantité : 1 <br>'
    
     
        
     switch (type) {
       case 'murs':
-        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].longueur} cm\n` 
-        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].hauteur } cm\n`
+        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].longueur} cm <br>` 
+        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].hauteur } cm <br>`
         break;
       case 'ouverture':
-        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur} cm\n` 
-        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur } cm\n`
-        label += `longueur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur_ouverture } cm\n`
-        label += `hauteur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_ouverture } cm\n`
-        label += `hauteur depuis le sol : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_sol } cm\n`
-        label += `hauteur depuis le plafond : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_plafond } cm\n`
+        label += `longueur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur} cm <br>` 
+        label += `hauteur : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur } cm <br>`
+        label += `longueur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].longueur_ouverture } cm <br>`
+        label += `hauteur ouverture : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_ouverture } cm <br>`
+        label += `hauteur depuis le sol : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_sol } cm <br>`
+        label += `hauteur depuis le plafond : ${this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].hauteur_depuis_le_plafond } cm <br>`
         break;
     
       default:
