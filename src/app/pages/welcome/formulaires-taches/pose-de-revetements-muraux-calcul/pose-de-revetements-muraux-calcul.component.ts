@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pose-de-revetements-muraux-calcul',
@@ -213,58 +214,198 @@ artisans_depose:any[] = []
 artisans_surfaces:any[] = []
 artisans_pose:any[] = []
 fournisseurs_pose:any[] = []
+all_artisans:any = []
+one_artisan_for_all=0
+all_fournisseurs:any = []
+one_fournisseur_for_all=0
 
 
+load_artisans_fournisseurs() {
 
-load_artisans_fournisseurs(){
+  const requests: any[] = [];
 
-  this.donnees["dimensions-pose-murs"].murs.map((mur:any, i:number) => {
-    let rev_a_poser_id=parseInt(this.donnees["gammes-produits-pose-murs"].murs[i].gamme.split(":")[0]);
-    let etat_id=parseInt(this.donnees["etat-surfaces-pose-murs"].murs[i].etat.split("-")[0]);
-    let rev_a_deposer_id=parseInt(mur.depose.split(":")[0]);
+  this.donnees["dimensions-pose-murs"].murs.forEach((mur: any, i: number) => {
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_deposer_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_depose:', response);
-        this.artisans_depose[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_depose :', error);
-      }
+    const rev_a_poser_id = parseInt(this.donnees["gammes-produits-pose-murs"].murs[i].gamme.split(":")[0]);
+    const etat_id = parseInt(this.donnees["etat-surfaces-pose-murs"].murs[i].etat.split("-")[0]);
+    const rev_a_deposer_id = parseInt(mur.depose.split(":")[0]);
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_deposer_id, 'artisan')
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(etat_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_surfaces:', response);
-        this.artisans_surfaces[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_surfaces :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(etat_id, 'artisan')
     );
 
-
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
-        this.artisans_pose[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_pose :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id, 'artisan')
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_pose:', response);
-        this.fournisseurs_pose[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id, 'fournisseur')
     );
+
   });
+
+  forkJoin(requests).subscribe({
+
+    next: (responses: any[]) => {
+
+      let index = 0;
+
+      this.artisans_depose = [];
+      this.artisans_surfaces = [];
+      this.artisans_pose = [];
+      this.fournisseurs_pose = [];
+
+      this.donnees["dimensions-pose-murs"].murs.forEach((mur: any, i: number) => {
+
+        this.artisans_depose[i] = responses[index++];
+        this.artisans_surfaces[i] = responses[index++];
+        this.artisans_pose[i] = responses[index++];
+        this.fournisseurs_pose[i] = responses[index++];
+
+      });
+
+      // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_depose.flat().map((x: any) => x.Artisan),
+            ...this.artisans_surfaces.flat().map((x: any) => x.Artisan),
+            ...this.artisans_pose.flat().map((x: any) => x.Artisan)
+          ].map((a: any) => [a.Id, a])
+        ).values()
+      ];
+
+      // Fournisseurs distincts
+      this.all_fournisseurs = [
+        ...new Map(
+          this.fournisseurs_pose
+            .flat()
+            .map((x: any) => x.Fournisseur)
+            .map((f: any) => [f.Id, f])
+        ).values()
+      ];
+
+      console.log('artisans_depose', this.artisans_depose);
+      console.log('artisans_surfaces', this.artisans_surfaces);
+      console.log('artisans_pose', this.artisans_pose);
+      console.log('fournisseurs_pose', this.fournisseurs_pose);
+      console.log('all_artisans', this.all_artisans);
+      console.log('all_fournisseurs', this.all_fournisseurs);
+
+    },
+
+    error: err => console.error(err)
+
+  });
+
 }
+
+
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_depose,
+    this.murs,
+    'artisan_depose'
+  );
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_surfaces,
+    this.murs,
+    'artisan_surfaces', 
+    '-'
+  );
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_pose,
+    this.murs,
+    'artisan_pose'
+  );
+
+}
+
+
+onFournisseurForAllChange(fournisseurId: number): void {
+
+ 
+
+  this.selectFournisseurFormArray(
+    fournisseurId,
+    this.fournisseurs_pose,
+    this.murs,
+    'fournisseur_pose'
+  );
+
+}
+
+
+private selectFournisseurFormArray(
+  fournisseurId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string
+): void {
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Fournisseur?.Id === fournisseurId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}:${option.Label}:${option.Prix}`
+      );
+
+  });
+
+}
+
+
+
+private selectArtisanFormArray(
+  artisanId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string,
+  separator: string = ':'
+): void {
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Artisan?.Id === artisanId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}${separator}${option.Label}${separator}${option.Prix}`
+      );
+
+  });
+
+}
+
+
 
 
   submit(){

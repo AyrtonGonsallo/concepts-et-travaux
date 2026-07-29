@@ -83,6 +83,16 @@
     
     </form>
 
+    <div *ngIf=" prix_coutant_mode">
+        
+        <nz-select [(ngModel)]="one_artisan_for_all" [nzSize]="'large'" style="min-width: 200px;" (ngModelChange)="onArtisanForAllChange($event)">
+            <nz-option nzLabel="Choisir un artisan" [nzValue]="0"></nz-option>
+            <nz-option *ngFor="let artisan of all_artisans" [nzLabel]="artisan.Nom+' '+artisan.Prenom+' ('+artisan.CategorieArtisan+')'" [nzValue]="artisan.Id"></nz-option>
+        </nz-select>
+
+      
+    </div>
+
 
     <form *ngIf="formulaire && prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
 

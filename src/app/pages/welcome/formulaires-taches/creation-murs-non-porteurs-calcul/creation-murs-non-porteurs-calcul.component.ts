@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-creation-murs-non-porteurs-calcul',
@@ -163,27 +164,112 @@ load_gammes(){
 
 
 artisans_pose:any[] = []
+all_artisans:any = []
+one_artisan_for_all=0
 
 
 
-load_artisans_fournisseurs(){
+load_artisans_fournisseurs() {
 
-  this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs.map((mur:any, i:number) => {
-    let rev_a_poser_id=parseInt(mur.epaisseur.split(":")[0]);
-    
+  const requests: any[] = [];
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
-        this.artisans_pose[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_pose :', error);
-      }
+  this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs.forEach((mur:any) => {
+
+    const rev_a_poser_id = parseInt(mur.epaisseur.split(":")[0]);
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        rev_a_poser_id,
+        'artisan'
+      )
     );
 
   });
+
+
+  forkJoin(requests).subscribe({
+
+    next: (responses:any[]) => {
+
+      this.artisans_pose = [];
+
+      responses.forEach((response:any, i:number) => {
+
+        this.artisans_pose[i] = response;
+
+      });
+
+        // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_pose.flat().map((x:any) => x.Artisan),
+          ]
+          .map((a:any) => [a.Id, a])
+        ).values()
+      ];
+
+
+      console.log('artisans_pose:', this.artisans_pose);
+      console.log('all_artisans', this.all_artisans);
+
+
+    },
+
+    error: (error:any) => {
+      console.error('Erreur lors de la recuperation des artisans_pose :', error);
+    }
+
+  });
+
 }
+
+
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_pose,
+    this.murs_non_porteurs,
+    'artisan_pose'
+  );
+
+ 
+
+}
+
+
+private selectArtisanFormArray(
+  artisanId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string
+): void {
+
+
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Artisan?.Id === artisanId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}:${option.Prix}:${option.Label}`
+      );
+
+  });
+
+}
+
 
 
 submit(){

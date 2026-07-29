@@ -6,6 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
 import { Equipement } from '../../../../Models/Equipement';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -211,75 +212,182 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
 artisans_depose:any[] = []
 artisans_pose:any[] = []
 fournisseurs_pose:any[] = []
+all_artisans:any = []
+one_artisan_for_all=0
+all_fournisseurs:any = []
+one_fournisseur_for_all=0
 
 
 
-load_artisans_fournisseurs(){
 
-  this.donnees["dimensions-pose-app-san"].gammes_depose_form.map((gamme:any, i:number) => {
-    let ref_id=(gamme.id);
-    let qte=gamme.quantite;
-    if(1==1){
+load_artisans_fournisseurs() {
 
-       this.userService.getArtisansFournisseursElementsByGammeReference(ref_id,'artisan').subscribe(
-        (response: any) => {
-          //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
-          this.artisans_depose[i] = response;
-        },
-        (error: any) => {
-          console.error('Erreur lors de la recuperation des artisans_depose :', error);
-        }
-      );
-    }
+  const requests: any[] = [];
+
+  // Dépose
+  this.donnees["dimensions-pose-app-san"].gammes_depose_form.forEach((gamme: any, i: number) => {
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(gamme.id, 'artisan')
+    );
+
   });
 
-   this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain.map((appareil:any, i:number) => {
+  // Pose artisans + fournisseurs
+  this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain.forEach((appareil: any, i: number) => {
 
-   
-    let ref_id=(appareil.modele)?parseInt(appareil.modele.split(":")[0]):0;
-    let active=appareil.active;
-    if(1==1){
+    const ref_id = appareil.modele ? parseInt(appareil.modele.split(":")[0]) : 0;
 
-      this.userService.getArtisansFournisseursModelesByReference(ref_id,'artisan').subscribe(
-        (response: any) => {
-         // console.log('recuperation des artisans_pose:',ref_id,'artisan', response);
-          this.artisans_pose[i] = response;
-        },
-        (error: any) => {
-          console.error('Erreur lors de la recuperation des artisans_pose :', error);
-        }
-      );
+    requests.push(
+      this.userService.getArtisansFournisseursModelesByReference(ref_id, 'artisan')
+    );
 
-      this.userService.getArtisansFournisseursModelesByReference(ref_id,'fournisseur').subscribe(
-        (response: any) => {
-        //  console.log('recuperation des fournisseurs_pose:',ref_id,'fournisseur', response);
-          this.fournisseurs_pose[i] = response;
-        },
-        (error: any) => {
-          console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
-        }
-      );
-    }
+    requests.push(
+      this.userService.getArtisansFournisseursModelesByReference(ref_id, 'fournisseur')
+    );
+
   });
 
-  setTimeout(() => {
-    console.log('total artisans_depose:', this.artisans_depose);
-    console.log('total artisans_pose:', this.artisans_pose);
-    console.log('total fournisseurs_pose:', this.fournisseurs_pose);
-  }, 4000);
+  forkJoin(requests).subscribe({
+
+    next: (responses: any[]) => {
+
+      let index = 0;
+
+      this.artisans_depose = [];
+      this.artisans_pose = [];
+      this.fournisseurs_pose = [];
+
+      // Dépose
+      this.donnees["dimensions-pose-app-san"].gammes_depose_form.forEach((g: any, i: number) => {
+        this.artisans_depose[i] = responses[index++];
+      });
+
+      // Pose
+      this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain.forEach((a: any, i: number) => {
+        this.artisans_pose[i] = responses[index++];
+        this.fournisseurs_pose[i] = responses[index++];
+      });
+
+      // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_depose.flat().map((x: any) => x.Artisan),
+            ...this.artisans_pose.flat().map((x: any) => x.Artisan)
+          ].map((a: any) => [a.Id, a])
+        ).values()
+      ];
+
+      // Fournisseurs distincts
+      this.all_fournisseurs = [
+        ...new Map(
+          this.fournisseurs_pose
+            .flat()
+            .map((x: any) => x.Fournisseur)
+            .map((f: any) => [f.Id, f])
+        ).values()
+      ];
+
+      console.log('total artisans_depose:', this.artisans_depose);
+      console.log('total artisans_pose:', this.artisans_pose);
+      console.log('total fournisseurs_pose:', this.fournisseurs_pose);
+      console.log('this.all_artisans',this.all_artisans);
+      console.log('this.all_fournisseurs',this.all_fournisseurs);
+
+    },
+
+    error: err => console.error(err)
+
+  });
+
+}
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisansFormArray(
+    artisanId,
+    this.artisans_depose,
+    this.gammes_depose_form,
+    'artisan_depose'
+  );
+
+  this.selectArtisansFormArray(
+    artisanId,
+    this.artisans_pose,
+    this.appareils_salle_de_bain_form,
+    'artisan_pose'
+  );
+
+}
+
+
+private selectArtisansFormArray(
+  artisanId: number,
+  optionsGroups: any[][],
+  formArray: any,
+  controlName: string
+): void {
+
+  optionsGroups.forEach((options, index) => {
+
+    const option = options?.find(o => o.Artisan?.Id === artisanId);
+
+    if (!option) {
+      return;
+    }
+
+    const label = option.Label ?? option.Titre;
+
+    formArray.at(index).get(controlName)?.setValue(
+      `${option.ID}:${label}:${option.Prix}`
+    );
+
+  });
+
+}
+
+
+onFournisseurForAllChange(fournisseurId: number): void {
   
+
+  this.selectFournisseursFormArray(
+    fournisseurId,
+    this.fournisseurs_pose,
+    this.appareils_salle_de_bain_form,
+    'fournisseur_pose'
+  );
+
 }
 
 
 
+private selectFournisseursFormArray(
+  fournisseurId: number,
+  optionsGroups: any[][],
+  formArray: any,
+  controlName: string
+): void {
 
 
+  optionsGroups.forEach((options, index) => {
 
+    const option = options?.find(o => o.Fournisseur?.Id === fournisseurId);
 
+    if (!option) {
+      return;
+    }
 
+    const label = option.Label ?? option.Titre;
 
+    formArray.at(index).get(controlName)?.setValue(
+      `${option.ID}:${label}:${option.Prix}`
+    );
 
+  });
 
+}
 
 
 submit() {

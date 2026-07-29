@@ -6,6 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
 import { TacheGenerale } from '../../../../Models/TacheGenerale';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -79,58 +80,94 @@ export class RenovationElectriqueCompleteCalculComponent {
     
   }
 
+  artisans_mise_en_securite:any = [] 
+  artisans_mise_aux_normes:any = [] 
+  artisans_chauffage:any = [] 
+  all_artisans:any = []
+  one_artisan_for_all=0
  
+load_artisans_fournisseurs() {
 
-  
-artisans_mise_en_securite:any = []
-artisans_mise_aux_normes:any = []
-artisans_chauffage:any = []
+  forkJoin({
+    mise_en_securite: this.userService.getArtisansFournisseursElementsByGammeReference(222, 'artisan'),
+    mise_aux_normes: this.userService.getArtisansFournisseursElementsByGammeReference(223, 'artisan'),
+    chauffage: this.userService.getArtisansFournisseursElementsByGammeReference(224, 'artisan')
+  }).subscribe({
 
+    next: (result) => {
 
+      this.artisans_mise_en_securite = result.mise_en_securite;
+      this.artisans_mise_aux_normes = result.mise_aux_normes;
+      this.artisans_chauffage = result.chauffage;
 
-load_artisans_fournisseurs(){
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...result.mise_en_securite.map((i: any) => i.Artisan),
+            ...result.mise_aux_normes.map((i: any) => i.Artisan),
+            ...result.chauffage.map((i: any) => i.Artisan)
+          ].map((a: any) => [a.Id, a])
+        ).values()
+      ];
 
- 
-    this.userService.getArtisansFournisseursElementsByGammeReference(222,'artisan').subscribe(
-      (response: any) => {
-        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
-        this.artisans_mise_en_securite = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_depose :', error);
-      }
-    );
+      console.log('total artisans_mise_en_securite:', this.artisans_mise_en_securite); 
+      console.log('total artisans_mise_aux_normes:', this.artisans_mise_aux_normes); 
+      console.log('total artisans_chauffage:', this.artisans_chauffage); 
+      console.log('this.all_artisans',this.all_artisans)
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(223,'artisan').subscribe(
-      (response: any) => {
-        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
-        this.artisans_mise_aux_normes = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_mise_aux_normes :', error);
-      }
-    );
+    },
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(224,'artisan').subscribe(
-      (response: any) => {
-        //console.log('recuperation des artisans_depose:',ref_id,'artisan', response);
-        this.artisans_chauffage = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
-      }
-    );
-   
+    error: (err) => {
+      console.error(err);
+    }
 
+  });
 
-
-  setTimeout(() => {
-    console.log('total artisans_mise_en_securite:', this.artisans_mise_en_securite);
-    console.log('total artisans_mise_aux_normes:', this.artisans_mise_aux_normes);
-    console.log('total artisans_chauffage:', this.artisans_chauffage);
-  }, 4000);
-  
 }
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisan(
+    artisanId,
+    this.artisans_mise_en_securite,
+    'artisan_mise_en_securite'
+  );
+
+  this.selectArtisan(
+    artisanId,
+    this.artisans_mise_aux_normes,
+    'artisan_mise_aux_normes'
+  );
+
+  this.selectArtisan(
+    artisanId,
+    this.artisans_chauffage,
+    'artisan_chauffage'
+  );
+
+}
+
+
+private selectArtisan(
+  artisanId: number,
+  options: any[],
+  controlName: string
+): void {
+
+  const option = options.find(o => o.Artisan?.Id === artisanId);
+
+  if (!option) {
+    return;
+  }
+
+  this.formulaire.get(controlName)?.setValue(
+    `${option.ID}:${option.Label}:${option.Prix}`
+  );
+
+}
+
+
 
 tache_mise_en_securite:TacheGenerale | undefined
 tache_mise_aux_normes:TacheGenerale| undefined
@@ -168,6 +205,8 @@ load_taches_generales(){
         console.error('Erreur lors de la recuperation des artisans_chauffage :', error);
       }
     );
+    
+
 }
 
 

@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-remplacement-de-portes-calcul',
@@ -169,84 +170,249 @@ fournisseurs_nature:any[] = []
 artisans_type:any[] = []
 fournisseurs_type:any[] = []
 
+all_artisans:any = []
+one_artisan_for_all=0
+all_fournisseurs:any = []
+one_fournisseur_for_all=0
 
 
-load_artisans_fournisseurs(){
+load_artisans_fournisseurs() {
 
-  this.donnees["gammes-produits-pose-portes"].portes.map((porte:any, i:number) => {
-    let porte_choisie_id=parseInt(porte.gamme.split(":")[0]);
-    let nature_choisie_id=parseInt(porte.nature_porte.split(":")[0]);
-    let type_choisie_id=parseInt(porte.type_porte.split(":")[0]);
+  const requests: any[] = [];
 
-   
+  // Portes
+  this.donnees["gammes-produits-pose-portes"].portes.forEach((porte: any) => {
 
+    const porte_choisie_id = parseInt(porte.gamme.split(":")[0]);
+    const nature_choisie_id = parseInt(porte.nature_porte.split(":")[0]);
+    const type_choisie_id = parseInt(porte.type_porte.split(":")[0]);
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(porte_choisie_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_pose:',porte_choisie_id,'artisan', response);
-        this.artisans_pose.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_pose :', error);
-      }
+    // Pose
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        porte_choisie_id,
+        'artisan'
+      )
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(porte_choisie_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_pose:', response);
-        this.fournisseurs_pose.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        porte_choisie_id,
+        'fournisseur'
+      )
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(nature_choisie_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_nature:',nature_choisie_id,'artisan', response);
-        this.artisans_nature.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_nature :', error);
-      }
+    // Nature
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        nature_choisie_id,
+        'artisan'
+      )
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(nature_choisie_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_nature:', response);
-        this.fournisseurs_nature.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_nature :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        nature_choisie_id,
+        'fournisseur'
+      )
     );
 
-
-    this.userService.getArtisansFournisseursElementsByGammeReference(type_choisie_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_type:',type_choisie_id,'artisan', response);
-        this.artisans_type.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_type :', error);
-      }
+    // Type
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        type_choisie_id,
+        'artisan'
+      )
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(type_choisie_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_type:', response);
-        this.fournisseurs_type.push(response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_type :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        type_choisie_id,
+        'fournisseur'
+      )
     );
-
 
   });
+
+  forkJoin(requests).subscribe({
+
+    next: (responses: any[]) => {
+
+      let index = 0;
+
+      this.artisans_pose = [];
+      this.fournisseurs_pose = [];
+      this.artisans_nature = [];
+      this.fournisseurs_nature = [];
+      this.artisans_type = [];
+      this.fournisseurs_type = [];
+
+      this.donnees["gammes-produits-pose-portes"].portes.forEach((porte: any, i: number) => {
+
+        this.artisans_pose[i] = responses[index++];
+        this.fournisseurs_pose[i] = responses[index++];
+
+        this.artisans_nature[i] = responses[index++];
+        this.fournisseurs_nature[i] = responses[index++];
+
+        this.artisans_type[i] = responses[index++];
+        this.fournisseurs_type[i] = responses[index++];
+
+      });
+
+      // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_pose.flat().map((x: any) => x.Artisan),
+            ...this.artisans_nature.flat().map((x: any) => x.Artisan),
+            ...this.artisans_type.flat().map((x: any) => x.Artisan)
+          ].map((a: any) => [a.Id, a])
+        ).values()
+      ];
+
+      // Fournisseurs distincts
+      this.all_fournisseurs = [
+        ...new Map(
+          [
+            ...this.fournisseurs_pose.flat().map((x: any) => x.Fournisseur),
+            ...this.fournisseurs_nature.flat().map((x: any) => x.Fournisseur),
+            ...this.fournisseurs_type.flat().map((x: any) => x.Fournisseur)
+          ].map((f: any) => [f.Id, f])
+        ).values()
+      ];
+
+      console.log('artisans_pose', this.artisans_pose);
+      console.log('fournisseurs_pose', this.fournisseurs_pose);
+
+      console.log('artisans_nature', this.artisans_nature);
+      console.log('fournisseurs_nature', this.fournisseurs_nature);
+
+      console.log('artisans_type', this.artisans_type);
+      console.log('fournisseurs_type', this.fournisseurs_type);
+
+      console.log('all_artisans', this.all_artisans);
+      console.log('all_fournisseurs', this.all_fournisseurs);
+
+    },
+
+    error: err => {
+      console.error('Erreur récupération artisans/fournisseurs', err);
+    }
+
+  });
+
 }
 
 
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_pose,
+    this.portes,
+    'artisan_pose'
+  );
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_nature,
+    this.portes,
+    'artisan_nature', 
+  );
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_type,
+    this.portes,
+    'artisan_type'
+  );
+
+}
+
+
+onFournisseurForAllChange(fournisseurId: number): void {
+
+ this.selectFournisseurFormArray(
+    fournisseurId,
+    this.fournisseurs_pose,
+    this.portes,
+    'fournisseur_pose'
+  );
+
+  this.selectFournisseurFormArray(
+    fournisseurId,
+    this.fournisseurs_nature,
+    this.portes,
+    'fournisseur_nature'
+  );
+
+  this.selectFournisseurFormArray(
+    fournisseurId,
+    this.fournisseurs_type,
+    this.portes,
+    'fournisseur_type'
+  );
+
+}
+
+
+private selectFournisseurFormArray(
+  fournisseurId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string
+): void {
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Fournisseur?.Id === fournisseurId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}:${option.Prix}:${option.Label}`
+      );
+
+  });
+
+}
+
+
+
+private selectArtisanFormArray(
+  artisanId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string,
+  separator: string = ':'
+): void {
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Artisan?.Id === artisanId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}${separator}${option.Prix}${separator}${option.Label}`
+      );
+
+  });
+
+}
 
 
   submit(){

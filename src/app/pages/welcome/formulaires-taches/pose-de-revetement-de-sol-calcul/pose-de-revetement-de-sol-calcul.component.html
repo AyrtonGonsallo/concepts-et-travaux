@@ -188,6 +188,24 @@
 </form>
 
 
+   <div *ngIf=" prix_coutant_mode">
+      <div nz-row>
+          <div nz-col nzSpan="12">
+              <nz-select [(ngModel)]="one_artisan_for_all" [nzSize]="'large'" style="min-width: 200px;" (ngModelChange)="onArtisanForAllChange($event)">
+                  <nz-option nzLabel="Choisir un artisan" [nzValue]="0"></nz-option>
+                  <nz-option *ngFor="let artisan of all_artisans" [nzLabel]="artisan.Nom+' '+artisan.Prenom+' ('+artisan.CategorieArtisan+')'" [nzValue]="artisan.Id"></nz-option>
+              </nz-select>
+          </div>
+          <div nz-col nzSpan="12">
+              <nz-select [(ngModel)]="one_fournisseur_for_all" [nzSize]="'large'" style="min-width: 200px;" (ngModelChange)="onFournisseurForAllChange($event)">
+                  <nz-option nzLabel="Choisir un fournisseur" [nzValue]="0"></nz-option>
+                  <nz-option *ngFor="let fournisseur of all_fournisseurs" [nzLabel]="fournisseur.Nom+' '+fournisseur.Prenom+' ('+fournisseur.CategorieFournisseur+')'" [nzValue]="fournisseur.Id"></nz-option>
+              </nz-select>
+          </div>
+      </div>
+  </div>
+
+
 <form *ngIf="formulaire && prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
       
 

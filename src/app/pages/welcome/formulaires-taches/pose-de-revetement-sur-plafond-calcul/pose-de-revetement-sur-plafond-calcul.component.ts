@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pose-de-revetement-sur-plafond-calcul',
@@ -159,51 +160,162 @@ artisans_surfaces:any
 artisans_pose:any
 fournisseurs_pose:any
 
-load_artisans_fournisseurs(){
-  let rev_a_poser_id=parseInt(this.donnees["gammes-produits-pose-plafond"].gamme.split(":")[0]);
-  let etat_id=parseInt(this.donnees["etat-surfaces-pose-plafond"].etat.split("-")[0]);
-  let rev_a_deposer_id=parseInt(this.donnees["dimensions-pose-plafond"].depose.split(":")[0]);
+all_artisans:any = []
+one_artisan_for_all=0
 
-  this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_deposer_id,'artisan').subscribe(
-    (response: any) => {
-      console.log('recuperation des artisans_depose:', response);
-      this.artisans_depose=response
+all_fournisseurs:any = []
+one_fournisseur_for_all=0
+
+
+
+load_artisans_fournisseurs() {
+
+  const rev_a_poser_id = parseInt(this.donnees["gammes-produits-pose-plafond"].gamme.split(":")[0]);
+  const etat_id = parseInt(this.donnees["etat-surfaces-pose-plafond"].etat.split("-")[0]);
+  const rev_a_deposer_id = parseInt(this.donnees["dimensions-pose-plafond"].depose.split(":")[0]);
+
+  forkJoin({
+
+    artisans_depose:
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        rev_a_deposer_id,
+        'artisan'
+      ),
+
+    artisans_surfaces:
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        etat_id,
+        'artisan'
+      ),
+
+    artisans_pose:
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        rev_a_poser_id,
+        'artisan'
+      ),
+
+    fournisseurs_pose:
+      this.userService.getArtisansFournisseursElementsByGammeReference(
+        rev_a_poser_id,
+        'fournisseur'
+      )
+
+  }).subscribe({
+
+    next: (responses: any) => {
+
+      this.artisans_depose = responses.artisans_depose;
+      this.artisans_surfaces = responses.artisans_surfaces;
+      this.artisans_pose = responses.artisans_pose;
+      this.fournisseurs_pose = responses.fournisseurs_pose;
+
+      // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_depose.map((x: any) => x.Artisan),
+            ...this.artisans_surfaces.map((x: any) => x.Artisan),
+            ...this.artisans_pose.map((x: any) => x.Artisan)
+          ].map((a: any) => [a.Id, a])
+        ).values()
+      ];
+
+      // Fournisseurs distincts
+      this.all_fournisseurs = [
+        ...new Map(
+          this.fournisseurs_pose
+            .map((x: any) => x.Fournisseur)
+            .map((f: any) => [f.Id, f])
+        ).values()
+      ];
+
+      console.log('artisans_depose', this.artisans_depose);
+      console.log('artisans_surfaces', this.artisans_surfaces);
+      console.log('artisans_pose', this.artisans_pose);
+      console.log('fournisseurs_pose', this.fournisseurs_pose);
+
+      console.log('all_artisans', this.all_artisans);
+      console.log('all_fournisseurs', this.all_fournisseurs);
+
     },
-    (error: any) => {
-      console.error('Erreur lors de la recuperation des artisans_depose :', error);
+
+    error: err => {
+      console.error('Erreur récupération artisans/fournisseurs', err);
     }
+
+  });
+
+}
+
+
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisan(artisanId, this.artisans_depose, 'artisan_depose');
+
+  this.selectArtisan(artisanId, this.artisans_surfaces, 'artisan_surfaces', '-');
+
+  this.selectArtisan(artisanId, this.artisans_pose, 'artisan_pose');
+
+
+}
+
+
+
+onFournisseurForAllChange(fournisseurId: number): void {
+
+
+  this.selectFournisseur(
+    fournisseurId,
+    this.fournisseurs_pose,
+    'fournisseur_pose'
   );
 
-  this.userService.getArtisansFournisseursElementsByGammeReference(etat_id,'artisan').subscribe(
-    (response: any) => {
-      console.log('recuperation des artisans_surfaces:', response);
-      this.artisans_surfaces=response
-    },
-    (error: any) => {
-      console.error('Erreur lors de la recuperation des artisans_surfaces :', error);
-    }
-  );
+}
 
 
-  this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
-    (response: any) => {
-      console.log('recuperation des artisans_pose:',rev_a_poser_id,'artisan', response);
-      this.artisans_pose=response
-    },
-    (error: any) => {
-      console.error('Erreur lors de la recuperation des artisans_pose :', error);
-    }
+private selectArtisan(
+  artisanId: number,
+  options: any[],
+  controlName: string,
+  separator: string = ':'
+): void {
+
+  const option = options.find(
+    o => o.Artisan?.Id === artisanId
   );
 
-  this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
-    (response: any) => {
-      console.log('recuperation des fournisseurs_pose:', response);
-      this.fournisseurs_pose=response
-    },
-    (error: any) => {
-      console.error('Erreur lors de la recuperation des fournisseurs_pose :', error);
-    }
+  if (!option) {
+    return;
+  }
+
+  this.formulaire.get(controlName)?.setValue(
+    `${option.ID}${separator}${option.Label}${separator}${option.Prix}`
   );
+
+}
+
+
+private selectFournisseur(
+  fournisseurId: number,
+  options: any[],
+  controlName: string,
+  separator: string = ':'
+): void {
+
+  const option = options.find(
+    o => o.Fournisseur?.Id === fournisseurId
+  );
+
+  if (!option) {
+    return;
+  }
+
+  this.formulaire.get(controlName)?.setValue(
+    `${option.ID}${separator}${option.Label}${separator}${option.Prix}`
+  );
+
 }
 
 
@@ -409,7 +521,6 @@ modifier(){
         break;
       case 'gamme':
         label = this.donnees["gammes-produits-pose-plafond"].gamme?.split(':')[1]
-        break;
         break;
     
       default:

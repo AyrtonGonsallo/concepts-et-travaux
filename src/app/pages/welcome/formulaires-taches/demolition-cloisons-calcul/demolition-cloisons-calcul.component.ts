@@ -5,6 +5,7 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CalculDevisService } from '../../../../Services/calcul-devis.service';
 import { DevisTache } from '../../../../Models/DevisTache';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-demolition-cloisons-calcul',
@@ -141,66 +142,166 @@ artisans_pose_ouverture:any[] = []
 fournisseurs_pose_ouverture:any[] = []
 artisans_pose_mur:any[] = []
 fournisseurs_pose_mur:any[] = []
+all_artisans:any = []
+one_artisan_for_all=0
 
 
 
-load_artisans_fournisseurs(){
+load_artisans_fournisseurs() {
 
-  this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.map((ouverture:any, i:number) => {
-    let rev_a_poser_id=parseInt(ouverture.cloison.split(":")[0]);
+  const requests: any[] = [];
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_pose_ouverture:', response);
-        this.artisans_pose_ouverture[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_pose_ouverture :', error);
-      }
+  // Ouvertures partielles
+  this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.forEach((ouverture:any) => {
+
+    const ref_id = parseInt(ouverture.cloison.split(":")[0]);
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(ref_id, 'artisan')
     );
 
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_pose_ouverture:', response);
-        this.fournisseurs_pose_ouverture[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_pose_ouverture :', error);
-      }
-    );
-
-
-  });
-
-
-
-   this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.map((ouverture: any, i:number) => {
-    let rev_a_poser_id=parseInt(ouverture.cloison.split(":")[0]);
-
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'artisan').subscribe(
-      (response: any) => {
-        console.log('recuperation des artisans_pose_mur:',rev_a_poser_id, response);
-        this.artisans_pose_mur[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des artisans_pose_mur :', error);
-      }
-    );
-
-    this.userService.getArtisansFournisseursElementsByGammeReference(rev_a_poser_id,'fournisseur').subscribe(
-      (response: any) => {
-        console.log('recuperation des fournisseurs_pose_mur:', response);
-        this.fournisseurs_pose_mur[i] = response;
-      },
-      (error: any) => {
-        console.error('Erreur lors de la recuperation des fournisseurs_pose_mur :', error);
-      }
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(ref_id, 'fournisseur')
     );
 
   });
 
+
+  // Murs non porteurs
+  this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.forEach((mur:any) => {
+
+    const ref_id = parseInt(mur.cloison.split(":")[0]);
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(ref_id, 'artisan')
+    );
+
+    requests.push(
+      this.userService.getArtisansFournisseursElementsByGammeReference(ref_id, 'fournisseur')
+    );
+
+  });
+
+
+  forkJoin(requests).subscribe({
+
+    next: (responses:any[]) => {
+
+      let index = 0;
+
+      this.artisans_pose_ouverture = [];
+      this.fournisseurs_pose_ouverture = [];
+      this.artisans_pose_mur = [];
+      this.fournisseurs_pose_mur = [];
+
+
+      // Ouvertures
+      this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.forEach((ouverture:any, i:number) => {
+
+        this.artisans_pose_ouverture[i] = responses[index++];
+        this.fournisseurs_pose_ouverture[i] = responses[index++];
+
+      });
+
+
+      // Murs
+      this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.forEach((mur:any, i:number) => {
+
+        this.artisans_pose_mur[i] = responses[index++];
+        this.fournisseurs_pose_mur[i] = responses[index++];
+
+      });
+
+
+
+      // Artisans distincts
+      this.all_artisans = [
+        ...new Map(
+          [
+            ...this.artisans_pose_ouverture.flat().map((x:any) => x.Artisan),
+            ...this.artisans_pose_mur.flat().map((x:any) => x.Artisan)
+          ]
+          .map((a:any) => [a.Id, a])
+        ).values()
+      ];
+
+/*
+      // Fournisseurs distincts
+      this.all_fournisseurs = [
+        ...new Map(
+          [
+            ...this.fournisseurs_pose_ouverture.flat().map((x:any) => x.Fournisseur),
+            ...this.fournisseurs_pose_mur.flat().map((x:any) => x.Fournisseur)
+          ]
+          .map((f:any) => [f.Id, f])
+        ).values()
+      ];
+*/
+
+      console.log('artisans_pose_ouverture', this.artisans_pose_ouverture);
+      console.log('fournisseurs_pose_ouverture', this.fournisseurs_pose_ouverture);
+      console.log('artisans_pose_mur', this.artisans_pose_mur);
+      console.log('fournisseurs_pose_mur', this.fournisseurs_pose_mur);
+
+      console.log('all_artisans', this.all_artisans);
+
+    },
+
+    error: err => console.error(err)
+
+  });
 
 }
+
+
+onArtisanForAllChange(artisanId: number): void {
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_pose_mur,
+    this.mursNonporteurs,
+    'artisan_pose'
+  );
+
+  this.selectArtisanFormArray(
+    artisanId,
+    this.artisans_pose_ouverture,
+    this.ouverturePartielle,
+    'artisan_pose'
+  );
+
+}
+
+
+private selectArtisanFormArray(
+  artisanId: number,
+  optionsArray: any[][],
+  formArray: any,
+  controlName: string
+): void {
+
+  optionsArray.forEach((options, index) => {
+
+    const option = options.find(
+      (o:any) => o.Artisan?.Id === artisanId
+    );
+
+    if (!option) {
+      return;
+    }
+
+    formArray.at(index)
+      .get(controlName)
+      ?.setValue(
+        `${option.ID}:${option.Label}:${option.Prix}`
+      );
+
+  });
+
+}
+
+
+
 
 
 submit(){
