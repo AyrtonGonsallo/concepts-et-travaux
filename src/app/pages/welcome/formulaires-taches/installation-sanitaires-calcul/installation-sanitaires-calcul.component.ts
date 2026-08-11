@@ -75,7 +75,9 @@ export class InstallationSanitairesCalculComponent {
         
         
         this.load_artisans_fournisseurs();
-        
+        this.load_parametres()
+         
+       
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -98,115 +100,236 @@ export class InstallationSanitairesCalculComponent {
   }
 tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
 
-  loadAppareils(){
-    
-    this.userService.getEquipementsByPiece(5).subscribe(
-      (response: Equipement[]) => {
-        const tableauIds=this.tableauIds
-        this.appareils_salle_de_bain = response.filter(equipement => equipement.Modeles && equipement.Modeles.length > 0).sort((a, b) => {
-          // Trier selon l'ordre des IDs dans le tableau
+ loadAppareils(): void {
+
+  forkJoin({
+    appareils: this.userService.getEquipementsByPiece(5),
+    gammesDepose: this.userService.getGammesByTravailAndTypeOrdered(
+      16,
+      'service-depose-salle-de-bain-salle-d-eau'
+    )
+  }).subscribe({
+    next: ({ appareils, gammesDepose }) => {
+
+      /* =====================================================
+       * GAMMES DEPOSE
+       * ===================================================== */
+
+      this.gammes_depose = gammesDepose;
+
+      console.log(
+        'Réponse get depose salle de bain :',
+        this.gammes_depose
+      );
+
+
+      /* =====================================================
+       * APPAREILS
+       * ===================================================== */
+
+      const tableauIds = this.tableauIds;
+
+      this.appareils_salle_de_bain = appareils
+        .filter(
+          (equipement:any) =>
+            equipement.Modeles &&
+            equipement.Modeles.length > 0
+        )
+        .sort((a:any, b:any) => {
+
           const indexA = tableauIds.indexOf(a.ID);
           const indexB = tableauIds.indexOf(b.ID);
-          
-          // Les éléments non présents dans le tableau seront mis à la fin
-          return (indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA) - 
-                 (indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB);
-        });;
-        console.log("réponse de la requette  getEquipementsByPiece:salledebain",this.appareils_salle_de_bain);
-        let i=0
 
-        this.appareils_salle_de_bain.forEach(appareil => {
+          const positionA =
+            indexA === -1
+              ? Number.MAX_SAFE_INTEGER
+              : indexA;
 
-          let modele=""
-          let active=false
-          let longueur=0
-          let id=0
-          let titre=""
-          let artisan_pose=""
-          let fournisseur_pose=""
-          let largeur=0
-          let nombre_de_vasque=0
-          let encastre_ou_apparente=false
-          if(this.donnees["gammes-produits-pose-app-san"]){
-            let form=this.donnees["gammes-produits-pose-app-san"]
-            modele=form?.appareils_salle_de_bain[i]?.modele
-            id=form?.appareils_salle_de_bain[i]?.id
-            active=form?.appareils_salle_de_bain[i]?.active
-            longueur=form?.appareils_salle_de_bain[i]?.longueur
-            largeur=form?.appareils_salle_de_bain[i]?.largeur
-            nombre_de_vasque=form?.appareils_salle_de_bain[i]?.nombre_de_vasque
-            encastre_ou_apparente=form?.appareils_salle_de_bain[i]?.encastre_ou_apparente
-            titre=form?.appareils_salle_de_bain[i]?.titre
-            artisan_pose=form?.appareils_salle_de_bain[i]?.artisan_pose
-            fournisseur_pose=form?.appareils_salle_de_bain[i]?.fournisseur_pose
-          }
-        
-             // Créer un FormGroup pour chaque appareil
-          const appareilGroup = this.fb.group({});
-              
-          appareilGroup.addControl("id", this.fb.control(id, ));
-          appareilGroup.addControl("longueur", this.fb.control(longueur, ));
-          appareilGroup.addControl("largeur", this.fb.control(largeur, ));
-          appareilGroup.addControl("nombre_de_vasque", this.fb.control(nombre_de_vasque, ));
-          appareilGroup.addControl("encastre_ou_apparente", this.fb.control(encastre_ou_apparente, ));
-          appareilGroup.addControl("active", this.fb.control(active, ));
-          appareilGroup.addControl("modele", this.fb.control(modele, ));
-          appareilGroup.addControl("titre", this.fb.control(titre, ));
-          appareilGroup.addControl("artisan_pose", this.fb.control(artisan_pose, ));
-          appareilGroup.addControl("fournisseur_pose", this.fb.control(fournisseur_pose, ));
-            
-         
+          const positionB =
+            indexB === -1
+              ? Number.MAX_SAFE_INTEGER
+              : indexB;
 
-          // Obtenez les contrôles pour pouvoir les manipuler
-          const nombre_de_vasqueControl = appareilGroup.get('nombre_de_vasque');
-          const largeurControl = appareilGroup.get('largeur');
-          const longueurControl = appareilGroup.get('longueur');
-          const modeleControl = appareilGroup.get('modele');
-          const activeControl = appareilGroup.get('active');
-
-          // Abonnez-vous aux changements de la valeur de 'active'
-          activeControl?.valueChanges.subscribe((isActive: boolean) => {
-            if (isActive) {
-              // Si 'active' est true, ajouter les validateurs
-              modeleControl?.setValidators(Validators.required);
-            } else {
-              // Sinon, supprimer les validateurs
-              modeleControl?.clearValidators();
-            }
-            // Mettre à jour la validation pour forcer la vérification des erreurs
-            modeleControl?.updateValueAndValidity();
-          });
-           
-
-          // Ajouter le FormGroup de l'appareil au FormArray
-          (this.formulaire.get('appareils_salle_de_bain_form') as FormArray).push(appareilGroup);
-          i++
-          
+          return positionA - positionB;
         });
-      },
-      (error) => {
-        console.error('Erreur lors de la recuperation des  getEquipementsByPiece:salledebain :', error);
-      }
-    );
+
+      console.log(
+        'Réponse getEquipementsByPiece:salledebain :',
+        this.appareils_salle_de_bain
+      );
 
 
-    this.userService.getGammesByTravailAndTypeOrdered(16, 'service-depose-salle-de-bain-salle-d-eau').subscribe(
-      (response: any) => {
-        this.gammes_depose = response
-        console.log("réponse de la requette  get depose salle de bain",this.gammes_depose);
-        let i=0
+      /* =====================================================
+       * DONNEES EXISTANTES
+       * ===================================================== */
 
-        
-      },
-      (error) => {
-        console.error('Erreur lors de la recuperation des gammes_depose :', error);
-      }
-    );
+      const donneesExistantes =
+        this.donnees['gammes-produits-pose-app-san']
+          ?.appareils_salle_de_bain ?? [];
 
 
+      /* =====================================================
+       * FORM ARRAY
+       * ===================================================== */
+
+      const formArray =
+        this.formulaire.get(
+          'appareils_salle_de_bain_form'
+        ) as FormArray;
+
+      // Important si loadAppareils() peut être appelé plusieurs fois
+      formArray.clear();
+
+
+      /* =====================================================
+       * CREATION DES FORM GROUPS
+       * ===================================================== */
+
+      this.appareils_salle_de_bain.forEach(
+        (appareil, index) => {
+
+          const donnees =
+            donneesExistantes[index] ?? {};
+
+
+          const appareilGroup = this.fb.group({
+            id: [
+              donnees.id ?? 0
+            ],
+
+            longueur: [
+              donnees.longueur ?? 0
+            ],
+
+            largeur: [
+              donnees.largeur ?? 0
+            ],
+
+            nombre_de_vasque: [
+              donnees.nombre_de_vasque ?? 0
+            ],
+
+            encastre_ou_apparente: [
+              donnees.encastre_ou_apparente ?? false
+            ],
+
+            active: [
+              donnees.active ?? false
+            ],
+
+            modele: [
+              donnees.modele ?? ''
+            ],
+
+            titre: [
+              donnees.titre ?? ''
+            ],
+
+            artisan_pose: [
+              donnees.artisan_pose ?? ''
+            ],
+
+            fournisseur_pose: [
+              donnees.fournisseur_pose ?? ''
+            ]
+          });
+
+
+          /* =================================================
+           * CONTROLES
+           * ================================================= */
+
+          const activeControl =
+            appareilGroup.get('active');
+
+          const modeleControl =
+            appareilGroup.get('modele');
+
+
+          /* =================================================
+           * VALIDATION MODELE
+           * ================================================= */
+
+          activeControl?.valueChanges.subscribe(
+            (isActive: boolean) => {
+
+              if (isActive) {
+
+                modeleControl?.setValidators(
+                  Validators.required
+                );
+
+              } else {
+
+                modeleControl?.clearValidators();
+
+              }
+
+              modeleControl?.updateValueAndValidity({
+                emitEvent: false
+              });
+            }
+          );
+
+
+          // Appliquer immédiatement la validation
+          // correspondant à la valeur initiale
+          if (activeControl?.value) {
+
+            modeleControl?.setValidators(
+              Validators.required
+            );
+
+          } else {
+
+            modeleControl?.clearValidators();
+
+          }
+
+          modeleControl?.updateValueAndValidity({
+            emitEvent: false
+          });
+
+
+          /* =================================================
+           * AJOUT AU FORM ARRAY
+           * ================================================= */
+
+          formArray.push(appareilGroup);
+        }
+      );
+
+
+         if (this.prix_coutant_mode) {
+          this.modifier()
+        }
+    },
+
+    error: (error) => {
+
+      console.error(
+        'Erreur lors du chargement des appareils / gammes :',
+        error
+      );
+
+    }
+  });
+}
+
+
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
   }
-
-
 
 
 artisans_depose:any[] = []
@@ -294,6 +417,8 @@ load_artisans_fournisseurs() {
       console.log('total fournisseurs_pose:', this.fournisseurs_pose);
       console.log('this.all_artisans',this.all_artisans);
       console.log('this.all_fournisseurs',this.all_fournisseurs);
+
+    
 
     },
 
@@ -527,6 +652,31 @@ modifier(){
 
 
   get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'pose':
+        if(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].active){
+          prix = parseFloat(this.donnees["gammes-produits-pose-app-san"].appareils_salle_de_bain[i].modele.split(':')[2]);
+
+        }
+        break;
+      case 'depose':
+        if(this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].quantite>0){
+          prix = parseFloat(this.donnees["dimensions-pose-app-san"].gammes_depose_form[i].prix);
+        }
+        break;
+    
+      default:
+        break;
+    }
+
+    prix*=this.coefficient
+    return `${prix} €`
+  }
+
+
+  
+  get_prix_debourse(i:number,type:string){
     let prix = 0
     switch (type) {
       case 'pose':

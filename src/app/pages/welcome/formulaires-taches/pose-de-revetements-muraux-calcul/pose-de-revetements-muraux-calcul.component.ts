@@ -53,6 +53,7 @@ export class PoseDeRevetementsMurauxCalculComponent {
     this.load_gammes()
     this.load_etats()
     this.load_historiques()
+    this.load_parametres()
     
   }
 
@@ -82,6 +83,12 @@ export class PoseDeRevetementsMurauxCalculComponent {
         console.log("donnees ",this.donnees);
 
         this.load_artisans_fournisseurs()
+
+ 
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
+        
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);
@@ -209,6 +216,19 @@ load_etats(){
   );
 }
 
+  coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
 
 artisans_depose:any[] = []
 artisans_surfaces:any[] = []
@@ -545,7 +565,7 @@ private selectArtisanFormArray(
           this.message.create('success', `Tache modifié avec succès`);
           if(!this.prix_coutant_mode){
              setTimeout(() => {
-            this.reloadCurrentRoute()
+            //this.reloadCurrentRoute()
             }, 2000);
           }
          
@@ -577,6 +597,26 @@ private selectArtisanFormArray(
 
 
   get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-murs"].murs[i].gamme.split(':')[2]);
+        break;
+      case 'etat':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-murs"].murs[i].etat.split('-')[2]);
+        break;
+      case 'depose':
+        prix = parseFloat(this.donnees["dimensions-pose-murs"].murs[i].depose.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    prix*=this.coefficient
+    return `${prix} €`
+  }
+
+  get_prix_debourse(i:number,type:string){
     let prix = 0
     switch (type) {
       case 'gamme':

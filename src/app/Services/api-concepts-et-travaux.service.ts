@@ -645,11 +645,26 @@ get_role(userId: number): Observable<any> {
 
  
 
-  getExportGammes(): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/export_gammes`, {
-      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
-    });
-  }
+  getExportGammes(
+    travail_id: number,
+    etape: string,
+    type: string
+): Observable<Blob> {
+
+    const body = {
+        travail_id,
+        etape,
+        type
+    };
+
+    return this.http.post(
+        `${environment.apiUrl}/export_gammes`,
+        body,
+        {
+            responseType: 'blob'
+        }
+    );
+}
 
   getExportArtisanGammes(artisan_id:number): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/export_gammes_artisan/${artisan_id}`, {
@@ -676,10 +691,20 @@ get_role(userId: number): Observable<any> {
     });
   }
 
-  getExportModelesEquipements(): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/export_modeles_equipement`, {
-      responseType: 'blob'  // Important : récupérer la réponse comme un fichier (Blob)
-    });
+  getExportModelesEquipements(etape:string): Observable<Blob> {
+
+    const body = {
+        etape,
+    };
+
+    return this.http.post(
+        `${environment.apiUrl}/export_modeles_equipement`,
+        body,
+        {
+            responseType: 'blob'
+        }
+    );
+
   }
 
    downloadModeleGammesFournisseur(fournisseur_id:number): Observable<Blob> {

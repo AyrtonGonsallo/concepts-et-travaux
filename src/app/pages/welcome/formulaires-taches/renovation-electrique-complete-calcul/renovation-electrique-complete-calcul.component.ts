@@ -50,6 +50,9 @@ export class RenovationElectriqueCompleteCalculComponent {
       });
       this.getDetails(parseInt(this.tacheId, 10))
     }
+
+
+
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
@@ -66,10 +69,16 @@ export class RenovationElectriqueCompleteCalculComponent {
           artisan_mise_aux_normes:[this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes??''],
           artisan_chauffage:[this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage??''],
         });
+
+         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
         
         
         this.load_artisans_fournisseurs()
         this.load_taches_generales()
+        this.load_parametres()
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
       },
@@ -80,6 +89,21 @@ export class RenovationElectriqueCompleteCalculComponent {
     
   }
 
+
+  
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
   artisans_mise_en_securite:any = [] 
   artisans_mise_aux_normes:any = [] 
   artisans_chauffage:any = [] 
@@ -367,9 +391,12 @@ modifier(){
       (response) => {
         console.log('Tache modifiée avec succès :', response);
         this.message.create('success', `Tache modifiée avec succès`);
-        setTimeout(() => {
-          this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
-        }, 2000);
+        if(!this.prix_coutant_mode){
+           setTimeout(() => {
+            this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
+          }, 2000);
+        }
+       
       },
       (error) => {
         console.error('Erreur lors de la modification de la tache :', error);
@@ -400,10 +427,30 @@ modifier(){
       default:
         break;
     }
+    prix*=this.coefficient
     return `${prix} €`
   }
 
   get_prix_coutant(type:string){
+    let prix = 0
+    switch (type) {
+      case 'mise_en_securite':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_en_securite?.split(':')[2] || '0')
+        break;
+      case 'mise_aux_normes':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes?.split(':')[2] || '0')
+        break;
+      case 'chauffage':
+        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
+   get_prix_debourse(type:string){
     let prix = 0
     switch (type) {
       case 'mise_en_securite':

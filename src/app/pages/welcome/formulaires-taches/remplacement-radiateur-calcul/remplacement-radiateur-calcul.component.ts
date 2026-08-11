@@ -50,6 +50,7 @@ export class RemplacementRadiateurCalculComponent {
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
       this.load_types()
+      this.load_parametres()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -86,6 +87,11 @@ export class RemplacementRadiateurCalculComponent {
         
 
         this.load_artisans_fournisseurs()
+
+         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -132,7 +138,19 @@ export class RemplacementRadiateurCalculComponent {
     
   }
 
-
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
 
 artisans_pose:any[] = []
 fournisseurs_pose:any[] = []
@@ -489,7 +507,21 @@ modifier(){
 }
 
 
-
+  get_prix_debourse(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-chauffage"].radiateurs[i].gamme.split(':')[1]);
+        break;
+      case 'type':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-chauffage"].radiateurs[i].type.split(':')[1]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
 
 
   get_prix_vente(i:number,type:string){
@@ -505,6 +537,7 @@ modifier(){
       default:
         break;
     }
+    prix*=this.coefficient
     return `${prix} €`
   }
 

@@ -135,14 +135,14 @@ export class ModelesEquipementsComponent {
   
 
    exporter() {
-    this.userService.getExportModelesEquipements().subscribe((blob: Blob) => {
+    this.userService.getExportModelesEquipements(this.filteredEtape).subscribe((blob: Blob) => {
       // Créer une URL temporaire pour le fichier
       const url = window.URL.createObjectURL(blob);
 
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'modeles_export.xlsx';  // Nom du fichier
+      a.download = 'export_equipements.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();

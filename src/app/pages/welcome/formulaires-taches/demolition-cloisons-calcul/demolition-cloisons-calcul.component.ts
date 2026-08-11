@@ -20,7 +20,7 @@ export class DemolitionCloisonsCalculComponent {
   devisTache!:DevisTache;
   detailsCalcul:any
   edit_mode=false
-prix_coutant_mode=false
+  prix_coutant_mode=false
    constructor(private calculDevisService:CalculDevisService,private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     }
 
@@ -47,6 +47,7 @@ prix_coutant_mode=false
       });
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
+      this.load_parametres()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -89,6 +90,10 @@ prix_coutant_mode=false
         
 
         this.load_artisans_fournisseurs()
+         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
         
         
        // this.validateForm.patchValue(response);
@@ -301,6 +306,19 @@ private selectArtisanFormArray(
 }
 
 
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
 
 
 
@@ -432,6 +450,23 @@ modifier(){
 
 
   get_prix_vente(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'murs':
+        prix = parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs[i].cloison.split(':')[2]);
+        break;
+      case 'ouverture':
+        prix = parseFloat(this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle[i].cloison.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+        prix*=this.coefficient
+    return `${prix} €`
+  }
+
+  get_prix_debourse(i:number,type:string){
     let prix = 0
     switch (type) {
       case 'murs':

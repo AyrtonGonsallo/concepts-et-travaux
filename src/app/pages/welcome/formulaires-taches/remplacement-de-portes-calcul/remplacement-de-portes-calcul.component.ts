@@ -56,6 +56,7 @@ export class RemplacementDePortesCalculComponent {
       });
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
+      this.load_parametres()
     }
 
     getDetails(id: number): void {
@@ -85,6 +86,11 @@ export class RemplacementDePortesCalculComponent {
             )
           });
 
+           
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
+
 
           this.load_artisans_fournisseurs()
          // this.validateForm.patchValue(response);
@@ -102,7 +108,19 @@ export class RemplacementDePortesCalculComponent {
       return this.formulaire.get('portes') as FormArray;
     }
 
+     coefficient = 0
+  load_parametres(){
     
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
   
 types_de_porte_simples:any
 types_de_porte_doubles:any
@@ -545,6 +563,25 @@ private selectArtisanFormArray(
   }
 
 
+  get_prix_debourse(i:number,type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].gamme.split(':')[1]);
+        break;
+      case 'nature_porte':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].nature_porte.split(':')[1]);
+        break;
+      case 'type_porte':
+        prix = parseFloat(this.donnees["gammes-produits-pose-portes"].portes[i].type_porte.split(':')[1]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
   get_prix_vente(i:number,type:string){
     let prix = 0
     switch (type) {
@@ -561,6 +598,7 @@ private selectArtisanFormArray(
       default:
         break;
     }
+     prix*=this.coefficient
     return `${prix} €`
   }
 

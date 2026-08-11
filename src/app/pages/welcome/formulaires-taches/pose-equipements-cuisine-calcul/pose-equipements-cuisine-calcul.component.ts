@@ -49,6 +49,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       });
       this.getDetails(parseInt(this.tacheId, 10))
       this.loadAppareils()
+      this.load_parametres()
      
       
 
@@ -78,6 +79,8 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
 
         this.load_artisans_fournisseurs()
         
+         
+       
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -182,6 +185,11 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
           i++
           
         });
+
+
+         if (this.prix_coutant_mode) {
+          this.modifier()
+        }
       },
       (error) => {
         console.error('Erreur lors de la recuperation des  getEquipementsByPiece:salledebain :', error);
@@ -207,6 +215,19 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
 
 
 
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
 
   
 
@@ -565,6 +586,7 @@ submit() {
       default:
         break;
     }
+    prix*=this.coefficient
     return `${prix} €`
   }
 
@@ -577,6 +599,29 @@ submit() {
         break;
       case 'depose':
         prix += parseFloat(this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form[i].artisan_depose?.split(':')[2] || '0')
+        break;
+    
+      default:
+        break;
+    }
+    
+    return `${prix} €`
+  }
+
+
+  get_prix_debourse(i:number,type:string){
+     let prix = 0
+    switch (type) {
+      case 'pose':
+        if(this.donnees["gammes-produits-pose-elementcuisines"].appareils_cuisine[i].active){
+          prix = parseFloat(this.donnees["gammes-produits-pose-elementcuisines"].appareils_cuisine[i].modele.split(':')[2]);
+
+        }
+        break;
+      case 'depose':
+        if(this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form[i].quantite>0){
+          prix = parseFloat(this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form[i].prix);
+        }
         break;
     
       default:

@@ -50,6 +50,7 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       this.load_gammes_depose()
       this.load_gammes_pose()
       this.load_types()
+      this.load_parametres()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -83,6 +84,10 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
 
         this.load_artisans_fournisseurs()
         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
+                
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
       },
@@ -297,6 +302,22 @@ private selectArtisan(
 }
 
 
+
+  
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
+
 private selectFournisseur(
   fournisseurId: number,
   options: any[],
@@ -487,8 +508,30 @@ modifier(){
       default:
         break;
     }
+     prix*=this.coefficient
     return `${prix} €`
   }
+
+
+   get_prix_debourse(type:string){
+    let prix = 0
+    switch (type) {
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-plafond"].gamme.split(':')[2]);
+        break;
+      case 'etat':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-plafond"].etat.split('-')[2]);
+        break;
+      case 'depose':
+        prix = parseFloat(this.donnees["dimensions-pose-plafond"].depose.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    return `${prix} €`
+  }
+
 
   get_prix_coutant(type:string){
     let prix = 0
@@ -507,6 +550,7 @@ modifier(){
       default:
         break;
     }
+    
     return `${prix} €`
   }
 

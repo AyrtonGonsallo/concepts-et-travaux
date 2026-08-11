@@ -48,6 +48,7 @@ prix_coutant_mode=false
       this.getDetails(parseInt(this.tacheId, 10))
       this.load_gammes()
       this.load_types()
+      this.load_parametres()
     }
 
   getDetails(id: number): void {
@@ -80,6 +81,11 @@ prix_coutant_mode=false
         
 
         this.load_artisans_fournisseurs()
+
+         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
         
         
        // this.validateForm.patchValue(response);
@@ -225,7 +231,19 @@ load_artisans_fournisseurs() {
 }
 
 
-
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
 
 onArtisanForAllChange(artisanId: number): void {
 
@@ -396,10 +414,15 @@ modifier(){
 
 
 
+get_prix_vente(i:number){
+    let prix = 0
+    prix = parseFloat(this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].epaisseur.split(':')[1]);
+        prix*=this.coefficient
+    return `${prix} €`
+  }
 
 
-
-  get_prix_vente(i:number){
+  get_prix_debourse(i:number){
     let prix = 0
     prix = parseFloat(this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs[i].epaisseur.split(':')[1]);
         

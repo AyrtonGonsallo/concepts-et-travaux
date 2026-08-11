@@ -10,6 +10,17 @@
       
             <button nz-button nzType="primary" class="w-fit  positive-action mb-5 mt-5" [routerLink]="['/administration', 'equipements-taches', 'ajouter-equipements-tache']">Ajouter une tâche</button>
             
+             <div class="section-import">
+              <div class="input-link">
+                <input type="file" (change)="onFileSelected($event)" />
+                <a href="https://api.homeren.fr/gammes_import.xlsx" target="_blank" >Télécharger le modèle</a>
+              </div>
+              
+              <button nz-button nzType="primary" class=" w-fit positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
+            </div> 
+            
+            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
+            
           </div> 
           
       </fieldset>

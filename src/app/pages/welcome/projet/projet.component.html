@@ -1,7 +1,9 @@
 <div>
     <h2>Liste des projets</h2>
-    <button nz-button nzType="primary" class="positive-action mb-5 me-5 mt-5" [routerLink]="['/administration', 'projets', 'ajouter-projet']">Ajouter un projet</button>
-    <button nz-button nzType="primary" class="positive-action mb-5 ms-5 mt-5" (click)=_swith_display_edit_relation()>Gestion des relations</button>
+    <!--
+        <button nz-button nzType="primary" class="positive-action mb-5 me-5 mt-5" [routerLink]="['/administration', 'projets', 'ajouter-projet']">Ajouter un projet</button>
+    -->
+    <button nz-button nzType="primary" class="positive-action mb-5 ms-5 mt-5" (click)=_swith_display_edit_relation()>Déplacer un devis</button>
 
     <div nz-row *ngIf="_display_edit_relation">
         <div nz-col nzSpan="12" >
@@ -32,7 +34,10 @@
                     <nz-form-control [nzSm]="14" [nzXs]="24" >
                         <nz-select id="action" formControlName="action">
                             <nz-option  nzLabel="Créer" nzValue="add"></nz-option>
+                            <!--
                             <nz-option  nzLabel="Supprimer" nzValue="delete"></nz-option>
+                            -->
+                            
                         </nz-select>
                     </nz-form-control>
                 

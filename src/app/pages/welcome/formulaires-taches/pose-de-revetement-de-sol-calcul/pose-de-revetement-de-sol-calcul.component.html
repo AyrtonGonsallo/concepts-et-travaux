@@ -227,8 +227,9 @@
               <th>Artisan</th>
               <th>Fournisseur </th>
               <th>Quantité</th>
-              <th>Prix coûtant</th>
-              <th>Prix vente</th>
+                <th>Prix coûtant unitaire</th>
+              <th>Prix déboursé unitaire</th>
+              <th>Prix de vente unitaire</th>
           </tr>
           </thead>
           <tbody >
@@ -255,6 +256,7 @@
               </td>
               <td [innerHTML]="get_dimensions()"> </td>
               <td> {{get_prix_coutant('depose')}}</td>
+              <td>{{get_prix_debourse('depose')}} </td>
               <td>{{get_prix_vente('depose')}} </td>
             </tr>
 
@@ -280,6 +282,7 @@
               </td>
               <td [innerHTML]="get_dimensions()"></td>
               <td> {{get_prix_coutant('etat')}}</td>
+               <td>{{get_prix_debourse('etat')}} </td>
               <td> {{get_prix_vente('etat')}} </td>
             </tr>
 
@@ -321,6 +324,7 @@
               </td>
               <td [innerHTML]="get_dimensions()"></td>
               <td> {{get_prix_coutant('gamme')}}</td>
+               <td>{{get_prix_debourse('gamme')}} </td>
               <td>{{get_prix_vente('gamme')}}  </td>
             </tr>
 
@@ -358,6 +362,7 @@
               </td>
               <td [innerHTML]="get_dimensions()"></td>
               <td> {{get_prix_coutant('plinthes')}}</td>
+               <td> {{get_prix_debourse('plinthes')}}</td>
               <td>{{get_prix_vente('plinthes')}}  </td>
             </tr>
        
@@ -366,8 +371,8 @@
           </tbody>
           <tfoot *ngIf="detailsCalcul">
           <tr>
-              <td colspan="2"></td>
-              <td colspan="2"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
+              <td colspan="4"></td>
+              <td colspan="1"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
               <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
           </tr>
           </tfoot>
@@ -376,19 +381,35 @@
   
   
   <div class="grid-btn-action">
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Enregistrer</button>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Refraîchir le calcul</button>
   </div>
   
   <ng-container *ngIf="detailsCalcul">
-      <div>
-        <div class="mur-btn-div tooltip-srf">
-            <span  class="mur-ttl">
-                Prix coûtant
-            </span>
-        </div>
-        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
-        <span>Formule: </span><br>
-        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+       <div nz-row>
+          <div nz-col nzSpan="12">
+              <div>
+                  <div class="mur-btn-div tooltip-srf">
+                      <span  class="mur-ttl">
+                          Prix coûtant
+                      </span>
+                  </div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+              </div>
+          </div>
+          <div nz-col nzSpan="12">
+              <div>
+                  <div class="mur-btn-div tooltip-srf">
+                      <span  class="mur-ttl">
+                          Prix de vente
+                      </span>
+                  </div>
+                  <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                  <span>Formule: </span><br>
+                  <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+              </div>
+          </div>
       </div>
   </ng-container>
  

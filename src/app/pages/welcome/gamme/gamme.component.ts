@@ -217,14 +217,14 @@ export class GammeComponent {
   }
 
   exporter() {
-    this.userService.getExportGammes().subscribe((blob: Blob) => {
+    this.userService.getExportGammes(this.filteredTravailID,this.filteredEtape,this.filteredSouscategorie).subscribe((blob: Blob) => {
       // Créer une URL temporaire pour le fichier
       const url = window.URL.createObjectURL(blob);
 
       // Créer un lien HTML temporaire
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'gammes_export.xlsx';  // Nom du fichier
+      a.download = 'export_fournitures.xlsx';  // Nom du fichier
 
       // Déclencher le téléchargement
       a.click();

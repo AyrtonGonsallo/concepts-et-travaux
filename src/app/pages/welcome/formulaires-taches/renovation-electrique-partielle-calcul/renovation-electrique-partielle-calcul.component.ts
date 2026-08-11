@@ -53,8 +53,11 @@ export class RenovationElectriquePartielleCalculComponent {
         });
         this.getDetails(parseInt(this.tacheId, 10))
         this.load_gammes()
+        this.load_parametres()
         
       }
+
+
     getDetails(id: number): void {
       this.userService.get_devis_tache(id ).subscribe(
         (response) => {
@@ -84,6 +87,10 @@ export class RenovationElectriquePartielleCalculComponent {
 
           this.load_artisans_fournisseurs()
           
+           
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
           
          // this.validateForm.patchValue(response);
           console.log("donnees ",this.donnees);
@@ -169,6 +176,20 @@ export class RenovationElectriquePartielleCalculComponent {
     }
 
 
+    
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
       
 
   artisans_gammes:any
@@ -373,7 +394,7 @@ export class RenovationElectriquePartielleCalculComponent {
   }
 
 
-  get_prix_vente() {
+  get_prix_debourse() {
 
     let res = ""
 
@@ -397,6 +418,38 @@ export class RenovationElectriquePartielleCalculComponent {
 
   return res
 }
+
+
+
+
+
+  get_prix_vente() {
+
+    let res = ""
+
+    this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer.forEach((appareil:any) => {
+      if(appareil.active){
+        let nom_appareil = appareil.titre
+        
+        const json_datas_prix = JSON.parse(
+          this.donnees["gammes-produits-pose-electricite"].gamme.split('-')[1]
+        );//tableau d'objets nomappareil,prix
+          
+        const appareil_prix = json_datas_prix.find((x: any) => x.nom === nom_appareil);
+
+        let prix = appareil_prix ? appareil_prix.prix : 0;
+
+        prix*=this.coefficient
+
+        res += `${nom_appareil} : ${prix}€ <br>`
+      }
+    })
+
+  
+
+  return res
+}
+
 
 
   get_client_choice_label(){

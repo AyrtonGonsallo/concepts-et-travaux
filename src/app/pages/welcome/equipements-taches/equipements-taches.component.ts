@@ -336,4 +336,59 @@ visible = false;
       }
   
   
+
+  selectedFile: File | null = null;
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+
+
+  importer() {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      this.userService.upload_import_gammes_file(formData).subscribe({
+        next: (res) => {
+          console.log('Fichier uploadé avec succès', res);
+          this.message.success("Fichier uploadé avec succès. Import fini")
+        },
+        error: (err) => {
+          console.error('Erreur lors de l\'upload', err);
+          this.message.error("Erreur lors de l\'upload/import")
+        }
+      });
+    } else {
+      alert('Veuillez sélectionner un fichier.');
+    }
+  }
+
+
+  exporter() {
+    this.userService.getExportGammes(this.filteredTravailID,this.filteredEtape2,this.filteredSouscategorie).subscribe((blob: Blob) => {
+      // Créer une URL temporaire pour le fichier
+      const url = window.URL.createObjectURL(blob);
+
+      // Créer un lien HTML temporaire
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'export_fournitures.xlsx';  // Nom du fichier
+
+      // Déclencher le téléchargement
+      a.click();
+
+      // Libérer l’URL blob après téléchargement
+      window.URL.revokeObjectURL(url);
+
+      console.log("Fichier exporté avec succès.");
+    }, (error) => {
+      console.error('Erreur lors de l\'export', error);
+    });
+  }
+
+
+
+
 }

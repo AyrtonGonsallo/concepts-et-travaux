@@ -51,6 +51,7 @@ export class PoseDeRevetementDeSolCalculComponent {
       this.load_gammes_depose()
       this.load_gammes_pose()
       this.load_types()
+      this.load_parametres()
     }
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
@@ -86,6 +87,11 @@ export class PoseDeRevetementDeSolCalculComponent {
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
         this.load_artisans_fournisseurs()
+
+         
+        if (this.prix_coutant_mode) {
+          this.modifier()
+        }
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);
@@ -95,6 +101,21 @@ export class PoseDeRevetementDeSolCalculComponent {
   }
 
   
+ coefficient = 0
+  load_parametres(){
+    
+    this.userService.get_parametre_by_id_or_nom(1,"coefficient")
+      .subscribe(
+        (data) => {
+          this.coefficient=data.Valeur;
+        },
+        (error) => {
+          console.error('Erreur lors de la recupération des parametres', error);
+        }
+      );
+  }
+
+
   gammes_depose:any
   load_gammes_depose(){
    
@@ -563,6 +584,29 @@ private selectFournisseur(
 
 
 
+
+  get_prix_debourse(type:string){
+    let prix = 0
+    switch (type) {
+       case 'plinthes':
+        prix += parseFloat(this.donnees["gammes-produits-pose-sol"].plinthes?.split(':')[2] || '0')
+        break;
+      case 'gamme':
+        prix = parseFloat(this.donnees["gammes-produits-pose-sol"].gamme.split(':')[2]);
+        break;
+      case 'etat':
+        prix = parseFloat(this.donnees["etat-surfaces-pose-sol"].etat.split('-')[2]);
+        break;
+      case 'depose':
+        prix = parseFloat(this.donnees["dimensions-pose-sol"].depose.split(':')[2]);
+        break;
+    
+      default:
+        break;
+    }
+    prix*=this.coefficient
+    return `${prix} €`
+  }
 
 
   get_prix_vente(type:string){

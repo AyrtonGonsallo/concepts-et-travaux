@@ -178,8 +178,9 @@
             <th>Artisan</th>
             <th>Fournisseur </th>
             <th>Quantité</th>
-            <th>Prix coûtant</th>
-            <th>Prix vente</th>
+            <th>Prix coûtant unitaire</th>
+            <th>Prix déboursé unitaire</th>
+            <th>Prix de vente unitaire</th>
           </tr>
         </thead>
         <tbody formArrayName="portes">
@@ -218,6 +219,7 @@
               </td>
               <td> 1</td>
               <td> {{get_prix_coutant(i,'type_porte')}}</td>
+              <td>{{get_prix_debourse(i,'type_porte')}} </td>
               <td>{{get_prix_vente(i,'type_porte')}} </td>
             </tr>
 
@@ -255,6 +257,7 @@
               </td>
               <td>1 </td>
               <td> {{get_prix_coutant(i,'nature_porte')}}</td>
+               <td>{{get_prix_debourse(i,'nature_porte')}} </td>
               <td> {{get_prix_vente(i,'nature_porte')}} </td>
             </tr>
 
@@ -292,6 +295,7 @@
               </td>
               <td>1 </td>
               <td> {{get_prix_coutant(i,'gamme')}}</td>
+               <td>{{get_prix_debourse(i,'gamme')}} </td>
               <td>{{get_prix_vente(i,'gamme')}}  </td>
             </tr>
           </ng-container>
@@ -300,8 +304,8 @@
         </tbody>
         <tfoot *ngIf="detailsCalcul">
           <tr>
-            <td colspan="2"></td>
-            <td colspan="2"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
+            <td colspan="4"></td>
+            <td colspan="1"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
             <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
           </tr>
         </tfoot>
@@ -312,31 +316,38 @@
        
                    
   <div class="grid-btn-action">
-    <button  nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Enregistrer</button>
+    <button  nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Refraîchir le calcul</button>
   </div>
 
 
 
   <ng-container *ngIf="detailsCalcul && prix_coutant_mode">
-    <div>
-      <div class="mur-btn-div tooltip-srf">
-        <span  class="mur-ttl">
-            Prix facturé
-        </span>
-    </div>
-      <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
-      <span>Formule: </span><br>
-      <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
-
-      <div class="mur-btn-div tooltip-srf">
-        <span  class="mur-ttl">
-            Prix coûtant
-        </span>
-    </div>
-    <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
-    <span>Formule: </span><br>
-    <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
-    </div>
+     <div nz-row>
+                <div nz-col nzSpan="12">
+                    <div>
+                        <div class="mur-btn-div tooltip-srf">
+                            <span  class="mur-ttl">
+                                Prix coûtant
+                            </span>
+                        </div>
+                        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+                        <span>Formule: </span><br>
+                        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
+                    </div>
+                </div>
+                <div nz-col nzSpan="12">
+                    <div>
+                        <div class="mur-btn-div tooltip-srf">
+                            <span  class="mur-ttl">
+                                Prix de vente
+                            </span>
+                        </div>
+                        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
+                        <span>Formule: </span><br>
+                        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+                    </div>
+                </div>
+            </div>
   </ng-container>
   
   
