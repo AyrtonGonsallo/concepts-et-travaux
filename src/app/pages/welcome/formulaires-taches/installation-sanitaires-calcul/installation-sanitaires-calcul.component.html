@@ -1,4 +1,4 @@
-<div class="width-800">
+<div class="width-1200">
     <h1 class="ttl-recap">Installation de nouveaux équipements sanitaires </h1>
         
     <form *ngIf="formulaire && !prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
@@ -236,13 +236,7 @@
 
 
                 </tbody>
-                <tfoot *ngIf="detailsCalcul">
-                <tr>
-                    <td colspan="4"></td>
-                    <td colspan="1"><b>Prix coûtant : {{detailsCalcul.resultats[element.TravailSlug]?.prix_marge}} €</b></td>
-                    <td colspan="2"><b>Prix vente : {{detailsCalcul.resultats[element.TravailSlug]?.prix}} € </b></td>
-                </tr>
-                </tfoot>
+               
             </table>
         </div>
         
@@ -255,8 +249,24 @@
         </div>
           
         <ng-container *ngIf="detailsCalcul">
-             <div nz-row>
-                <div nz-col nzSpan="12">
+            <div nz-row class="recap-calculs">
+                <div nz-col nzSpan="24">
+                    Prix coûtant HT : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge_ht }} €
+                </div>
+                <div nz-col nzSpan="24">
+                    Prix coûtant TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €
+                </div>
+                <div nz-col nzSpan="24">
+                    Prix de vente HT : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_ht }} €
+                </div>
+                <div nz-col nzSpan="24">
+                    Prix de vente TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €
+                </div>
+            </div>
+            
+            <h2>Détails des calculs</h2>
+             <div nz-row nzJustify="space-between">
+                <div nz-col nzSpan="11">
                     <div>
                         <div class="mur-btn-div tooltip-srf">
                             <span  class="mur-ttl">
@@ -268,7 +278,7 @@
                         <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
                     </div>
                 </div>
-                <div nz-col nzSpan="12">
+                <div nz-col nzSpan="11">
                     <div>
                         <div class="mur-btn-div tooltip-srf">
                             <span  class="mur-ttl">

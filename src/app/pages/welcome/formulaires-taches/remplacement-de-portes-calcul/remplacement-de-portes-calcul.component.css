@@ -8,11 +8,14 @@
 .label-number input[type=number]{
     width: 100px;
 }
-.width-800{
-    max-width: 800px;
+.width-1200{
+    max-width: 1200px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+.recap-calculs{
+    margin: 40px 0px 20px 0px;
 }
 .label, label{
     text-align: left;
@@ -33,7 +36,6 @@
     display: grid;
     align-items: center;
     justify-items: end;
-    margin-top: 15px;
     padding-bottom: 8px;
     border-bottom: 1px solid #ffc736;
 }
@@ -49,7 +51,7 @@
     border: 1px solid #FFC736 ;
     border-radius: 2px ;
 }
-.width-800 input[type=radio], .width-800 input[type=checkbox] {
+.width-1200 input[type=radio], .width-1200 input[type=checkbox] {
     border: 1px solid  #FFC736 ;
     border-radius: 2px ;
 }
