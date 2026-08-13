@@ -52,6 +52,8 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       this.load_types()
       this.load_parametres()
     }
+
+
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
@@ -87,6 +89,51 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
         if (this.prix_coutant_mode) {
           this.modifier()
         }
+                
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
+
+  
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          
+            // Dimensions du plafond
+            longueur: this.donnees["dimensions-pose-plafond"].longueur,
+            hauteur: this.donnees["dimensions-pose-plafond"].hauteur,
+            largeur: this.donnees["dimensions-pose-plafond"].largeur,
+            depose: this.donnees["dimensions-pose-plafond"].depose,
+        
+            // État de la surface
+            etat: this.donnees["etat-surfaces-pose-plafond"].etat,
+        
+            // Gammes produits
+            gamme: this.donnees["gammes-produits-pose-plafond"].gamme,
+            autre_gamme: this.donnees["gammes-produits-pose-plafond"].autre_gamme,
+
+             artisan_depose:(this.donnees["gammes-produits-pose-plafond"].artisan_depose)?this.donnees["gammes-produits-pose-plafond"].artisan_depose:"",
+            artisan_surfaces:(this.donnees["gammes-produits-pose-plafond"].artisan_surfaces)?this.donnees["gammes-produits-pose-plafond"].artisan_surfaces:"",
+            artisan_pose:(this.donnees["gammes-produits-pose-plafond"].artisan_pose)?this.donnees["gammes-produits-pose-plafond"].artisan_pose:"",
+            fournisseur_pose:(this.donnees["gammes-produits-pose-plafond"].fournisseur_pose)?this.donnees["gammes-produits-pose-plafond"].fournisseur_pose:"",
+            
+           
+          
+        });
+
+        this.load_artisans_fournisseurs()
+    
                 
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -475,6 +522,8 @@ modifier(){
           setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+        }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
         }
         
       },

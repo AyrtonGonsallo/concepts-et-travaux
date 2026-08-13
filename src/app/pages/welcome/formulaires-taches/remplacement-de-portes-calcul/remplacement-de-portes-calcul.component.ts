@@ -104,6 +104,48 @@ export class RemplacementDePortesCalculComponent {
     }
 
 
+      getDetails2(id: number): void {
+      this.userService.get_devis_tache(id ).subscribe(
+        (response) => {
+          this.devisTache=response
+          this.element =response
+          this.donnees = JSON.parse(response.Donnees) 
+          this.formulaire = this.fb.group({
+            portes: this.fb.array(
+              this.donnees["gammes-produits-pose-portes"].portes.map((porte: any, i: number) => {
+                return this.fb.group({
+                  gamme: this.donnees["gammes-produits-pose-portes"].portes[i].gamme,
+                  nature_porte: this.donnees["gammes-produits-pose-portes"].portes[i].nature_porte,
+                  type_porte: this.donnees["gammes-produits-pose-portes"].portes[i].type_porte,
+                  artisan_pose:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_pose)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_pose:"",
+                  fournisseur_pose:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_pose)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_pose:"",
+              
+                  artisan_nature:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_nature)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_nature:"",
+                  fournisseur_nature:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_nature)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_nature:"",
+              
+                  artisan_type:(this.donnees["gammes-produits-pose-portes"].portes[i].artisan_type)?this.donnees["gammes-produits-pose-portes"].portes[i].artisan_type:"",
+                  fournisseur_type:(this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_type)?this.donnees["gammes-produits-pose-portes"].portes[i].fournisseur_type:"",
+              
+                });
+              })
+            )
+          });
+
+           
+    
+
+          this.load_artisans_fournisseurs()
+         // this.validateForm.patchValue(response);
+          console.log("donnees ",this.donnees);
+        },
+        (error) => {
+          console.error('Erreur lors de la recuperation des details  :', error);
+        }
+      );
+      
+    }
+
+
     get portes() {
       return this.formulaire.get('portes') as FormArray;
     }
@@ -550,7 +592,9 @@ private selectArtisanFormArray(
               setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
-          }
+          }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
+        }
         
         },
         (error) => {

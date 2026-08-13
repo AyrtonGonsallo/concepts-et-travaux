@@ -97,6 +97,43 @@ export class PoseDeRevetementsMurauxCalculComponent {
     
   }
 
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          murs: this.fb.array(this.donnees["dimensions-pose-murs"].murs.map((mur:any, i:number) => {
+            return this.fb.group({
+              hauteur: mur.hauteur,
+              longueur: mur.longueur,
+              depose: mur.depose,
+              etat: this.donnees["etat-surfaces-pose-murs"].murs[i].etat,
+              gamme: this.donnees["gammes-produits-pose-murs"].murs[i].gamme,
+              artisan_depose:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_depose)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_depose:"",
+              artisan_surfaces:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_surfaces)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_surfaces:"",
+              artisan_pose:(this.donnees["gammes-produits-pose-murs"].murs[i].artisan_pose)?this.donnees["gammes-produits-pose-murs"].murs[i].artisan_pose:"",
+              fournisseur_pose:(this.donnees["gammes-produits-pose-murs"].murs[i].fournisseur_pose)?this.donnees["gammes-produits-pose-murs"].murs[i].fournisseur_pose:"",
+              
+            });
+          }))
+        });
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+
+        this.load_artisans_fournisseurs()
+
+ 
+       
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
   get murs() {
     return this.formulaire.get('murs') as FormArray;
   }
@@ -563,11 +600,11 @@ private selectArtisanFormArray(
         (response) => {
           console.log('Tache modifiée avec succès :', response);
           this.message.create('success', `Tache modifié avec succès`);
-          if(!this.prix_coutant_mode){
+          
              setTimeout(() => {
-            //this.reloadCurrentRoute()
+            this.getDetails2(parseInt(this.tacheId, 10))
             }, 2000);
-          }
+          
          
         },
         (error) => {

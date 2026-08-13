@@ -51,7 +51,6 @@ export class ProjetComponent {
     this.projet_devis_Form = this.fb.group({
       devis_id: [0, [Validators.required]],
       projet_id: [0, [Validators.required]],
-      action: ['add', [Validators.required]],
     });
   }
 
@@ -149,7 +148,6 @@ export class ProjetComponent {
   projet_devis_Form: FormGroup<{
       projet_id: FormControl<number>;
       devis_id: FormControl<number>;
-      action: FormControl<string>;
   }>;
 
   _display_edit_relation = false
@@ -160,9 +158,8 @@ export class ProjetComponent {
   _editProjetDevis() {
     let projet_id = this.projet_devis_Form.controls['projet_id'].value;
     let devis_id = this.projet_devis_Form.controls['devis_id'].value;
-    let action = this.projet_devis_Form.controls['action'].value;
 
-    this.userService.edit_projet_devis(projet_id, devis_id, action).subscribe((succ) => {
+    this.userService.edit_projet_devis(projet_id, devis_id).subscribe((succ) => {
       if (this.authService.isAdminorSuperAdmin()) {
         this.message.success( `Relation projet devis modifiée`);
         this.loadProjets();

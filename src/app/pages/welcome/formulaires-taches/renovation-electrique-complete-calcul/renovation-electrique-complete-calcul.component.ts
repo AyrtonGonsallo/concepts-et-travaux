@@ -89,6 +89,40 @@ export class RenovationElectriqueCompleteCalculComponent {
     
   }
 
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          chauffage_exist: [this.donnees["gammes-produits-renovation-electrique"].chauffage_exist || false],
+          mise_en_securite: [this.donnees["gammes-produits-renovation-electrique"].mise_en_securite || false],
+          renovation_conforme: [this.donnees["gammes-produits-renovation-electrique"].renovation_conforme || false],
+          quantite_chauffage: [this.donnees["gammes-produits-renovation-electrique"].quantite_chauffage || 0],
+          surface: [this.donnees["gammes-produits-renovation-electrique"].surface || 0],
+          artisan_mise_en_securite:[this.donnees["gammes-produits-renovation-electrique"].artisan_mise_en_securite??''],
+          artisan_mise_aux_normes:[this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes??''],
+          artisan_chauffage:[this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage??''],
+        });
+
+         
+    
+        
+        
+        this.load_artisans_fournisseurs()
+        this.load_taches_generales()
+        this.load_parametres()
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
 
   
  coefficient = 0
@@ -395,6 +429,8 @@ modifier(){
            setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+        }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
         }
        
       },

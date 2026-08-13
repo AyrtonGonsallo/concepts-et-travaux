@@ -10,10 +10,15 @@
           <thead>
             <tr>
               <th>Type de tâche</th>
-              <th>Tâche</th>
-              <th style="width: 130px;">Prix HT</th>
-              <th style="width: 130px;">Prix TTC</th>
-              <th style="width: 150px;">Prix coûtant HT</th>
+          <!--
+               <th>Tâche</th>
+              -->   
+         
+              <th >Prix coûtant HT</th>
+              <th >Prix déboursé HT</th>
+              <th >Prix de vente HT </th>
+              <th >Prix de vente remisé HT</th>
+              <th >Prix de vente remisé TTC</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -21,10 +26,15 @@
             <ng-container *ngFor="let data of nzTable.data;let i=index">
               <tr>
                 <td>{{ data.Travail?.Titre }} #{{ data.Travail?.ID }} </td>
-                <td>{{ data.TravailSlug }}</td>
-                <td>{{ (data.Prix * coefficient)  | number:'1.2-2' }} € </td>
-                <td>{{ (data.Prix * coefficient) * tva | number:'1.2-2' }} € </td>
-                <td>{{ get_prix_coutant(data.PrixCoutant )  }} </td>
+              <!--
+                 <td>{{ data.TravailSlug }}</td>
+                --> 
+               
+                <td>{{ get_prix(data.PrixCoutant )  }} </td>
+                <td>{{ get_prix(data.PrixDebourseHT )  }} </td>
+                <td>{{ get_prix(data.PrixDeVenteHT )  }} </td>
+                <td>{{ get_prix(data.PrixDeVenteRemiseHT )  }} </td>
+                <td>{{ get_prix(data.PrixDeVenteRemiseTTC )  }} </td>
 
                 <td> 
                   <button nz-button nzType="primary" class="mr-10 mb-5" (click)="modifier_tache(data.Travail.ID,data.ID)" >Modifier la tâche</button>

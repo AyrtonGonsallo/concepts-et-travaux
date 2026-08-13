@@ -323,8 +323,8 @@ get_role(userId: number): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/add_project`, userData);
   }
 
-  edit_projet_devis(projet_id: number, devis_id: number, action: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/edit_projet_devis/${projet_id}/${devis_id}/${action}`);
+  edit_projet_devis(projet_id: number, devis_id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/edit_projet_devis/${projet_id}/${devis_id}`);
   }
   
   add_question(userData: any): Observable<any> {

@@ -103,6 +103,48 @@ export class RenovationElectriquePartielleCalculComponent {
     }
 
 
+     getDetails2(id: number): void {
+      this.userService.get_devis_tache(id ).subscribe(
+        (response) => {
+          this.devisTache=response
+          this.element =response
+          this.donnees = JSON.parse(response.Donnees) 
+        
+          this.formulaire = this.fb.group({
+            artisan_gamme:(this.donnees["gammes-produits-pose-electricite"].artisan_gamme)?this.donnees["gammes-produits-pose-electricite"].artisan_gamme:"",
+            fournisseur_gamme:(this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme)?this.donnees["gammes-produits-pose-electricite"].fournisseur_gamme:"",
+            
+            gamme: [this.donnees["gammes-produits-pose-electricite"].gamme],
+            appareils: this.fb.array(
+              this.donnees["gammes-produits-pose-electricite"].appareils_electrique_a_remplacer
+                .filter((a: any) => a.active) // seulement les appareils actifs
+                .map((appareil: any) =>
+                  this.fb.group({
+                    id: [appareil.id],
+                    titre: [appareil.titre],
+                    nombre_a_creer: [appareil.nombre_a_creer],
+                    nombre_a_remplacer: [appareil.nombre_a_remplacer],
+                    active:1
+                  })
+                )
+            )
+          });
+
+          this.load_artisans_fournisseurs()
+          
+     
+         // this.validateForm.patchValue(response);
+          console.log("donnees ",this.donnees);
+        },
+        (error) => {
+          console.error('Erreur lors de la recuperation des details  :', error);
+        }
+      );
+      
+    }
+
+
+
     loadAppareils(){
    
     
@@ -323,7 +365,9 @@ export class RenovationElectriquePartielleCalculComponent {
               setTimeout(() => {
                 this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
               }, 2000);
-            }
+            }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
+        }
             
           },
           (error) => {

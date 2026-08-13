@@ -547,7 +547,7 @@ export class ModifierDevisPieceComponent {
 
   }
 
-  get_prix_coutant(prix: number | undefined) {
+  get_prix(prix: number | undefined) {
     return prix !== null
       ? `${this.decimalPipe.transform(prix, '1.2-2')} €`
       : '';

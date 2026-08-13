@@ -53,6 +53,8 @@ export class PoseDeRevetementDeSolCalculComponent {
       this.load_types()
       this.load_parametres()
     }
+
+
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
@@ -92,6 +94,52 @@ export class PoseDeRevetementDeSolCalculComponent {
         if (this.prix_coutant_mode) {
           this.modifier()
         }
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
+
+  
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        console.log(response)
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          
+            // Dimensions du sol
+            longueur: this.donnees["dimensions-pose-sol"].longueur,
+            largeur: this.donnees["dimensions-pose-sol"].largeur,
+            depose: this.donnees["dimensions-pose-sol"].depose,
+        
+            // État de la surface
+            etat: this.donnees["etat-surfaces-pose-sol"].etat,
+        
+            // Gammes produits
+            gamme: this.donnees["gammes-produits-pose-sol"].gamme,
+            autre_gamme: this.donnees["gammes-produits-pose-sol"].autre_gamme,
+            lineaire: this.donnees["gammes-produits-pose-sol"].lineaire,
+            plinthes: this.donnees["gammes-produits-pose-sol"].plinthes,
+            has_plinthes: this.donnees["gammes-produits-pose-sol"].has_plinthes,
+            artisan_depose:(this.donnees["gammes-produits-pose-sol"].artisan_depose)?this.donnees["gammes-produits-pose-sol"].artisan_depose:"",
+            artisan_surfaces:(this.donnees["gammes-produits-pose-sol"].artisan_surfaces)?this.donnees["gammes-produits-pose-sol"].artisan_surfaces:"",
+            artisan_pose:(this.donnees["gammes-produits-pose-sol"].artisan_pose)?this.donnees["gammes-produits-pose-sol"].artisan_pose:"",
+            fournisseur_pose:(this.donnees["gammes-produits-pose-sol"].fournisseur_pose)?this.donnees["gammes-produits-pose-sol"].fournisseur_pose:"",
+            artisan_pose_plinthes:(this.donnees["gammes-produits-pose-sol"].artisan_pose_plinthes)?this.donnees["gammes-produits-pose-sol"].artisan_pose_plinthes:"",
+            fournisseur_pose_plinthes:(this.donnees["gammes-produits-pose-sol"].fournisseur_pose_plinthes)?this.donnees["gammes-produits-pose-sol"].fournisseur_pose_plinthes:"",
+        });
+        
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+        this.load_artisans_fournisseurs()
+
+       
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details  :', error);
@@ -570,7 +618,9 @@ private selectFournisseur(
             setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
             }, 2000);
-          }
+          }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
+        }
           
         },
         (error) => {

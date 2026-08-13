@@ -54,7 +54,50 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       
 
     }
+
+
   getDetails(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          appareils_cuisine_form: this.fb.array([]),
+          gammes_depose_form: this.fb.array(
+            this.donnees["dimensions-pose-elementcuisines"].gammes_depose_form.map((gamme: any) => {
+              return this.fb.group({
+                quantite: [gamme.quantite],
+                titre: [gamme.titre],
+                prix: [gamme.prix],
+                id: [gamme.id],
+                artisan_depose:[gamme.artisan_depose??'']
+              });
+            })
+          )
+        });
+        
+        
+
+        this.load_artisans_fournisseurs()
+        
+               
+     
+       
+        
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
+
+  
+  getDetails2(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
         this.devisTache=response
@@ -190,6 +233,115 @@ tableauIds = [9, 37, 10, 2,35,38,6,36,34,42,39,40,41,];
          if (this.prix_coutant_mode) {
           this.modifier()
         }
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des  getEquipementsByPiece:salledebain :', error);
+      }
+    );
+
+
+    this.userService.getGammesByTravailAndTypeOrdered(2, 'service-depose-cuisine').subscribe(
+      (response: any) => {
+        this.gammes_depose = response
+        console.log("réponse de la requette  get depose salle de bain",this.gammes_depose);
+        let i=0
+
+        
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des gammes_depose :', error);
+      }
+    );
+
+
+  }
+
+
+   loadAppareils2(){
+    
+    this.userService.getEquipementsByPiece(7).subscribe(
+      (response: Equipement[]) => {
+        const tableauIds=this.tableauIds
+        this.appareils_cuisine = response.filter(equipement => equipement.Modeles && equipement.Modeles.length > 0).sort((a, b) => {
+          // Trier selon l'ordre des IDs dans le tableau
+          const indexA = tableauIds.indexOf(a.ID);
+          const indexB = tableauIds.indexOf(b.ID);
+          
+          // Les éléments non présents dans le tableau seront mis à la fin
+          return (indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA) - 
+                 (indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB);
+        });;
+        console.log("réponse de la requette  getEquipementsByPiece:salledebain",this.appareils_cuisine);
+        let i=0
+
+        this.appareils_cuisine.forEach(appareil => {
+
+          let modele=""
+          let active=false
+          let longueur=0
+          let largeur=0
+          let titre = ""
+           let artisan_pose=""
+          let fournisseur_pose=""
+          let nombre_de_vasque=0
+          let encastre_ou_apparente=false
+          if(this.donnees["gammes-produits-pose-elementcuisines"]){
+            let form=this.donnees["gammes-produits-pose-elementcuisines"]
+            modele=form?.appareils_cuisine[i]?.modele
+            active=form?.appareils_cuisine[i]?.active
+            titre=form?.appareils_cuisine[i]?.titre
+            longueur=form?.appareils_cuisine[i]?.longueur
+            largeur=form?.appareils_cuisine[i]?.largeur
+            nombre_de_vasque=form?.appareils_cuisine[i]?.nombre_de_vasque
+            encastre_ou_apparente=form?.appareils_cuisine[i]?.encastre_ou_apparente
+            artisan_pose=form?.appareils_cuisine[i]?.artisan_pose
+            fournisseur_pose=form?.appareils_cuisine[i]?.fournisseur_pose
+            
+          }
+        
+             // Créer un FormGroup pour chaque appareil
+          const appareilGroup = this.fb.group({});
+              
+          appareilGroup.addControl("titre", this.fb.control(titre, ));
+          appareilGroup.addControl("longueur", this.fb.control(longueur, ));
+          appareilGroup.addControl("largeur", this.fb.control(largeur, ));
+          appareilGroup.addControl("nombre_de_vasque", this.fb.control(nombre_de_vasque, ));
+          appareilGroup.addControl("encastre_ou_apparente", this.fb.control(encastre_ou_apparente, ));
+          appareilGroup.addControl("active", this.fb.control(active, ));
+          appareilGroup.addControl("modele", this.fb.control(modele, ));
+          appareilGroup.addControl("artisan_pose", this.fb.control(artisan_pose, ));
+          appareilGroup.addControl("fournisseur_pose", this.fb.control(fournisseur_pose, ));
+         
+
+          // Obtenez les contrôles pour pouvoir les manipuler
+          const nombre_de_vasqueControl = appareilGroup.get('nombre_de_vasque');
+          const largeurControl = appareilGroup.get('largeur');
+          const longueurControl = appareilGroup.get('longueur');
+          const modeleControl = appareilGroup.get('modele');
+          const activeControl = appareilGroup.get('active');
+
+          // Abonnez-vous aux changements de la valeur de 'active'
+          activeControl?.valueChanges.subscribe((isActive: boolean) => {
+            if (isActive) {
+              // Si 'active' est true, ajouter les validateurs
+              modeleControl?.setValidators(Validators.required);
+            } else {
+              // Sinon, supprimer les validateurs
+              modeleControl?.clearValidators();
+            }
+            // Mettre à jour la validation pour forcer la vérification des erreurs
+            modeleControl?.updateValueAndValidity();
+          });
+           
+
+          // Ajouter le FormGroup de l'appareil au FormArray
+          (this.formulaire.get('appareils_cuisine_form') as FormArray).push(appareilGroup);
+          i++
+          
+        });
+
+
+        
       },
       (error) => {
         console.error('Erreur lors de la recuperation des  getEquipementsByPiece:salledebain :', error);
@@ -493,7 +645,10 @@ private selectFournisseursFormArray(
             setTimeout(() => {
               this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
             }, 2000);
-          }
+          }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
+           this.loadAppareils2()
+        }
           
         },
         (error) => {

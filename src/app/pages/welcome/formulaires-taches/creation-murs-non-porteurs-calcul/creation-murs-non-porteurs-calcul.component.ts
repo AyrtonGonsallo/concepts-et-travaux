@@ -98,6 +98,51 @@ prix_coutant_mode=false
     
   }
 
+
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          murs_non_porteurs: this.fb.array(
+            this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].murs_non_porteurs.map((mur: any) => {
+              return this.fb.group({
+                longueur: [mur.longueur],
+                hauteur: [mur.hauteur],
+                epaisseur: [mur.epaisseur],
+                artisan_pose:[mur.artisan_pose],
+              });
+            })
+          ),
+          portes: this.fb.array(
+            this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].portes.map((porte: any) => {
+              return this.fb.group({
+                largeur: [porte.largeur],
+                gamme: [porte.gamme],
+              });
+            })
+          ),
+          has_portes: [this.donnees["gammes-produits-creation-murs-non-porteurs--portes"].has_portes || false]
+        });
+        
+
+        this.load_artisans_fournisseurs()
+
+     
+        
+        
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
   
   get murs_non_porteurs() {
     return this.formulaire.get('murs_non_porteurs') as FormArray;
@@ -397,7 +442,10 @@ modifier(){
           setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+        }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
         }
+
        
       },
       (error) => {

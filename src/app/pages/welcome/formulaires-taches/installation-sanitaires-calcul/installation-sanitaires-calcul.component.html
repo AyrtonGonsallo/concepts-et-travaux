@@ -192,7 +192,7 @@
 
                     <ng-container    formArrayName="appareils_salle_de_bain_form">
                         <ng-container *ngFor="let appareilGroup of appareils_salle_de_bain; let i = index" [formGroupName]="i">
-                            <tr *ngIf="appareils_salle_de_bain_form.value[i].active">
+                            <tr *ngIf="appareils_salle_de_bain_form.value[i]?.active">
                                 <td>Appareil à poser {{ i + 1 }} {{get_client_choice_label(i,'pose')}}</td>
                                 <td>
                                     <nz-radio-group formControlName="artisan_pose" class="">
@@ -257,13 +257,19 @@
                     Prix coûtant TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €
                 </div>
                 <div nz-col nzSpan="24">
-                    Prix de vente HT : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_ht }} €
+                    Prix déboursé HT : {{ devisTache?.PrixDebourseHT }} €
+                </div>
+                 <div nz-col nzSpan="24">
+                    Prix de vente HT : {{ devisTache?.PrixDeVenteHT }} €
+                </div>
+                <div nz-col nzSpan="24">
+                    Prix de vente remisé HT : {{ devisTache?.PrixDeVenteRemiseHT }} €
                 </div>
                 <div nz-col nzSpan="24">
                     Prix de vente TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €
                 </div>
             </div>
-            
+
             <h2>Détails des calculs</h2>
              <div nz-row nzJustify="space-between">
                 <div nz-col nzSpan="11">

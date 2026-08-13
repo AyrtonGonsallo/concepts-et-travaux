@@ -49,6 +49,8 @@ export class DemolitionCloisonsCalculComponent {
       this.load_gammes()
       this.load_parametres()
     }
+
+
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
@@ -94,6 +96,63 @@ export class DemolitionCloisonsCalculComponent {
         if (this.prix_coutant_mode) {
           this.modifier()
         }
+        
+        
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
+
+  
+  getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          mursNonporteurs: this.fb.array(
+            this.donnees["gammes-produits-murs-non-porteurs"].mursNonporteurs.map((mur: any) => {
+              return this.fb.group({
+                longueur: [mur.longueur],
+                hauteur: [mur.hauteur],
+                ndp: [mur.ndp],
+                cloison: [mur.cloison],
+                artisan_pose: [mur.artisan_pose],
+                fournisseur_pose: [mur.fournisseur_pose],
+              });
+            })
+          ),
+          ouverturePartielle: this.fb.array(
+            this.donnees["gammes-produits-murs-non-porteurs"].ouverturePartielle.map((ouverture: any) => {
+              return this.fb.group({
+                longueur: [ouverture.longueur],
+                hauteur: [ouverture.hauteur],
+                longueur_ouverture: [ouverture.longueur_ouverture],
+                hauteur_ouverture: [ouverture.hauteur_ouverture],
+                hauteur_depuis_le_sol: [ouverture.hauteur_depuis_le_sol],
+                hauteur_depuis_le_plafond: [ouverture.hauteur_depuis_le_plafond],
+                cloison: [ouverture.cloison],
+                image: [ouverture.image],
+                artisan_pose: [ouverture.artisan_pose],
+                fournisseur_pose: [ouverture.fournisseur_pose],
+              });
+            })
+          ),
+          tp1: [this.donnees["gammes-produits-murs-non-porteurs"].tp1 || false],
+          tp3: [this.donnees["gammes-produits-murs-non-porteurs"].tp3 || false]
+        });
+        
+
+        this.load_artisans_fournisseurs()
+         
+   
         
         
        // this.validateForm.patchValue(response);
@@ -434,6 +493,8 @@ modifier(){
           setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+        }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
         }
        
       },

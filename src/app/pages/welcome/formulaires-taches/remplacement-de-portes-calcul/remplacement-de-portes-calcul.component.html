@@ -324,7 +324,13 @@
                     Prix coûtant TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €
                 </div>
                 <div nz-col nzSpan="24">
-                    Prix de vente HT : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_ht }} €
+                    Prix déboursé HT : {{ devisTache?.PrixDebourseHT }} €
+                </div>
+                 <div nz-col nzSpan="24">
+                    Prix de vente HT : {{ devisTache?.PrixDeVenteHT }} €
+                </div>
+                <div nz-col nzSpan="24">
+                    Prix de vente remisé HT : {{ devisTache?.PrixDeVenteRemiseHT }} €
                 </div>
                 <div nz-col nzSpan="24">
                     Prix de vente TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €

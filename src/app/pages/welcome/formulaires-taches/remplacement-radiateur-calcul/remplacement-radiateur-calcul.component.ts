@@ -52,7 +52,9 @@ export class RemplacementRadiateurCalculComponent {
       this.load_types()
       this.load_parametres()
     }
-  getDetails(id: number): void {
+ 
+ 
+    getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
         this.devisTache=response
@@ -92,6 +94,55 @@ export class RemplacementRadiateurCalculComponent {
         if (this.prix_coutant_mode) {
           this.modifier()
         }
+        
+       // this.validateForm.patchValue(response);
+        console.log("donnees ",this.donnees);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details  :', error);
+      }
+    );
+    
+  }
+
+
+     getDetails2(id: number): void {
+    this.userService.get_devis_tache(id ).subscribe(
+      (response) => {
+        this.devisTache=response
+        this.element =response
+        this.donnees = JSON.parse(response.Donnees) 
+        this.formulaire = this.fb.group({
+          gamme_radiateurs_form: this.fb.array(
+            this.donnees["gammes-produits-pose-chauffage"].radiateurs.map((radiateur: any) => {
+              return this.fb.group({
+                gamme: [radiateur.gamme],
+                visible: [radiateur.visible],
+                artisan_pose:[radiateur.artisan_pose],
+                fournisseur_pose:[radiateur.fournisseur_pose],
+              
+              });
+            })
+          ),
+          type_radiateurs_form: this.fb.array(
+            this.donnees["etat-surfaces-pose-chauffage"].radiateurs.map((radiateur: any) => {
+              return this.fb.group({
+                type: [radiateur.type],
+                artisan_type:[radiateur.artisan_type],
+                fournisseur_type:[radiateur.fournisseur_type],
+              
+              });
+            })
+          ),
+          hauteur: [this.donnees["dimensions-pose-chauffage"].hauteur || 0],
+          surface: [this.donnees["dimensions-pose-chauffage"].surface || 0]
+        });
+        
+        
+
+        this.load_artisans_fournisseurs()
+
+   
         
        // this.validateForm.patchValue(response);
         console.log("donnees ",this.donnees);
@@ -494,6 +545,8 @@ modifier(){
           setTimeout(() => {
             this.router.navigate(['/administration/devis-pieces', 'modifier-devis-piece', this.devisTache.DevisPieceID]);
           }, 2000);
+        }else{
+           this.getDetails2(parseInt(this.tacheId, 10))
         }
         
       },

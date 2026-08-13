@@ -31,8 +31,8 @@
             </td>
 
             <td>{{ calculerPCHT(data.DevisTaches) | number:'1.2-2' }} €</td>
-            <td>{{ calculerPrixHT(data) | number:'1.2-2' }} €</td>
-            <td>{{ calculerPrixTTC(data,data.Tva.Valeur) | number:'1.2-2' }} €</td>
+            <td>{{ calculerPrixDebHT(data.DevisTaches) | number:'1.2-2' }} €</td>
+            <td>{{ calculerPrixDeventeHT(data.DevisTaches) | number:'1.2-2' }} €</td>
 
            
               

@@ -11,7 +11,7 @@
             <form nz-form [formGroup]="projet_devis_Form" (ngSubmit)="_editProjetDevis()">
                 <nz-form-item >
                     <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="projet_id" nzRequired >
-                        <span>Projet</span>
+                        <span>Projet cible</span>
                     </nz-form-label>
                     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
                         <nz-input-number id="projet_id" formControlName="projet_id"  ></nz-input-number> 
@@ -27,26 +27,12 @@
                     </nz-form-control>
                 </nz-form-item>
 
-                <nz-form-item>
-                    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="action"  nzRequired  >
-                        <span>action</span>
-                    </nz-form-label>
-                    <nz-form-control [nzSm]="14" [nzXs]="24" >
-                        <nz-select id="action" formControlName="action">
-                            <nz-option  nzLabel="Créer" nzValue="add"></nz-option>
-                            <!--
-                            <nz-option  nzLabel="Supprimer" nzValue="delete"></nz-option>
-                            -->
-                            
-                        </nz-select>
-                    </nz-form-control>
-                
-                </nz-form-item>
+             
 
             
                 <nz-form-item nz-row class="register-area">
                     <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                        <button nz-button nzType="primary">Envoyer</button>
+                        <button nz-button nzType="primary">Déplacer</button>
                     </nz-form-control>
                 </nz-form-item>
             </form>

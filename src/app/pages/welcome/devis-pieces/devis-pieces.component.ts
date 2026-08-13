@@ -51,14 +51,14 @@ export class DevisPiecesComponent {
       order:null, 
     },
      {
-      title: 'Prix HT',
+      title: 'Prix déboursé HT',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
       order:null, 
     },
     
     {
-      title: 'Prix TTC',
+      title: 'Prix de vente HT',
       compare: (a: DevisPiece, b: DevisPiece) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
       order:null, 
@@ -126,6 +126,21 @@ export class DevisPiecesComponent {
     return Math.round(prix_coutant * 100) / 100; // arrondi à 2 décimales
   }
 
+   calculerPrixDebHT(devistaches: any,): number {
+    let prix_deb_ht = 0
+    devistaches.forEach((tache:any) => {
+      prix_deb_ht+=tache?.PrixDebourseHT
+    });
+    return Math.round(prix_deb_ht * 100) / 100; // arrondi à 2 décimales
+  }
+
+   calculerPrixDeventeHT(devistaches: any,): number {
+    let prix_de_vente = 0
+    devistaches.forEach((tache:any) => {
+      prix_de_vente+=tache?.PrixDeVenteHT
+    });
+    return Math.round(prix_de_vente * 100) / 100; // arrondi à 2 décimales
+  }
 
 uid=0;
   loadDevisPieces(): void {
