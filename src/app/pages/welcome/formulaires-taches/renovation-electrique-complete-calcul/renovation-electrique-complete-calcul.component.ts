@@ -52,11 +52,23 @@ export class RenovationElectriqueCompleteCalculComponent {
     }
 
 
+    devispiece:any
 
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
         this.devisTache=response
+
+        this.userService.getDevisPieceMinimumDatasById(this.devisTache.DevisPieceID).subscribe(
+          (response) => {
+            this.devispiece=response
+            console.log('this.devispiece',this.devispiece)
+            
+          },
+          (error) => {
+            console.error('Erreur lors de la recuperation des details devis :', error);
+          }
+        );
         this.element =response
         this.donnees = JSON.parse(response.Donnees) 
         this.formulaire = this.fb.group({
@@ -216,6 +228,9 @@ private selectArtisan(
   const option = options.find(o => o.Artisan?.Id === artisanId);
 
   if (!option) {
+    this.formulaire.get(controlName)?.setValue(
+    ``
+  );
     return;
   }
 
@@ -490,13 +505,13 @@ modifier(){
     let prix = 0
     switch (type) {
       case 'mise_en_securite':
-        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_en_securite?.split(':')[2] || '0')
+        prix += this.tache_mise_en_securite?(this.tache_mise_en_securite.Prix ):0
         break;
       case 'mise_aux_normes':
-        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_mise_aux_normes?.split(':')[2] || '0')
+        prix += this.tache_mise_aux_normes?(this.tache_mise_aux_normes.Prix ):0
         break;
       case 'chauffage':
-        prix += parseFloat(this.donnees["gammes-produits-renovation-electrique"].artisan_chauffage?.split(':')[2] || '0')
+        prix += this.tache_chauffage?(this.tache_chauffage.Prix ):0
         break;
     
       default:

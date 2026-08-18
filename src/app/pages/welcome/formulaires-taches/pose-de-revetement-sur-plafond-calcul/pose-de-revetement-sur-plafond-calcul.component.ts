@@ -53,12 +53,27 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
       this.load_parametres()
     }
 
+    devispiece:any
 
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
         this.devisTache=response
+ 
+        this.userService.getDevisPieceMinimumDatasById(this.devisTache.DevisPieceID).subscribe(
+          (response) => {
+            this.devispiece=response
+            console.log('this.devispiece',this.devispiece)
+            
+          },
+          (error) => {
+            console.error('Erreur lors de la recuperation des details devis :', error);
+          }
+        );
+
+        
         this.element =response
+       
         this.donnees = JSON.parse(response.Donnees) 
         this.formulaire = this.fb.group({
           
@@ -339,6 +354,9 @@ private selectArtisan(
   );
 
   if (!option) {
+    this.formulaire.get(controlName)?.setValue(
+      ``
+    );
     return;
   }
 
@@ -377,6 +395,9 @@ private selectFournisseur(
   );
 
   if (!option) {
+    this.formulaire.get(controlName)?.setValue(
+    ``
+  );
     return;
   }
 

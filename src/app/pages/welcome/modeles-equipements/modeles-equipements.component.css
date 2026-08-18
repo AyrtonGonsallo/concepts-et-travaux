@@ -47,3 +47,10 @@ legend{
 .filter-select2{
     width: 350px;
 }
+.dl-btn-link{
+    background-color: #1890ff;
+    border: #1890ff;
+    border-radius: 3px;
+    padding: 5px 10px;
+    color: white;
+}

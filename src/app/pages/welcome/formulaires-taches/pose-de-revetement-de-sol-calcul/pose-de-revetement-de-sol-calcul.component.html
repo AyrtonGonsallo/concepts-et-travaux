@@ -1,6 +1,7 @@
 <div class="width-1200">
   <h1 class="ttl-recap">Pose de revêtement de sol</h1>
-        
+          <h2>Projet nº{{devispiece?.Projets[0].Id}} - Devis nº{{devispiece?.ID}} - {{devispiece?.Utilisateur?.Nom}} {{devispiece?.Utilisateur?.Prenom}}</h2>
+
     <form *ngIf="formulaire && !prix_coutant_mode" [formGroup]="formulaire" (ngSubmit)="submit()" >
       <div class="mur-btn-div">
         <span class="mur-ttl">
@@ -261,7 +262,7 @@
             </tr>
 
             <tr >
-              <td>état des surfaces mur  {{get_client_choice_label('etat')}}</td>
+              <td>état des surfaces sol  {{get_client_choice_label('etat')}}</td>
               <td>
                 <nz-radio-group formControlName="artisan_surfaces">
                   <!-- Plinthes bois -->
@@ -382,9 +383,6 @@
             <div nz-row class="recap-calculs">
                 <div nz-col nzSpan="24">
                     Prix coûtant HT : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge_ht }} €
-                </div>
-                <div nz-col nzSpan="24">
-                    Prix coûtant TTC : {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €
                 </div>
                 <div nz-col nzSpan="24">
                     Prix déboursé HT : {{ devisTache?.PrixDebourseHT }} €

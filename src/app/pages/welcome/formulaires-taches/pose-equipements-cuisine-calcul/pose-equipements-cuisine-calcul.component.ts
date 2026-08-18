@@ -56,10 +56,22 @@ tacheId:string =  this.route.snapshot.paramMap.get('id')??'0';
     }
 
 
+    devispiece:any
   getDetails(id: number): void {
     this.userService.get_devis_tache(id ).subscribe(
       (response) => {
         this.devisTache=response
+
+         this.userService.getDevisPieceMinimumDatasById(this.devisTache.DevisPieceID).subscribe(
+          (response) => {
+            this.devispiece=response
+            console.log('this.devispiece',this.devispiece)
+            
+          },
+          (error) => {
+            console.error('Erreur lors de la recuperation des details devis :', error);
+          }
+        );
         this.element =response
         this.donnees = JSON.parse(response.Donnees) 
         this.formulaire = this.fb.group({
@@ -522,6 +534,9 @@ private selectArtisansFormArray(
     const option = options?.find(o => o.Artisan?.Id === artisanId);
 
     if (!option) {
+       formArray.at(index).get(controlName)?.setValue(
+      ``
+    );
       return;
     }
 
@@ -563,6 +578,9 @@ private selectFournisseursFormArray(
     const option = options?.find(o => o.Fournisseur?.Id === fournisseurId);
 
     if (!option) {
+      formArray.at(index).get(controlName)?.setValue(
+      ``
+    );
       return;
     }
 

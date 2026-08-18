@@ -27,6 +27,8 @@ export class ModifierProjetComponent {
   project:any;
   send_mail_visite=false
   paiement_visite=false
+  visite_faite=false
+  date_visite_faite=""
   date_paiement_visite=""
   programmation_visite=false
   date_programmation_visite=""
@@ -69,6 +71,7 @@ export class ModifierProjetComponent {
       projet_id:this.projetId,
     paiement_visite: this.paiement_visite? 1 : 0,
     programmation_visite: this.programmation_visite? 1 : 0,
+    visite_faite: this.visite_faite? 1 : 0,
     projet_valide: this.projet_valide? 1 : 0,
     paiement_autorise: this.paiement_autorise? 1 : 0,
     acompte_paye: this.acompte_paye? 1 : 0,
@@ -242,7 +245,9 @@ export class ModifierProjetComponent {
     console.log("this.project", this.project);
         this.paiement_visite=this.project.Visite?.Paye
         this.date_paiement_visite=this.project.Visite?.Date
-        this.programmation_visite=(this.project.Visite?.DateDeProgrammation)?true:false
+        this.visite_faite=this.project.Visite?.Faite
+        this.date_visite_faite=(this.project.Visite?.Faite)?this.project.Visite?.DateDeProgrammation:null
+        this.programmation_visite=(this.project.Visite?.Faite)?true:false
         this.date_programmation_visite=this.project.Visite?.DateDeProgrammation
         this.projet_valide=(this.project.Date_de_validation)?true:false
         this.date_validation_projet=this.project.Date_de_validation
@@ -480,6 +485,7 @@ export class ModifierProjetComponent {
     const etatProjet = {
       projet_id:this.projetId,
       paiement_visite: this.paiement_visite? 1 : 0,
+      visite_faite: this.visite_faite? 1 : 0,
       programmation_visite: this.programmation_visite? 1 : 0,
       projet_valide: this.projet_valide? 1 : 0,
       paiement_autorise: this.paiement_autorise? 1 : 0,
@@ -505,7 +511,8 @@ export class ModifierProjetComponent {
           const dateProg = this.date_de_programmation;
           const visiteData = {
             DateCreation: new Date().toISOString(), // Génère la date actuelle au format ISO
-            DateDeProgrammation:dateProg
+            DateDeProgrammation:dateProg,
+            Faite:this.visite_faite
           };
           if(this.date_de_programmation && !this.notifier_le_client_que_la_visite_est_finie){
             console.log('Visite envoyée :', visiteData);

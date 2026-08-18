@@ -11,11 +11,12 @@
             <div class="section-import">
               <div class="input-link">
                 <input type="file" (change)="onFileSelected($event)" />
-                <a href="https://api.homeren.fr/modeles_equipements_import.xlsx" class=" mb-5 mt-5" target="_blank">Télécharger le modèle</a>
               </div>
               <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des fournitures</button>
             </div> 
             <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Exporter les fournitures</button>
+            <a href="https://homeren.fr/modeles_equipements_import.xlsx" class="dl-btn-link mb-5 mt-5" target="_blank">Télécharger le modèle</a>
+
           </div> 
           
       </fieldset>

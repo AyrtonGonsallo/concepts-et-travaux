@@ -767,6 +767,12 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_devis_piece/${id}`);
   }
 
+   getDevisPieceMinimumDatasById(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_devis_piece_minimum_datas/${id}`);
+  }
+
+  
+
   get_devis_tache(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_devis_tache/${id}`);
   }

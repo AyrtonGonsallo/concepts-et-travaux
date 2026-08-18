@@ -41,9 +41,9 @@ legend{
     margin: 2px 0px;
 }
 .filter-select{
-    width: 350px;
+    width: 250px;
 }
-@media (max-width:1450px) {
+@media (max-width:800px) {
     .filter-container {
         flex-direction: column;
     }
@@ -51,9 +51,14 @@ legend{
         flex-direction: column;
     }
 }
-.box-filters{
-    max-width: 457px;
-}
+
 .w-fit{
     width: fit-content;
+}
+.dl-btn-link{
+    background-color: #1890ff;
+    border: #1890ff;
+    border-radius: 3px;
+    padding: 5px 10px;
+    color: white;
 }
