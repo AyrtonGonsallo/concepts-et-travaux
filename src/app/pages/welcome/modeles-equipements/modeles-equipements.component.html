@@ -35,6 +35,9 @@
                 <nz-option *ngFor="let element of liste"  [nzValue]="element" [nzLabel]="element"></nz-option>
             </nz-select>
           </div>
+
+                    <label nz-checkbox [(ngModel)]="cacher_elements_fournisseurs_artisans" (ngModelChange)="search2()">Masquer les élements des artisans/fournisseurs</label> 
+
           
 
         </div>

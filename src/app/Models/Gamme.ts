@@ -13,5 +13,6 @@ export interface Gamme {
     ActiverPrixMultiples: boolean;
     ActiverFournisseur: boolean;
     FournisseurID: number
+    ArtisanID: number
   }
   

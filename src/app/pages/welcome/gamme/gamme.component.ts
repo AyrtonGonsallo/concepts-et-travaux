@@ -30,21 +30,21 @@ export class GammeComponent {
       compare: (a: Gamme, b: Gamme) => a.Label.localeCompare(b.Label),
       priority: 2,
       order:"ascend",
-      width:'150px'
+      width:'250px'
     },
     {
       title: 'Sous-catégorie',
       compare: (a: Gamme, b: Gamme) => a.Type.localeCompare(b.Type),
       priority: 1,
       order:null,
-      width:'150px'
+      width:'250px'
     },
     {
       title: 'Travail',
       compare: (a: Gamme, b: Gamme) => (this.get_travail_title(a.TravailID)??"").localeCompare(this.get_travail_title(b.TravailID)??""),
       priority: 1,
       order:null,
-      width:'150px'
+      width:'250px'
     },
     
     
@@ -67,6 +67,7 @@ export class GammeComponent {
   ];
   gamme:Gamme[] = [];
   listOfDisplayData :any;
+  cacher_elements_fournisseurs_artisans = true
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
@@ -212,7 +213,8 @@ export class GammeComponent {
       const matchTravail = !this.filteredTravailID || (item.TravailID) === this.filteredTravailID;
       const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
       const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
-      return matchLabel && matchTravail && matchEtape  && matchType;
+      const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
+      return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
     });
   }
 

@@ -6,6 +6,7 @@ import { AuthService } from '../../../Services/auth.service';
 import { ApiConceptsEtTravauxService } from '../../../Services/api-concepts-et-travaux.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
+import { presetColors } from 'ng-zorro-antd/core/color';
 
 @Component({
   selector: 'app-equipements',
@@ -41,13 +42,14 @@ export class EquipementsComponent {
       order:null
     },
     {
-      title: 'Pièce',
-      compare: (a: Equipement, b: Equipement) => (a.Piece?.Titre ?? '').localeCompare(b.Piece?.Titre ?? ''),
+      title: 'Pièces',
+      compare: null,
       priority: 4,
       order:null
     },
   ];
   equipements:Equipement[] = [];
+  public tagColors = presetColors;
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 

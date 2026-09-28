@@ -50,6 +50,7 @@ export class ModelesEquipementsComponent {
    
   ];
   modeles:ModeleEquipement[] = [];
+cacher_elements_fournisseurs_artisans = true
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
@@ -232,7 +233,9 @@ modele:ModeleEquipement[] = [];
       this.listOfDisplayData = this.modele.filter((item: ModeleEquipement) => {
         const matchLabel = !this.searchValue || item.Titre.toLowerCase().includes(this.searchValue.toLowerCase());
         const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
-        return matchLabel  && matchEtape;
+        const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
+
+        return matchLabel  && matchEtape && matchNoFournisseursAndArtisans;
       });
     }
 

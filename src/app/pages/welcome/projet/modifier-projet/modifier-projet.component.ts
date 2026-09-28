@@ -72,6 +72,7 @@ export class ModifierProjetComponent {
     paiement_visite: this.paiement_visite? 1 : 0,
     programmation_visite: this.programmation_visite? 1 : 0,
     visite_faite: this.visite_faite? 1 : 0,
+    date_visite_faite:this.date_visite_faite,
     projet_valide: this.projet_valide? 1 : 0,
     paiement_autorise: this.paiement_autorise? 1 : 0,
     acompte_paye: this.acompte_paye? 1 : 0,
@@ -246,7 +247,7 @@ export class ModifierProjetComponent {
         this.paiement_visite=this.project.Visite?.Paye
         this.date_paiement_visite=this.project.Visite?.Date
         this.visite_faite=this.project.Visite?.Faite
-        this.date_visite_faite=(this.project.Visite?.Faite)?this.project.Visite?.DateDeProgrammation:null
+        this.date_visite_faite=(this.project.Visite?.Faite)?this.project.Visite?.DateVisiteFaite:null
         this.programmation_visite=(this.project.Visite?.Faite)?true:false
         this.date_programmation_visite=this.project.Visite?.DateDeProgrammation
         this.projet_valide=(this.project.Date_de_validation)?true:false
@@ -553,6 +554,8 @@ export class ModifierProjetComponent {
       projet_id:this.projetId,
       paiement_visite: this.paiement_visite? 1 : 0,
       programmation_visite: this.programmation_visite? 1 : 0,
+      date_visite_faite:this.date_visite_faite,
+      visite_faite: this.visite_faite? 1 : 0,
       projet_valide: this.projet_valide? 1 : 0,
       paiement_autorise: this.paiement_autorise? 1 : 0,
       acompte_paye: this.acompte_paye? 1 : 0,

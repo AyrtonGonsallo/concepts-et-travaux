@@ -34,15 +34,35 @@
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID"  >
-                <span>Pièce</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="RoleId" formControlName="PieceID"  nzPlaceHolder="Pièce" >
-                    <nz-option *ngFor="let option of pieces" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Pieces">
+    <span>Pièce</span>
+  </nz-form-label>
+
+  <nz-form-control
+    [nzSm]="14"
+    [nzXs]="24"
+    nzErrorTip="Remplissez ce champ"
+  >
+
+    <nz-checkbox-wrapper
+      style="width: 100%;"
+      (nzOnChange)="onPiecesChange($event)"
+    >
+      <div nz-row style="width: 100%;">
+        <div
+          nz-col
+          nzSpan="8"
+          *ngFor="let option of pieces"
+        >
+          <label nz-checkbox [nzValue]="option.ID" [nzChecked]="isPieceSelected(option.ID)">
+            {{ option.Titre }}
+          </label>
+        </div>
+      </div>
+    </nz-checkbox-wrapper>
+
+  </nz-form-control>
+</nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PieceID"  >
               <span>Type</span>

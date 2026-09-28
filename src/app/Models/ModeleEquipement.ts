@@ -15,5 +15,7 @@ export interface ModeleEquipement {
     EquipementID: number; // Assurez-vous de correspondre au type utilisé dans Equipement
     ActiverFournisseur:boolean;
     Equipement?:any
+    FournisseurID?: number ;
+    ArtisanID?: number ;
   }
   

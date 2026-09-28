@@ -22,7 +22,7 @@ export class EquipementsTachesComponent {
 size: NzButtonSize = 'large';
 searchValue = '';
 visible = false;
-
+cacher_elements_fournisseurs_artisans = true
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
@@ -327,7 +327,9 @@ visible = false;
         const matchTravail = !this.filteredTravailID || (item.TravailID) === this.filteredTravailID;
         const matchEtape = !this.filteredEtape2 || item.Etape === this.filteredEtape2;
         const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
-        return matchLabel && matchTravail && matchEtape  && matchType;
+        const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
+
+        return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
       });
     }
     search22(): void {

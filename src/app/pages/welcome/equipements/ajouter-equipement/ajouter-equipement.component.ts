@@ -9,7 +9,7 @@ interface FormValues {
   Titre?: string;    
     Description?: string;
     Image?: string;
-    PieceID?: number; // Le point d'interrogation indique que la propriété est facultative
+    Pieces?: number[];  // Le point d'interrogation indique que la propriété est facultative
 }
 
 
@@ -24,7 +24,7 @@ export class AjouterEquipementComponent {
     Description: FormControl<string>;
     Type: FormControl<string>;
     Image: FormControl<string>;
-    PieceID: FormControl<number>;
+    Pieces: FormControl<number[]>;
     AfficherLongueur:FormControl<boolean>;
     AfficherLargeur:FormControl<boolean>;
     AfficherVasque:FormControl<boolean>;
@@ -117,6 +117,10 @@ export class AjouterEquipementComponent {
   }
   }
 
+  onPiecesChange(values: number[]): void {
+    this.validateForm.get('Pieces')?.setValue(values);
+  }
+
   ngOnInit(): void {
     this.loadPieces();
   }
@@ -139,7 +143,7 @@ export class AjouterEquipementComponent {
     Description: ['', [ Validators.required]],
     Type: ['', [ ]],
     Image: ['', [ ]],
-    PieceID:  [0, [ ]],
+    Pieces:  [[0], [ ]],
     AfficherLongueur: [false, [Validators.required]],
     AfficherLargeur: [false, [Validators.required]],
     AfficherVasque: [false, [Validators.required]],

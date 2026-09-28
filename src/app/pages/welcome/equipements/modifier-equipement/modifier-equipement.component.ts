@@ -9,7 +9,7 @@ interface FormValues {
   Titre?: string;    
     Description?: string;
     Image?: string;
-    PieceID?: number; // Le point d'interrogation indique que la propriété est facultative
+    Pieces?: number[]; // Le point d'interrogation indique que la propriété est facultative
 }
 
 @Component({
@@ -23,7 +23,7 @@ export class ModifierEquipementComponent {
     Type: FormControl<string>;
     Description: FormControl<string>;
     Image: FormControl<string>;
-    PieceID: FormControl<number>;
+    Pieces: FormControl<any[]>;
     AfficherLongueur:FormControl<boolean>;
     AfficherLargeur:FormControl<boolean>;
     AfficherVasque:FormControl<boolean>;
@@ -41,10 +41,11 @@ export class ModifierEquipementComponent {
       const formValues: FormValues = { ...this.validateForm.value };
      
       console.log('submit', formValues);
+      
       this.userService.updateEquipement(parseInt(this.equipementId) ,formValues).subscribe(
         (response) => {
           console.log("réponse de la requette update equipement",response);
-          this.message.create('success', `pièce mise a jour avec succès`);
+          this.message.create('success', `équipement mis a jour avec succès`);
           this.router.navigate(['/administration/equipements']);
 
         },
@@ -133,34 +134,46 @@ export class ModifierEquipementComponent {
       }
     );
   }
-// Méthode pour récupérer les détails de l'utilisateur à partir de l'API
-getDetails(id: string): void {
-  this.userService.getEquipement( parseInt(id, 10)).subscribe(
-    (response) => {
-      console.log("réponse de la requette get piece details",response);
-      this.validateForm.patchValue(response);
-      
-      
-      
-      
-    },
-    (error) => {
-      console.error('Erreur lors de la recuperation des details piece :', error);
-    }
-  );
-  
-}
+
+  onPiecesChange(values: number[]): void {
+    this.validateForm.get('Pieces')?.setValue(values);
+  }
+
+  isPieceSelected(id: number): boolean { 
+   // console.log('pieces',this.validateForm.get('Pieces')?.value)
+    //il rencoi un tableau d'elements avec notement ID
+    const selected = this.validateForm.get('Pieces')?.value || [];
+    return selected.some(piece => piece.ID === id);
+   }
+
+  // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
+  getDetails(id: string): void {
+    this.userService.getEquipement( parseInt(id, 10)).subscribe(
+      (response) => {
+        console.log("réponse de la requette get piece details",response);
+        this.validateForm.patchValue(response);
+        
+        
+        
+        
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details piece :', error);
+      }
+    );
+    
+  }
   constructor(private route: ActivatedRoute,private fb: NonNullableFormBuilder,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
       Titre: ['', [ Validators.required]],
-    Description: ['', [ Validators.required]],
-    Image: ['', [ ]],
-    Type: ['', [ ]],
-    PieceID:  [0, [ ]],
-    AfficherLongueur: [false, [Validators.required]],
-    AfficherLargeur: [false, [Validators.required]],
-    AfficherVasque: [false, [Validators.required]],
-    AfficherEncastreeApparente: [false, [Validators.required]],
+      Description: ['', [ Validators.required]],
+      Image: ['', [ ]],
+      Type: ['', [ ]],
+      Pieces:  [[0], [ ]],
+      AfficherLongueur: [false, [Validators.required]],
+      AfficherLargeur: [false, [Validators.required]],
+      AfficherVasque: [false, [Validators.required]],
+      AfficherEncastreeApparente: [false, [Validators.required]],
     });
   }
 }

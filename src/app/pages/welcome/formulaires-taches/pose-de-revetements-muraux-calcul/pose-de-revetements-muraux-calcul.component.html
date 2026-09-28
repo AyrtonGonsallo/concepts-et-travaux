@@ -243,7 +243,7 @@
 
             <div class="mur-btn-div tooltip-srf">
                 <span  class="mur-ttl">
-                    Prix coûtant
+                    Prix coûtant 
                 </span>
             </div>
 
@@ -395,7 +395,9 @@
                     <div>
                         <div class="mur-btn-div tooltip-srf">
                             <span  class="mur-ttl">
-                                Prix coûtant
+                                Prix coûtant    
+                                <span nz-icon nzType="question-circle" nzTheme="outline" nz-popover nzPopoverTitle="Info" nzPopoverContent="Prix payé par Homeren"></span>
+
                             </span>
                         </div>
                         <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
@@ -408,6 +410,7 @@
                         <div class="mur-btn-div tooltip-srf">
                             <span  class="mur-ttl">
                                 Prix de vente
+                                <span nz-icon nzType="question-circle" nzTheme="outline" nz-popover nzPopoverTitle="Info" nzPopoverContent="Prix déboursé (saisi dans l'admin) x coef appliqué sur le total"></span>
                             </span>
                         </div>
                         <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
