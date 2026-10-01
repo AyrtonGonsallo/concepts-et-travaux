@@ -173,6 +173,14 @@ getCategorieArtisanById(id: number): Observable<any> {
   return this.http.get<any>(url);
 }
 
+getArtisanFournisseurByProjet(user_id:number): Observable<any> {
+  const url = `${environment.apiUrl}/get_artisan_fournisseur_projet/${user_id}`;
+  return this.http.get<any>(url);
+}
+
+
+
+
 updateCategorieArtisan(id: number, categorie: any): Observable<any> {
   const url = `${environment.apiUrl}/update_categorie_artisan/${id}`;
   return this.http.put<any>(url, categorie);
@@ -877,6 +885,8 @@ get_role(userId: number): Observable<any> {
    updateGamme(id: number, gamme: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}/update_gamme/${id}`, gamme);
   }
+
+  
 
   // Ajouter un nouveau modèle d'équipement
   addTacheGenerale(tache_generale: any): Observable<any> {

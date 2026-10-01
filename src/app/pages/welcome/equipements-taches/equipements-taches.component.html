@@ -86,7 +86,22 @@
             <td>{{ data.Etape }}</td>
             <td>{{ get_travail_title(data.TravailID) }}</td>
             <td>{{ data.Prix }} €</td>
-            <td>{{ data.Ordre }}</td>
+             <td nzEllipsis (click)="editOrdre(data)">
+              <ng-container *ngIf="editingOrdreId !== data.ID; else editOrdreTemplate">
+                {{ data.Ordre }}
+              </ng-container>
+
+              <ng-template #editOrdreTemplate>
+                <input
+                  nz-input
+                  type="number"
+                  [(ngModel)]="data.Ordre"
+                  (click)="$event.stopPropagation()"
+                  (keydown.enter)="saveOrdre(data)"
+                  (blur)="saveOrdre(data)"
+                />
+              </ng-template>
+            </td>
         
             
           

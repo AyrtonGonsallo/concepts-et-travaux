@@ -31,7 +31,6 @@ export class ModifierProjetComponent {
   date_visite_faite=""
   date_paiement_visite=""
   programmation_visite=false
-  date_programmation_visite=""
   projet_valide=false
   date_validation_projet=""
   paiement_autorise=false
@@ -85,7 +84,7 @@ export class ModifierProjetComponent {
     Date_de_fin_des_travaux:this.date_travaux_livres,
     Date_de_fin_gpa:this.date_fin_gpa,
     Date_paiement_visite:this.date_paiement_visite,
-    Date_programmation_visite:this.date_programmation_visite,
+    Date_programmation_visite:this.date_de_programmation,
     Date_validation_projet:this.date_validation_projet,
     Date_paiement_acompte:this.date_paiement_acompte,
     Avancement:this.avancement
@@ -249,7 +248,6 @@ export class ModifierProjetComponent {
         this.visite_faite=this.project.Visite?.Faite
         this.date_visite_faite=(this.project.Visite?.Faite)?this.project.Visite?.DateVisiteFaite:null
         this.programmation_visite=(this.project.Visite?.Faite)?true:false
-        this.date_programmation_visite=this.project.Visite?.DateDeProgrammation
         this.projet_valide=(this.project.Date_de_validation)?true:false
         this.date_validation_projet=this.project.Date_de_validation
         this.paiement_autorise=this.project.Valider
@@ -579,7 +577,8 @@ export class ModifierProjetComponent {
         this.userService.send_visite_done(this.project.Visite.ID,this.project.Id).subscribe(
           (response) => {
             console.log('Message de visite terminée envoyé au client avec succès :', response);
-            this.message.success("Message de visite terminée envoyé au client avec succès")        
+            this.message.success("Message de visite terminée envoyé au client avec succès")    
+            this.get_all_projet_paiements(this.projetId);    
            
           },
           (error) => {

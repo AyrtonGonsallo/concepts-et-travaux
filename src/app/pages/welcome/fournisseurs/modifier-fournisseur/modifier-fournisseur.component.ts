@@ -323,6 +323,8 @@ export class ModifierFournisseurComponent {
         response.KBis=""
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_user",response);
+
+          this.getArtisanFournisseurProjets(userId)
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details utilisateur :', error);
@@ -352,6 +354,22 @@ export class ModifierFournisseurComponent {
         console.error('Erreur lors de clear_assurance_rc_decennale :', error);
       }
     );
+  }
+
+
+  artisanFournisseurProjets:any
+   getArtisanFournisseurProjets(userId: string): void {
+    this.userService.getArtisanFournisseurByProjet( parseInt(userId, 10)).subscribe(
+      (response) => {
+       
+        console.log("réponse de la requette getArtisanFournisseurProjets",response);
+        this.artisanFournisseurProjets =  response
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des details getArtisanFournisseurProjets :', error);
+      }
+    );
+    
   }
 
   clear_questionnaire_tarif(){

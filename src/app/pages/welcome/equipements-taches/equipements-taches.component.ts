@@ -392,5 +392,29 @@ cacher_elements_fournisseurs_artisans = true
 
 
 
+  
+editingOrdreId: number | null = null;
+
+editOrdre(data: any): void {
+  this.editingOrdreId = data.ID;
+}
+
+saveOrdre(data: any): void {
+  this.editingOrdreId = null;
+
+
+   this.userService.updateGamme(parseInt(data.ID),data).subscribe(
+        (response: any) => {
+          console.log('gamme modifiée avec succès :', response);
+          this.message.create('success', `ordre modifié avec succès`);
+        },
+        (error: any) => {
+          console.error('Erreur lors de la modification:', error);
+        }
+      );
+
+  // appel API ici
+}
+
 
 }

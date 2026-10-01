@@ -186,7 +186,7 @@
               <td>{{ data.Titre  ? data.Titre  : 'Pas de titre' }} </td>
               <td>{{ data.Type }}</td>
               <td>{{ data.TypeDePaiement ? data.TypeDePaiement  : ''  }}</td>
-              <td>{{ data.Montant }} € </td>
+              <td>{{ data.Montant | number:'1.2-2' }} €</td>
               <td>{{ data.Date | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
               <td>{{ data.DatedePaiement | date:'dd/MM/yyyy HH:mm:ss'}}  </td>
               <td> 

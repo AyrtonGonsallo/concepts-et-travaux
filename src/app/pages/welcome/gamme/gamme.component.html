@@ -97,7 +97,22 @@
             <td nzEllipsis>{{ data.Type }}</td>
             <td nzEllipsis>{{ get_travail_title(data.TravailID) }}</td>
             <td nzEllipsis>{{ data.Prix }} €</td>
-            <td nzEllipsis>{{ data.Ordre }} </td>
+            <td nzEllipsis (click)="editOrdre(data)">
+              <ng-container *ngIf="editingOrdreId !== data.ID; else editOrdreTemplate">
+                {{ data.Ordre }}
+              </ng-container>
+
+              <ng-template #editOrdreTemplate>
+                <input
+                  nz-input
+                  type="number"
+                  [(ngModel)]="data.Ordre"
+                  (click)="$event.stopPropagation()"
+                  (keydown.enter)="saveOrdre(data)"
+                  (blur)="saveOrdre(data)"
+                />
+              </ng-template>
+            </td>
             
           
            

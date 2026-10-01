@@ -135,16 +135,15 @@ export class ModifierEquipementComponent {
     );
   }
 
-  onPiecesChange(values: number[]): void {
-    this.validateForm.get('Pieces')?.setValue(values);
-  }
+onPiecesChange(values: number[]): void {
+  this.validateForm.get('Pieces')?.setValue(values);
+}
 
-  isPieceSelected(id: number): boolean { 
-   // console.log('pieces',this.validateForm.get('Pieces')?.value)
-    //il rencoi un tableau d'elements avec notement ID
-    const selected = this.validateForm.get('Pieces')?.value || [];
-    return selected.some(piece => piece.ID === id);
-   }
+isPieceSelected(id: number): boolean {
+  const selected = this.validateForm.get('Pieces')?.value || [];
+
+  return selected.includes(id);
+}
 
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getDetails(id: string): void {
@@ -152,7 +151,13 @@ export class ModifierEquipementComponent {
       (response) => {
         console.log("réponse de la requette get piece details",response);
         this.validateForm.patchValue(response);
-        
+
+        const pieces = response.Pieces || [];
+
+        this.validateForm.get('Pieces')?.setValue(
+          pieces.map((piece: any) => piece.ID)
+        );
+                
         
         
         
