@@ -1,0 +1,64 @@
+<div>
+    <h2>Liste des prestations <span *ngIf="user">de l'artisan {{user?.Nom}} {{user?.Prenom}}</span> </h2>    
+
+     <div nz-row>
+       
+      <div nz-col nzSpan="8" style="margin: 20px 0px 10px 0px; ">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" [(ngModel)]="search_term" nz-input placeholder="rechercher dans une colonne" (ngModelChange)="onSearch()" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+        </ng-template>
+      </div>
+    </div>
+    
+    
+    
+    <nz-table #sortTable [nzData]="artisanFournisseurProjetFiltres"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortTable.data" >
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">{{ data.Id }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">{{ data.Projet?.Nom  }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">{{ data.DevisTache?.Travail?.Titre }}</td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">{{ data.Montant }} €</td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">
+              <nz-rate
+                [ngModel]="data.AvisClients"
+                [nzDisabled]="true"
+                [nzCount]="5"
+              ></nz-rate>
+            </td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">
+              <nz-rate
+                [ngModel]="data.RespectDesDelais"
+                [nzDisabled]="true"
+                [nzCount]="5"
+              ></nz-rate>
+            </td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)">
+              <nz-rate
+                [ngModel]="data.RespectDuPrix"
+                [nzDisabled]="true"
+                [nzCount]="5"
+              ></nz-rate>
+            </td>
+            <td *ngIf="isHimOrSuperAdmin(data.UtilisateurID)"> 
+              <button nz-button nzType="primary" class="positive-action mlr-5" *ngIf="isHimOrSuperAdmin(data.UtilisateurID)" [nzSize]="size" title="modifier les infos" [routerLink]="['/administration', 'artisans', 'modifier-prestation',data.Id]"><span nz-icon nzType="edit"></span></button>
+
+            
+            </td>
+          </tr>
+        </tbody>
+    </nz-table>
+</div>

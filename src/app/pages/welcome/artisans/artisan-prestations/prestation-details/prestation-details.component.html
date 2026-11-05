@@ -1,0 +1,107 @@
+<h2>Noter la prestation <span *ngIf="user">de {{user?.Nom}} {{user?.Prenom}} ({{user?.Role.Titre}})</span> </h2> 
+
+<form nz-form [formGroup]="prestationForm" class="login-form" (ngSubmit)="submitForm()">
+
+  <!-- Nature des travaux -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="NatureDesTravaux" nzRequired>
+      Nature des travaux
+    </nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Veuillez saisir la nature des travaux.">
+        <textarea rows="4" nz-input id="NatureDesTravaux"
+        formControlName="NatureDesTravaux"
+        placeholder="Ex : Rénovation salle de bain"></textarea>
+      
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Avis client -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Avis client</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-rate
+        formControlName="AvisClients"
+        [nzTooltips]="tooltipsAvis"
+      ></nz-rate>
+      @if (prestationForm.get('AvisClients')?.value) {
+        <span class="ant-rate-text">
+          {{ tooltipsAvis[prestationForm.get('AvisClients')?.value! - 1] }}
+        </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Respect des délais -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Respect des délais</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-rate
+        formControlName="RespectDesDelais"
+        [nzTooltips]="tooltipsDelais"
+      ></nz-rate>
+      @if (prestationForm.get('RespectDesDelais')?.value) {
+        <span class="ant-rate-text">
+          {{ tooltipsDelais[prestationForm.get('RespectDesDelais')?.value! - 1] }}
+        </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Respect du prix -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Respect du prix</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-rate
+        formControlName="RespectDuPrix"
+        [nzTooltips]="tooltipsPrix"
+      ></nz-rate>
+      @if (prestationForm.get('RespectDuPrix')?.value) {
+        <span class="ant-rate-text">
+          {{ tooltipsPrix[prestationForm.get('RespectDuPrix')?.value! - 1] }}
+        </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Qualité des travaux -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Qualité des travaux</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-rate
+        formControlName="QualiteDesTravaux"
+        [nzTooltips]="tooltipsQualite"
+      ></nz-rate>
+      @if (prestationForm.get('QualiteDesTravaux')?.value) {
+        <span class="ant-rate-text">
+          {{ tooltipsQualite[prestationForm.get('QualiteDesTravaux')?.value! - 1] }}
+        </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Tenue du chantier -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Tenue du chantier</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-rate
+        formControlName="TenueDuChantier"
+        [nzTooltips]="tooltipsChantier"
+      ></nz-rate>
+      @if (prestationForm.get('TenueDuChantier')?.value) {
+        <span class="ant-rate-text">
+          {{ tooltipsChantier[prestationForm.get('TenueDuChantier')?.value! - 1] }}
+        </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Bouton -->
+  <nz-form-item>
+    <nz-form-control [nzOffset]="6" [nzSpan]="14">
+      <button nz-button nzType="primary" [disabled]="prestationForm.invalid">
+        Noter
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

@@ -20,6 +20,7 @@ import { firstValueFrom, forkJoin } from 'rxjs';
 })
 export class ModifierProjetComponent {
 
+  apiUrl = environment.imagesUrl;
   
   assetsUrl = environment.assetsUrl
   size: NzSelectSizeType = 'default';
@@ -45,6 +46,7 @@ export class ModifierProjetComponent {
   travaux_livres=false
   gpa_termine=false
   notes_remarques=""
+  lien_fichier_compte_rendu=""
 
   avancement=0
 
@@ -81,6 +83,7 @@ export class ModifierProjetComponent {
     travaux_livres: this.travaux_livres? 1 : 0,
     gpa_termine: this.gpa_termine? 1 : 0,
     notes_remarques: this.notes_remarques,
+    lien_fichier_compte_rendu: this.lien_fichier_compte_rendu,
     Date_de_fin_des_travaux:this.date_travaux_livres,
     Date_de_fin_gpa:this.date_fin_gpa,
     Date_paiement_visite:this.date_paiement_visite,
@@ -209,7 +212,7 @@ export class ModifierProjetComponent {
 }
 
   calculerPrixTTC(prix: any,tva:number): number {
-    console.log("tva",prix,"prix",tva,"coefficient",this.coefficient)
+    console.log("tva",tva,"prix",prix,"coefficient",this.coefficient)
     if (!prix) return 0;
     const total = prix * this.coefficient * (1+tva/100);
     return Math.round(total * 100) / 100; // arrondi à 2 décimales
@@ -245,6 +248,7 @@ export class ModifierProjetComponent {
     console.log("this.project", this.project);
         this.paiement_visite=this.project.Visite?.Paye
         this.date_paiement_visite=this.project.Visite?.Date
+        this.lien_fichier_compte_rendu = this.project.Visite?.Lien_compte_rendu,
         this.visite_faite=this.project.Visite?.Faite
         this.date_visite_faite=(this.project.Visite?.Faite)?this.project.Visite?.DateVisiteFaite:null
         this.programmation_visite=(this.project.Visite?.Faite)?true:false
@@ -327,7 +331,64 @@ export class ModifierProjetComponent {
 
   
  
+
+  maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
+  fileSizeError = false;
+  handleFileInput2(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file: File = (inputElement.files as FileList)[0];
+    if (file.size > this.maxFileSize) {
+      this.fileSizeError = true;
+      // Clear the input field to prevent further processing of the large file
+      inputElement.value = '';
+      
+    }else{
+      const timestamp = Date.now();
+      const uniqueFileName = this.slugify( `${timestamp}_${file.name}`);
+      this.lien_fichier_compte_rendu = uniqueFileName;
+    
+     
+      
+      const formData = new FormData();
+      const renamedFile = new File([file], uniqueFileName, { type: file.type });
+      formData.append('file', renamedFile);
+      // Envoyer le fichier au serveur
+      this.userService.upload_file(formData).subscribe(response => {
+        console.log('Fichier téléchargé avec succès:', response);
+        // Maintenant, vous avez le chemin d'accès au fichier sur le serveur, que vous pouvez stocker dans votre base de données.
+      });
+      console.log(file);
+    }
+  }
+
+   slugify(text: string) {
+    const lastDotIndex = text.lastIndexOf('.'); // Trouver l'index du dernier point
   
+    if (lastDotIndex === -1) {
+      // S'il n'y a pas de point, appliquer les transformations sur tout le texte
+      return text
+        .toLowerCase()
+        .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+        .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+        .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+    }
+  
+    // Séparer le nom de fichier et l'extension
+    const name = text.substring(0, lastDotIndex);
+    const extension = text.substring(lastDotIndex);
+  
+    // Appliquer les transformations sur le nom de fichier uniquement
+    const slugifiedName = name
+      .toLowerCase()
+      .replace(/[^\w\s.-]/g, '') // Supprimer les caractères non alphanumériques sauf les espaces, les tirets et les points
+      .replace(/[\s_-]+/g, '-') // Remplacer les espaces et les tirets par un seul tiret
+      .replace(/^-+|-+$/g, ''); // Supprimer les tirets en début et fin de chaîne
+  
+    // Combiner le nom de fichier transformé avec l'extension
+    return slugifiedName + extension;
+  }
+  
+
 
   submitpaiementForm(): void {
     if (this.paiementForm.valid) {
@@ -495,6 +556,7 @@ export class ModifierProjetComponent {
       travaux_livres: this.travaux_livres? 1 : 0,
       gpa_termine: this.gpa_termine? 1 : 0,
       notes_remarques: this.notes_remarques,
+      lien_fichier_compte_rendu: this.lien_fichier_compte_rendu,
       Date_de_fin_des_travaux:this.date_travaux_livres,
       Date_de_fin_gpa:this.date_fin_gpa,
     };
@@ -563,6 +625,7 @@ export class ModifierProjetComponent {
       travaux_livres: this.travaux_livres? 1 : 0,
       gpa_termine: this.gpa_termine? 1 : 0,
       notes_remarques: this.notes_remarques,
+      lien_fichier_compte_rendu: this.lien_fichier_compte_rendu,
       Date_de_fin_des_travaux:this.date_travaux_livres,
       Date_de_fin_gpa:this.date_fin_gpa,
     };

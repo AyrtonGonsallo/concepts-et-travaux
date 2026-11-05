@@ -173,13 +173,21 @@ getCategorieArtisanById(id: number): Observable<any> {
   return this.http.get<any>(url);
 }
 
-getArtisanFournisseurByProjet(user_id:number): Observable<any> {
-  const url = `${environment.apiUrl}/get_artisan_fournisseur_projet/${user_id}`;
+getPrestationsByUser(user_id:number): Observable<any> {
+  const url = `${environment.apiUrl}/get_artisan_fournisseur_projet_by_user/${user_id}`;
   return this.http.get<any>(url);
 }
 
 
+getPrestationByID(id:number): Observable<any> {
+  const url = `${environment.apiUrl}/get_artisan_fournisseur_projet_by_id/${id}`;
+  return this.http.get<any>(url);
+}
 
+updatePrestation(id: number, datas: any): Observable<any> {
+  const url = `${environment.apiUrl}/update_artisan_fournisseur_projet/${id}`;
+  return this.http.put<any>(url, datas);
+}
 
 updateCategorieArtisan(id: number, categorie: any): Observable<any> {
   const url = `${environment.apiUrl}/update_categorie_artisan/${id}`;

@@ -175,12 +175,21 @@
       <div>
         <div class="mur-btn-div tooltip-srf">
           <span  class="mur-ttl">
-              Prix facturé
+              Prix de vente
           </span>
         </div>
         <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix }} €</span><br>
         <span>Formule: </span><br>
         <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule"></span>
+
+         <div class="mur-btn-div tooltip-srf">
+            <span  class="mur-ttl">
+                Prix coûtant
+            </span>
+        </div>
+        <span>Prix: {{ detailsCalcul.resultats[element.TravailSlug]?.prix_marge }} €</span><br>
+        <span>Formule: </span><br>
+        <span [innerHTML]="detailsCalcul.resultats[element.TravailSlug]?.formule_marge"></span>
 
       </div>
   </ng-container>
@@ -376,7 +385,7 @@
   
   
   <div class="grid-btn-action">
-    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Refraîchir le calcul</button>
+    <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="modifier()">Rafraîchir le calcul</button>
   </div>
   
   <ng-container *ngIf="detailsCalcul">

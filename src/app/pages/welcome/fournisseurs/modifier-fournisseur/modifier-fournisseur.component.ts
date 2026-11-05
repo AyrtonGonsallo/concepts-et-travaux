@@ -324,7 +324,6 @@ export class ModifierFournisseurComponent {
         this.validateForm.patchValue(response);
         console.log("réponse de la requette get_user",response);
 
-          this.getArtisanFournisseurProjets(userId)
       },
       (error) => {
         console.error('Erreur lors de la recuperation des details utilisateur :', error);
@@ -357,20 +356,7 @@ export class ModifierFournisseurComponent {
   }
 
 
-  artisanFournisseurProjets:any
-   getArtisanFournisseurProjets(userId: string): void {
-    this.userService.getArtisanFournisseurByProjet( parseInt(userId, 10)).subscribe(
-      (response) => {
-       
-        console.log("réponse de la requette getArtisanFournisseurProjets",response);
-        this.artisanFournisseurProjets =  response
-      },
-      (error) => {
-        console.error('Erreur lors de la recuperation des details getArtisanFournisseurProjets :', error);
-      }
-    );
-    
-  }
+ 
 
   clear_questionnaire_tarif(){
     this.userService.clear_questionnaire_tarif(this.userId).subscribe(

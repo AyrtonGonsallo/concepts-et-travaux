@@ -103,6 +103,31 @@
                   
                 </div>
               </ng-template>
+
+              <div nz-row class="mt-2 mb-2">
+                <nz-form-label
+                  [nzSpan]="4"
+                  style="text-align: left;"
+                  nzFor="fichier_compte_rendu">
+                  Compte rendu
+                </nz-form-label>
+                <br>
+                <div nz-col nzSpan="18">
+                  
+                  <a class="compte-rendu" *ngIf="lien_fichier_compte_rendu" nz-button nzType="link" [href]="apiUrl+'/'+lien_fichier_compte_rendu" target="_blank"><span nz-icon nzType="download"></span>Télecharger</a>
+                
+                  <!-- input caché inutile ici : le fichier est lu via (change) -->
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    [attr.maxFileSize]="10 * 1024 * 1024"
+                    nz-upload
+                    (change)="handleFileInput2($event)"
+                  />
+                </div>
+              </div>
+
+              
             </div>
           </div>
           <div nz-col class="gutter-row" [nzSpan]="24">

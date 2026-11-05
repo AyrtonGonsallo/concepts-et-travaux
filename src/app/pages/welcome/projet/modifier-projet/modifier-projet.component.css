@@ -29,3 +29,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+.mt-2{
+    margin-top: 2px;
+} 
+.mb-2{
+ margin-bottom: 2px;
+}
+
+.compte-rendu{
+    display: block;
+    width: fit-content;
+}

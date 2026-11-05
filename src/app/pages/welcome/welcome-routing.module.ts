@@ -123,6 +123,10 @@ import { ModifierStyleComponent } from './styles/modifier-style/modifier-style.c
 import { AjouterStyleComponent } from './styles/ajouter-style/ajouter-style.component';
 import { ModifierEquipementsTacheComponent } from './gamme/modifier-equipements-tache/modifier-equipements-tache.component';
 import { AjouterEquipementsTacheComponent } from './gamme/ajouter-equipements-tache/ajouter-equipements-tache.component';
+import { ArtisanPrestationsComponent } from './artisans/artisan-prestations/artisan-prestations.component';
+
+import { FournisseurPrestationsComponent } from './fournisseurs/fournisseur-prestations/fournisseur-prestations.component';
+import { PrestationDetailsComponent } from './artisans/artisan-prestations/prestation-details/prestation-details.component';
 
 const routes: Routes = [
  
@@ -259,12 +263,17 @@ const routes: Routes = [
       { path: 'fournisseurs/details/:id', component: FournisseurDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'fournisseurs/modifier-fournisseur/:id', component: ModifierFournisseurComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'fournisseurs/ajouter-fournisseur', component: AjouterFournisseurComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'fournisseurs/prestations-fournisseur/:id', component: FournisseurPrestationsComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'fournisseurs/modifier-prestation/:id', component: PrestationDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
 
 
       { path: 'artisans', component: ArtisansComponent },
       { path: 'artisans/details/:id', component: ArtisanDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'artisans/modifier-artisan/:id', component: ModifierArtisanComponent }, // Nouvelle route pour ajouter un compte avec un ID
       { path: 'artisans/ajouter-artisan', component: AjouterArtisanComponent,canActivate: [IsAdminGuard] }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'artisans/prestations-artisan/:id', component: ArtisanPrestationsComponent }, // Nouvelle route pour ajouter un compte avec un ID
+      { path: 'artisans/modifier-prestation/:id', component: PrestationDetailsComponent }, // Nouvelle route pour ajouter un compte avec un ID
+
 
       { path: 'styles', component: StylesComponent },
       { path: 'styles/modifier-style/:id', component: ModifierStyleComponent }, // Nouvelle route pour ajouter un compte avec un ID
