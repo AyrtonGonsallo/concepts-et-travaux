@@ -8,7 +8,7 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu [nzOpen]="false" nzTitle="Projets & Devis" nzIcon="schedule">
+        <li nz-submenu [nzOpen]="false" nzTitle="Projets & Devis" nzIcon="folder-view">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/projets">Liste des projets</a>
@@ -23,11 +23,14 @@
               <a routerLink="/administration/fichiers">Liste des fichiers</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/fournisseurs">Liste des fournisseurs</a>
+              <a routerLink="/administration/parametres">Paramètres (TVA, coef)</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/artisans">Liste des artisans</a>
+             <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/formules-et-tests">Formule & Test</a>
             </li>
+            
+
+
             <!--
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/etapes-projet">Étapes du projet</a>
@@ -41,7 +44,7 @@
             </li>-->
           </ul>
         </li>
-        <li nz-submenu [nzOpen]="false" nzTitle="Pièces et travaux" nzIcon="home" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="Pièces" nzIcon="home" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/pieces">Liste des pièces</a>
@@ -49,6 +52,11 @@
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/categories-piece">Catégories de pièces</a>
             </li>
+           
+          </ul>
+        </li>
+        <li nz-submenu [nzOpen]="false" nzTitle="Travaux & tâches" nzIcon="schedule" *ngIf="isAdminorSuperAdmin()">
+          <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/travaux">Liste des travaux</a>
             </li>
@@ -69,18 +77,27 @@
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/administration/equipements">Catégories d'équipements</a>
             </li>
+           
+          </ul>
+        </li>
+
+        <li nz-submenu [nzOpen]="false" nzTitle="Fournisseurs & artisans" nzIcon="contacts">
+          <ul>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/nota-bene">Nota Bene</a>
+              <a routerLink="/administration/artisans">Liste des artisans</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/formules-et-tests">Formule & Test</a>
+              <a routerLink="/administration/fournisseurs">Liste des fournisseurs</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/parametres">Paramètres</a>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/categories-artisan">Catégories d'artisans</a>
+            </li>
+            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/categories-fournisseur">Catégories de fournisseurs</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu [nzOpen]="false" nzTitle="Réalisations" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
+        <li nz-submenu [nzOpen]="false" nzTitle="Front-office" nzIcon="picture" *ngIf="isAdminorSuperAdmin()">
           <ul>
             <!--
             <li nz-menu-item nzMatchRouter>
@@ -93,6 +110,9 @@
             </li>
             <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/styles">Liste des styles</a>
+            </li>
+             <li nz-menu-item nzMatchRouter>
+              <a routerLink="/administration/nota-bene">Nota Bene</a>
             </li>
           </ul>
         </li>
@@ -131,12 +151,7 @@
             <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
               <a routerLink="/administration/front-pages">Pages du site (seo)</a>
             </li>
-            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/categories-artisan">Catégories d'artisans</a>
-            </li>
-            <li *ngIf="isAdminorSuperAdmin()" nz-menu-item nzMatchRouter>
-              <a routerLink="/administration/categories-fournisseur">Catégories de fournisseurs</a>
-            </li>
+            
           </ul>
         </li>
         

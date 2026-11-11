@@ -7,6 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
+import { ModeleEquipement } from '../../../../Models/ModeleEquipement';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -44,6 +45,8 @@ export class ModifierModeleComponent {
     Etape: FormControl<string>;
      ActiverFournisseur: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ActiverArtisan: FormControl<boolean>;
+    ArtisanID: FormControl<number>;
     ModeleDeReferenceID: FormControl<number>;
   }>;
 
@@ -156,6 +159,8 @@ export class ModifierModeleComponent {
     this.loadEquipements();
     this.getModeleDetails(this.modeleId)
     this.loadFournisseurs()
+     this.loadArtisans()
+    this.loadModelesDeRef()
     this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
       this.updatePrixTotal();
     });
@@ -169,14 +174,48 @@ export class ModifierModeleComponent {
     const pose = this.validateForm.get('PrixPose')!.value || 0;
     this.validateForm.get('Prix')!.setValue(fournisseur + pose, { emitEvent: false });
   }
-fournisseurs:Utilisateur[]=[]
-loadFournisseurs(){
-    this.userService.getUsersByRole(15)
-        .subscribe((data: Utilisateur[]) => {
-          this.fournisseurs = data;
-          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
-        });
-  }
+
+  
+  fournisseurs:Utilisateur[]=[]
+  artisans:Utilisateur[]=[]
+  
+  
+    loadFournisseurs(){
+      this.userService.getUsersByRole(15)
+          .subscribe((data: Utilisateur[]) => {
+            this.fournisseurs = data;
+            console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+          });
+    }
+  
+  
+    loadArtisans(){
+      this.userService.getUsersByRole(17)
+          .subscribe((data: Utilisateur[]) => {
+            this.artisans = data;
+            console.log("réponse de la requette loadartisans",this.artisans);
+          });
+    }
+  
+  
+      equipements_modeles_de_ref:ModeleEquipement[] = [];
+      listOfDisplayModelesDeRef:ModeleEquipement[] = [];
+      loadModelesDeRef(): Promise<void> {
+          return new Promise((resolve, reject) => {
+            this.userService.getModelesEquipementDeRef().subscribe({
+              next: (data2: ModeleEquipement[]) => {
+                this.equipements_modeles_de_ref = data2;
+                this.listOfDisplayModelesDeRef = [...this.equipements_modeles_de_ref];
+                console.log("réponse de la requête getEquipementmodelesDEREF", this.equipements_modeles_de_ref);
+                resolve();
+              },
+              error: (err) => reject(err)
+            });
+          });
+        }
+  
+
+
   loadEquipements(): void {
     this.userService.getEquipements().subscribe(
       (response) => {
@@ -214,6 +253,8 @@ loadFournisseurs(){
     Etape: ['', [Validators.required ]],
     ActiverFournisseur: [false, [ ]],
     FournisseurID:[0, [ ]],
+     ActiverArtisan: [false, [ ]],
+    ArtisanID:[0, [ ]],
     ModeleDeReferenceID: [0, [ ]],
     });
   }
@@ -221,6 +262,11 @@ loadFournisseurs(){
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
   }
+   activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
+  }
+
+  
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
   getModeleDetails(id: string): void {
     this.userService.getModeleEquipementById( parseInt(id, 10)).subscribe(

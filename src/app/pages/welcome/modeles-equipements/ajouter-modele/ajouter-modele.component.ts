@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { ModeleEquipement } from '../../../../Models/ModeleEquipement';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -39,8 +40,10 @@ export class AjouterModeleComponent {
     Matiere: FormControl<string>;
     EquipementID: FormControl<number>;
     Etape: FormControl<string>;
+    ActiverArtisan: FormControl<boolean>;
      ActiverFournisseur: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ArtisanID: FormControl<number>;
     ModeleDeReferenceID: FormControl<number>;
   }>;
   fileSizeError = false;
@@ -145,17 +148,52 @@ export class AjouterModeleComponent {
       console.log(file);
   }
   }
+  
+  
 fournisseurs:Utilisateur[]=[]
-loadFournisseurs(){
+artisans:Utilisateur[]=[]
+
+
+  loadFournisseurs(){
     this.userService.getUsersByRole(15)
         .subscribe((data: Utilisateur[]) => {
           this.fournisseurs = data;
           console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
         });
   }
+
+
+  loadArtisans(){
+    this.userService.getUsersByRole(17)
+        .subscribe((data: Utilisateur[]) => {
+          this.artisans = data;
+          console.log("réponse de la requette loadartisans",this.artisans);
+        });
+  }
+
+
+    equipements_modeles_de_ref:ModeleEquipement[] = [];
+    listOfDisplayModelesDeRef:ModeleEquipement[] = [];
+    loadModelesDeRef(): Promise<void> {
+        return new Promise((resolve, reject) => {
+          this.userService.getModelesEquipementDeRef().subscribe({
+            next: (data2: ModeleEquipement[]) => {
+              this.equipements_modeles_de_ref = data2;
+              this.listOfDisplayModelesDeRef = [...this.equipements_modeles_de_ref];
+              console.log("réponse de la requête getEquipementmodelesDEREF", this.equipements_modeles_de_ref);
+              resolve();
+            },
+            error: (err) => reject(err)
+          });
+        });
+      }
+
+
   ngOnInit(): void {
     this.loadEquipements();
     this.loadFournisseurs()
+    this.loadArtisans()
+    this.loadModelesDeRef()
     this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
       this.updatePrixTotal();
     });
@@ -170,11 +208,27 @@ loadFournisseurs(){
     this.validateForm.get('Prix')!.setValue(fournisseur + pose, { emitEvent: false });
   }
 
+  selectedCatEquip :any
+  onselectCatequipChange() {
+  this.selectedCatEquip = this.validateForm.get('EquipementID')?.value;
+
+  this.listOfDisplayModelesDeRef = this.equipements_modeles_de_ref.filter(item => {
+    return (
+      (!this.selectedCatEquip || item.EquipementID === this.selectedCatEquip) 
+    );
+  });
+
+}
+
 
 
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
   }
+   activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
+  }
+
   loadEquipements(): void {
     this.userService.getEquipements().subscribe(
       (response) => {
@@ -211,8 +265,10 @@ loadFournisseurs(){
     Matiere: ['', [ ]],
     Etape: ['', [Validators.required ]],
     EquipementID: [0, [Validators.required ]],
+    ActiverArtisan: [false, [ ]],
      ActiverFournisseur: [false, [ ]],
     FournisseurID:[0, [ ]],
+    ArtisanID:[0, [ ]],
     ModeleDeReferenceID: [0, [ ]],
     });
   }

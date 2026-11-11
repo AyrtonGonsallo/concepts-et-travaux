@@ -770,6 +770,12 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement`);
   }
 
+  // Récupérer tous les modèles d'équipement
+  getModelesEquipementDeRef(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_modeles_equipement_de_ref`);
+  }
+
+
   
   // Récupérer tous les modèles d'équipement
   getFournisseurModelesEquipement(fournisseur_id:number): Observable<any> {
@@ -874,6 +880,9 @@ get_role(userId: number): Observable<any> {
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getEquipementGammes(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes`);
+  }
+  getEquipementGammesDeRef(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes_de_ref`);
   }
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammesSansEquipement(): Observable<any> {

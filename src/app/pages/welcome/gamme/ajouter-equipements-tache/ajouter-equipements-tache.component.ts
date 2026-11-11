@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../../Models/Travail';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { Equipement } from '../../../../Models/Equipement';
+import { Gamme } from '../../../../Models/Gamme';
 export interface Type {
   slug: string;
   label: string;
@@ -36,8 +38,10 @@ validateForm: FormGroup<{
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
     ActiverFournisseur: FormControl<boolean>;
+    ActiverArtisan: FormControl<boolean>;
     ActiverPrixMultiples: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ArtisanID: FormControl<number>;
     GammeDeReferenceID: FormControl<number>;
   }>;
   current_group=""
@@ -76,18 +80,57 @@ onselectTravailorEtapeChange() {
     );
   });
 
+  this.listOfDisplayGammeDeRef =  this.equipements_gammes_de_ref.filter(item => {
+    return (
+      (!this.selectedTravail || item.TravailID === this.selectedTravail) 
+    );
+  });
+
   console.log(this.filteredItems);
 }
 
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
+  artisans:Utilisateur[]=[]
+
+
   submitForm(): void {
     if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
+
+      //faire la somme si prix mulkiples
+      if (this.activerPrixMultiples()) {
+        // 1. Lire les valeurs (rawValue pour inclure les champs disabled)
+        const pm: any[] = this.validateForm.getRawValue().PrixMultiples || [];
+
+        // 2. Calculer le total
+        const total = pm.reduce((sum: number, item: any) => sum + (Number(item.prix) || 0), 0);
+
+        console.log("pm:", pm);
+        console.log("total pm:", total);
+
+        // 3. Patcher le formulaire (pas validateForm.value !)
+        const patch: any = {};
+
+        if (this.activerFournisseur()) {
+          patch.Prix = total;
+          patch.PrixFournisseur = total;
+        }
+
+        if (this.activerArtisan()) {
+          patch.Prix = total;
+          patch.PrixPose = total;
+        }
+
+        if (Object.keys(patch).length > 0) {
+          this.validateForm.patchValue(patch);
+        }
+      }
+      const payload = this.validateForm.getRawValue(); 
+      console.log('submit', payload);
       
 
       
-      this.userService.addGamme(this.validateForm.value).subscribe(
+      this.userService.addGamme(payload).subscribe(
         (response: any) => {
           console.log('gamme ajoutée avec succès :', response);
           this.message.create('success', `gamme ajoutée avec succès`);
@@ -97,6 +140,7 @@ onselectTravailorEtapeChange() {
           console.error('Erreur lors de l\'ajout de la gamme :', error);
         }
       );
+      
       
       
     } else {
@@ -204,6 +248,10 @@ onselectTravailorEtapeChange() {
     return this.validateForm.value.ActiverFournisseur==true
   }
 
+  activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
+  }
+
   activerPrixMultiples(){
     return this.validateForm.value.ActiverPrixMultiples==true
   }
@@ -222,8 +270,10 @@ onselectTravailorEtapeChange() {
       Ordre: [0, []],
       TravailID: [0, [Validators.required]],
       ActiverFournisseur:  [false, []],
+      ActiverArtisan:  [false, []],
       ActiverPrixMultiples:  [false, []],
       FournisseurID: [0, []],
+      ArtisanID: [0, []],
       GammeDeReferenceID: [0, []],
       PrixMultiples:  this.fb.array([])
       
@@ -251,6 +301,9 @@ onselectTravailorEtapeChange() {
   ngOnInit(): void {
     this.loadtravaux()
     this.loadFournisseurs()
+    this.loadEquipements()
+    this.loadArtisans()
+    this.loadGammesDeRef()
     this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
       this.updatePrixTotal();
     });
@@ -268,6 +321,31 @@ onselectTravailorEtapeChange() {
     this.validateForm.get('Prix')!.setValue(fournisseur + pose, { emitEvent: false });
   }
 
+
+  equipements:Equipement[] = [];
+  loadEquipements(): void {
+  this.userService.getEquipementsByType('electrique-a-remplacer')
+    .subscribe((data: Equipement[]) => {
+      this.equipements = data;
+      console.log("réponse de la requête get_categories_equipement", this.equipements);
+      this.populatePrixMultiples();
+    });
+}
+
+populatePrixMultiples(): void {
+  // Vider le FormArray existant
+  this.appareils.clear();
+
+  // Ajouter un formGroup pour chaque équipement
+  this.equipements.forEach((equipement) => {
+    const appareilForm = this.fb.group({
+      nom: [{ value: equipement.Titre, disabled: true }, Validators.required], // en lecture seule
+      prix: [0, Validators.required]
+    });
+    this.appareils.push(appareilForm);
+  });
+}
+
   
 loadtravaux(){
   this.userService.getActiveTravauxAvecEquipements()
@@ -276,13 +354,41 @@ loadtravaux(){
         console.log("réponse de la requette get_travaux",this.travaux);
       });
 }
-loadFournisseurs(){
-    this.userService.getUsersByRole(17)
+
+
+  loadFournisseurs(){
+    this.userService.getUsersByRole(15)
         .subscribe((data: Utilisateur[]) => {
           this.fournisseurs = data;
           console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
         });
   }
+
+
+  loadArtisans(){
+    this.userService.getUsersByRole(17)
+        .subscribe((data: Utilisateur[]) => {
+          this.artisans = data;
+          console.log("réponse de la requette loadartisans",this.artisans);
+        });
+  }
+
+
+  equipements_gammes_de_ref:Gamme[] = [];
+  listOfDisplayGammeDeRef:Gamme[] = [];
+  loadGammesDeRef(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.getEquipementGammesDeRef().subscribe({
+          next: (data2: Gamme[]) => {
+            this.equipements_gammes_de_ref = data2;
+            this.listOfDisplayGammeDeRef = [...this.equipements_gammes_de_ref];
+            console.log("réponse de la requête getEquipementGammesDEREF", this.equipements_gammes_de_ref);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
 
 
  filteredList: string[] = [];

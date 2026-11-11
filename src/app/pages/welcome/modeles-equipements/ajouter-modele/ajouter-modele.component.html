@@ -10,7 +10,7 @@
                 <span>Catégorie d'équipement</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-select id="EquipementID" formControlName="EquipementID"  nzPlaceHolder="Type d'équipement" nzShowSearch>
+                <nz-select id="EquipementID" formControlName="EquipementID"  nzPlaceHolder="Type d'équipement" (ngModelChange)="onselectCatequipChange()" nzShowSearch>
                     <ng-container *ngFor="let groupName of groupedTypeKeys()">
                         <nz-option-group [nzLabel]="groupName">
                         <nz-option
@@ -209,12 +209,37 @@
             </nz-form-control>
         </nz-form-item>
 
-         <nz-form-item *ngIf="activerFournisseur()">
+        
+
+         <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverArtisan" >
+                <span>Cet article est-il lié à un artisan ? </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-switch id="ActiverArtisan" formControlName="ActiverArtisan"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+
+       <nz-form-item *ngIf="activerArtisan()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ArtisanID"  >
+                <span>Artisan</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="ArtisanID" formControlName="ArtisanID"  nzPlaceHolder="Artisan" >
+                    <nz-option *ngFor="let option of artisans" [nzValue]="option.Id" [nzLabel]="option.Nom+' '+option.Prenom+' ('+option.RaisonSociale+')'"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item *ngIf="activerFournisseur() || activerArtisan()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ModeleDeReferenceID"  >
                 <span>Gamme de référence</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="ModeleDeReferenceID" formControlName="ModeleDeReferenceID"  ></nz-input-number> 
+
+                <nz-select id="ModeleDeReferenceID" formControlName="ModeleDeReferenceID"  nzPlaceHolder="Gamme De Reference" >
+                    <nz-option *ngFor="let option of listOfDisplayModelesDeRef" [nzValue]="option.ID" [nzLabel]="option.Titre"></nz-option>
+                </nz-select>
             </nz-form-control>
         </nz-form-item>
 

@@ -9,6 +9,15 @@
         <legend>Fournitures de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></legend>
             
           <div class="section-produit">
+
+            <div class="section-edit">
+
+                <button nz-button nzType="primary" class="positive-action  mr-5" (click)="exporterTaches()">Modifier des prix</button>
+                <button nz-button nzType="primary" class="positive-action  ml-5" (click)="telecharger_modeleTaches()">Télécharger le modèle</button>
+         
+            </div>
+           
+            
       
             <div class="section-import">
               <div class="input-link">
@@ -16,12 +25,10 @@
                 
               </div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importerTaches()">Importer des prix</button>
+              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importerTaches()">Envoyer</button>
             </div> 
             
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporterTaches()">Modifier des prix</button>
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="telecharger_modeleTaches()">Ajouter des prix</button>
-          </div> 
+           </div> 
           
       </fieldset>
     </div>
@@ -69,18 +76,22 @@
         <legend>Équipements de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></legend>
             
           <div class="section-produit">
+             <div class="section-edit">
+               <button nz-button nzType="primary" class="positive-action mr-5" (click)="exporter()">Modifier des prix</button>
+                <button nz-button nzType="primary" class="positive-action ml-5" (click)="telecharger_modele()">Télécharger le modèle</button>
+
+             </div>
+           
       
             <div class="section-import">
               <div class="input-link">
                 <input type="file" #fileInput (change)="onFileSelected($event)" />
               </div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Importer des prix</button>
+              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Envoyer</button>
             </div> 
             
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="exporter()">Modifier des prix</button>
-            <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="telecharger_modele()">Ajouter des prix</button>
-
+           
           </div> 
           
       </fieldset>

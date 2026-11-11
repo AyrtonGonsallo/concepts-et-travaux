@@ -224,7 +224,7 @@
                 
               </td>
               <td> 
-                <button (click)="showEditPaymentModal(data.ID,data.Titre,data.TypeDePaiement)" nz-button nzType="primary" class=" mb-5"  title="changertype">
+                <button *ngIf="data.Requette == 'demande' " (click)="showEditPaymentModal(data.ID,data.Titre,data.TypeDePaiement)" nz-button nzType="primary" class=" mb-5"  title="changertype">
                   <span nz-icon nzType="edit" nzTheme="outline"></span>
                 </button>
                 

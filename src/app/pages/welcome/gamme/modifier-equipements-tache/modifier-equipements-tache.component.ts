@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
+import { Gamme } from '../../../../Models/Gamme';
 export interface Type {
    slug: string;
   label: string;
@@ -39,8 +40,10 @@ apiUrl = environment.imagesUrl;
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
     ActiverFournisseur: FormControl<boolean>;
+    ActiverArtisan: FormControl<boolean>;
     ActiverPrixMultiples: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ArtisanID: FormControl<number>;
     GammeDeReferenceID: FormControl<number>;
   }>;
   
@@ -84,11 +87,18 @@ types: Type[] = [
 
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
+  artisans:Utilisateur[]=[]
+
+
   submitForm(): void {
     if (this.validateForm.valid) {
+
+      const payload = this.validateForm.getRawValue();
       
-      console.log('submit', this.validateForm.value);
-      this.userService.updateGamme(parseInt(this.gammeId),this.validateForm.value).subscribe(
+      console.log('submit', payload);
+
+      /*
+      this.userService.updateGamme(parseInt(this.gammeId),payload).subscribe(
         (response: any) => {
           console.log('gamme modifiée avec succès :', response);
           this.message.create('success', `gamme modifiée avec succès`);
@@ -98,6 +108,7 @@ types: Type[] = [
           console.error('Erreur lors de l\'ajout de la gamme :', error);
         }
       );
+      */
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -109,6 +120,10 @@ types: Type[] = [
   }
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
+  }
+
+  activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
   }
 
   activerPrixMultiples(){
@@ -222,8 +237,10 @@ types: Type[] = [
       PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],
       ActiverFournisseur:  [false, []],
+      ActiverArtisan:  [false, []],
       ActiverPrixMultiples:  [false, []],
       FournisseurID: [0, []],
+      ArtisanID: [0, []],
       GammeDeReferenceID: [0, []],
     });
   }
@@ -250,6 +267,9 @@ types: Type[] = [
   ngOnInit(): void {
     this.loadtravaux()
     this.loadFournisseurs()
+    this.loadGammesDeRef()
+    this.loadArtisans()
+
     this.getDetails(parseInt(this.gammeId) )
 
     this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
@@ -279,21 +299,88 @@ types: Type[] = [
           console.log("réponse de la requette get_travaux",this.travaux);
         });
   }
-  loadFournisseurs(){
-    this.userService.getUsersByRole(17)
-        .subscribe((data: Utilisateur[]) => {
-          this.fournisseurs = data;
-          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+
+
+  
+    loadFournisseurs(){
+      this.userService.getUsersByRole(15)
+          .subscribe((data: Utilisateur[]) => {
+            this.fournisseurs = data;
+            console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+          });
+    }
+  
+  
+    loadArtisans(){
+      this.userService.getUsersByRole(17)
+          .subscribe((data: Utilisateur[]) => {
+            this.artisans = data;
+            console.log("réponse de la requette loadartisans",this.artisans);
+          });
+    }
+  
+  
+    equipements_gammes_de_ref:Gamme[] = [];
+    listOfDisplayGammeDeRef:Gamme[] = [];
+    loadGammesDeRef(): Promise<void> {
+        return new Promise((resolve, reject) => {
+          this.userService.getEquipementGammesDeRef().subscribe({
+            next: (data2: Gamme[]) => {
+              this.equipements_gammes_de_ref = data2;
+              this.listOfDisplayGammeDeRef = [...this.equipements_gammes_de_ref];
+              console.log("réponse de la requête getEquipementGammesDEREF", this.equipements_gammes_de_ref);
+              resolve();
+            },
+            error: (err) => reject(err)
+          });
         });
+      }
+
+  is_pm_artisan=false
+  is_pm_fournisseur=false
+
+  check_is_pm_artisan(){
+    return this.is_pm_artisan
   }
+
+  check_is_pm_fournisseur(){
+    return this.is_pm_fournisseur
+  }
+
   getDetails(id: number): void {
     this.userService.getGammeById(id).subscribe(
       (response) => {
         console.log(response)
         let pm=JSON.parse(response.PrixMultiples)
-        console.log("pm: ",pm)
-        response.PrixMultiples=null
-        this.validateForm.patchValue(response);
+        let total = pm.reduce((sum: number, item: any) => sum + item.prix, 0);
+
+         if(response.ActiverPrixMultiples && response.FournisseurID){
+          this.is_pm_fournisseur =  true
+        }
+
+        if(response.ActiverPrixMultiples && response.ArtisanID){
+          this.is_pm_artisan =  true
+        }
+
+        if(this.is_pm_artisan||this.is_pm_fournisseur){
+
+          console.log("pm: ",pm)
+          console.log("total pm: ",total)
+          response.PrixMultiples=null
+          if(this.is_pm_artisan){
+            this.validateForm.patchValue({ ...response, Prix: total,PrixPose:total });
+          }
+          if(this.is_pm_fournisseur){
+            this.validateForm.patchValue({ ...response, Prix: total,PrixFournisseur:total });
+            //this.validateForm.patchValue(response);
+          }
+        }else{
+          if(response.ActiverPrixMultiples ){
+            response.PrixMultiples=null
+          }
+          this.validateForm.patchValue(response);
+        }
+        
         const typeSlug = response.Type; // supposé contenir le slug du type
         const typeObj = this.types.find(t => t.slug === typeSlug);
 
@@ -305,16 +392,27 @@ types: Type[] = [
           .map(item => item.texte);
 
         if (pm && Array.isArray(pm)) {
-          
-          const appareilsArray = this.validateForm.get('PrixMultiples') as FormArray;
-          pm.forEach((appareil: any) => {
-            const appareilForm = this.fb.group({
-              nom: [appareil.nom || '', Validators.required],  // Nom de l'appareil
-              prix: [appareil.prix || 0, Validators.required]   // Prix de l'appareil
-            });
-            appareilsArray.push(appareilForm);
-          });
-        }
+  const appareilsArray = this.validateForm.get('PrixMultiples') as FormArray;
+
+    // ✅ Vider avant de remplir (évite les doublons)
+    appareilsArray.clear();
+
+    pm.forEach((appareil: any) => {
+      const appareilForm = this.fb.group({
+        nom: [
+          { value: appareil.nom || '', disabled: true },   // 👈 disabled ici
+          Validators.required
+        ],
+        prix: [
+          appareil.prix ?? 0,                              // 👈 ?? au lieu de ||
+          [Validators.required, Validators.min(0)]
+        ]
+      });
+      appareilsArray.push(appareilForm);
+    });
+  }
+
+       
         
 
         console.log("réponse de la requette getdetails",response);

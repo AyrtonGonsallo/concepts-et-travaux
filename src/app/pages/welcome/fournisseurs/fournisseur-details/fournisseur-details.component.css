@@ -48,3 +48,13 @@ legend{
 .memory{
     color: #FFC736;
 }
+.section-produit{
+    display: grid;
+    grid-template-rows: 1fr;
+}
+.mr-5{
+    margin-right: 5px;
+}
+.ml-5{
+    margin-left: 5px;
+}

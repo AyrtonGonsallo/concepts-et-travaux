@@ -107,7 +107,7 @@
 
 
         <nz-form-item >
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Pdf"  >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Pdf" nzTooltipTitle="un pdf qui permet au client sur le front de voir la gamme"  >
                 <span>Pdf</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -120,7 +120,7 @@
     
         
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverPrixMultiples" >
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverPrixMultiples" nzTooltipTitle="Ces prix sont utilisés sur la rénovation électrique partielle. Les appareils sont dynamiques et sont dans la rubrique catégorie d'équipements avec le type electrique-a-remplacer">
                 <span>Activer les prix multiples ? </span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
@@ -130,36 +130,33 @@
 
         <div class="center" *ngIf="activerPrixMultiples()"><u>Ajouter des prix pour plusieurs appareils</u></div>
        <!--  CHAMPS DYNAMIQUES (Appareils et Prix) -->
+       
+       
        <div formArrayName="PrixMultiples" *ngIf="activerPrixMultiples()">
-            <nz-form-item *ngFor="let appareil of appareils.controls; let i = index"  [formGroupName]="i" class="appareils-layout" >
-                <nz-form-label  nzFor="appareilNom-{{i}}" nzRequired>
-                    <span>Nom de l'appareil</span>
-                </nz-form-label>
-                <nz-form-control >
-                    <input nz-input id="appareilNom-{{i}}" formControlName="nom" />
+        <nz-form-item 
+            *ngFor="let appareil of appareils.controls; let i = index" 
+            [formGroupName]="i" 
+            class="appareils-layout">
+            
+            <nz-form-label nzFor="appareilNom-{{i}}" nzRequired>
+            <span>Nom de l'appareil</span>
+            </nz-form-label>
+            <nz-form-control >
+                    <input nz-input id="appareilNom-{{i}}" formControlName="nom"  />
                 </nz-form-control>
 
-                <nz-form-label  nzFor="appareilPrix-{{i}}" nzRequired>
-                    <span>Prix</span>
-                </nz-form-label>
-                <nz-form-control >
-                    <nz-input-number id="appareilPrix-{{i}}" formControlName="prix"></nz-input-number>
-                </nz-form-control>
+            <nz-form-label nzFor="appareilPrix-{{i}}" nzRequired>
+            <span>Prix</span>
+            </nz-form-label>
+            <nz-form-control>
+            <nz-input-number id="appareilPrix-{{i}}" formControlName="prix"></nz-input-number>
+            </nz-form-control>
 
-                <nz-form-control >
-                    <a  (click)="removeAppareil(i)">Supprimer</a>
-                </nz-form-control>
-            </nz-form-item>
+    <!-- Plus besoin de bouton supprimer si les appareils sont fixes -->
+  </nz-form-item>
+</div>
 
-            <!-- Bouton pour ajouter un nouvel appareil -->
-            <nz-form-item class="center">
-                <nz-form-control >
-                    <a (click)="addAppareil()">➕ Ajouter un appareil</a>
-                </nz-form-control>
-            </nz-form-item>
-       </div>
-
-       <!--
+       
 
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverFournisseur" >
@@ -181,16 +178,42 @@
             </nz-form-control>
         </nz-form-item>
 
-         <nz-form-item *ngIf="activerFournisseur()">
+         <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ActiverArtisan" >
+                <span>Cet article est-il lié à un artisan ? </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-switch id="ActiverArtisan" formControlName="ActiverArtisan"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+
+       <nz-form-item *ngIf="activerArtisan()">
+            <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="ArtisanID"  >
+                <span>Artisan</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
+                <nz-select id="ArtisanID" formControlName="ArtisanID"  nzPlaceHolder="Artisan" >
+                    <nz-option *ngFor="let option of artisans" [nzValue]="option.Id" [nzLabel]="option.Nom+' '+option.Prenom+' ('+option.RaisonSociale+')'"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+         <nz-form-item *ngIf="activerFournisseur() || activerArtisan()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="GammeDeReferenceID"  >
                 <span>Gamme de référence</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="GammeDeReferenceID" formControlName="GammeDeReferenceID"  ></nz-input-number> 
+
+                <nz-select id="GammeDeReferenceID" formControlName="GammeDeReferenceID"  nzPlaceHolder="Gamme De Reference" >
+                    <nz-option *ngFor="let option of listOfDisplayGammeDeRef" [nzValue]="option.ID" [nzLabel]="option.Label"></nz-option>
+                </nz-select>
             </nz-form-control>
         </nz-form-item>
 
-        -->
+
+       
+
+        
 
       
         <nz-form-item nz-row class="register-area">
