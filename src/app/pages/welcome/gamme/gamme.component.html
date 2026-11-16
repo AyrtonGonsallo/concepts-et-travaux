@@ -6,20 +6,24 @@
         <legend>Tâches</legend>
             
           <div class="section-produit">
+
+            <div class="section-edit">
+              <button nz-button nzType="primary" class="w-fit positive-action mr-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter une tâche</button>
+              <button nz-button nzType="primary" class="w-fit positive-action mr-5" (click)="exporter()">Exporter les tâches</button>
+              <a href="https://homeren.fr/gammes_import.xlsx" class="dl-btn-link mr-5" target="_blank" >Télécharger le modèle</a>
+         
+            </div>
+
+            <div class="edit-import-separator"></div>
       
-            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter une tâche</button>
             <div class="section-import">
               <div class="input-link">
-                <input type="file" (change)="onFileSelected($event)" />
-                
+                <input type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" (change)="onFileSelected($event)" />
               </div>
-              
               <button nz-button nzType="primary" class=" w-fit positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
             </div> 
             
-            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
-            <a href="https://homeren.fr/gammes_import.xlsx" class="dl-btn-link mb-5 mt-5" target="_blank" >Télécharger le modèle</a>
-          </div> 
+            </div> 
           
       </fieldset>
     </div>
@@ -77,10 +81,10 @@
       </div>
     </nz-dropdown-menu>
 
-    <nz-table #sortTable [nzData]="listOfDisplayData" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
+    <nz-table #sortTable [nzData]="listOfDisplayData" [nzPageSize]="50" >
         <thead>
           <tr>
-            <th [nzWidth]="column.width" *ngFor="let column of listOfColumn" nzCustomFilter [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            <th [hidden]="i === 3 && hideCol4" *ngFor="let column of listOfColumn; let i = index" nzCustomFilter [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
               <nz-filter-trigger *ngIf="column.title=='Titre'" [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
                 <span nz-icon nzType="search"></span>
@@ -96,6 +100,14 @@
             <td nzEllipsis>{{ data.Label }}</td>
             <td nzEllipsis>{{ data.Type }}</td>
             <td nzEllipsis>{{ get_travail_title(data.TravailID) }}</td>
+            <td [hidden]="hideCol4">
+              <ng-container *ngIf="data.Artisan?.Nom || data.Artisan?.Prenom">
+                {{ data.Artisan?.Nom ?? '' }} {{ data.Artisan?.Prenom ?? '' }} (Artisan)
+              </ng-container>
+              <ng-container *ngIf="data.Fournisseur?.Nom || data.Fournisseur?.Prenom">
+                {{ data.Fournisseur?.Nom ?? '' }} {{ data.Fournisseur?.Prenom ?? '' }} (Fournisseur)
+              </ng-container>
+            </td>
             <td nzEllipsis>{{ data.Prix }} €</td>
             <td nzEllipsis (click)="editOrdre(data)">
               <ng-container *ngIf="editingOrdreId !== data.ID; else editOrdreTemplate">

@@ -54,6 +54,7 @@ types: Type[] = [
     { etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
     { etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
     { etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
+    { etape_id:2, travail_id:12,  slug: 'type-de-radiateur', label: 'Type de radiateur' },
     
 ].sort((a, b) => {
     // Puis par label alphabétique

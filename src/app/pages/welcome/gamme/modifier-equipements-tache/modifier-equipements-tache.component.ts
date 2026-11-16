@@ -54,6 +54,7 @@ types: Type[] = [
     { etape_id:1, travail_id:16, slug: 'service-depose-salle-de-bain-salle-d-eau', label: 'Dépose d\'éléments de salle de bain / eau' },
     { etape_id:1, travail_id:3,  slug: 'service-ouverture-partielle', label: 'Ouverture partielle' },
     { etape_id:1, travail_id:15,  slug: 'service-renovation-electrique-complete', label: 'Rénovation électrique complète' },
+    { etape_id:2, travail_id:12,  slug: 'type-de-radiateur', label: 'Type de radiateur' },
     
 ].sort((a, b) => {
     // Puis par label alphabétique
@@ -97,7 +98,7 @@ types: Type[] = [
       
       console.log('submit', payload);
 
-      /*
+      
       this.userService.updateGamme(parseInt(this.gammeId),payload).subscribe(
         (response: any) => {
           console.log('gamme modifiée avec succès :', response);
@@ -108,7 +109,7 @@ types: Type[] = [
           console.error('Erreur lors de l\'ajout de la gamme :', error);
         }
       );
-      */
+      
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -124,6 +125,15 @@ types: Type[] = [
 
   activerArtisan(){
     return this.validateForm.value.ActiverArtisan==true
+  }
+
+  activerArtisanOrFournisseur(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true
+  }
+
+  canEditPriceHT(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true || this.validateForm.value.ActiverPrixMultiples==true
+
   }
 
   activerPrixMultiples(){
@@ -351,16 +361,22 @@ types: Type[] = [
     this.userService.getGammeById(id).subscribe(
       (response) => {
         console.log(response)
-        let pm=JSON.parse(response.PrixMultiples)
-        let total = pm.reduce((sum: number, item: any) => sum + item.prix, 0);
+        let pm;
+        let total = 0
+        if(response.PrixMultiples){
+           pm=JSON.parse(response.PrixMultiples)
+           total = pm.reduce((sum: number, item: any) => sum + item.prix, 0);
 
-         if(response.ActiverPrixMultiples && response.FournisseurID){
-          this.is_pm_fournisseur =  true
-        }
+          if(response.ActiverPrixMultiples && response.FournisseurID){
+            this.is_pm_fournisseur =  true
+          }
 
-        if(response.ActiverPrixMultiples && response.ArtisanID){
-          this.is_pm_artisan =  true
+          if(response.ActiverPrixMultiples && response.ArtisanID){
+            this.is_pm_artisan =  true
+          }
+
         }
+        
 
         if(this.is_pm_artisan||this.is_pm_fournisseur){
 
@@ -375,16 +391,16 @@ types: Type[] = [
             //this.validateForm.patchValue(response);
           }
         }else{
-          if(response.ActiverPrixMultiples ){
+          
             response.PrixMultiples=null
-          }
+          
           this.validateForm.patchValue(response);
         }
         
         const typeSlug = response.Type; // supposé contenir le slug du type
         const typeObj = this.types.find(t => t.slug === typeSlug);
 
-      this.onselectTravailorEtapeChange()
+        this.onselectTravailorEtapeChange()
 
         // Filtrer par ID spécifique
         this.filteredList = this.listeComplete
@@ -392,25 +408,26 @@ types: Type[] = [
           .map(item => item.texte);
 
         if (pm && Array.isArray(pm)) {
-  const appareilsArray = this.validateForm.get('PrixMultiples') as FormArray;
+          console.log('pm,dd')
+          const appareilsArray = this.validateForm.get('PrixMultiples') as FormArray;
 
-    // ✅ Vider avant de remplir (évite les doublons)
-    appareilsArray.clear();
+          // ✅ Vider avant de remplir (évite les doublons)
+          appareilsArray.clear();
 
-    pm.forEach((appareil: any) => {
-      const appareilForm = this.fb.group({
-        nom: [
-          { value: appareil.nom || '', disabled: true },   // 👈 disabled ici
-          Validators.required
-        ],
-        prix: [
-          appareil.prix ?? 0,                              // 👈 ?? au lieu de ||
-          [Validators.required, Validators.min(0)]
-        ]
-      });
-      appareilsArray.push(appareilForm);
-    });
-  }
+          pm.forEach((appareil: any) => {
+            const appareilForm = this.fb.group({
+              nom: [
+                { value: appareil.nom || '', disabled: true },   // 👈 disabled ici
+                Validators.required
+              ],
+              prix: [
+                appareil.prix ?? 0,                              // 👈 ?? au lieu de ||
+                [Validators.required, Validators.min(0)]
+              ]
+            });
+            appareilsArray.push(appareilForm);
+          });
+        }
 
        
         

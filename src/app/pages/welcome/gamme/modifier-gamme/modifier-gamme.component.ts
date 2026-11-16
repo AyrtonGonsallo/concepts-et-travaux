@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
+import { Gamme } from '../../../../Models/Gamme';
 export interface Type {
    slug: string;
   label: string;
@@ -37,10 +38,12 @@ export class ModifierGammeComponent {
     Prix: FormControl<number>;
     Ordre: FormControl<number>;
     PrixMultiples: FormArray;
-    TravailID: FormControl<number>;
+    TravailID: FormControl<number>; 
     ActiverFournisseur: FormControl<boolean>;
+    ActiverArtisan: FormControl<boolean>;
     ActiverPrixMultiples: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ArtisanID: FormControl<number>;
     GammeDeReferenceID: FormControl<number>;
   }>;
   
@@ -128,6 +131,7 @@ export class ModifierGammeComponent {
 
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
+  artisans:Utilisateur[]=[]
   submitForm(): void {
     if (this.validateForm.valid) {
       
@@ -153,6 +157,19 @@ export class ModifierGammeComponent {
   }
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
+  }
+
+  activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
+  }
+
+  activerArtisanOrFournisseur(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true
+  }
+
+  canEditPriceHT(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true || this.validateForm.value.ActiverPrixMultiples==true
+
   }
 
   activerPrixMultiples(){
@@ -265,9 +282,11 @@ export class ModifierGammeComponent {
       Ordre: [0, []],
       PrixMultiples:  this.fb.array([]),
       TravailID: [0, [Validators.required]],
-      ActiverFournisseur:  [false, []],
+       ActiverFournisseur:  [false, []],
+      ActiverArtisan:  [false, []],
       ActiverPrixMultiples:  [false, []],
       FournisseurID: [0, []],
+      ArtisanID: [0, []],
       GammeDeReferenceID: [0, []],
     });
   }
@@ -294,6 +313,8 @@ export class ModifierGammeComponent {
   ngOnInit(): void {
     this.loadtravaux()
     this.loadFournisseurs()
+    this.loadGammesDeRef()
+    this.loadArtisans()
     this.getDetails(parseInt(this.gammeId) )
 
     this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
@@ -323,13 +344,56 @@ export class ModifierGammeComponent {
           console.log("réponse de la requette get_travaux",this.travaux);
         });
   }
-  loadFournisseurs(){
-    this.userService.getUsersByRole(17)
-        .subscribe((data: Utilisateur[]) => {
-          this.fournisseurs = data;
-          console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+  
+
+
+    loadFournisseurs(){
+      this.userService.getUsersByRole(15)
+          .subscribe((data: Utilisateur[]) => {
+            this.fournisseurs = data;
+            console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+          });
+    }
+  
+  
+    loadArtisans(){
+      this.userService.getUsersByRole(17)
+          .subscribe((data: Utilisateur[]) => {
+            this.artisans = data;
+            console.log("réponse de la requette loadartisans",this.artisans);
+          });
+    }
+  
+  
+    sans_equipements_gammes_de_ref:Gamme[] = [];
+    listOfDisplayGammeDeRef:Gamme[] = [];
+    loadGammesDeRef(): Promise<void> {
+        return new Promise((resolve, reject) => {
+          this.userService.getGammesSansEquipementDeRef().subscribe({
+            next: (data2: Gamme[]) => {
+              this.sans_equipements_gammes_de_ref = data2;
+              this.listOfDisplayGammeDeRef = [...this.sans_equipements_gammes_de_ref];
+              console.log("réponse de la requête getSansEquipementGammesDEREF", this.sans_equipements_gammes_de_ref);
+              resolve();
+            },
+            error: (err) => reject(err)
+          });
         });
+      }
+
+  is_pm_artisan=false
+  is_pm_fournisseur=false
+
+  check_is_pm_artisan(){
+    return this.is_pm_artisan
   }
+
+  check_is_pm_fournisseur(){
+    return this.is_pm_fournisseur
+  }
+
+
+
   getDetails(id: number): void {
     this.userService.getGammeById(id).subscribe(
       (response) => {

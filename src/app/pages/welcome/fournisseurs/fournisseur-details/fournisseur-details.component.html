@@ -16,12 +16,12 @@
                 <button nz-button nzType="primary" class="positive-action  ml-5" (click)="telecharger_modeleTaches()">Télécharger le modèle</button>
          
             </div>
+
+             <div class="edit-import-separator"></div>
            
-            
-      
             <div class="section-import">
               <div class="input-link">
-                <input type="file" #fileInputTaches (change)="onFileSelectedTaches($event)" />
+                <input type="file" #fileInputTaches accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelectedTaches($event)" />
                 
               </div>
               
@@ -81,11 +81,13 @@
                 <button nz-button nzType="primary" class="positive-action ml-5" (click)="telecharger_modele()">Télécharger le modèle</button>
 
              </div>
+
+              <div class="edit-import-separator"></div>
            
       
             <div class="section-import">
               <div class="input-link">
-                <input type="file" #fileInput (change)="onFileSelected($event)" />
+                <input type="file" #fileInput accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelected($event)" />
               </div>
               
               <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Envoyer</button>

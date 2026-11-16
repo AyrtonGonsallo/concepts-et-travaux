@@ -7,20 +7,24 @@
         <legend>Tâches</legend>
             
           <div class="section-produit">
-      
-            <button nz-button nzType="primary" class="w-fit  positive-action mb-5 mt-5" [routerLink]="['/administration', 'equipements-taches', 'ajouter-equipements-tache']">Ajouter une tâche</button>
+
+            <div class="section-edit">
+              <button nz-button nzType="primary" class="w-fit  positive-action mr-5" [routerLink]="['/administration', 'equipements-taches', 'ajouter-equipements-tache']">Ajouter une tâche</button>
+              <button nz-button nzType="primary" class="w-fit positive-action mr-5" (click)="exporter()">Exporter les tâches</button>
+              <a href="https://homeren.fr/gammes_import.xlsx" target="_blank" class="dl-btn-link mr-5">Télécharger le modèle</a>
+            </div>
+
+
+            <div class="edit-import-separator"></div>
             
              <div class="section-import">
               <div class="input-link">
                 <input type="file" (change)="onFileSelected($event)" />
-                
               </div>
               
               <button nz-button nzType="primary" class=" w-fit positive-action mb-5 mt-5" (click)="importer()">Importer des tâches</button>
             </div> 
             
-            <button nz-button nzType="primary" class="w-fit positive-action mb-5 mt-5" (click)="exporter()">Exporter les tâches</button>
-            <a href="https://homeren.fr/gammes_import.xlsx" target="_blank" class="dl-btn-link mb-5 mt-5">Télécharger le modèle</a>
           </div> 
           
       </fieldset>
@@ -53,7 +57,7 @@
             </nz-select>
           </div>
 
-                    <label nz-checkbox [(ngModel)]="cacher_elements_fournisseurs_artisans" (ngModelChange)="search22()">Masquer les élements des artisans/fournisseurs</label> 
+          <label nz-checkbox [(ngModel)]="cacher_elements_fournisseurs_artisans" (ngModelChange)="search22()">Masquer les élements des artisans/fournisseurs</label> 
 
 
         </div>
@@ -65,10 +69,10 @@
     </div>
 
 
-    <nz-table #sortTable2 [nzData]="listOfDisplayData22" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '1240px' }">
+    <nz-table #sortTable2 [nzData]="listOfDisplayData22" [nzPageSize]="50" >
         <thead>
           <tr>
-            <th [nzWidth]="column.width" *ngFor="let column of listOfColumn22" nzCustomFilter [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            <th [hidden]="i === 4 && hideCol4"  *ngFor="let column of listOfColumn22; let i = index" nzCustomFilter [nzSortOrder]="column.order" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
               {{ column.title }}
               <nz-filter-trigger *ngIf="column.title=='Titre'" [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" >
                 <span nz-icon nzType="search"></span>
@@ -85,6 +89,14 @@
             <td>{{ data.Type }}</td>
             <td>{{ data.Etape }}</td>
             <td>{{ get_travail_title(data.TravailID) }}</td>
+            <td [hidden]="hideCol4">
+              <ng-container *ngIf="data.Artisan?.Nom || data.Artisan?.Prenom">
+                {{ data.Artisan?.Nom ?? '' }} {{ data.Artisan?.Prenom ?? '' }} (Artisan)
+              </ng-container>
+              <ng-container *ngIf="data.Fournisseur?.Nom || data.Fournisseur?.Prenom">
+                {{ data.Fournisseur?.Nom ?? '' }} {{ data.Fournisseur?.Prenom ?? '' }} (Fournisseur)
+              </ng-container>
+            </td>
             <td>{{ data.Prix }} €</td>
              <td nzEllipsis (click)="editOrdre(data)">
               <ng-container *ngIf="editingOrdreId !== data.ID; else editOrdreTemplate">

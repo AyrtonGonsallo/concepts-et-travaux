@@ -1,3 +1,5 @@
+import { Utilisateur } from "./Utilisateurs";
+
 export interface Gamme {
     ID: number;
     Type: string;
@@ -14,5 +16,8 @@ export interface Gamme {
     ActiverFournisseur: boolean;
     FournisseurID: number
     ArtisanID: number
+    Fournisseur?: Utilisateur
+    Artisan?: Utilisateur
+
   }
   

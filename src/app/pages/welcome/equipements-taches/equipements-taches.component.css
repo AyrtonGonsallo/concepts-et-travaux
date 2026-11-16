@@ -21,8 +21,9 @@ legend{
 }
 
 .section-produit {
-    display: flex;
     gap: 10px;
+    display: grid;
+    grid-template-rows: 1fr;
 }
 .filter-container {
     display: flex;
@@ -64,6 +65,20 @@ legend{
     background-color: #1890ff;
     border: #1890ff;
     border-radius: 3px;
-    padding: 5px 10px;
+    padding: 7px 10px;
     color: white;
+}
+.edit-import-separator{
+    border: solid black 1px;
+    max-width: 457px;
+    margin: 12px 0px 7px 0px;
+}
+div.section-import > div > input[type=file]{
+font-size: 15px;
+}
+.mr-5{
+    margin-right: 5px;
+}
+.ml-5{
+    margin-left: 5px;
 }

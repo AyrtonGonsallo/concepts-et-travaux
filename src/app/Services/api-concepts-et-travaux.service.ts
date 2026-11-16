@@ -888,6 +888,10 @@ get_role(userId: number): Observable<any> {
   getGammesSansEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements`);
   }
+
+   getGammesSansEquipementDeRef(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements_de_ref`);
+  }
   getArtisanGammesSansEquipement(artisan_id:number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_artisan_gammes_sans_equipements/${artisan_id}`);
   }

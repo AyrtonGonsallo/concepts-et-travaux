@@ -112,6 +112,28 @@ cacher_elements_fournisseurs_artisans = true
         width:'70px'
       },
       {
+        title: 'Relation',
+        compare: (a: Gamme, b: Gamme) => {
+          // 1) Artisan.Nom
+          const artisanA = a.Artisan?.Nom ?? '';
+          const artisanB = b.Artisan?.Nom ?? '';
+          // 2) Fournisseur.Nom
+          const fournisseurA = a.Fournisseur?.Nom ?? '';
+          const fournisseurB = b.Fournisseur?.Nom ?? '';
+          // 3) Référence
+          const refA = '';
+          const refB = '';
+
+          // Comparaison en cascade : Artisan → Fournisseur → Référence
+          return artisanA.localeCompare(artisanB)
+              || fournisseurA.localeCompare(fournisseurB)
+              || refA.localeCompare(refB);
+        },
+        priority: 1,
+        order: null,
+        width: '70px'
+      },
+      {
         title: 'Prix HT',
         compare: (a: Gamme, b: Gamme) => a.Prix-(b.Prix),
         priority: 1,
@@ -332,6 +354,11 @@ cacher_elements_fournisseurs_artisans = true
         return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
       });
     }
+
+    get hideCol4(): boolean {
+      return !!this.cacher_elements_fournisseurs_artisans;
+    }
+
     search22(): void {
     
         this.applyFilters2();

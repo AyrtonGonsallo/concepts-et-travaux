@@ -58,3 +58,11 @@ legend{
 .ml-5{
     margin-left: 5px;
 }
+.edit-import-separator{
+    border: solid black 1px;
+    max-width: 363px;
+    margin: 12px 0px 7px 0px;
+}
+div.section-import > div > input[type=file]{
+font-size: 15px;
+}

@@ -1,3 +1,5 @@
+import { Utilisateur } from "./Utilisateurs";
+
 export interface ModeleEquipement {
     ID: number; // L'ID peut être optionnel si c'est auto-incrémenté dans la base de données
     Titre: string;
@@ -17,5 +19,7 @@ export interface ModeleEquipement {
     Equipement?:any
     FournisseurID?: number ;
     ArtisanID?: number ;
+    Fournisseur?: Utilisateur;
+    Artisan?: Utilisateur;
   }
   

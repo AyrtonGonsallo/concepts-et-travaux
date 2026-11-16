@@ -46,6 +46,28 @@ export class GammeComponent {
       order:null,
       width:'250px'
     },
+    {
+        title: 'Relation',
+        compare: (a: Gamme, b: Gamme) => {
+          // 1) Artisan.Nom
+          const artisanA = a.Artisan?.Nom ?? '';
+          const artisanB = b.Artisan?.Nom ?? '';
+          // 2) Fournisseur.Nom
+          const fournisseurA = a.Fournisseur?.Nom ?? '';
+          const fournisseurB = b.Fournisseur?.Nom ?? '';
+          // 3) Référence
+          const refA = '';
+          const refB = '';
+
+          // Comparaison en cascade : Artisan → Fournisseur → Référence
+          return artisanA.localeCompare(artisanB)
+              || fournisseurA.localeCompare(fournisseurB)
+              || refA.localeCompare(refB);
+        },
+        priority: 1,
+        order: null,
+        width: '250px'
+      },
     
     
     
@@ -187,6 +209,11 @@ export class GammeComponent {
     }
     
   }
+
+  get hideCol4(): boolean {
+    return !!this.cacher_elements_fournisseurs_artisans;
+  }
+
 
 
   searchValue = '';
