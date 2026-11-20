@@ -1,0 +1,9 @@
+.filter-role{
+    display: grid;
+    grid-template-columns: 0.4fr 1.5fr 1fr;
+    max-width: 650px;
+    padding: 7px 0px;
+    gap: 10px;
+    align-content: center;
+    justify-content: center;
+}

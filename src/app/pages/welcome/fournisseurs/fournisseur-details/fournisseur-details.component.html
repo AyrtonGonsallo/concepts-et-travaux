@@ -5,33 +5,63 @@
      
     
     <div class="mt-5">
+
+      <h2>Tarifs fournitures de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></h2>
       <fieldset>
-        <legend>Fournitures de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></legend>
-            
-          <div class="section-produit">
-
-            <div class="section-edit">
-
+        <legend>Gestion via Fichier Excel</legend>
+        <div class="actions-nb">
+          <div>
+            <div class="section-produit">
+              <div class="section-edit">
                 <button nz-button nzType="primary" class="positive-action  mr-5" (click)="exporterTaches()">Modifier des prix</button>
                 <button nz-button nzType="primary" class="positive-action  ml-5" (click)="telecharger_modeleTaches()">Télécharger le modèle</button>
          
-            </div>
-
-             <div class="edit-import-separator"></div>
-           
-            <div class="section-import">
-              <div class="input-link">
-                <input type="file" #fileInputTaches accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelectedTaches($event)" />
-                
               </div>
+
+              <div class="edit-import-separator"></div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importerTaches()">Envoyer</button>
-            </div> 
+        
+              <div class="section-import">
+                <div class="input-link">
+                  <input type="file" #fileInputTaches accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelectedTaches($event)" />
+                </div>
+                <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importerTaches()">Envoyer</button>
+              </div>  
+              
+            </div>
+          </div>
+          <div class="nb-box">
+            <p>NB : </p>
+            <p>Télécharger le modèle : Liste complète des tâches</p>
+            <p>Modifier les prix : permet de télécharger les prix déjà existant et de les modifier dans le fichier excel.</p>
+            <p>Choisir un fichier + envoyer : pour mettre en ligne le modèle, ou la liste des prix existants, lorsque qu'on a modifié le fichier excel.</p>
+          </div>
+
+        </div>
             
-           </div> 
+           
+          
+      </fieldset>
+
+      <fieldset>
+        <legend>Actions</legend>
+            
+          <div class="actions-nb">
+            <div>
+              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" [routerLink]="['/administration', 'taches', 'ajouter-tache']">Ajouter un tarif</button>
+            </div>
+            <div>
+              <button *ngIf="selectedTaches.length>0" nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="deleteSelectedTaches()">Supprimer les tarifs</button>
+            </div>
+          </div> 
           
       </fieldset>
     </div>
+
+
+
+
+  
 
 
     <nz-table #sortTableTaches [nzData]="listOfDisplayDataTaches" [nzPageSize]="50" nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">
@@ -69,35 +99,70 @@
       </tbody>
     </nz-table>
 
-    
 
+
+
+
+
+    
     <div class="mt-5">
+      <h2>Tarifs d'équipements de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></h2>
       <fieldset>
-        <legend>Équipements de {{userData?.Prenom}} {{userData?.Nom}} <span nz-tooltip nzTooltipTitle="Les fournisseurs donnent le prix de fourniture des équipements (appareils, meubles) et des fournitures (peinture, enduit, portes sur les tâches)"><span class="memory" nz-icon nzType="question-circle" nzTheme="outline"></span></span></legend>
-            
-          <div class="section-produit">
-             <div class="section-edit">
-               <button nz-button nzType="primary" class="positive-action mr-5" (click)="exporter()">Modifier des prix</button>
+        <legend>Gestion via Fichier Excel</legend>
+        <div class="actions-nb">
+          <div>
+            <div class="section-produit">
+              <div class="section-edit">
+                <button nz-button nzType="primary" class="positive-action mr-5" (click)="exporter()">Modifier des prix</button>
                 <button nz-button nzType="primary" class="positive-action ml-5" (click)="telecharger_modele()">Télécharger le modèle</button>
 
-             </div>
+              </div>
 
               <div class="edit-import-separator"></div>
-           
-      
-            <div class="section-import">
-              <div class="input-link">
-                <input type="file" #fileInput accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelected($event)" />
-              </div>
               
-              <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Envoyer</button>
-            </div> 
+        
+              <div class="section-import">
+                <div class="input-link">
+                  <input type="file" #fileInput accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"   (change)="onFileSelected($event)" />
+                </div>
+                
+                <button nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="importer()">Envoyer</button>
+              </div> 
+            
+              
+            </div>
+          </div>
+          <div class="nb-box">
+            <p>NB : </p>
+            <p>Télécharger le modèle : Liste complète des tâches</p>
+            <p>Modifier les prix : permet de télécharger les prix déjà existant et de les modifier dans le fichier excel.</p>
+            <p>Choisir un fichier + envoyer : pour mettre en ligne le modèle, ou la liste des prix existants, lorsque qu'on a modifié le fichier excel.</p>
+          </div>
+
+        </div>
             
            
+          
+      </fieldset>
+
+      <fieldset>
+        <legend>Actions</legend>
+            
+          <div class="actions-nb">
+            <div>
+              <button nz-button nzType="primary" class="positive-action mb-5 mt-5"  [routerLink]="['/administration', 'modeles-equipements', 'ajouter-modele']">Ajouter un tarif</button>
+            </div>
+            <div>
+              <button *ngIf="selectedEquipementsIds.length>0" nz-button nzType="primary" class="positive-action mb-5 mt-5" (click)="deleteSelectedEquipements()">Supprimer les tarifs</button>
+            </div>
           </div> 
           
       </fieldset>
     </div>
+    
+
+
+
 
 
     <nz-table #sortTable [nzData]="listOfDisplayData" [nzPageSize]="50"  nzTableLayout="fixed" [nzScroll]="{ x: '240px' }">

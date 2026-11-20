@@ -42,6 +42,28 @@ export class ModelesEquipementsComponent {
       order:'ascend'
     },
     {
+      title: 'Relation',
+      compare: (a: ModeleEquipement, b: ModeleEquipement) => {
+        // 1) Artisan.Nom
+        const artisanA = a.Artisan?.Nom ?? '';
+        const artisanB = b.Artisan?.Nom ?? '';
+        // 2) Fournisseur.Nom
+        const fournisseurA = a.Fournisseur?.Nom ?? '';
+        const fournisseurB = b.Fournisseur?.Nom ?? '';
+        // 3) Référence
+        const refA = '';
+        const refB = '';
+
+        // Comparaison en cascade : Artisan → Fournisseur → Référence
+        return artisanA.localeCompare(artisanB)
+            || fournisseurA.localeCompare(fournisseurB)
+            || refA.localeCompare(refB);
+      },
+      priority: 1,
+      order: null,
+      width: '70px'
+    },
+    {
       title: 'Prix HT',
       compare: (a: ModeleEquipement, b: ModeleEquipement) => (a.Prix?? 0)-(b.Prix??0),
       priority: 1,
@@ -166,6 +188,8 @@ onFileSelected(event: any) {
 }
 
 
+
+
   importer() {
   if (this.selectedFile) {
     const formData = new FormData();
@@ -231,16 +255,21 @@ modele:ModeleEquipement[] = [];
     applyFilters(): void {
     localStorage.setItem('filteredEtapeListeModeles', this.filteredEtape);
       this.listOfDisplayData = this.modele.filter((item: ModeleEquipement) => {
+        const isNullish = (v: any) => v === null || v === undefined || v === 0 || v === '';
         const matchLabel = !this.searchValue || item.Titre.toLowerCase().includes(this.searchValue.toLowerCase());
         const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
-        const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
+        const matchNoFournisseursAndArtisans =
+        !this.cacher_elements_fournisseurs_artisans ||
+        (isNullish(item.FournisseurID) && isNullish(item.ArtisanID));
 
         return matchLabel  && matchEtape && matchNoFournisseursAndArtisans;
       });
     }
 
 
-
+    get hideCol4(): boolean {
+      return !!this.cacher_elements_fournisseurs_artisans;
+    }
 
 
 

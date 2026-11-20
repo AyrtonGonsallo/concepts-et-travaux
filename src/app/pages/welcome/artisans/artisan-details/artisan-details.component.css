@@ -65,3 +65,15 @@ legend{
 div.section-import > div > input[type=file]{
 font-size: 15px;
 }
+.actions-nb{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.nb-box{
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgb(37 139 68 / 89%);
+}
+p{
+    margin: 0px;
+}

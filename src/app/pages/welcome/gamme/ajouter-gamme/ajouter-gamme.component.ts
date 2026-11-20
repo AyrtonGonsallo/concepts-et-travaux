@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../../Models/Travail';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
+import { Subject, takeUntil } from 'rxjs';
+import { Gamme } from '../../../../Models/Gamme';
 export interface Type {
   slug: string;
   label: string;
@@ -22,6 +24,8 @@ interface TravailItem {
   styleUrl: './ajouter-gamme.component.css'
 })
 export class AjouterGammeComponent {
+  private destroy$ = new Subject<void>();
+
   validateForm: FormGroup<{
     current_group: FormControl<string>;
     Type: FormControl<string>;
@@ -35,9 +39,11 @@ export class AjouterGammeComponent {
     Ordre: FormControl<number>;
     PrixMultiples: FormArray;
     TravailID: FormControl<number>;
+    ActiverArtisan: FormControl<boolean>;
     ActiverFournisseur: FormControl<boolean>;
     ActiverPrixMultiples: FormControl<boolean>;
     FournisseurID: FormControl<number>;
+    ArtisanID: FormControl<number>;
     GammeDeReferenceID: FormControl<number>;
   }>;
   current_group=""
@@ -126,6 +132,7 @@ onselectTravailorEtapeChange() {
 
   travaux:Travail[]=[]
   fournisseurs:Utilisateur[]=[]
+  artisans:Utilisateur[]=[]
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
@@ -248,12 +255,20 @@ onselectTravailorEtapeChange() {
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
   }
+  activerArtisan(){
+    return this.validateForm.value.ActiverArtisan==true
+  }
+
+  activerArtisanOrFournisseur(){
+    return this.validateForm.value.ActiverFournisseur==true || this.validateForm.value.ActiverArtisan==true
+  }
+
 
   activerPrixMultiples(){
     return this.validateForm.value.ActiverPrixMultiples==true
   }
 
-  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
+  constructor(private fb: NonNullableFormBuilder,private route: ActivatedRoute, private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       current_group: ['', []],
       Type: ['', [Validators.required]],
@@ -267,8 +282,10 @@ onselectTravailorEtapeChange() {
       Ordre: [0, []],
       TravailID: [0, [Validators.required]],
       ActiverFournisseur:  [false, []],
+      ActiverArtisan:  [false, []],
       ActiverPrixMultiples:  [false, []],
       FournisseurID: [0, []],
+      ArtisanID: [0, []],
       GammeDeReferenceID: [0, []],
       PrixMultiples:  this.fb.array([])
       
@@ -293,19 +310,64 @@ onselectTravailorEtapeChange() {
   removeAppareil(index: number): void {
     this.appareils.removeAt(index);
   }
-  ngOnInit(): void {
-    this.loadtravaux()
-    this.loadFournisseurs()
-    this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
+  
+
+  
+
+ngOnInit(): void {
+
+  // 1. Référentiels
+  this.loadtravaux();
+  this.loadFournisseurs();
+  this.loadArtisans()
+  this.loadGammesDeRef()
+
+  // 2. Abonnements formulaire (une seule fois + cleanup)
+  this.validateForm.get('PrixFournisseur')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('PrixPose')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('TravailID')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((value: number) => this.doubleSearch(value));
+
+  // 3. Query params : type + gamme de référence
+  this.route.queryParamMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const type = params.get('type');              // 'artisan' | 'fournisseur'
+      const gammeDeRef = params.get('gammederef');  // '123'
+
+      // Activer le bon flag selon le type
+      if (type === 'artisan') {
+        this.validateForm.patchValue({
+          ActiverArtisan: true,
+          ActiverFournisseur: false,
+        });
+      } else if (type === 'fournisseur') {
+        this.validateForm.patchValue({
+          ActiverFournisseur: true,
+          ActiverArtisan: false,
+        });
+      }
+
+      // Gamme de référence
+      if (gammeDeRef) {
+        this.validateForm.patchValue({
+          GammeDeReferenceID: +gammeDeRef,
+        });
+      }
     });
-    this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
-    });
-      this.validateForm.get('TravailID')!.valueChanges.subscribe((value: number) => {
-      this.doubleSearch(value);
-    });
-  }
+}
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
   updatePrixTotal(): void {
     const fournisseur = this.validateForm.get('PrixFournisseur')!.value || 0;
@@ -321,11 +383,22 @@ loadtravaux(){
         console.log("réponse de la requette get_travaux",this.travaux);
       });
 }
-loadFournisseurs(){
-    this.userService.getUsersByRole(17)
+
+
+  loadFournisseurs(){
+    this.userService.getUsersByRole(15)
         .subscribe((data: Utilisateur[]) => {
           this.fournisseurs = data;
           console.log("réponse de la requette loadFournisseurs",this.fournisseurs);
+        });
+  }
+
+
+  loadArtisans(){
+    this.userService.getUsersByRole(17)
+        .subscribe((data: Utilisateur[]) => {
+          this.artisans = data;
+          console.log("réponse de la requette loadartisans",this.artisans);
         });
   }
 
@@ -403,5 +476,23 @@ listeComplete: TravailItem[] = [
     }
 
   }
+
+
+   listOfDisplayGammeDeRef:Gamme[] = [];
+   sans_equipements_gammes_de_ref:Gamme[] = [];
+
+    loadGammesDeRef(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.getGammesSansEquipementDeRef().subscribe({
+          next: (data2: Gamme[]) => {
+            this.sans_equipements_gammes_de_ref = data2;
+            this.listOfDisplayGammeDeRef = [...this.sans_equipements_gammes_de_ref];
+            console.log("réponse de la requête getSansEquipementGammesDEREF", this.sans_equipements_gammes_de_ref);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
   
 }

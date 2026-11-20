@@ -77,3 +77,6 @@ font-size: 15px;
 .ml-5{
     margin-left: 5px;
 }
+:host ::ng-deep .ant-table-body {
+  max-width: 850px;
+}

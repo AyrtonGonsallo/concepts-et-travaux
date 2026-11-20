@@ -400,5 +400,139 @@ onFileSelectedTaches(event: any) {
     alert('Veuillez sélectionner un fichier.');
   }
 }
+
+
+
+
+
+
+
+
+  selectedTaches: number[] = [];
+  // --- Case "tout cocher" ---
+  get isAllChecked(): boolean {
+    return this.listOfDisplayDataTaches.length > 0 &&
+          this.selectedTaches.length === this.listOfDisplayDataTaches.length;
+  }
+
+  get isIndeterminate(): boolean {
+    return this.selectedTaches.length > 0 &&
+          this.selectedTaches.length < this.listOfDisplayDataTaches.length;
+  }
+
+  onCheckAll(checked: boolean): void {
+    if (checked) {
+      const allIds = this.listOfDisplayDataTaches.map((d:any) => d.ID);
+      this.selectedTaches = Array.from(new Set([...this.selectedTaches, ...allIds]));
+    } else {
+      const allIds = new Set(this.listOfDisplayDataTaches.map((d:any) => d.ID));
+      this.selectedTaches = this.selectedTaches.filter(id => !allIds.has(id));
+    }
+  }
+
+  // --- Case individuelle ---
+  onCheckItem(id: number, checked: boolean): void {
+    if (checked) {
+      if (!this.selectedTaches.includes(id)) {
+        this.selectedTaches = [...this.selectedTaches, id];
+      }
+    } else {
+      this.selectedTaches = this.selectedTaches.filter(x => x !== id);
+    }
+  }
+
+  isChecked(id: number): boolean {
+    return this.selectedTaches.includes(id);
+  }
+
+  // --- Exemple d'action sur les tâches sélectionnées ---
+  deleteSelectedTaches(): void {
+    if (this.selectedTaches.length === 0) {
+      return; // rien à supprimer
+    }
+    // Appel API ou traitement métier
+    console.log('IDs à supprimer :', this.selectedTaches);
+  this.userService.deleteManyGammes(this.selectedTaches)
+    .subscribe(() => {
+      this.selectedTaches = [];
+      this.message.success( 'Tarifs supprimés avec succès');
+      this.loadGamme()
+
+    });
+  }
+
+
+    
+
+
+
+
+
+  // --- IDs des équipements sélectionnés ---
+  selectedEquipementsIds: number[] = [];
+
+  // --- États dérivés pour la case maître ---
+  allEquipementsChecked = false;
+  equipementsIndeterminate = false;
+
+  private updateEquipementsCheckState(): void {
+    const equipements = this.listOfDisplayData ?? [];
+    const selectionnes = this.selectedEquipementsIds ?? [];
+    this.allEquipementsChecked =
+      equipements.length > 0 && selectionnes.length === equipements.length;
+    this.equipementsIndeterminate =
+      selectionnes.length > 0 && selectionnes.length < equipements.length;
+  }
+
+  // --- Case "tout cocher" ---
+  onCheckAllEquipements(checked: boolean): void {
+    const equipements = this.listOfDisplayData ?? [];
+    if (checked) {
+      const tousLesIds = equipements.map((e:any) => e.ID);
+      this.selectedEquipementsIds = Array.from(
+        new Set([...this.selectedEquipementsIds, ...tousLesIds])
+      );
+    } else {
+      const idsAffiches = new Set(equipements.map((e:any) => e.ID));
+      this.selectedEquipementsIds =
+        this.selectedEquipementsIds.filter(id => !idsAffiches.has(id));
+    }
+    this.updateEquipementsCheckState();
+  }
+
+  // --- Case individuelle ---
+  onCheckEquipement(idEquipement: number, checked: boolean): void {
+    if (checked) {
+      if (!this.selectedEquipementsIds.includes(idEquipement)) {
+        this.selectedEquipementsIds = [...this.selectedEquipementsIds, idEquipement];
+      }
+    } else {
+      this.selectedEquipementsIds =
+        this.selectedEquipementsIds.filter(id => id !== idEquipement);
+    }
+    this.updateEquipementsCheckState();
+  }
+
+  isEquipementChecked(idEquipement: number): boolean {
+    return (this.selectedEquipementsIds ?? []).includes(idEquipement);
+  }
+
+  // --- Action sur la sélection ---
+  deleteSelectedEquipements(): void {
+    if (this.selectedEquipementsIds.length === 0) return;
+      console.log('IDs équipements à supprimer :', this.selectedEquipementsIds);
+    this.userService.deleteManyModelesEquipement(this.selectedEquipementsIds)
+      .subscribe(() => {
+        this.selectedEquipementsIds = [];
+        this.updateEquipementsCheckState();
+        this.message.success( 'Tarifs équipements supprimés avec succès');
+        // Mettez ici le code pour actualiser la liste des besoins si nécessaire
+        this.loadModeleEquipements()
+
+      });
+  }
+
+
+
   
 }

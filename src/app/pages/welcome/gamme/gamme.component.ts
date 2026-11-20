@@ -236,12 +236,15 @@ export class GammeComponent {
   localStorage.setItem('filteredEtapeListeGammes', this.filteredEtape);
   localStorage.setItem('filteredSouscategorieListeGammes', this.filteredSouscategorie);
     this.listOfDisplayData = this.gamme.filter((item: Gamme) => {
+      const isNullish = (v: any) => v === null || v === undefined || v === 0 || v === '';
       const matchLabel = !this.searchValue || item.Label.toLowerCase().includes(this.searchValue.toLowerCase());
       const matchTravail = !this.filteredTravailID || (item.TravailID) === this.filteredTravailID;
       const matchEtape = !this.filteredEtape || item.Etape === this.filteredEtape;
       const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
-      const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
-      return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
+      const matchNoFournisseursAndArtisans =
+        !this.cacher_elements_fournisseurs_artisans ||
+        (isNullish(item.FournisseurID) && isNullish(item.ArtisanID));
+        return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
     });
   }
 

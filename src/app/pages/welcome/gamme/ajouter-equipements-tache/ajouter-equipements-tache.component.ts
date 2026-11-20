@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Travail } from '../../../../Models/Travail';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { Equipement } from '../../../../Models/Equipement';
 import { Gamme } from '../../../../Models/Gamme';
+import { Subject, takeUntil } from 'rxjs';
 export interface Type {
   slug: string;
   label: string;
@@ -252,12 +253,16 @@ onselectTravailorEtapeChange() {
   activerArtisan(){
     return this.validateForm.value.ActiverArtisan==true
   }
+   activerArtisanOrFournisseur(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true
+  }
+
 
   activerPrixMultiples(){
     return this.validateForm.value.ActiverPrixMultiples==true
   }
 
-  constructor(private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
+  constructor(private fb: NonNullableFormBuilder,private route: ActivatedRoute,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       current_group: ['', []],
       Type: ['', [Validators.required]],
@@ -299,22 +304,66 @@ onselectTravailorEtapeChange() {
   removeAppareil(index: number): void {
     this.appareils.removeAt(index);
   }
-  ngOnInit(): void {
-    this.loadtravaux()
-    this.loadFournisseurs()
-    this.loadEquipements()
-    this.loadArtisans()
-    this.loadGammesDeRef()
-    this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
+  
+ 
+
+// ── dans la classe ──
+private destroy$ = new Subject<void>();
+
+ngOnInit(): void {
+  // 1. Référentiels
+  this.loadtravaux();
+  this.loadFournisseurs();
+  this.loadEquipements();
+  this.loadArtisans();
+  this.loadGammesDeRef();
+
+  // 2. Abonnements formulaire
+  this.validateForm.get('PrixFournisseur')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('PrixPose')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('TravailID')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((value: number) => this.doubleSearch(value));
+
+  // 3. Query params : type + gamme de référence
+  this.route.queryParamMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const type = params.get('type');
+      const gammeDeRef = params.get('gammederef');
+
+      if (type === 'artisan') {
+        this.validateForm.patchValue({
+          ActiverArtisan: true,
+          ActiverFournisseur: false,
+        });
+      } else if (type === 'fournisseur') {
+        this.validateForm.patchValue({
+          ActiverFournisseur: true,
+          ActiverArtisan: false,
+        });
+      }
+
+      if (gammeDeRef) {
+        this.validateForm.patchValue({
+          GammeDeReferenceID: +gammeDeRef,
+        });
+      }
     });
-    this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
-    });
-      this.validateForm.get('TravailID')!.valueChanges.subscribe((value: number) => {
-      this.doubleSearch(value);
-    });
-  }
+}
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
+
+
 
   updatePrixTotal(): void {
     const fournisseur = this.validateForm.get('PrixFournisseur')!.value || 0;

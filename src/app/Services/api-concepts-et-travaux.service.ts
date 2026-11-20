@@ -785,6 +785,14 @@ get_role(userId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_artisans_modeles_equipement/${artisan_id}`);
   }
 
+  // Récupérer tous les modèles d'équipement des artisans ou four par la ref
+  get_artisans_modeles_equipement_by_ref_id(ref_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisans_modeles_equipement_by_ref_id/${ref_id}`);
+  }
+  get_fournisseurs_modeles_equipement_by_ref_id(ref_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_fournisseurs_modeles_equipement_by_ref_id/${ref_id}`);
+  }
+
   getDevisPieceById(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_devis_piece/${id}`);
   }
@@ -884,6 +892,12 @@ get_role(userId: number): Observable<any> {
   getEquipementGammesDeRef(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes_de_ref`);
   }
+  get_equipements_gammes_artisans_by_ref_id(ref_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes_artisans_by_ref_id/${ref_id}`);
+  }
+  get_equipements_gammes_fournisseurs_by_ref_id(ref_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_equipements_gammes_fournisseurs_by_ref_id/${ref_id}`);
+  }
   // Méthode pour récupérer un travail par son ID avec les détails de la pièce associée
   getGammesSansEquipement(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_gammes_sans_equipements`);
@@ -897,6 +911,12 @@ get_role(userId: number): Observable<any> {
   }
   getFournisseurGammesSansEquipement(fournisseur_id:number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/get_fournisseur_gammes_sans_equipements/${fournisseur_id}`);
+  }
+  get_fournisseur_gammes_sans_equipements_by_ref_id(artisan_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_fournisseur_gammes_sans_equipements_by_ref_id/${artisan_id}`);
+  }
+  get_artisan_gammes_sans_equipements_by_ref_id(artisan_id:number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_artisan_gammes_sans_equipements_by_ref_id/${artisan_id}`);
   }
    // Méthode pour supprimer un devis pièce par ID
    deleteGamme(gammeId: number): Observable<any> {
@@ -1016,6 +1036,24 @@ deleteCategorieFournisseur(id: number): Observable<any> {
    deleteStyle(id: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/delete_style/${id}`);
   }
+
+  // --- Suppression multiple de modèles d'équipement ---
+  deleteManyModelesEquipement(ids: number[]): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.apiUrl}/modeles-equipements/delete-many`,
+      { body: { ids } }
+    );
+  }
+
+  // --- Suppression multiple de gammes ---
+  deleteManyGammes(ids: number[]): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.apiUrl}/gammes/delete-many`,
+      { body: { ids } }
+    );
+  }
+
+
 
 
 

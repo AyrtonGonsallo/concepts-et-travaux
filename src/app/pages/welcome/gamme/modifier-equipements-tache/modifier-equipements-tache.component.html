@@ -1,6 +1,6 @@
 <div>
     <h2>Tâches</h2>  
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="validateForm" class="bordered-form" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="Label"  nzRequired nzTooltipTitle="What do you want other to call you" >
                 <span>Désignation</span>
@@ -214,4 +214,112 @@
         </nz-form-control>
         </nz-form-item>
     </form>
+
+
+
+
+
+
+
+
+    <!-- debut artisans-->
+     <div *ngIf="listOfRelatedGammeArtisans!.length>0" class="list-art-four">
+        <h3>Liste des artisans</h3>
+        <table class="custom-table">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Label</th>
+                <th>Artisan</th>
+                <th>Prix</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let gamme_artisan of listOfRelatedGammeArtisans">
+                    <td>{{gamme_artisan.ID}}</td>
+                    <td>{{gamme_artisan.Label}}</td>
+                    <td>{{gamme_artisan.Artisan?.Nom}} {{gamme_artisan.Artisan?.Prenom}}</td>
+                    <td>{{gamme_artisan.Prix}} €</td>
+                    <td>
+                        <button nz-button nzType="primary" class="positive-action "   title="modifier" [routerLink]="['/administration', 'equipements-taches', 'modifier-equipements-tache',gamme_artisan.ID]">
+                            modifier
+                        </button>
+                        <button nz-button nzType="primary" class="negative-action "  title="supprimer"  nz-popconfirm
+                        nzPopconfirmTitle="Voulez-vous vraiment supprimer cette tache ?"
+                        nzPopconfirmPlacement="bottom"
+                        (nzOnConfirm)="deleteGamme(gamme_artisan.ID)">
+                            supprimer
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+     </div>
+
+     <div *ngIf="is_gamme_de_ref">
+
+        <a [routerLink]="['/administration', 'equipements-taches', 'ajouter-equipements-tache']"
+        [queryParams]="{ type: 'artisan', gammederef: gammeId }">
+        Ajouter un artisan
+        </a>
+     </div>
+     
+
+
+    <!-- fin artisans-->
+
+
+
+
+    <!-- debut fournisseurs-->
+
+    <div *ngIf="listOfRelatedGammeFournisseurs!.length>0" class="list-art-four">
+        <h3>Liste des fournisseurs</h3>
+        <table class="custom-table">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Label</th>
+                <th>Fournisseur</th>
+                <th>Prix</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let gamme_fournisseur of listOfRelatedGammeFournisseurs">
+                    <td>{{gamme_fournisseur.ID}}</td>
+                    <td>{{gamme_fournisseur.Label}}</td>
+                    <td>{{gamme_fournisseur.Fournisseur?.Nom}} {{gamme_fournisseur.Fournisseur?.Prenom}}</td>
+                    <td>{{gamme_fournisseur.Prix}} €</td>
+                    <td>
+                        <button nz-button nzType="primary" class="positive-action "   title="modifier" [routerLink]="['/administration', 'equipements-taches', 'modifier-equipements-tache',gamme_fournisseur.ID]">
+                            modifier
+                        </button>
+                        <button nz-button nzType="primary" class="negative-action "  title="supprimer"  nz-popconfirm
+                        nzPopconfirmTitle="Voulez-vous vraiment supprimer cette tache ?"
+                        nzPopconfirmPlacement="bottom"
+                        (nzOnConfirm)="deleteGamme(gamme_fournisseur.ID)">
+                            supprimer
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+     </div>
+
+     <div *ngIf="is_gamme_de_ref">
+
+        <a [routerLink]="['/administration', 'equipements-taches', 'ajouter-equipements-tache']"
+        [queryParams]="{ type: 'fournisseur', gammederef: gammeId }">
+        Ajouter un fournisseur
+        </a>
+     </div>
+
+
+    <!-- fin fournisseurs-->
 </div>

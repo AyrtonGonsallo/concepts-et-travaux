@@ -7,6 +7,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
 import { Gamme } from '../../../../Models/Gamme';
+import { AuthService } from '../../../../Services/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 export interface Type {
    slug: string;
   label: string;
@@ -24,8 +26,10 @@ interface TravailItem {
   styleUrl: './modifier-equipements-tache.component.css'
 })
 export class ModifierEquipementsTacheComponent {
-apiUrl = environment.imagesUrl;
-  gammeId:string =  this.route.snapshot.paramMap.get('id')??'0';
+  apiUrl = environment.imagesUrl;
+  gammeId: string = '0';
+  private destroy$ = new Subject<void>();
+    
   validateForm: FormGroup<{
     current_group: FormControl<string>;
     Type: FormControl<string>;
@@ -232,7 +236,7 @@ types: Type[] = [
   }
 
 
-  constructor(private route:ActivatedRoute,private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
+  constructor(private route:ActivatedRoute,private authService: AuthService,private fb: NonNullableFormBuilder,private userService: ApiConceptsEtTravauxService,private message: NzMessageService, private router: Router) {
     this.validateForm = this.fb.group({
       current_group: ['', []],
       Type: ['', [Validators.required]],
@@ -274,24 +278,59 @@ types: Type[] = [
   removeAppareil(index: number): void {
     this.appareils.removeAt(index);
   }
+
+
   ngOnInit(): void {
-    this.loadtravaux()
-    this.loadFournisseurs()
-    this.loadGammesDeRef()
-    this.loadArtisans()
 
-    this.getDetails(parseInt(this.gammeId) )
+  // 1. Référentiels : une seule fois (pas liés à l'ID)
+  this.loadtravaux();
+  this.loadFournisseurs();
+  this.loadGammesDeRef();
+  this.loadArtisans();
 
-    this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
+  // 2. Abonnements formulaire : une seule fois aussi
+  this.validateForm.get('PrixFournisseur')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('PrixPose')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('TravailID')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((value: number) => this.doubleSearch(value));
+
+  // 3. Données liées à l'ID : se rechargent à chaque changement d'URL
+  this.route.paramMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const newId = params.get('id') ?? '0';
+      if (newId === this.gammeId) return; // évite le double appel au 1er passage
+      this.gammeId = newId;
+      this.reloadDetails();
     });
-    this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
-    });
-    this.validateForm.get('TravailID')!.valueChanges.subscribe((value: number) => {
-      this.doubleSearch(value);
-    });
+
+  // Premier chargement si l'ID est déjà présent au snapshot
+  if (this.gammeId && this.gammeId !== '0') {
+    this.reloadDetails();
   }
+}
+
+private reloadDetails(): void {
+  // reset pour ne pas garder les anciennes données
+  this.validateForm.reset();
+  this.filteredItems = [];
+  this.selectedTravail = undefined;
+  this.selectedEtape = undefined;
+
+  this.getDetails(parseInt(this.gammeId, 10));
+}
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
   updatePrixTotal(): void {
     const fournisseur = this.validateForm.get('PrixFournisseur')!.value || 0;
@@ -332,22 +371,52 @@ types: Type[] = [
   
     equipements_gammes_de_ref:Gamme[] = [];
     listOfDisplayGammeDeRef:Gamme[] = [];
+    listOfRelatedGammeFournisseurs:Gamme[] = [];
+    listOfRelatedGammeArtisans:Gamme[] = [];
+
     loadGammesDeRef(): Promise<void> {
-        return new Promise((resolve, reject) => {
-          this.userService.getEquipementGammesDeRef().subscribe({
-            next: (data2: Gamme[]) => {
-              this.equipements_gammes_de_ref = data2;
-              this.listOfDisplayGammeDeRef = [...this.equipements_gammes_de_ref];
-              console.log("réponse de la requête getEquipementGammesDEREF", this.equipements_gammes_de_ref);
-              resolve();
-            },
-            error: (err) => reject(err)
-          });
+      return new Promise((resolve, reject) => {
+        this.userService.getEquipementGammesDeRef().subscribe({
+          next: (data2: Gamme[]) => {
+            this.equipements_gammes_de_ref = data2;
+            this.listOfDisplayGammeDeRef = [...this.equipements_gammes_de_ref];
+            console.log("réponse de la requête getEquipementGammesDEREF", this.equipements_gammes_de_ref);
+            resolve();
+          },
+          error: (err) => reject(err)
         });
-      }
+      });
+    }
+
+    loadRelatedGammesArtisans(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.get_equipements_gammes_artisans_by_ref_id(parseInt(this.gammeId)).subscribe({
+          next: (data2: Gamme[]) => {
+            this.listOfRelatedGammeArtisans = data2;
+            console.log("réponse de la requête listOfRelatedGammeArtisans", this.listOfRelatedGammeArtisans);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
+
+    loadRelatedGammesFournisseurs(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.get_equipements_gammes_fournisseurs_by_ref_id(parseInt(this.gammeId)).subscribe({
+          next: (data2: Gamme[]) => {
+            this.listOfRelatedGammeFournisseurs = data2;
+            console.log("réponse de la requête listOfRelatedGammeFournisseurs", this.listOfRelatedGammeFournisseurs);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
 
   is_pm_artisan=false
   is_pm_fournisseur=false
+  is_gamme_de_ref = false
 
   check_is_pm_artisan(){
     return this.is_pm_artisan
@@ -375,6 +444,19 @@ types: Type[] = [
             this.is_pm_artisan =  true
           }
 
+        }
+
+        this.is_gamme_de_ref = ! (response.ActiverArtisan || response.ActiverFournisseur)
+
+        if(this.is_gamme_de_ref){
+
+          console.log('chargement des gammes artisans et fournisseur')
+          this.loadRelatedGammesArtisans()
+          this.loadRelatedGammesFournisseurs()
+        }else{
+          console.log('remise a 0 des gammes artisans et fournisseur')
+          this.listOfRelatedGammeArtisans = []
+          this.listOfRelatedGammeFournisseurs = []
         }
         
 
@@ -512,4 +594,29 @@ listeComplete: TravailItem[] = [
     }
 
   }
+
+
+  deleteGamme(id: number) {
+      if (this.authService.isAdminorSuperAdmin()) {
+        this.userService.deleteGamme(id).subscribe(
+          () => {
+            //console.log('Gamme supprimé avec succès');
+            this.message.success( 'Gamme supprimé avec succès');
+            // Mettez ici le code pour actualiser la liste des gamme si nécessaire
+            this.loadRelatedGammesArtisans()
+            this.loadRelatedGammesFournisseurs()
+             
+          },
+          (error) => {
+            console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+            this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+          }
+        );
+        return true
+      } else {
+        this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+        return false;
+      }
+      
+    }
 }

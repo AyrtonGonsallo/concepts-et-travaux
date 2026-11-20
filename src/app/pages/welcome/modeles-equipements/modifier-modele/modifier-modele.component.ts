@@ -8,6 +8,8 @@ import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-e
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { environment } from '../../../../environments/environment';
 import { ModeleEquipement } from '../../../../Models/ModeleEquipement';
+import { AuthService } from '../../../../Services/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -50,7 +52,9 @@ export class ModifierModeleComponent {
     ModeleDeReferenceID: FormControl<number>;
   }>;
 
-  modeleId:string =  this.route.snapshot.paramMap.get('id')??'0';
+  modeleId:string = '0';
+  private destroy$ = new Subject<void>();
+  
   fileSizeError = false;
   maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
   file_Image_principale: string="";
@@ -155,19 +159,67 @@ export class ModifierModeleComponent {
   }
   }
 
-  ngOnInit(): void {
-    this.loadEquipements();
-    this.getModeleDetails(this.modeleId)
-    this.loadFournisseurs()
-     this.loadArtisans()
-    this.loadModelesDeRef()
-    this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
+  
+
+
+ngOnInit(): void {
+  // 1. Référentiels
+  this.loadEquipements();
+  this.loadFournisseurs();
+  this.loadArtisans();
+  this.loadModelesDeRef();
+
+  // 2. Abonnements formulaire
+  this.validateForm.get('PrixFournisseur')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('PrixPose')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  // 3. Query params : type + gamme/modèle de référence
+  this.route.queryParamMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const type = params.get('type');
+      const ref = params.get('gammederef') ?? params.get('modelederef');
+
+      if (type === 'artisan') {
+        this.validateForm.patchValue({
+          ActiverArtisan: true,
+          ActiverFournisseur: false,
+        });
+      } else if (type === 'fournisseur') {
+        this.validateForm.patchValue({
+          ActiverFournisseur: true,
+          ActiverArtisan: false,
+        });
+      }
+
+      if (ref) {
+        this.validateForm.patchValue({
+          ModeleDeReferenceID: +ref,
+        });
+      }
     });
-    this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
+
+  // 4. Détails du modèle (lié à l'ID → rechargeable)
+  this.route.paramMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const newId = params.get('id') ?? '0';
+      if (newId === this.modeleId) return;
+      this.modeleId = newId;
+      this.getModeleDetails(parseInt(this.modeleId, 10));
     });
-  }
+}
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
+
 
   updatePrixTotal(): void {
     const fournisseur = this.validateForm.get('PrixFournisseur')!.value || 0;
@@ -213,6 +265,37 @@ export class ModifierModeleComponent {
             });
           });
         }
+
+        
+  listOfRelatedEquipementsFournisseurs:ModeleEquipement[] = [];
+  listOfRelatedEquipementsArtisans:ModeleEquipement[] = [];
+
+
+  loadRelatedEquipementsArtisans(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.get_artisans_modeles_equipement_by_ref_id(parseInt(this.modeleId)).subscribe({
+          next: (data2: ModeleEquipement[]) => {
+            this.listOfRelatedEquipementsArtisans = data2;
+            console.log("réponse de la requête listOfRelatedEquipementsArtisans", this.listOfRelatedEquipementsArtisans);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
+
+    loadRelatedEquipementsFournisseurs(): Promise<void> {
+      return new Promise((resolve, reject) => {
+        this.userService.get_fournisseurs_modeles_equipement_by_ref_id(parseInt(this.modeleId)).subscribe({
+          next: (data2: ModeleEquipement[]) => {
+            this.listOfRelatedEquipementsFournisseurs = data2;
+            console.log("réponse de la requête listOfRelatedEquipementsFournisseurs", this.listOfRelatedEquipementsFournisseurs);
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+      });
+    }
   
 
 
@@ -234,7 +317,7 @@ export class ModifierModeleComponent {
       }
     );
   }
-  constructor(private fb: NonNullableFormBuilder,private route:ActivatedRoute,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
+  constructor(private fb: NonNullableFormBuilder,private authService: AuthService,private route:ActivatedRoute,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
       
     Titre: ['', [ Validators.required]],
@@ -259,6 +342,8 @@ export class ModifierModeleComponent {
     });
   }
 
+  is_gamme_de_ref=false
+
   activerFournisseur(){
     return this.validateForm.value.ActiverFournisseur==true
   }
@@ -268,11 +353,24 @@ export class ModifierModeleComponent {
 
   
   // Méthode pour récupérer les détails de l'utilisateur à partir de l'API
-  getModeleDetails(id: string): void {
-    this.userService.getModeleEquipementById( parseInt(id, 10)).subscribe(
+  getModeleDetails(id: number): void {
+    this.userService.getModeleEquipementById( id).subscribe(
       (response) => {
         console.log("réponse de la requette get piece details",response);
         this.validateForm.patchValue(response);
+
+         this.is_gamme_de_ref = ! (response.ActiverArtisan || response.ActiverFournisseur)
+
+        if(this.is_gamme_de_ref){
+
+          console.log('chargement des Equipements artisans et fournisseur')
+          this.loadRelatedEquipementsArtisans()
+          this.loadRelatedEquipementsFournisseurs()
+        }else{
+          console.log('remise a 0 des Equipements artisans et fournisseur')
+          this.listOfRelatedEquipementsArtisans = []
+          this.listOfRelatedEquipementsFournisseurs = []
+        }
         
         
         
@@ -291,5 +389,28 @@ export class ModifierModeleComponent {
       "Équipement de cuisine (étape 3)",
       "Équipement sanitaires (étape 3)",
   ];
+
+
+  deleteModeleEquipement(id: number) {
+    if (this.authService.isAdminorSuperAdmin()) {
+      this.userService.deleteModeleEquipement(id).subscribe(
+        () => {
+          //console.log('ModeleEquipement supprimé avec succès');
+          this.message.success( 'ModeleEquipement supprimée avec succès');
+          this.loadRelatedEquipementsArtisans()
+          this.loadRelatedEquipementsFournisseurs()
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+          this.message.error( 'Erreur lors de la suppression de l\'utilisateur');
+        }
+      );
+      return true
+    } else {
+      this.message.info( `Vous n'avez pas assez de privilèges pour acceder à cette page et/ou ce n'est pas votre compte`);
+      return false;
+    }
+    
+  }
 
 }

@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 import { Equipement } from '../../../../Models/Equipement';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiConceptsEtTravauxService } from '../../../../Services/api-concepts-et-travaux.service';
 import { Utilisateur } from '../../../../Models/Utilisateurs';
 import { ModeleEquipement } from '../../../../Models/ModeleEquipement';
+import { Subject, takeUntil } from 'rxjs';
 interface FormValues {
     Titre?: string;
     Description?: string;
@@ -25,6 +26,62 @@ interface FormValues {
   styleUrl: './ajouter-modele.component.css'
 })
 export class AjouterModeleComponent {
+
+
+
+// ── dans la classe ──
+private destroy$ = new Subject<void>();
+
+ngOnInit(): void {
+  // 1. Référentiels
+  this.loadEquipements();
+  this.loadFournisseurs();
+  this.loadArtisans();
+  this.loadModelesDeRef();
+
+  // 2. Abonnements formulaire
+  this.validateForm.get('PrixFournisseur')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  this.validateForm.get('PrixPose')!.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => this.updatePrixTotal());
+
+  // 3. Query params : type + modèle de référence
+  this.route.queryParamMap
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const type = params.get('type');                 // 'artisan'
+      const modeleDeRef = params.get('modelederef');   // '58'
+
+      // Activer le bon flag selon le type
+      if (type === 'artisan') {
+        this.validateForm.patchValue({
+          ActiverArtisan: true,
+          ActiverFournisseur: false,
+        });
+      } else if (type === 'fournisseur') {
+        this.validateForm.patchValue({
+          ActiverFournisseur: true,
+          ActiverArtisan: false,
+        });
+      }
+
+      // Modèle de référence
+      if (modeleDeRef) {
+        this.validateForm.patchValue({
+          ModeleDeReferenceID: +modeleDeRef,
+        });
+      }
+    });
+}
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
+
   validateForm: FormGroup<{
     Titre: FormControl<string>;
     Image: FormControl<string>;
@@ -189,19 +246,6 @@ artisans:Utilisateur[]=[]
       }
 
 
-  ngOnInit(): void {
-    this.loadEquipements();
-    this.loadFournisseurs()
-    this.loadArtisans()
-    this.loadModelesDeRef()
-    this.validateForm.get('PrixFournisseur')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
-    });
-    this.validateForm.get('PrixPose')!.valueChanges.subscribe(() => {
-      this.updatePrixTotal();
-    });
-  }
-
   updatePrixTotal(): void {
     const fournisseur = this.validateForm.get('PrixFournisseur')!.value || 0;
     const pose = this.validateForm.get('PrixPose')!.value || 0;
@@ -228,6 +272,9 @@ artisans:Utilisateur[]=[]
    activerArtisan(){
     return this.validateForm.value.ActiverArtisan==true
   }
+  activerArtisanOrFournisseur(){
+    return this.validateForm.value.ActiverArtisan==true || this.validateForm.value.ActiverFournisseur==true
+  }
 
   loadEquipements(): void {
     this.userService.getEquipements().subscribe(
@@ -248,7 +295,7 @@ artisans:Utilisateur[]=[]
       }
     );
   }
-  constructor(private fb: NonNullableFormBuilder,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
+  constructor(private fb: NonNullableFormBuilder,private route:ActivatedRoute,private router: Router,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) {
     this.validateForm = this.fb.group({
       
     Titre: ['', [ Validators.required]],
@@ -256,8 +303,8 @@ artisans:Utilisateur[]=[]
     Description: ['', [ Validators.required]],
     Longeur: [0, [ ]],
     Largeur: [0, [ ]],
-     PrixPose: [0, [Validators.required]],
-      PrixFournisseur: [0, [Validators.required]],
+    PrixPose: [0, [Validators.required]],
+    PrixFournisseur: [0, [Validators.required]],
     Prix: [0, [ ]],
     Hauteur: [0, [ ]],
     Epaisseur: [0, [ ]],

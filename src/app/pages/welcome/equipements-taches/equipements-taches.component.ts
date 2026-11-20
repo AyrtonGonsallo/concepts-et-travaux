@@ -167,7 +167,9 @@ cacher_elements_fournisseurs_artisans = true
             });
           });
         }
-        deleteGamme(id: number) {
+
+
+    deleteGamme(id: number) {
       if (this.authService.isAdminorSuperAdmin()) {
         this.userService.deleteGamme(id).subscribe(
           () => {
@@ -349,7 +351,12 @@ cacher_elements_fournisseurs_artisans = true
         const matchTravail = !this.filteredTravailID || (item.TravailID) === this.filteredTravailID;
         const matchEtape = !this.filteredEtape2 || item.Etape === this.filteredEtape2;
         const matchType = !this.filteredSouscategorie || item.Type === this.filteredSouscategorie;
-        const matchNoFournisseursAndArtisans = !this.cacher_elements_fournisseurs_artisans || (item.FournisseurID === null && item.ArtisanID === null);
+        const isNullish = (v: any) => v === null || v === undefined || v === 0 || v === '';
+
+        const matchNoFournisseursAndArtisans =
+        !this.cacher_elements_fournisseurs_artisans ||
+        (isNullish(item.FournisseurID) && isNullish(item.ArtisanID));
+
 
         return matchLabel && matchTravail && matchEtape  && matchType && matchNoFournisseursAndArtisans;
       });

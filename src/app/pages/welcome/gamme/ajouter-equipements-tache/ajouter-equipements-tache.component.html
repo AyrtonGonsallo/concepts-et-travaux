@@ -52,7 +52,7 @@
         
 
       
-        <nz-form-item >
+        <nz-form-item *ngIf="activerFournisseur()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PrixFournisseur" nzRequired >
                 <span>Prix du fournisseur HT</span>
             </nz-form-label>
@@ -61,7 +61,7 @@
             </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item >
+        <nz-form-item *ngIf="activerArtisan()">
             <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="PrixPose" nzRequired >
                 <span>Prix de pose HT </span>
             </nz-form-label>
@@ -75,7 +75,7 @@
                 <span>Prix HT</span>
             </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="remplissez ce champ">
-                <nz-input-number id="Prix" formControlName="Prix" [nzDisabled]="true" ></nz-input-number> 
+                <nz-input-number id="Prix" formControlName="Prix" [nzDisabled]="activerArtisanOrFournisseur()" ></nz-input-number> 
             </nz-form-control>
         </nz-form-item>
 

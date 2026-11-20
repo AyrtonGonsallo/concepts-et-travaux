@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../Services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Title } from '@angular/platform-browser';
+import { Role } from '../../../Models/Roles';
 
 @Component({
   selector: 'app-comptes',
@@ -59,12 +60,16 @@ export class ComptesComponent {
     }
   ];
   utilisateurs:Utilisateur[] = [];
+  filteredUtilisateurs:Utilisateur[] = [];
+  roles: Role[] = [];
+  filteredRoleID=0
 
   constructor(private titleService: Title,private http: HttpClient,private authService: AuthService,private message: NzMessageService,private userService: ApiConceptsEtTravauxService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle('Liste des comptes');
     this.loadUtilisateurs();
+    this.loadRoles();
     this.authService.getUser().subscribe(
       (user) => {
         console.log('Utilisateur récupéré:', user);
@@ -76,16 +81,30 @@ export class ComptesComponent {
     );
     
   }
-uid=0
+
+  filterByRole(){
+    if(this.filteredRoleID==0){
+      this.filteredUtilisateurs = this.utilisateurs;
+    }else{
+      this.filteredUtilisateurs = this.utilisateurs
+          .filter(item => item.RoleId === this.filteredRoleID );
+    }
+    
+  }
+
+
+  uid=0
   loadUtilisateurs(): void {
     this.http.get<Utilisateur[]>(`${environment.apiUrl}/get_utilisateurs`)
       .subscribe((data: Utilisateur[]) => {
         if(!this.isAdminorSuperAdmin()){
           this.utilisateurs = data.filter(user => user.Id === this.uid);
+          this.filteredUtilisateurs = data.filter(user => user.Id === this.uid);
 
           console.log("réponse de la requette get_utilisateur",this.uid,this.utilisateurs)
         }else{
           this.utilisateurs = data;
+          this.filteredUtilisateurs = data;
         console.log("réponse de la requette get_utilisateurs",this.utilisateurs)
         }
         ;
@@ -126,6 +145,18 @@ uid=0
       return false;
     }
     
+  }
+
+   loadRoles(): void {
+    this.userService.getRoles().subscribe(
+      (response) => {
+        this.roles = response;
+        console.log("réponse de la requette get_roles",this.roles);
+      },
+      (error) => {
+        console.error('Erreur lors de la recuperation des roles :', error);
+      }
+    );
   }
 
   
